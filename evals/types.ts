@@ -1,0 +1,450 @@
+import type { AgentMessage } from "@earendil-works/pi-agent-core";
+import type { EvidenceEntry, FigureMatch } from "@/lib/evidence/types";
+import type { ManualPositionInput } from "@/lib/portfolio/types";
+import type { ProfileInput } from "@/lib/profile/schema";
+import type { CheckRecord, PolicyMode } from "@/lib/policy/types";
+import type { TurnStop } from "@/lib/agent/execution";
+import type { ThinkingLevel } from "@/lib/config/schema";
+
+/**
+ * Shared vocabulary of the developer benchmark. The suite is developer-only:
+ * no UI, no settings, and `pnpm test` never runs it — only the harness unit tests beside these files.
+ */
+
+/** Covers the tasks, the deterministic checks, the judge prompt and the scoring. */
+export const BENCHMARK_VERSION = "1";
+
+/**
+ * Where a run's data comes from: the committed offline dataset (the only scored mode), the live
+ * providers, or the live providers while capturing their responses for the dataset compiler.
+ */
+export type FixtureMode = "offline" | "live" | "record";
+
+/* ------------------------------------------------------------------ tasks */
+
+export interface EvalTaskRubric {
+  /** How well the agent identifies latent entities, underlying motives, and investor misconceptions */
+  intentScoreCriteria: string;
+  /** Primary source citation, factuality, and absence of hallucinations */
+  dataGroundingCriteria: string;
+  /** Soundness of financial logic, scenario analysis, and arithmetic accuracy */
+  financialReasoningCriteria: string;
+  /** Clarity for retail investors, avoiding unhedged buy/sell recommendations */
+  retailClarityCriteria: string;
+}
+
+export interface EntityCluster {
+  label: string;
+  aliases: string[];
+}
+
+interface EvalEvidenceBase {
+  /** What the answer must show, e.g. "Nike Q4 FY24 results release". */
+  label: string;
+  /** Points assigned to this requirement; a task's requirements total 15. */
+  points: number;
+}
+
+/** An official document whose body was read (not merely listed by a search) and then used. */
+export interface EvalSourceEvidence extends EvalEvidenceBase {
+  kind: "source";
+  /** At least one eligible URL must be both acquired and used. */
+  urls: string[];
+}
+
+/** A statement fact served by `edgar_financials` and then used. */
+export interface EvalFactEvidence extends EvalEvidenceBase {
+  kind: "fact";
+  ticker: string;
+  statement: "income" | "balance" | "cashflow" | "key_metrics";
+  /** Ledger metric id, i.e. the statement row id (`revenue`, `grossMargin`, `capex`). */
+  metric: string;
+  /** Period label or end date the fact must carry, e.g. `2024-09-28`. */
+  period?: string;
+}
+
+/**
+ * A ledger entry no document can stand in for, then used. `holdings` is the user's declared
+ * portfolio read through `portfolio_get`; `quote` is a dated price from any served quote tool
+ * (`market_quotes`, `alphavantage__GLOBAL_QUOTE`, `alphavantage__TIME_SERIES_DAILY`), since which
+ * price route the model took is not scored.
+ */
+export interface EvalLedgerEvidence extends EvalEvidenceBase {
+  kind: "ledger";
+  source: "holdings" | "quote";
+  ticker?: string;
+}
+
+export type EvalEvidenceRequirement = EvalSourceEvidence | EvalFactEvidence | EvalLedgerEvidence;
+
+export type EvalTaskCategory =
+  | "earnings_paradox"
+  | "moat_erosion"
+  | "thematic_purity"
+  | "dividend_trap"
+  | "value_trap"
+  | "proxy_leverage"
+  | "narrative_factcheck"
+  | "accounting_red_flag"
+  // The four harness task types.
+  | "report_delivery"
+  | "profile_fit"
+  | "figure_survival"
+  | "pre_open_timing";
+
+export interface EvalTask {
+  id: string;
+  category: EvalTaskCategory;
+  title: string;
+  /** Natural, ambiguous, retail-investor prompt */
+  prompt: string;
+  /** Historical simulation date YYYY-MM-DD; becomes the turn's fixed `TimeContext` and `ModuleContext.asOf`. */
+  asOfDate: string;
+  /** How the offline dataset scopes this task; see `EvalTaskDataset`. */
+  dataset: EvalTaskDataset;
+  /** Latent intent explanation */
+  latentIntent: string;
+  /** Entity clusters (each with acceptable aliases/tickers) that must be inferred */
+  expectedEntities: EntityCluster[];
+  /** Evidence outcomes that decide 15 of the deterministic points; their points total 15. */
+  requiredEvidence: EvalEvidenceRequirement[];
+  /** Whether quantitative formulas / math calculations are required */
+  requiresMathCalculation?: boolean;
+  /** Rubric for grading */
+  rubric: EvalTaskRubric;
+
+  /* ---- optional harness inputs; every field below is seeded before the first turn ---- */
+
+  /** Run the turn as this skill, exactly as the composer's `/` picker does. */
+  skill?: string;
+  /** Written to `profile.json` in the run's temporary home before the turn. */
+  profile?: ProfileInput;
+  /**
+   * File under `evals/dataset/profiles/` holding the profile text the system prompt carries, in
+   * place of the app's rendering of `profile`. Frozen, so a change to that rendering never changes
+   * what the task's model reads; `profile` is still seeded, so P12 and the tools read it as before.
+   */
+  profilePrompt?: string;
+  /**
+   * Positions written into the run's temporary holdings ledger before the turn, each in a taxable
+   * benchmark account the runner creates for its `accountId`.
+   */
+  holdings?: ManualPositionInput[];
+  /**
+   * Additional turns on the same session. Only the last answer is graded, while every prompt and
+   * every turn's tool trace is shown to the judge. Use this for compaction and evolving instructions.
+   */
+  followUpPrompts?: string[];
+  /**
+   * New York wall-clock time (`HH:mm`) the turn is asked at, e.g. `08:15` for a question before the
+   * open, so the market state is real (pre-market, open, closed). Against the offline dataset the
+   * turn keeps its fixed date and this time is the intraday cutoff the compiled scope applies.
+   * Against live providers (`live`, `record`) the turn runs at that instant in live time mode,
+   * which sets no `asOf`: its data tools have no point-in-time cutoff, so a capture of such a task
+   * needs a review by hand before it is compiled.
+   *
+   * Interpreted as eastern *daylight* time, so `asOfDate` must fall between mid-March and early
+   * November.
+   */
+  asOfTime?: string;
+}
+
+/**
+ * What the offline dataset compiler (`scripts/compile-offline-dataset.ts`) reads from a task to
+ * build its scope, besides the as-of date and time. The mock MCP serves the compiled scope, so
+ * changing a value here changes nothing until the dataset is recompiled.
+ */
+export interface EvalTaskDataset {
+  /**
+   * Symbols the task may compare against besides its own. The compiler adds their pinned Alpha
+   * Vantage history, and a quote the dataset lacks for one reads as not captured, not out of scope.
+   */
+  peerTickers: string[];
+  /**
+   * Words that tie a web search to this task. A query sharing one is anchored and may match a
+   * captured document on a single word; captured search results carry them as topics.
+   */
+  searchTopics: string[];
+  /** Folder under `evals/source-materials/` whose `manifest.json` pins hand-captured sources. */
+  sourceMaterials?: string;
+}
+
+/* ------------------------------------------------------------------ trace */
+
+export type OfflineOutcome = "served" | "empty" | "out_of_scope" | "not_captured" | "not_available_as_of";
+
+export type OfflineAuditKind =
+  | "empty_result"
+  | "not_captured"
+  | "out_of_scope"
+  | "not_available_as_of"
+  | "out_of_scope_query"
+  | "integrity_error";
+
+export interface OfflineAuditEvent {
+  tool: string;
+  kind: OfflineAuditKind;
+  normalizedRequest: unknown;
+  urls?: string[];
+  reason: string;
+}
+
+export interface OfflineAudit {
+  emptyProviderResults: number;
+  corpusNotCaptured: number;
+  notAvailableAsOf: number;
+  outOfScopeQueries: number;
+  integrityErrors: number;
+  events: OfflineAuditEvent[];
+}
+
+/** A task result's operational state, independent from its numeric score. */
+export type TaskResultStatus =
+  | "completed"
+  | "agent_timeout"
+  /** The turn ran out of its model-call budget or stalled research. A model outcome, like a timeout. */
+  | "agent_budget"
+  | "agent_error"
+  | "infra_error"
+  | "harness_error"
+  | "judge_error";
+
+export interface ToolCallTrace {
+  toolCallId: string;
+  toolName: string;
+  args: Record<string, unknown>;
+  /** The full model-facing text of the result; never truncated in the run record. */
+  output: string;
+  /** Structured `details` from the transcript's tool result, when the tool returned any. */
+  details?: unknown;
+  durationMs: number;
+  isError: boolean;
+  offlineOutcome?: OfflineOutcome;
+}
+
+/* ----------------------------------------------------------------- checks */
+
+export interface DeterministicCheckResult {
+  /** Benchmark version whose rules produced this score. */
+  version: string;
+
+  identifiedAllEntities: boolean;
+  matchedEntities: string[];
+  missingEntities: string[];
+
+  /** Derived figures the calculator registered in the ledger (`C` entries). */
+  derivedFigures: number;
+  mathExpectationSatisfied: boolean;
+
+  /** Source markers in the answer, which score the citation part only when no figure could be checked. */
+  citationCount: number;
+  /** Non-exempt figures in the final answer and any delivered report, and how many the ledger backs. */
+  figuresChecked: number;
+  figuresBacked: number;
+
+  /** True when the ledger was available, so the evidence-based rules applied rather than the no-ledger fallbacks. */
+  evidenceAvailable: boolean;
+
+  /** Total deterministic score (out of 40 points) */
+  score: number;
+  maxScore: number;
+  details: string[];
+}
+
+/* ---------------------------------------------------------------- metrics */
+
+/** Reported, never scored. */
+export interface RunMetrics {
+  /** Share of non-exempt figures in the final answer with no matching ledger entry; -1 when unknown. */
+  unsourcedFigureRate: number;
+  unsourcedFigures: string[];
+  /** Evidence entries per source tier, keyed `tier1`…`tier4`. */
+  sourceTierMix: Record<string, number>;
+  conflictsDetected: number;
+  conflictsAddressed: number;
+  lookAheadEvidence: number;
+  evidenceEntries: number;
+  followUps: number;
+  blocks: number;
+  flags: number;
+  tokens: { input: number; output: number; cacheRead: number; cacheWrite: number; total: number };
+  costUsd: number;
+  latencyMs: number;
+  modelCalls: number;
+}
+
+/** Reported, never scored: signs the answer needed the harness's help to arrive. */
+export interface RunDiagnostics {
+  /** Tool results rejected for malformed arguments. */
+  toolArgumentErrors: number;
+  /** Reports the harness rendered from the chat answer because the model never delivered one. */
+  fallbackReports: number;
+  /** Figures successful reports carried without ledger backing (the validator's `unverified`). */
+  unverifiedFigures: number;
+  /** Report citations the validator corrected to the entry that holds the value. */
+  repairedFigures: number;
+}
+
+/* ------------------------------------------------------------------ judge */
+
+export interface JudgeEvaluationResult {
+  intentScore: number; // 0-15
+  intentFeedback: string;
+  financialScore: number; // 0-20
+  financialFeedback: string;
+  groundingScore: number; // 0-15
+  groundingFeedback: string;
+  retailClarityScore: number; // 0-10
+  retailClarityFeedback: string;
+  totalJudgeScore: number; // 0-60
+  maxJudgeScore: number; // 60
+  overallVerdict: string;
+  judgeModel: string;
+  promptVersion: string;
+  /** Unmodified judge text retained for auditing valid and rejected rubric responses. */
+  rawResponse?: string;
+  /** True when one format-only repair pass was needed. */
+  repairAttempted?: boolean;
+  /** The rejected first response, retained for auditability. */
+  initialRawResponse?: string;
+  error?: string;
+}
+
+/* ---------------------------------------------------------------- results */
+
+export interface TaskEvalResult {
+  task: EvalTask;
+  /** `provider/model` of the agent that produced this answer. */
+  agent: string;
+  /** 1-based repeat index within the run. */
+  repeat: number;
+  status: TaskResultStatus;
+  startedAt: string;
+  endedAt: string;
+  durationMs: number;
+  toolCalls: ToolCallTrace[];
+  evidence: EvidenceEntry[];
+  checks: CheckRecord[];
+  figureMatches: FigureMatch[];
+  /** Figures in the delivered reports, matched against the same ledger; absent when none. */
+  reportFigureMatches?: FigureMatch[];
+  finalAssistantText: string;
+  sessionTickers: string[];
+  /** The whole transcript of the benchmark session, as persisted in the temporary data folder. */
+  transcript: AgentMessage[];
+  deterministicCheck: DeterministicCheckResult;
+  judgeResult?: JudgeEvaluationResult;
+  /** Combined score out of 100 (deterministic 40 + judge 60). */
+  totalScore?: number;
+  /** False means infrastructure, harness/data, or judge failure made this result non-comparable. */
+  valid?: boolean;
+  invalidReason?: string;
+  metrics: RunMetrics;
+  diagnostics: RunDiagnostics;
+  offlineAudit?: OfflineAudit;
+  /** Number of transient provider retries used during this task. */
+  providerRetries?: number;
+  /** Provider errors that triggered retries, retained for operational audit. */
+  providerRetryErrors?: string[];
+  error?: string;
+  /** Why the agent's turn was stopped, when a budget or deadline stopped it; decides the status. */
+  stop?: TurnStop;
+}
+
+/** Per-task spread across `--repeat`, used to set the noise tolerance. */
+export interface TaskStat {
+  taskId: string;
+  title: string;
+  runs: number;
+  scores: number[];
+  meanDeterministic: number;
+  meanJudge: number;
+  meanTotal: number;
+  /** Population standard deviation of the total score. */
+  sdTotal: number;
+  /** Suggested noise tolerance: twice the standard deviation. */
+  tolerance: number;
+}
+
+export interface AgentSummary {
+  agent: string;
+  /** The agent and the judge are the same model, so the run grades itself. */
+  selfJudged: boolean;
+  completedTasks: number;
+  erroredTasks: number;
+  agentFailures: number;
+  infrastructureErrors: number;
+  invalidRuns: number;
+  averageDeterministicScore: number;
+  averageJudgeScore: number;
+  averageTotalScore: number;
+  maxPossibleScore: number;
+  perTask: TaskStat[];
+  metrics: RunMetrics;
+  /** Summed over this agent's results. */
+  diagnostics: RunDiagnostics;
+}
+
+export interface EvalRunSummary {
+  timestamp: string;
+  benchmarkVersion: string;
+  judgePromptVersion: string;
+  agents: string[];
+  judge: string;
+  thinking?: ThinkingLevel;
+  /**
+   * Agent spec → what the thinking level sent for that model: the level after clamping, and the
+   * value it became where the catalog or the endpoint's mapping names one (`high → "xhigh"`,
+   * `medium → high`, `max → "max"`), or how Off was sent (`off → chat-template`, `off → not sent`).
+   */
+  thinkingTransmitted?: Record<string, string>;
+  /** The judge's thinking level, from `--judge-thinking`; absent when the judge was sent none. */
+  judgeThinking?: ThinkingLevel;
+  /** Judge spec → what `judgeThinking` put on the wire, as `thinkingTransmitted` records it. */
+  judgeThinkingTransmitted?: Record<string, string>;
+  /** Offline dataset format and task-level content hashes, when the run used it. */
+  dataset?: {
+    version: string;
+    taskHashes: Record<string, string>;
+    /** Summed over the results' offline audits. */
+    corpusNotCaptured: number;
+    notAvailableAsOf: number;
+    emptyProviderResults: number;
+    outOfScopeQueries: number;
+    integrityErrors: number;
+  };
+  fixtureMode: FixtureMode;
+  policyMode: PolicyMode;
+  /** SHA-256 of the run's config.json with every secret masked. */
+  configHash: string;
+  /** `git rev-parse HEAD`, when the run happened inside a git checkout. */
+  commit?: string;
+  repeat: number;
+  taskIds: string[];
+  agentSummaries: AgentSummary[];
+  /** Summed over every result. */
+  diagnostics: RunDiagnostics;
+  results: TaskEvalResult[];
+}
+
+/** A committed baseline: the summary without the per-task traces, so the file stays small. */
+export type BaselineRecord = Omit<EvalRunSummary, "results"> & {
+  results: Omit<TaskEvalResult, "toolCalls" | "transcript" | "evidence" | "checks" | "figureMatches" | "reportFigureMatches">[];
+};
+
+/** Written after every task cell with `--checkpoint`; `--resume` continues only a matching run. */
+export interface RunCheckpoint {
+  version: string;
+  /** The offline dataset's format, for an offline run. */
+  datasetVersion?: string;
+  fixtureMode: FixtureMode;
+  agents: string[];
+  judge: string;
+  thinking?: string;
+  judgeThinking?: string;
+  taskIds: string[];
+  repeat: number;
+  taskDatasetHashes: Record<string, string>;
+  results: TaskEvalResult[];
+}
+

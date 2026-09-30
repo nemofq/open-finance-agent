@@ -1,0 +1,2618 @@
+[
+  {
+    "label": "edgar lookup, one match",
+    "tool": "edgar_lookup_company",
+    "entry": {
+      "entity": {
+        "cik": "0001234567",
+        "name": "Fixture Corp",
+        "ticker": "FIXT"
+      },
+      "numbers": [
+        {
+          "context": "- CIK: 0001234567 (archives use 1234567)",
+          "value": 1234567
+        },
+        {
+          "context": "- Industry (SIC): Semiconductors & Related Devices (3674)",
+          "value": 3674
+        },
+        {
+          "context": "- Fiscal year end: 12-31 (MM-DD)",
+          "value": 12
+        },
+        {
+          "context": "- Fiscal year end: 12-31 (MM-DD)",
+          "value": 31
+        }
+      ],
+      "source": {
+        "id": "edgar",
+        "name": "SEC EDGAR",
+        "tier": 1
+      },
+      "summary": "SEC EDGAR — Fixture Corp"
+    }
+  },
+  {
+    "label": "edgar lookup, several matches",
+    "tool": "edgar_lookup_company",
+    "entry": {
+      "entity": {
+        "cik": "0007654321",
+        "name": "Fixture Bancorp",
+        "ticker": "FIXB"
+      },
+      "numbers": [
+        {
+          "context": "- CIK: 0007654321 (archives use 7654321)",
+          "value": 7654321
+        }
+      ],
+      "source": {
+        "id": "edgar",
+        "name": "SEC EDGAR",
+        "tier": 1
+      },
+      "summary": "SEC EDGAR — Fixture Bancorp"
+    }
+  },
+  {
+    "label": "edgar lookup, no match",
+    "tool": "edgar_lookup_company",
+    "entry": {
+      "source": {
+        "id": "edgar",
+        "name": "SEC EDGAR",
+        "tier": 1
+      },
+      "summary": "SEC EDGAR — No SEC filer matches \"zzzz\". Only companies with a listed ticker are in EDGAR's ticker map; try a shorter part of the na"
+    }
+  },
+  {
+    "label": "edgar filings",
+    "tool": "edgar_filings",
+    "entry": {
+      "asOf": "2025-08-12",
+      "availableAt": "2025-08-12",
+      "entity": {
+        "cik": "0001234567",
+        "name": "Fixture Corp",
+        "ticker": "FIXT"
+      },
+      "numbers": [
+        {
+          "context": "| 4 | 2025-08-12 | 2025-08-11 | — | https://www.sec.gov/Archives/edgar/data/1234567/000000000025000031/form4.xml | https://www.sec.gov/Archives/edgar/data/12345",
+          "value": 4
+        },
+        {
+          "context": "| 4 | 2025-08-12 | 2025-08-11 | — | https://www.sec.gov/Archives/edgar/data/1234567/000000000025000031/form4.xml | https://www.sec.gov/Archives/edgar/data/12345",
+          "value": 1234567
+        },
+        {
+          "context": "| 8-K | 2025-07-30 | 2025-07-29 | 2.02, 9.01 | https://www.sec.gov/Archives/edgar/data/1234567/000000000025000030/fixt-20250729.htm | https://www.sec.gov/Archiv",
+          "value": 2.02
+        },
+        {
+          "context": "| 8-K | 2025-07-30 | 2025-07-29 | 2.02, 9.01 | https://www.sec.gov/Archives/edgar/data/1234567/000000000025000030/fixt-20250729.htm | https://www.sec.gov/Archiv",
+          "value": 9.01
+        },
+        {
+          "context": "9.01 | https://www.sec.gov/Archives/edgar/data/1234567/000000000025000030/fixt-20250729.htm | https://www.sec.gov/Archives/edgar/data/1234567/00000000002500003",
+          "value": 20250729
+        },
+        {
+          "context": "1 | — | https://www.sec.gov/Archives/edgar/data/1234567/000000000025000020/fixt-20250331.htm | https://www.sec.gov/Archives/edgar/data/1234567/00000000002500002",
+          "value": 20250331
+        },
+        {
+          "context": "1 | — | https://www.sec.gov/Archives/edgar/data/1234567/000000000025000010/fixt-20241231.htm | https://www.sec.gov/Archives/edgar/data/1234567/00000000002500001",
+          "value": 20241231
+        }
+      ],
+      "source": {
+        "id": "edgar",
+        "name": "SEC EDGAR",
+        "tier": 1
+      },
+      "summary": "SEC EDGAR — Fixture Corp (FIXT) — 4 filings",
+      "table": {
+        "columns": [
+          "form",
+          "filed",
+          "reportDate",
+          "accession",
+          "url"
+        ],
+        "rows": [
+          [
+            "4",
+            "2025-08-12",
+            "2025-08-11",
+            "0000000000-25-000031",
+            "https://www.sec.gov/Archives/edgar/data/1234567/000000000025000031/form4.xml"
+          ],
+          [
+            "8-K",
+            "2025-07-30",
+            "2025-07-29",
+            "0000000000-25-000030",
+            "https://www.sec.gov/Archives/edgar/data/1234567/000000000025000030/fixt-20250729.htm"
+          ],
+          [
+            "10-Q",
+            "2025-05-01",
+            "2025-03-31",
+            "0000000000-25-000020",
+            "https://www.sec.gov/Archives/edgar/data/1234567/000000000025000020/fixt-20250331.htm"
+          ],
+          [
+            "10-K",
+            "2025-02-15",
+            "2024-12-31",
+            "0000000000-25-000010",
+            "https://www.sec.gov/Archives/edgar/data/1234567/000000000025000010/fixt-20241231.htm"
+          ]
+        ]
+      }
+    }
+  },
+  {
+    "label": "edgar filings, 8-K",
+    "tool": "edgar_filings",
+    "entry": {
+      "asOf": "2025-07-30",
+      "availableAt": "2025-07-30",
+      "entity": {
+        "cik": "0001234567",
+        "name": "Fixture Corp",
+        "ticker": "FIXT"
+      },
+      "numbers": [
+        {
+          "context": "| 8-K | 2025-07-30 | 2025-07-29 | 2.02, 9.01 | https://www.sec.gov/Archives/edgar/data/1234567/000000000025000030/fixt-20250729.htm | https://www.sec.gov/Archiv",
+          "value": 2.02
+        },
+        {
+          "context": "| 8-K | 2025-07-30 | 2025-07-29 | 2.02, 9.01 | https://www.sec.gov/Archives/edgar/data/1234567/000000000025000030/fixt-20250729.htm | https://www.sec.gov/Archiv",
+          "value": 9.01
+        },
+        {
+          "context": "2025-07-30 | 2025-07-29 | 2.02, 9.01 | https://www.sec.gov/Archives/edgar/data/1234567/000000000025000030/fixt-20250729.htm | https://www.sec.gov/Archives/edga",
+          "value": 1234567
+        },
+        {
+          "context": "9.01 | https://www.sec.gov/Archives/edgar/data/1234567/000000000025000030/fixt-20250729.htm | https://www.sec.gov/Archives/edgar/data/1234567/00000000002500003",
+          "value": 20250729
+        }
+      ],
+      "source": {
+        "id": "edgar",
+        "name": "SEC EDGAR",
+        "tier": 1
+      },
+      "summary": "SEC EDGAR — Fixture Corp (FIXT) — 1 filings",
+      "table": {
+        "columns": [
+          "form",
+          "filed",
+          "reportDate",
+          "accession",
+          "url"
+        ],
+        "rows": [
+          [
+            "8-K",
+            "2025-07-30",
+            "2025-07-29",
+            "0000000000-25-000030",
+            "https://www.sec.gov/Archives/edgar/data/1234567/000000000025000030/fixt-20250729.htm"
+          ]
+        ]
+      }
+    }
+  },
+  {
+    "label": "edgar filings, as of",
+    "tool": "edgar_filings",
+    "entry": {
+      "asOf": "2025-05-01",
+      "availableAt": "2025-05-01",
+      "entity": {
+        "cik": "0001234567",
+        "name": "Fixture Corp",
+        "ticker": "FIXT"
+      },
+      "numbers": [
+        {
+          "context": "| 10-Q | 2025-05-01 | 2025-03-31 | — | https://www.sec.gov/Archives/edgar/data/1234567/000000000025000020/fixt-20250331.htm | https://www.sec.gov/Archives/edgar",
+          "value": 1234567
+        },
+        {
+          "context": "1 | — | https://www.sec.gov/Archives/edgar/data/1234567/000000000025000020/fixt-20250331.htm | https://www.sec.gov/Archives/edgar/data/1234567/00000000002500002",
+          "value": 20250331
+        },
+        {
+          "context": "1 | — | https://www.sec.gov/Archives/edgar/data/1234567/000000000025000010/fixt-20241231.htm | https://www.sec.gov/Archives/edgar/data/1234567/00000000002500001",
+          "value": 20241231
+        }
+      ],
+      "source": {
+        "id": "edgar",
+        "name": "SEC EDGAR",
+        "tier": 1
+      },
+      "summary": "SEC EDGAR — Fixture Corp (FIXT) — 2 filings",
+      "table": {
+        "columns": [
+          "form",
+          "filed",
+          "reportDate",
+          "accession",
+          "url"
+        ],
+        "rows": [
+          [
+            "10-Q",
+            "2025-05-01",
+            "2025-03-31",
+            "0000000000-25-000020",
+            "https://www.sec.gov/Archives/edgar/data/1234567/000000000025000020/fixt-20250331.htm"
+          ],
+          [
+            "10-K",
+            "2025-02-15",
+            "2024-12-31",
+            "0000000000-25-000010",
+            "https://www.sec.gov/Archives/edgar/data/1234567/000000000025000010/fixt-20241231.htm"
+          ]
+        ]
+      }
+    }
+  },
+  {
+    "label": "edgar filings, none",
+    "tool": "edgar_filings",
+    "entry": {
+      "entity": {
+        "cik": "0001234567",
+        "name": "Fixture Corp",
+        "ticker": "FIXT"
+      },
+      "source": {
+        "id": "edgar",
+        "name": "SEC EDGAR",
+        "tier": 1
+      },
+      "summary": "SEC EDGAR — No matching filings for FIXT (Fixture Corp). The submissions feed covers roughly the last thousand filings; widen or dro",
+      "table": {
+        "columns": [
+          "form",
+          "filed",
+          "reportDate",
+          "accession",
+          "url"
+        ]
+      }
+    }
+  },
+  {
+    "label": "edgar income, quarterly",
+    "tool": "edgar_financials",
+    "entry": {
+      "asOf": "2026-02-15",
+      "availableAt": "2026-02-15",
+      "currency": "USD",
+      "entity": {
+        "cik": "0001234567",
+        "name": "Fixture Corp",
+        "ticker": "FIXT"
+      },
+      "facts": {
+        "length": 55,
+        "sha256": "2da723c31ae12380c9ba7008d62dc72b51a83b721c1d8498550609fd3b9e44d8",
+        "head": [
+          {
+            "end": "2025-12-31",
+            "metric": "revenue",
+            "period": "2025-12-31",
+            "periodType": "quarterly",
+            "ref": "0000000000-25-000001",
+            "unit": "USD",
+            "value": 380000000
+          },
+          {
+            "end": "2025-09-30",
+            "metric": "revenue",
+            "period": "2025-09-30",
+            "periodType": "quarterly",
+            "ref": "0000000000-25-000030",
+            "unit": "USD",
+            "value": 300000000
+          },
+          {
+            "end": "2025-06-30",
+            "metric": "revenue",
+            "period": "2025-06-30",
+            "periodType": "quarterly",
+            "ref": "0000000000-25-000020",
+            "unit": "USD",
+            "value": 270000000
+          }
+        ]
+      },
+      "periods": [
+        "2025-12-31",
+        "2025-09-30",
+        "2025-06-30",
+        "2025-03-31",
+        "2024-12-31",
+        "2024-09-30",
+        "2024-06-30",
+        "2024-03-31"
+      ],
+      "source": {
+        "id": "edgar",
+        "name": "SEC EDGAR",
+        "tier": 1
+      },
+      "summary": "EDGAR income statement, quarterly, $FIXT, 8 periods (latest 2025-12-31)",
+      "table": {
+        "columns": [
+          "metric",
+          "2025-12-31",
+          "2025-09-30",
+          "2025-06-30",
+          "2025-03-31",
+          "2024-12-31",
+          "2024-09-30",
+          "2024-06-30",
+          "2024-03-31"
+        ],
+        "index": "metric",
+        "rows": [
+          [
+            "revenue",
+            380000000,
+            300000000,
+            270000000,
+            250000000,
+            330000000,
+            250000000,
+            220000000,
+            200000000
+          ],
+          [
+            "costOfRevenue",
+            215000000,
+            175000000,
+            160000000,
+            150000000,
+            200000000,
+            145000000,
+            130000000,
+            125000000
+          ],
+          [
+            "grossProfit",
+            165000000,
+            125000000,
+            110000000,
+            100000000,
+            130000000,
+            105000000,
+            90000000,
+            75000000
+          ],
+          [
+            "operatingIncome",
+            65000000,
+            50000000,
+            45000000,
+            40000000,
+            55000000,
+            40000000,
+            35000000,
+            30000000
+          ],
+          [
+            "netIncome",
+            45000000,
+            40000000,
+            35000000,
+            30000000,
+            37000000,
+            30000000,
+            28000000,
+            25000000
+          ],
+          [
+            "dilutedEps",
+            0.4500000000000002,
+            0.4,
+            0.35,
+            0.3,
+            0.37,
+            0.3,
+            0.28,
+            0.25
+          ],
+          [
+            "dilutedShares",
+            null,
+            100000000,
+            100000000,
+            100000000,
+            100000000,
+            100000000,
+            100000000,
+            100000000
+          ]
+        ]
+      },
+      "unit": "USD"
+    }
+  },
+  {
+    "label": "edgar balance, annual",
+    "tool": "edgar_financials",
+    "entry": {
+      "asOf": "2026-02-15",
+      "availableAt": "2026-02-15",
+      "currency": "USD",
+      "entity": {
+        "cik": "0001234567",
+        "name": "Fixture Corp",
+        "ticker": "FIXT"
+      },
+      "facts": [
+        {
+          "end": "2025-12-31",
+          "metric": "assets",
+          "period": "2025-12-31",
+          "periodType": "instant",
+          "ref": "0000000000-25-000001",
+          "unit": "USD",
+          "value": 2000000000
+        },
+        {
+          "end": "2024-12-31",
+          "metric": "assets",
+          "period": "2024-12-31",
+          "periodType": "instant",
+          "ref": "0000000000-24-000001",
+          "unit": "USD",
+          "value": 1800000000
+        },
+        {
+          "end": "2025-12-31",
+          "metric": "liabilities",
+          "period": "2025-12-31",
+          "periodType": "instant",
+          "ref": "0000000000-25-000001",
+          "unit": "USD",
+          "value": 1200000000
+        },
+        {
+          "end": "2024-12-31",
+          "metric": "liabilities",
+          "period": "2024-12-31",
+          "periodType": "instant",
+          "ref": "0000000000-24-000001",
+          "unit": "USD",
+          "value": 1100000000
+        },
+        {
+          "end": "2025-12-31",
+          "metric": "equity",
+          "period": "2025-12-31",
+          "periodType": "instant",
+          "ref": "0000000000-25-000001",
+          "unit": "USD",
+          "value": 800000000
+        },
+        {
+          "end": "2024-12-31",
+          "metric": "equity",
+          "period": "2024-12-31",
+          "periodType": "instant",
+          "ref": "0000000000-24-000001",
+          "unit": "USD",
+          "value": 700000000
+        },
+        {
+          "end": "2025-12-31",
+          "metric": "cash",
+          "period": "2025-12-31",
+          "periodType": "instant",
+          "ref": "0000000000-25-000001",
+          "unit": "USD",
+          "value": 300000000
+        },
+        {
+          "end": "2024-12-31",
+          "metric": "cash",
+          "period": "2024-12-31",
+          "periodType": "instant",
+          "ref": "0000000000-24-000001",
+          "unit": "USD",
+          "value": 250000000
+        },
+        {
+          "end": "2025-12-31",
+          "metric": "longTermDebt",
+          "period": "2025-12-31",
+          "periodType": "instant",
+          "ref": "0000000000-25-000001",
+          "unit": "USD",
+          "value": 500000000
+        },
+        {
+          "end": "2024-12-31",
+          "metric": "longTermDebt",
+          "period": "2024-12-31",
+          "periodType": "instant",
+          "ref": "0000000000-24-000001",
+          "unit": "USD",
+          "value": 520000000
+        }
+      ],
+      "periods": [
+        "2025-12-31",
+        "2024-12-31",
+        "2023-12-31"
+      ],
+      "source": {
+        "id": "edgar",
+        "name": "SEC EDGAR",
+        "tier": 1
+      },
+      "summary": "EDGAR balance sheet, annual, $FIXT, 3 periods (latest 2025-12-31)",
+      "table": {
+        "columns": [
+          "metric",
+          "2025-12-31",
+          "2024-12-31",
+          "2023-12-31"
+        ],
+        "index": "metric",
+        "rows": [
+          [
+            "assets",
+            2000000000,
+            1800000000,
+            null
+          ],
+          [
+            "liabilities",
+            1200000000,
+            1100000000,
+            null
+          ],
+          [
+            "equity",
+            800000000,
+            700000000,
+            null
+          ],
+          [
+            "cash",
+            300000000,
+            250000000,
+            null
+          ],
+          [
+            "longTermDebt",
+            500000000,
+            520000000,
+            null
+          ]
+        ]
+      },
+      "unit": "USD"
+    }
+  },
+  {
+    "label": "edgar key metrics, quarterly",
+    "tool": "edgar_financials",
+    "entry": {
+      "asOf": "2026-02-15",
+      "availableAt": "2026-02-15",
+      "currency": "USD",
+      "entity": {
+        "cik": "0001234567",
+        "name": "Fixture Corp",
+        "ticker": "FIXT"
+      },
+      "facts": {
+        "length": 28,
+        "sha256": "91b5ad134ad7fbd3b034a633651ff2fee3ee561980a68b08740b82f8c2293870",
+        "head": [
+          {
+            "end": "2025-12-31",
+            "metric": "revenue",
+            "period": "2025-12-31",
+            "periodType": "quarterly",
+            "ref": "0000000000-25-000001",
+            "unit": "USD",
+            "value": 380000000
+          },
+          {
+            "end": "2025-09-30",
+            "metric": "revenue",
+            "period": "2025-09-30",
+            "periodType": "quarterly",
+            "ref": "0000000000-25-000030",
+            "unit": "USD",
+            "value": 300000000
+          },
+          {
+            "end": "2025-06-30",
+            "metric": "revenue",
+            "period": "2025-06-30",
+            "periodType": "quarterly",
+            "ref": "0000000000-25-000020",
+            "unit": "USD",
+            "value": 270000000
+          }
+        ]
+      },
+      "periods": [
+        "2025-12-31",
+        "2025-09-30",
+        "2025-06-30",
+        "2025-03-31"
+      ],
+      "source": {
+        "id": "edgar",
+        "name": "SEC EDGAR",
+        "tier": 1
+      },
+      "summary": "EDGAR key metrics, quarterly, $FIXT, 4 periods (latest 2025-12-31)",
+      "table": {
+        "columns": [
+          "metric",
+          "2025-12-31",
+          "2025-09-30",
+          "2025-06-30",
+          "2025-03-31"
+        ],
+        "index": "metric",
+        "rows": [
+          [
+            "revenue",
+            380000000,
+            300000000,
+            270000000,
+            250000000
+          ],
+          [
+            "grossMargin",
+            43.42105263157895,
+            41.66666666666667,
+            40.74074074074074,
+            40
+          ],
+          [
+            "operatingMargin",
+            17.105263157894736,
+            16.666666666666664,
+            16.666666666666664,
+            16
+          ],
+          [
+            "netMargin",
+            11.842105263157894,
+            13.333333333333334,
+            12.962962962962962,
+            12
+          ],
+          [
+            "dilutedEps",
+            0.4500000000000002,
+            0.4,
+            0.35,
+            0.3
+          ],
+          [
+            "freeCashFlow",
+            60000000,
+            52000000,
+            48000000,
+            40000000
+          ],
+          [
+            "revenueGrowthYoY",
+            15.151515151515152,
+            20,
+            22.727272727272727,
+            25
+          ]
+        ]
+      },
+      "unit": "USD"
+    }
+  },
+  {
+    "label": "edgar cash flow, as of",
+    "tool": "edgar_financials",
+    "entry": {
+      "asOf": "2025-04-30",
+      "availableAt": "2025-04-30",
+      "currency": "USD",
+      "entity": {
+        "cik": "0001234567",
+        "name": "Fixture Corp",
+        "ticker": "FIXT"
+      },
+      "facts": [
+        {
+          "end": "2025-03-31",
+          "metric": "operatingCashFlow",
+          "period": "2025-03-31",
+          "periodType": "quarterly",
+          "ref": "0000000000-25-000010",
+          "unit": "USD",
+          "value": 50000000
+        },
+        {
+          "end": "2024-12-31",
+          "metric": "operatingCashFlow",
+          "period": "2024-12-31",
+          "periodType": "quarterly",
+          "ref": "0000000000-24-000001",
+          "unit": "USD",
+          "value": 60000000
+        },
+        {
+          "end": "2024-09-30",
+          "metric": "operatingCashFlow",
+          "period": "2024-09-30",
+          "periodType": "quarterly",
+          "ref": "0000000000-24-000030",
+          "unit": "USD",
+          "value": 52000000
+        },
+        {
+          "end": "2024-06-30",
+          "metric": "operatingCashFlow",
+          "period": "2024-06-30",
+          "periodType": "quarterly",
+          "ref": "0000000000-24-000020",
+          "unit": "USD",
+          "value": 48000000
+        },
+        {
+          "end": "2024-03-31",
+          "metric": "operatingCashFlow",
+          "period": "2024-03-31",
+          "periodType": "quarterly",
+          "ref": "0000000000-24-000010",
+          "unit": "USD",
+          "value": 40000000
+        },
+        {
+          "end": "2025-03-31",
+          "metric": "capex",
+          "period": "2025-03-31",
+          "periodType": "quarterly",
+          "ref": "0000000000-25-000010",
+          "unit": "USD",
+          "value": 10000000
+        },
+        {
+          "end": "2024-12-31",
+          "metric": "capex",
+          "period": "2024-12-31",
+          "periodType": "quarterly",
+          "ref": "0000000000-24-000001",
+          "unit": "USD",
+          "value": 11000000
+        },
+        {
+          "end": "2024-09-30",
+          "metric": "capex",
+          "period": "2024-09-30",
+          "periodType": "quarterly",
+          "ref": "0000000000-24-000030",
+          "unit": "USD",
+          "value": 11000000
+        },
+        {
+          "end": "2024-06-30",
+          "metric": "capex",
+          "period": "2024-06-30",
+          "periodType": "quarterly",
+          "ref": "0000000000-24-000020",
+          "unit": "USD",
+          "value": 10000000
+        },
+        {
+          "end": "2024-03-31",
+          "metric": "capex",
+          "period": "2024-03-31",
+          "periodType": "quarterly",
+          "ref": "0000000000-24-000010",
+          "unit": "USD",
+          "value": 8000000
+        },
+        {
+          "end": "2025-03-31",
+          "metric": "freeCashFlow",
+          "period": "2025-03-31",
+          "periodType": "quarterly",
+          "ref": "0000000000-25-000010",
+          "unit": "USD",
+          "value": 40000000
+        },
+        {
+          "end": "2024-12-31",
+          "metric": "freeCashFlow",
+          "period": "2024-12-31",
+          "periodType": "quarterly",
+          "ref": "0000000000-24-000001",
+          "unit": "USD",
+          "value": 49000000
+        },
+        {
+          "end": "2024-09-30",
+          "metric": "freeCashFlow",
+          "period": "2024-09-30",
+          "periodType": "quarterly",
+          "ref": "0000000000-24-000030",
+          "unit": "USD",
+          "value": 41000000
+        },
+        {
+          "end": "2024-06-30",
+          "metric": "freeCashFlow",
+          "period": "2024-06-30",
+          "periodType": "quarterly",
+          "ref": "0000000000-24-000020",
+          "unit": "USD",
+          "value": 38000000
+        },
+        {
+          "end": "2024-03-31",
+          "metric": "freeCashFlow",
+          "period": "2024-03-31",
+          "periodType": "quarterly",
+          "ref": "0000000000-24-000010",
+          "unit": "USD",
+          "value": 32000000
+        }
+      ],
+      "periods": [
+        "2025-03-31",
+        "2024-12-31",
+        "2024-09-30",
+        "2024-06-30",
+        "2024-03-31"
+      ],
+      "source": {
+        "id": "edgar",
+        "name": "SEC EDGAR",
+        "tier": 1
+      },
+      "summary": "EDGAR cash flow statement, quarterly, $FIXT, 5 periods (latest 2025-03-31)",
+      "table": {
+        "columns": [
+          "metric",
+          "2025-03-31",
+          "2024-12-31",
+          "2024-09-30",
+          "2024-06-30",
+          "2024-03-31"
+        ],
+        "index": "metric",
+        "rows": [
+          [
+            "operatingCashFlow",
+            50000000,
+            60000000,
+            52000000,
+            48000000,
+            40000000
+          ],
+          [
+            "capex",
+            10000000,
+            11000000,
+            11000000,
+            10000000,
+            8000000
+          ],
+          [
+            "freeCashFlow",
+            40000000,
+            49000000,
+            41000000,
+            38000000,
+            32000000
+          ]
+        ]
+      },
+      "unit": "USD"
+    }
+  },
+  {
+    "label": "edgar income, before any filing",
+    "tool": "edgar_financials",
+    "entry": {
+      "currency": "USD",
+      "entity": {
+        "cik": "0001234567",
+        "name": "Fixture Corp",
+        "ticker": "FIXT"
+      },
+      "source": {
+        "id": "edgar",
+        "name": "SEC EDGAR",
+        "tier": 1
+      },
+      "summary": "SEC EDGAR — FIXT",
+      "table": {
+        "columns": [
+          "metric"
+        ],
+        "index": "metric"
+      },
+      "unit": "USD"
+    }
+  },
+  {
+    "label": "edgar search",
+    "tool": "edgar_search_filings",
+    "entry": {
+      "asOf": "2025-07-30",
+      "entity": {
+        "cik": "0001234567"
+      },
+      "numbers": [
+        {
+          "context": "EDGAR full-text search for \"second quarter revenue\" — 37 matching documents, showing 2.",
+          "value": 37
+        },
+        {
+          "context": "EDGAR full-text search for \"second quarter revenue\" — 37 matching documents, showing 2.",
+          "value": 2
+        },
+        {
+          "context": "ixture Corp (FIXT) (CIK 0001234567) | 8-K / EX-99.1 | 2025-07-30 | 2025-07-29 | 2.02, 9.01 | https://www.sec.gov/Archives/edgar/data/1234567/000000000025000030/",
+          "value": 2.02
+        },
+        {
+          "context": "Corp (FIXT) (CIK 0001234567) | 8-K / EX-99.1 | 2025-07-30 | 2025-07-29 | 2.02, 9.01 | https://www.sec.gov/Archives/edgar/data/1234567/000000000025000030/fixt-e",
+          "value": 9.01
+        },
+        {
+          "context": "2025-07-30 | 2025-07-29 | 2.02, 9.01 | https://www.sec.gov/Archives/edgar/data/1234567/000000000025000030/fixt-ex991.htm | | Fixture Corp (FIXT) (CIK 000123456",
+          "value": 1234567
+        },
+        {
+          "context": "1 | — | https://www.sec.gov/Archives/edgar/data/1234567/000000000025000020/fixt-20250331.htm | Read any of these with edgar_read_filing.",
+          "value": 20250331
+        }
+      ],
+      "source": {
+        "id": "edgar",
+        "name": "SEC EDGAR",
+        "tier": 1
+      },
+      "summary": "SEC EDGAR — EDGAR full-text search for \"second quarter revenue\" — 37 matching documents, showing 2."
+    }
+  },
+  {
+    "label": "edgar search, as of",
+    "tool": "edgar_search_filings",
+    "entry": {
+      "asOf": "2025-07-30",
+      "entity": {
+        "cik": "0001234567"
+      },
+      "numbers": [
+        {
+          "context": "EDGAR full-text search for \"second quarter revenue\" — 37 matching documents, showing 2.",
+          "value": 37
+        },
+        {
+          "context": "EDGAR full-text search for \"second quarter revenue\" — 37 matching documents, showing 2.",
+          "value": 2
+        },
+        {
+          "context": "ixture Corp (FIXT) (CIK 0001234567) | 8-K / EX-99.1 | 2025-07-30 | 2025-07-29 | 2.02, 9.01 | https://www.sec.gov/Archives/edgar/data/1234567/000000000025000030/",
+          "value": 2.02
+        },
+        {
+          "context": "Corp (FIXT) (CIK 0001234567) | 8-K / EX-99.1 | 2025-07-30 | 2025-07-29 | 2.02, 9.01 | https://www.sec.gov/Archives/edgar/data/1234567/000000000025000030/fixt-e",
+          "value": 9.01
+        },
+        {
+          "context": "2025-07-30 | 2025-07-29 | 2.02, 9.01 | https://www.sec.gov/Archives/edgar/data/1234567/000000000025000030/fixt-ex991.htm | | Fixture Corp (FIXT) (CIK 000123456",
+          "value": 1234567
+        },
+        {
+          "context": "1 | — | https://www.sec.gov/Archives/edgar/data/1234567/000000000025000020/fixt-20250331.htm | Read any of these with edgar_read_filing. Point in time: the sea",
+          "value": 20250331
+        }
+      ],
+      "source": {
+        "id": "edgar",
+        "name": "SEC EDGAR",
+        "tier": 1
+      },
+      "summary": "SEC EDGAR — EDGAR full-text search for \"second quarter revenue\" — 37 matching documents, showing 2."
+    }
+  },
+  {
+    "label": "edgar read, index",
+    "tool": "edgar_read_filing",
+    "entry": {
+      "asOf": "2025-07-30",
+      "availableAt": "2025-07-30",
+      "entity": {
+        "cik": "0001234567"
+      },
+      "numbers": [
+        {
+          "context": "Filing index https://www.sec.gov/Archives/edgar/data/1234567/000000000025000030/0000000000-25-000030-index.htm — 2 documents. Call edgar_read_filing again on th",
+          "value": 1234567
+        },
+        {
+          "context": "Archives/edgar/data/1234567/000000000025000030/0000000000-25-000030-index.htm — 2 documents. Call edgar_read_filing again on the URL of the document you want (a",
+          "value": 2
+        },
+        {
+          "context": "| 1 | 8-K | 8-K | https://www.sec.gov/Archives/edgar/data/1234567/000000000025000030/fixt-20250729.htm |",
+          "value": 1
+        },
+        {
+          "context": "| 1 | 8-K | 8-K | https://www.sec.gov/Archives/edgar/data/1234567/000000000025000030/fixt-20250729.htm |",
+          "value": 20250729
+        }
+      ],
+      "source": {
+        "id": "edgar",
+        "name": "SEC EDGAR",
+        "tier": 1
+      },
+      "summary": "SEC EDGAR — Filing index https://www.sec.gov/Archives/edgar/data/1234567/000000000025000030/0000000000-25-000030-index.htm — 2 docum"
+    }
+  },
+  {
+    "label": "edgar read, document",
+    "tool": "edgar_read_filing",
+    "entry": {
+      "asOf": "2025-07-29",
+      "availableAt": "2025-07-29",
+      "entity": {
+        "cik": "0001234567"
+      },
+      "numbers": [
+        {
+          "context": "https://www.sec.gov/Archives/edgar/data/1234567/000000000025000030/fixt-20250729.htm",
+          "value": 1234567
+        },
+        {
+          "context": "https://www.sec.gov/Archives/edgar/data/1234567/000000000025000030/fixt-20250729.htm",
+          "value": 20250729
+        },
+        {
+          "context": "Revenue was $330 million, up 32% from a year ago. Diluted EPS was $1.24.",
+          "unit": "USD",
+          "value": 330000000
+        },
+        {
+          "context": "Revenue was $330 million, up 32% from a year ago. Diluted EPS was $1.24.",
+          "unit": "%",
+          "value": 32
+        },
+        {
+          "context": "Revenue was $330 million, up 32% from a year ago. Diluted EPS was $1.24.",
+          "unit": "USD",
+          "value": 1.24
+        },
+        {
+          "context": "Gross margin | 61.5%",
+          "unit": "%",
+          "value": 61.5
+        },
+        {
+          "context": "Operating income | $88 million",
+          "unit": "USD",
+          "value": 88000000
+        },
+        {
+          "context": "Outlook: third-quarter revenue is expected to be $350 million, plus or minus 2%.",
+          "unit": "USD",
+          "value": 350000000
+        },
+        {
+          "context": "Outlook: third-quarter revenue is expected to be $350 million, plus or minus 2%.",
+          "unit": "%",
+          "value": 2
+        }
+      ],
+      "source": {
+        "id": "edgar",
+        "name": "SEC EDGAR",
+        "tier": 1
+      },
+      "summary": "SEC EDGAR — https://www.sec.gov/Archives/edgar/data/1234567/000000000025000030/fixt-20250729.htm"
+    }
+  },
+  {
+    "label": "edgar read, document with a query",
+    "tool": "edgar_read_filing",
+    "entry": {
+      "asOf": "2025-07-29",
+      "availableAt": "2025-07-29",
+      "entity": {
+        "cik": "0001234567"
+      },
+      "numbers": [
+        {
+          "context": "https://www.sec.gov/Archives/edgar/data/1234567/000000000025000030/fixt-20250729.htm",
+          "value": 1234567
+        },
+        {
+          "context": "https://www.sec.gov/Archives/edgar/data/1234567/000000000025000030/fixt-20250729.htm",
+          "value": 20250729
+        },
+        {
+          "context": "[chunk 1/1]",
+          "value": 1
+        },
+        {
+          "context": "Revenue was $330 million, up 32% from a year ago. Diluted EPS was $1.24.",
+          "unit": "USD",
+          "value": 330000000
+        },
+        {
+          "context": "Revenue was $330 million, up 32% from a year ago. Diluted EPS was $1.24.",
+          "unit": "%",
+          "value": 32
+        },
+        {
+          "context": "Revenue was $330 million, up 32% from a year ago. Diluted EPS was $1.24.",
+          "unit": "USD",
+          "value": 1.24
+        },
+        {
+          "context": "Gross margin | 61.5%",
+          "unit": "%",
+          "value": 61.5
+        },
+        {
+          "context": "Operating income | $88 million",
+          "unit": "USD",
+          "value": 88000000
+        },
+        {
+          "context": "Outlook: third-quarter revenue is expected to be $350 million, plus or minus 2%.",
+          "unit": "USD",
+          "value": 350000000
+        },
+        {
+          "context": "Outlook: third-quarter revenue is expected to be $350 million, plus or minus 2%.",
+          "unit": "%",
+          "value": 2
+        }
+      ],
+      "source": {
+        "id": "edgar",
+        "name": "SEC EDGAR",
+        "tier": 1
+      },
+      "summary": "SEC EDGAR — https://www.sec.gov/Archives/edgar/data/1234567/000000000025000030/fixt-20250729.htm"
+    }
+  },
+  {
+    "label": "av quote",
+    "tool": "alphavantage__GLOBAL_QUOTE",
+    "entry": {
+      "asOf": "2024-08-28",
+      "currency": "USD",
+      "entity": {
+        "ticker": "NVDA"
+      },
+      "facts": [
+        {
+          "metric": "price",
+          "period": "2024-08-28",
+          "unit": "USD",
+          "value": 125.61
+        },
+        {
+          "metric": "open",
+          "period": "2024-08-28",
+          "unit": "USD",
+          "value": 128.12
+        },
+        {
+          "metric": "high",
+          "period": "2024-08-28",
+          "unit": "USD",
+          "value": 129.2
+        },
+        {
+          "metric": "low",
+          "period": "2024-08-28",
+          "unit": "USD",
+          "value": 123.88
+        },
+        {
+          "metric": "volume",
+          "period": "2024-08-28",
+          "unit": "shares",
+          "value": 448101087
+        },
+        {
+          "metric": "previousClose",
+          "period": "2024-08-28",
+          "unit": "USD",
+          "value": 128.3
+        },
+        {
+          "metric": "change",
+          "period": "2024-08-28",
+          "unit": "USD",
+          "value": -2.69
+        },
+        {
+          "metric": "changePercent",
+          "period": "2024-08-28",
+          "unit": "%",
+          "value": -2.0966
+        }
+      ],
+      "periods": [
+        "2024-08-28"
+      ],
+      "source": {
+        "id": "alphavantage",
+        "name": "Alpha Vantage",
+        "tier": 2
+      },
+      "summary": "Alpha Vantage quote, $NVDA as of 2024-08-28"
+    }
+  },
+  {
+    "label": "av quote, withheld as of",
+    "tool": "alphavantage__GLOBAL_QUOTE",
+    "entry": {
+      "entity": {
+        "ticker": "NVDA"
+      },
+      "source": {
+        "id": "alphavantage",
+        "name": "Alpha Vantage",
+        "tier": 2
+      },
+      "summary": "Alpha Vantage GLOBAL_QUOTE, $NVDA"
+    }
+  },
+  {
+    "label": "av daily",
+    "tool": "alphavantage__TIME_SERIES_DAILY",
+    "entry": {
+      "asOf": "2024-08-30",
+      "currency": "USD",
+      "entity": {
+        "ticker": "NVDA"
+      },
+      "facts": [
+        {
+          "end": "2024-08-30",
+          "metric": "close",
+          "period": "2024-08-30",
+          "unit": "USD",
+          "value": 120
+        }
+      ],
+      "source": {
+        "id": "alphavantage",
+        "name": "Alpha Vantage",
+        "tier": 2
+      },
+      "summary": "Alpha Vantage TIME_SERIES_DAILY, $NVDA, 12 rows (latest 2024-08-30, close 120)",
+      "table": {
+        "columns": [
+          "date",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ],
+        "index": "date",
+        "rows": [
+          [
+            "2024-08-30",
+            119,
+            122,
+            117,
+            120,
+            300000000
+          ],
+          [
+            "2024-08-29",
+            120.5,
+            123.5,
+            118.5,
+            121.5,
+            300000001
+          ],
+          [
+            "2024-08-28",
+            122,
+            125,
+            120,
+            123,
+            300000002
+          ],
+          [
+            "2024-08-27",
+            123.5,
+            126.5,
+            121.5,
+            124.5,
+            300000003
+          ],
+          [
+            "2024-08-26",
+            125,
+            128,
+            123,
+            126,
+            300000004
+          ],
+          [
+            "2024-08-25",
+            126.5,
+            129.5,
+            124.5,
+            127.5,
+            300000005
+          ],
+          [
+            "2024-08-24",
+            128,
+            131,
+            126,
+            129,
+            300000006
+          ],
+          [
+            "2024-08-23",
+            129.5,
+            132.5,
+            127.5,
+            130.5,
+            300000007
+          ],
+          [
+            "2024-08-22",
+            131,
+            134,
+            129,
+            132,
+            300000008
+          ],
+          [
+            "2024-08-21",
+            132.5,
+            135.5,
+            130.5,
+            133.5,
+            300000009
+          ],
+          [
+            "2024-08-20",
+            134,
+            137,
+            132,
+            135,
+            300000010
+          ],
+          [
+            "2024-08-19",
+            135.5,
+            138.5,
+            133.5,
+            136.5,
+            300000011
+          ]
+        ]
+      }
+    }
+  },
+  {
+    "label": "av daily, trimmed as of",
+    "tool": "alphavantage__TIME_SERIES_DAILY",
+    "entry": {
+      "asOf": "2024-08-27",
+      "currency": "USD",
+      "entity": {
+        "ticker": "NVDA"
+      },
+      "facts": [
+        {
+          "end": "2024-08-27",
+          "metric": "close",
+          "period": "2024-08-27",
+          "unit": "USD",
+          "value": 124.5
+        }
+      ],
+      "source": {
+        "id": "alphavantage",
+        "name": "Alpha Vantage",
+        "tier": 2
+      },
+      "summary": "Alpha Vantage TIME_SERIES_DAILY, $NVDA, 9 rows (latest 2024-08-27, close 124.5)",
+      "table": {
+        "columns": [
+          "date",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ],
+        "index": "date",
+        "rows": [
+          [
+            "2024-08-27",
+            123.5,
+            126.5,
+            121.5,
+            124.5,
+            300000003
+          ],
+          [
+            "2024-08-26",
+            125,
+            128,
+            123,
+            126,
+            300000004
+          ],
+          [
+            "2024-08-25",
+            126.5,
+            129.5,
+            124.5,
+            127.5,
+            300000005
+          ],
+          [
+            "2024-08-24",
+            128,
+            131,
+            126,
+            129,
+            300000006
+          ],
+          [
+            "2024-08-23",
+            129.5,
+            132.5,
+            127.5,
+            130.5,
+            300000007
+          ],
+          [
+            "2024-08-22",
+            131,
+            134,
+            129,
+            132,
+            300000008
+          ],
+          [
+            "2024-08-21",
+            132.5,
+            135.5,
+            130.5,
+            133.5,
+            300000009
+          ],
+          [
+            "2024-08-20",
+            134,
+            137,
+            132,
+            135,
+            300000010
+          ],
+          [
+            "2024-08-19",
+            135.5,
+            138.5,
+            133.5,
+            136.5,
+            300000011
+          ]
+        ]
+      }
+    }
+  },
+  {
+    "label": "av income statement",
+    "tool": "alphavantage__INCOME_STATEMENT",
+    "entry": {
+      "asOf": "2024-07-28",
+      "currency": "USD",
+      "entity": {
+        "ticker": "NVDA"
+      },
+      "facts": [
+        {
+          "metric": "revenue",
+          "period": "2024-07-28",
+          "periodType": "quarterly",
+          "unit": "USD",
+          "value": 30040000000
+        },
+        {
+          "metric": "grossProfit",
+          "period": "2024-07-28",
+          "periodType": "quarterly",
+          "unit": "USD",
+          "value": 22530000000
+        },
+        {
+          "metric": "operatingIncome",
+          "period": "2024-07-28",
+          "periodType": "quarterly",
+          "unit": "USD",
+          "value": 18624800000
+        },
+        {
+          "metric": "netIncome",
+          "period": "2024-07-28",
+          "periodType": "quarterly",
+          "unit": "USD",
+          "value": 16522000000
+        },
+        {
+          "metric": "revenue",
+          "period": "2024-04-28",
+          "periodType": "quarterly",
+          "unit": "USD",
+          "value": 26044000000
+        },
+        {
+          "metric": "grossProfit",
+          "period": "2024-04-28",
+          "periodType": "quarterly",
+          "unit": "USD",
+          "value": 19533000000
+        },
+        {
+          "metric": "operatingIncome",
+          "period": "2024-04-28",
+          "periodType": "quarterly",
+          "unit": "USD",
+          "value": 16147280000
+        },
+        {
+          "metric": "netIncome",
+          "period": "2024-04-28",
+          "periodType": "quarterly",
+          "unit": "USD",
+          "value": 14324200000
+        },
+        {
+          "metric": "revenue",
+          "period": "2024-01-28",
+          "periodType": "annual",
+          "unit": "USD",
+          "value": 60922000000
+        },
+        {
+          "metric": "grossProfit",
+          "period": "2024-01-28",
+          "periodType": "annual",
+          "unit": "USD",
+          "value": 45691500000
+        },
+        {
+          "metric": "operatingIncome",
+          "period": "2024-01-28",
+          "periodType": "annual",
+          "unit": "USD",
+          "value": 37771640000
+        },
+        {
+          "metric": "netIncome",
+          "period": "2024-01-28",
+          "periodType": "annual",
+          "unit": "USD",
+          "value": 33507100000
+        }
+      ],
+      "periods": [
+        "2024-07-28",
+        "2024-04-28",
+        "2024-01-28"
+      ],
+      "source": {
+        "id": "alphavantage",
+        "name": "Alpha Vantage",
+        "tier": 2
+      },
+      "summary": "Alpha Vantage INCOME_STATEMENT, $NVDA, 3 quarterly and annual periods",
+      "table": {
+        "columns": [
+          "fiscalDateEnding",
+          "totalRevenue",
+          "grossProfit",
+          "operatingIncome",
+          "netIncome",
+          "researchAndDevelopment"
+        ],
+        "index": "fiscalDateEnding",
+        "rows": [
+          [
+            "2024-07-28",
+            30040000000,
+            22530000000,
+            18624800000,
+            16522000000,
+            3090000000
+          ],
+          [
+            "2024-04-28",
+            26044000000,
+            19533000000,
+            16147280000,
+            14324200000,
+            3090000000
+          ],
+          [
+            "2024-01-28",
+            60922000000,
+            45691500000,
+            37771640000,
+            33507100000,
+            3090000000
+          ]
+        ]
+      }
+    }
+  },
+  {
+    "label": "av balance sheet",
+    "tool": "alphavantage__BALANCE_SHEET",
+    "entry": {
+      "asOf": "2024-01-28",
+      "currency": "USD",
+      "entity": {
+        "ticker": "NVDA"
+      },
+      "facts": [
+        {
+          "metric": "assets",
+          "period": "2024-01-28",
+          "periodType": "instant",
+          "unit": "USD",
+          "value": 65728000000
+        },
+        {
+          "metric": "liabilities",
+          "period": "2024-01-28",
+          "periodType": "instant",
+          "unit": "USD",
+          "value": 22750000000
+        },
+        {
+          "metric": "equity",
+          "period": "2024-01-28",
+          "periodType": "instant",
+          "unit": "USD",
+          "value": 42978000000
+        }
+      ],
+      "periods": [
+        "2024-01-28"
+      ],
+      "source": {
+        "id": "alphavantage",
+        "name": "Alpha Vantage",
+        "tier": 2
+      },
+      "summary": "Alpha Vantage BALANCE_SHEET, $NVDA, 1 annual periods",
+      "table": {
+        "columns": [
+          "fiscalDateEnding",
+          "totalAssets",
+          "totalLiabilities",
+          "totalShareholderEquity"
+        ],
+        "index": "fiscalDateEnding",
+        "rows": [
+          [
+            "2024-01-28",
+            65728000000,
+            22750000000,
+            42978000000
+          ]
+        ]
+      }
+    }
+  },
+  {
+    "label": "av earnings",
+    "tool": "alphavantage__EARNINGS",
+    "entry": {
+      "asOf": "2024-08-28",
+      "entity": {
+        "ticker": "NVDA"
+      },
+      "facts": [
+        {
+          "metric": "dilutedEps",
+          "period": "2024-07-31",
+          "periodType": "quarterly",
+          "unit": "USD/share",
+          "value": 0.68
+        },
+        {
+          "metric": "estimatedEps",
+          "period": "2024-07-31",
+          "periodType": "quarterly",
+          "unit": "USD/share",
+          "value": 0.64
+        },
+        {
+          "metric": "surprise",
+          "period": "2024-07-31",
+          "periodType": "quarterly",
+          "unit": "USD/share",
+          "value": 0.04
+        },
+        {
+          "metric": "surprisePercentage",
+          "period": "2024-07-31",
+          "periodType": "quarterly",
+          "unit": "%",
+          "value": 6.25
+        },
+        {
+          "metric": "dilutedEps",
+          "period": "2024-04-30",
+          "periodType": "quarterly",
+          "unit": "USD/share",
+          "value": 0.61
+        },
+        {
+          "metric": "estimatedEps",
+          "period": "2024-04-30",
+          "periodType": "quarterly",
+          "unit": "USD/share",
+          "value": 0.56
+        },
+        {
+          "metric": "surprise",
+          "period": "2024-04-30",
+          "periodType": "quarterly",
+          "unit": "USD/share",
+          "value": 0.05
+        },
+        {
+          "metric": "surprisePercentage",
+          "period": "2024-04-30",
+          "periodType": "quarterly",
+          "unit": "%",
+          "value": 8.9286
+        }
+      ],
+      "periods": [
+        "2024-07-31",
+        "2024-04-30"
+      ],
+      "source": {
+        "id": "alphavantage",
+        "name": "Alpha Vantage",
+        "tier": 2
+      },
+      "summary": "Alpha Vantage EARNINGS, $NVDA, 2 periods",
+      "table": {
+        "columns": [
+          "fiscalDateEnding",
+          "reportedDate",
+          "reportedEPS",
+          "estimatedEPS",
+          "surprise",
+          "surprisePercentage"
+        ],
+        "index": "fiscalDateEnding",
+        "rows": [
+          [
+            "2024-07-31",
+            "2024-08-28",
+            0.68,
+            0.64,
+            0.04,
+            6.25
+          ],
+          [
+            "2024-04-30",
+            "2024-05-22",
+            0.61,
+            0.56,
+            0.05,
+            8.9286
+          ]
+        ]
+      }
+    }
+  },
+  {
+    "label": "av overview",
+    "tool": "alphavantage__COMPANY_OVERVIEW",
+    "entry": {
+      "asOf": "2024-07-28",
+      "currency": "USD",
+      "entity": {
+        "name": "NVIDIA Corporation",
+        "ticker": "NVDA"
+      },
+      "facts": [
+        {
+          "metric": "marketCap",
+          "period": "2024-07-28",
+          "unit": "USD",
+          "value": 3087000000000
+        },
+        {
+          "metric": "peRatio",
+          "period": "2024-07-28",
+          "unit": "ratio",
+          "value": 58.4
+        },
+        {
+          "metric": "dilutedEps",
+          "period": "2024-07-28",
+          "unit": "USD/share",
+          "value": 2.14
+        },
+        {
+          "metric": "profitMargin",
+          "period": "2024-07-28",
+          "unit": "ratio",
+          "value": 0.553
+        },
+        {
+          "metric": "dividendYield",
+          "period": "2024-07-28",
+          "unit": "ratio",
+          "value": 0.0003
+        }
+      ],
+      "source": {
+        "id": "alphavantage",
+        "name": "Alpha Vantage",
+        "tier": 2
+      },
+      "summary": "Alpha Vantage OVERVIEW, $NVDA (latest quarter 2024-07-28)"
+    }
+  },
+  {
+    "label": "av news",
+    "tool": "alphavantage__NEWS_SENTIMENT",
+    "entry": {
+      "asOf": "2024-08-28",
+      "entity": {
+        "ticker": "NVDA"
+      },
+      "numbers": [
+        {
+          "context": "Nvidia beats with $30 billion quarter. Revenue rose 122% to $30.04 billion; guidance of $32.5 billion.",
+          "unit": "USD",
+          "value": 30000000000
+        },
+        {
+          "context": "Nvidia beats with $30 billion quarter. Revenue rose 122% to $30.04 billion; guidance of $32.5 billion.",
+          "unit": "%",
+          "value": 122
+        },
+        {
+          "context": "Nvidia beats with $30 billion quarter. Revenue rose 122% to $30.04 billion; guidance of $32.5 billion.",
+          "unit": "USD",
+          "value": 30040000000
+        },
+        {
+          "context": "Nvidia beats with $30 billion quarter. Revenue rose 122% to $30.04 billion; guidance of $32.5 billion.",
+          "unit": "USD",
+          "value": 32500000000
+        },
+        {
+          "context": "Chip stocks slide. The index fell 1.8% ahead of results.",
+          "unit": "%",
+          "value": -1.8
+        }
+      ],
+      "source": {
+        "id": "alphavantage",
+        "name": "Alpha Vantage",
+        "tier": 2
+      },
+      "summary": "Alpha Vantage NEWS_SENTIMENT, 2 articles"
+    }
+  },
+  {
+    "label": "av treasury yield",
+    "tool": "alphavantage__TREASURY_YIELD",
+    "entry": {
+      "asOf": "2024-08-28",
+      "facts": [
+        {
+          "metric": "10YearTreasuryConstantMaturityRate",
+          "period": "2024-08-28",
+          "unit": "percent",
+          "value": 3.84
+        },
+        {
+          "metric": "10YearTreasuryConstantMaturityRate",
+          "period": "2024-08-27",
+          "unit": "percent",
+          "value": 3.83
+        }
+      ],
+      "source": {
+        "id": "alphavantage",
+        "name": "Alpha Vantage",
+        "tier": 2
+      },
+      "summary": "Alpha Vantage TREASURY_YIELD, 3 observations (latest 2024-08-28)",
+      "table": {
+        "columns": [
+          "date",
+          "value"
+        ],
+        "index": "date",
+        "rows": [
+          [
+            "2024-08-28",
+            3.84
+          ],
+          [
+            "2024-08-27",
+            3.83
+          ],
+          [
+            "2024-08-26",
+            null
+          ]
+        ]
+      },
+      "unit": "percent"
+    }
+  },
+  {
+    "label": "av etf profile",
+    "tool": "alphavantage__ETF_PROFILE",
+    "entry": {
+      "asOf": "2024-08-27",
+      "entity": {
+        "ticker": "QQQ"
+      },
+      "facts": [
+        {
+          "metric": "netAssets",
+          "period": "2024-08-27",
+          "unit": "USD",
+          "value": 300000000000
+        },
+        {
+          "metric": "netExpenseRatio",
+          "period": "2024-08-27",
+          "unit": "ratio",
+          "value": 0.002
+        },
+        {
+          "metric": "portfolioTurnover",
+          "period": "2024-08-27",
+          "unit": "USD",
+          "value": 0.08
+        },
+        {
+          "metric": "dividendYield",
+          "period": "2024-08-27",
+          "unit": "ratio",
+          "value": 0.0061
+        }
+      ],
+      "source": {
+        "id": "alphavantage",
+        "name": "Alpha Vantage",
+        "tier": 2
+      },
+      "summary": "Alpha Vantage ETF_PROFILE, $QQQ, 2 holdings",
+      "table": {
+        "columns": [
+          "symbol",
+          "description",
+          "weight"
+        ],
+        "index": "symbol",
+        "rows": [
+          [
+            "NVDA",
+            "NVIDIA CORP",
+            0.088
+          ],
+          [
+            "MSFT",
+            "MICROSOFT CORP",
+            0.087
+          ]
+        ]
+      }
+    }
+  },
+  {
+    "label": "av symbol search",
+    "tool": "alphavantage__SYMBOL_SEARCH",
+    "entry": {
+      "numbers": [
+        {
+          "context": "\"1. symbol\": \"NVDA\",",
+          "value": 1
+        },
+        {
+          "context": "\"2. name\": \"NVIDIA Corp\",",
+          "value": 2
+        },
+        {
+          "context": "\"3. type\": \"Equity\",",
+          "value": 3
+        },
+        {
+          "context": "\"9. matchScore\": \"1.0000\"",
+          "value": 9
+        }
+      ],
+      "source": {
+        "id": "alphavantage",
+        "name": "Alpha Vantage",
+        "tier": 2
+      },
+      "summary": "Alpha Vantage SYMBOL_SEARCH"
+    }
+  },
+  {
+    "label": "av earnings calendar, csv",
+    "tool": "alphavantage__EARNINGS_CALENDAR",
+    "entry": {
+      "entity": {
+        "ticker": "NVDA"
+      },
+      "numbers": [
+        {
+          "context": "NVDA,NVIDIA CORP,2024-08-28,2024-07-31,0.64,USD",
+          "value": 0.64
+        },
+        {
+          "context": "NVDA,NVIDIA CORP,2024-11-20,2024-10-31,0.74,USD",
+          "value": 0.74
+        }
+      ],
+      "source": {
+        "id": "alphavantage",
+        "name": "Alpha Vantage",
+        "tier": 2
+      },
+      "summary": "Alpha Vantage EARNINGS_CALENDAR, $NVDA",
+      "table": {
+        "columns": [
+          "symbol",
+          "name",
+          "date",
+          "fiscaldateending",
+          "estimate",
+          "currency"
+        ],
+        "index": "date",
+        "rows": [
+          [
+            "NVDA",
+            "NVIDIA CORP",
+            "2024-11-20",
+            "2024-10-31",
+            0.74,
+            "USD"
+          ],
+          [
+            "NVDA",
+            "NVIDIA CORP",
+            "2024-08-28",
+            "2024-07-31",
+            0.64,
+            "USD"
+          ]
+        ]
+      }
+    }
+  },
+  {
+    "label": "av earnings calendar, csv as of",
+    "tool": "alphavantage__EARNINGS_CALENDAR",
+    "entry": {
+      "entity": {
+        "ticker": "NVDA"
+      },
+      "numbers": [
+        {
+          "context": "NVDA,NVIDIA CORP,2024-08-28,2024-07-31,0.64,USD",
+          "value": 0.64
+        },
+        {
+          "context": "NVDA,NVIDIA CORP,2024-11-20,2024-10-31,0.74,USD",
+          "value": 0.74
+        }
+      ],
+      "source": {
+        "id": "alphavantage",
+        "name": "Alpha Vantage",
+        "tier": 2
+      },
+      "summary": "Alpha Vantage EARNINGS_CALENDAR, $NVDA",
+      "table": {
+        "columns": [
+          "symbol",
+          "name",
+          "date",
+          "fiscaldateending",
+          "estimate",
+          "currency"
+        ],
+        "index": "date",
+        "rows": [
+          [
+            "NVDA",
+            "NVIDIA CORP",
+            "2024-11-20",
+            "2024-10-31",
+            0.74,
+            "USD"
+          ],
+          [
+            "NVDA",
+            "NVIDIA CORP",
+            "2024-08-28",
+            "2024-07-31",
+            0.64,
+            "USD"
+          ]
+        ]
+      }
+    }
+  },
+  {
+    "label": "av insider transactions, csv as of",
+    "tool": "alphavantage__INSIDER_TRANSACTIONS",
+    "entry": {
+      "entity": {
+        "ticker": "NVDA"
+      },
+      "numbers": [
+        {
+          "context": "2024-08-29,NVDA,HUANG JEN HSUN,CEO,Common Stock,D,120000,121.5",
+          "value": 120000
+        },
+        {
+          "context": "2024-08-29,NVDA,HUANG JEN HSUN,CEO,Common Stock,D,120000,121.5",
+          "value": 121.5
+        },
+        {
+          "context": "2024-08-27,NVDA,HUANG JEN HSUN,CEO,Common Stock,D,120000,128.3",
+          "value": 128.3
+        },
+        {
+          "context": "2024-08-20,NVDA,KRESS COLETTE,CFO,Common Stock,D,5000,126.1",
+          "value": 5000
+        },
+        {
+          "context": "2024-08-20,NVDA,KRESS COLETTE,CFO,Common Stock,D,5000,126.1",
+          "value": 126.1
+        }
+      ],
+      "source": {
+        "id": "alphavantage",
+        "name": "Alpha Vantage",
+        "tier": 2
+      },
+      "summary": "Alpha Vantage INSIDER_TRANSACTIONS, $NVDA"
+    }
+  },
+  {
+    "label": "market quotes",
+    "tool": "market_quotes",
+    "entry": {
+      "asOf": "2024-08-28",
+      "currency": "USD",
+      "entity": {
+        "ticker": "NVDA"
+      },
+      "facts": [
+        {
+          "end": "2024-08-28",
+          "metric": "price",
+          "period": "2024-08-28",
+          "periodType": "instant",
+          "unit": "USD",
+          "value": 125.61
+        },
+        {
+          "end": "2024-08-28",
+          "metric": "changePercent",
+          "period": "2024-08-28",
+          "periodType": "instant",
+          "unit": "%",
+          "value": -2.0966
+        }
+      ],
+      "periods": [
+        "2024-08-28"
+      ],
+      "source": {
+        "id": "quotes",
+        "name": "Market Quotes",
+        "tier": 2
+      },
+      "summary": "Market quotes, $NVDA, as of 2024-08-28",
+      "table": {
+        "columns": [
+          "symbol",
+          "price",
+          "changePercent",
+          "currency",
+          "date",
+          "sector",
+          "industry"
+        ],
+        "index": "symbol",
+        "rows": [
+          [
+            "NVDA",
+            125.61,
+            -2.0966,
+            "USD",
+            "2024-08-28",
+            "Technology",
+            "Semiconductors"
+          ]
+        ]
+      }
+    }
+  },
+  {
+    "label": "market quotes, batch with a missing symbol",
+    "tool": "market_quotes",
+    "entry": {
+      "asOf": "2024-08-28",
+      "currency": "USD",
+      "entity": {
+        "ticker": "NVDA"
+      },
+      "facts": [
+        {
+          "end": "2024-08-28",
+          "metric": "NVDA price",
+          "period": "2024-08-28",
+          "periodType": "instant",
+          "unit": "USD",
+          "value": 125.61
+        },
+        {
+          "end": "2024-08-28",
+          "metric": "NVDA changePercent",
+          "period": "2024-08-28",
+          "periodType": "instant",
+          "unit": "%",
+          "value": -2.0966
+        },
+        {
+          "end": "2024-08-28",
+          "metric": "AAPL price",
+          "period": "2024-08-28",
+          "periodType": "instant",
+          "unit": "USD",
+          "value": 226.49
+        },
+        {
+          "end": "2024-08-28",
+          "metric": "AAPL changePercent",
+          "period": "2024-08-28",
+          "periodType": "instant",
+          "unit": "%",
+          "value": -0.3037
+        }
+      ],
+      "periods": [
+        "2024-08-28"
+      ],
+      "source": {
+        "id": "quotes",
+        "name": "Market Quotes",
+        "tier": 2
+      },
+      "summary": "Market quotes, $NVDA, $AAPL, as of 2024-08-28",
+      "table": {
+        "columns": [
+          "symbol",
+          "price",
+          "changePercent",
+          "currency",
+          "date",
+          "sector",
+          "industry"
+        ],
+        "index": "symbol",
+        "rows": [
+          [
+            "NVDA",
+            125.61,
+            -2.0966,
+            "USD",
+            "2024-08-28",
+            "Technology",
+            "Semiconductors"
+          ],
+          [
+            "AAPL",
+            226.49,
+            -0.3037,
+            "USD",
+            "2024-08-28",
+            "Technology",
+            "Consumer Electronics"
+          ]
+        ]
+      }
+    }
+  },
+  {
+    "label": "web search",
+    "tool": "web_search",
+    "entry": {
+      "asOf": "2024-08-28",
+      "numbers": [
+        {
+          "context": "Record quarterly revenue of $30.0 billion, up 15% from Q1 and up 122% from a year ago.",
+          "unit": "USD",
+          "value": 30000000000
+        },
+        {
+          "context": "Record quarterly revenue of $30.0 billion, up 15% from Q1 and up 122% from a year ago.",
+          "unit": "%",
+          "value": 15
+        },
+        {
+          "context": "Record quarterly revenue of $30.0 billion, up 15% from Q1 and up 122% from a year ago.",
+          "unit": "%",
+          "value": 122
+        },
+        {
+          "context": "Shares fell 6.9% in extended trading.",
+          "unit": "%",
+          "value": -6.9
+        }
+      ],
+      "source": {
+        "id": "web",
+        "name": "Web",
+        "tier": 1
+      },
+      "summary": "Web search \"Nvidia second quarter results\" — 2 URLs, best tier 1"
+    }
+  },
+  {
+    "label": "web fetch",
+    "tool": "web_fetch",
+    "entry": {
+      "numbers": [
+        {
+          "context": "https://www.sec.gov/Archives/edgar/data/1045810/000104581024000264/q2fy25pr.htm",
+          "value": 1045810
+        },
+        {
+          "context": "https://www.sec.gov/Archives/edgar/data/1045810/000104581024000264/q2fy25pr.htm",
+          "value": 2
+        },
+        {
+          "context": "https://www.sec.gov/Archives/edgar/data/1045810/000104581024000264/q2fy25pr.htm",
+          "value": 25
+        },
+        {
+          "context": "Revenue of $30.0 billion, up 122% from a year ago. GAAP earnings per diluted share of $0.67. Outlook: revenue is expected to be $32.5 billion, plus or minus 2%.",
+          "unit": "USD",
+          "value": 30000000000
+        },
+        {
+          "context": "Revenue of $30.0 billion, up 122% from a year ago. GAAP earnings per diluted share of $0.67. Outlook: revenue is expected to be $32.5 billion, plus or minus 2%.",
+          "unit": "%",
+          "value": 122
+        },
+        {
+          "context": "Revenue of $30.0 billion, up 122% from a year ago. GAAP earnings per diluted share of $0.67. Outlook: revenue is expected to be $32.5 billion, plus or minus 2%.",
+          "unit": "USD",
+          "value": 0.67
+        },
+        {
+          "context": "Revenue of $30.0 billion, up 122% from a year ago. GAAP earnings per diluted share of $0.67. Outlook: revenue is expected to be $32.5 billion, plus or minus 2%.",
+          "unit": "USD",
+          "value": 32500000000
+        },
+        {
+          "context": "Revenue of $30.0 billion, up 122% from a year ago. GAAP earnings per diluted share of $0.67. Outlook: revenue is expected to be $32.5 billion, plus or minus 2%.",
+          "unit": "%",
+          "value": 2
+        },
+        {
+          "context": "- https://blocked.example/page: 403",
+          "value": 403
+        }
+      ],
+      "source": {
+        "id": "web",
+        "name": "sec.gov",
+        "tier": 1
+      },
+      "summary": "Web page sec.gov — 1 URL, best tier 1"
+    }
+  },
+  {
+    "label": "web fetch, as of with a query",
+    "tool": "web_fetch",
+    "entry": {
+      "numbers": [
+        {
+          "context": "https://www.sec.gov/Archives/edgar/data/1045810/000104581024000264/q2fy25pr.htm",
+          "value": 1045810
+        },
+        {
+          "context": "https://www.sec.gov/Archives/edgar/data/1045810/000104581024000264/q2fy25pr.htm",
+          "value": 2
+        },
+        {
+          "context": "https://www.sec.gov/Archives/edgar/data/1045810/000104581024000264/q2fy25pr.htm",
+          "value": 25
+        },
+        {
+          "context": "[chunk 1/1]",
+          "value": 1
+        },
+        {
+          "context": "Revenue of $30.0 billion, up 122% from a year ago. GAAP earnings per diluted share of $0.67. Outlook: revenue is expected to be $32.5 billion, plus or minus 2%.",
+          "unit": "USD",
+          "value": 30000000000
+        },
+        {
+          "context": "Revenue of $30.0 billion, up 122% from a year ago. GAAP earnings per diluted share of $0.67. Outlook: revenue is expected to be $32.5 billion, plus or minus 2%.",
+          "unit": "%",
+          "value": 122
+        },
+        {
+          "context": "Revenue of $30.0 billion, up 122% from a year ago. GAAP earnings per diluted share of $0.67. Outlook: revenue is expected to be $32.5 billion, plus or minus 2%.",
+          "unit": "USD",
+          "value": 0.67
+        },
+        {
+          "context": "Revenue of $30.0 billion, up 122% from a year ago. GAAP earnings per diluted share of $0.67. Outlook: revenue is expected to be $32.5 billion, plus or minus 2%.",
+          "unit": "USD",
+          "value": 32500000000
+        },
+        {
+          "context": "Revenue of $30.0 billion, up 122% from a year ago. GAAP earnings per diluted share of $0.67. Outlook: revenue is expected to be $32.5 billion, plus or minus 2%.",
+          "unit": "%",
+          "value": 2
+        },
+        {
+          "context": "- https://blocked.example/page: 403",
+          "value": 403
+        }
+      ],
+      "source": {
+        "id": "web",
+        "name": "sec.gov",
+        "tier": 1
+      },
+      "summary": "Web page sec.gov — 1 URL, best tier 1"
+    }
+  },
+  {
+    "label": "example provider",
+    "tool": "acme_prices",
+    "entry": {
+      "asOf": "2024-08-28",
+      "currency": "USD",
+      "entity": {
+        "ticker": "NVDA"
+      },
+      "facts": [
+        {
+          "end": "2024-08-27",
+          "metric": "close",
+          "period": "2024-08-27",
+          "periodType": "instant",
+          "unit": "USD",
+          "value": 128.3
+        },
+        {
+          "end": "2024-08-28",
+          "metric": "close",
+          "period": "2024-08-28",
+          "periodType": "instant",
+          "unit": "USD",
+          "value": 125.61
+        }
+      ],
+      "periods": [
+        "2024-08-27",
+        "2024-08-28"
+      ],
+      "source": {
+        "id": "acme",
+        "name": "Acme",
+        "tier": 2
+      },
+      "summary": "Acme daily closes, $NVDA, 2 days",
+      "table": {
+        "columns": [
+          "date",
+          "close"
+        ],
+        "index": "date",
+        "rows": [
+          [
+            "2024-08-27",
+            128.3
+          ],
+          [
+            "2024-08-28",
+            125.61
+          ]
+        ]
+      },
+      "unit": "USD"
+    }
+  },
+  {
+    "label": "generic MCP data server",
+    "tool": "fmp__quote",
+    "entry": {
+      "asOf": "2024-08-28",
+      "entity": {
+        "ticker": "NVDA"
+      },
+      "numbers": [
+        {
+          "context": "NVDA last $125.61, down 2.1% on the day; market cap $3.09T. Updated 2024-08-28.",
+          "unit": "USD",
+          "value": 125.61
+        },
+        {
+          "context": "NVDA last $125.61, down 2.1% on the day; market cap $3.09T. Updated 2024-08-28.",
+          "unit": "%",
+          "value": -2.1
+        },
+        {
+          "context": "NVDA last $125.61, down 2.1% on the day; market cap $3.09T. Updated 2024-08-28.",
+          "unit": "USD",
+          "value": 3090000000000
+        }
+      ],
+      "source": {
+        "id": "fmp",
+        "name": "Financial Modeling Prep",
+        "tier": 2
+      },
+      "summary": "Financial Modeling Prep, $NVDA"
+    }
+  }
+]

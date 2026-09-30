@@ -1,0 +1,80 @@
+name: Calculator sandbox
+
+# The sandbox is the one component whose correctness is per-operating-system: Deno's permission
+# checks, Pyodide's WebAssembly build and Windows' path handling all differ.
+#
+# package.json and the lockfile pin the Pyodide and Deno versions, pnpm-workspace.yaml decides which
+# of their install scripts run, and next.config.ts traces the sandbox files into the build, so a
+# change to any of them is a change to the runtime.
+on:
+  push:
+    branches: [main]
+    paths: ["sandbox/**", "scripts/sandbox-fetch.mjs", "src/lib/sandbox/**", "src/lib/calculator/**",
+            "package.json", "pnpm-lock.yaml", "pnpm-workspace.yaml", "next.config.ts", ".github/workflows/sandbox.yml"]
+  pull_request:
+    paths: ["sandbox/**", "scripts/sandbox-fetch.mjs", "src/lib/sandbox/**", "src/lib/calculator/**",
+            "package.json", "pnpm-lock.yaml", "pnpm-workspace.yaml", "next.config.ts", ".github/workflows/sandbox.yml"]
+  workflow_dispatch:
+
+concurrency:
+  group: sandbox-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  sandbox:
+    name: ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: pnpm/action-setup@v6.1.0
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      # ~30 MB of wheels, keyed on the pinned Pyodide version.
+      - name: Cache downloaded Python packages
+        uses: actions/cache@v6
+        with:
+          path: .sandbox
+          key: sandbox-${{ runner.os }}-${{ hashFiles('package.json') }}
+
+      # postinstall already runs sandbox-fetch; --strict makes a failed download fail the job
+      # rather than silently disabling the calculator.
+      - run: pnpm install --frozen-lockfile
+      - run: node scripts/sandbox-fetch.mjs --strict
+
+      # `fin` is stdlib-only on purpose: the golden values must be identical on every OS.
+      - name: fin golden tests (CPython)
+        run: |
+          python -m unittest discover -s sandbox/fin/tests -v
+          python -m unittest discover -s sandbox/tests -v
+
+      - name: Sandbox conformance suite (Deno + Pyodide)
+        run: npx vitest run src/lib/sandbox src/lib/calculator
+        env:
+          OFA_SANDBOX_TESTS: "1"
+
+      # Grist Desktop hit Windows long-path limits with this stack, and a non-ASCII user name is
+      # the other half of that failure; the runtime folder must survive both.
+      - name: Run from a long non-ASCII path (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $home2 = "$env:RUNNER_TEMP\Ünïcøde-Benützer\très-long-répertoire-de-données-pour-le-bac-à-sable-financier"
+          New-Item -ItemType Directory -Force -Path $home2 | Out-Null
+          $env:OFA_HOME = $home2
+          $env:OFA_SANDBOX_TESTS = "1"
+          npx vitest run src/lib/sandbox/conformance.test.ts

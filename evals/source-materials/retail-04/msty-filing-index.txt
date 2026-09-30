@@ -1,0 +1,197 @@
+EDGAR Filing Documents for 0001999371-24-002527
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+ SEC.gov
+
+ 
+
+ 
+
+ EDGAR
+
+ 
+
+ 
+
+ Latest Filings 
+
+ 
+
+ Filings search tools
+
+ 
+
+ 
+
+Filing Detail
+
+ 
+
+SEC Home »
+
+ 
+Company Search »
+
+ 
+Current Page
+
+ 
+
+ 
+
+ 
+
+ Form 497K - Summary Prospectus for certain open-end management investment companies filed pursuant to Securities Act Rule 497(K): 
+
+ 
+
+ SEC Accession No. 0001999371-24-002527
+
+ 
+
+ 
+
+ 
+
+ 
+Filing Date
+
+ 
+2024-02-20
+
+ 
+Accepted
+
+ 
+2024-02-20 16:41:25
+
+ 
+Documents
+
+ 
+2
+
+ 
+
+ 
+
+ 
+Effectiveness Date
+
+ 
+2024-02-20
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+Document Format Files
+
+ 
+
+ | Seq | 
+ | Description | 
+ | Document | 
+ | Type | 
+ | Size | 
+
+ 
+
+ | 1 | 
+ | MSTY - SUMMARY PROSPECTUS | 
+ | msty-497k_022024.htm | 
+ | 497K | 
+ | 133022 | 
+
+ 
+
+ | 2 | 
+ | GRAPHIC | 
+ | mstr485bpos001.jpg | 
+ | GRAPHIC | 
+ | 20013 | 
+
+ 
+
+ | | 
+ | Complete submission text file | 
+ | 0001999371-24-002527.txt | 
+ | | 
+ | 162212 | 
+
+ 
+
+ 
+Series and Classes/Contracts Information:
+
+ 
+
+ | Existing | 
+
+ 
+
+ | | 
+ | Status | 
+ | Name | 
+ | Ticker Symbol | 
+
+ 
+
+ | CIK 0001924868 | 
+ | | 
+ | | 
+ | | 
+
+ 
+
+ | Series S000084087 | 
+ | | 
+ | YieldMaxTM MSTR Option Income Strategy ETF | 
+
+ 
+
+ | Class/Contract C000248347 | 
+ | | 
+ | YieldMaxTM MSTR Option Income Strategy ETF | 
+ | MSTY | 
+
+ 
+
+ 
+Mailing Address
+ 234 WEST FLORIDA STREET, SUITE 203
+
+MILWAUKEE WI
+53204 
+
+ 
+Business Address
+ 234 WEST FLORIDA STREET, SUITE 203
+
+MILWAUKEE WI
+53204 
+ (844) 986-7676
+
+ Tidal Trust II (Filer)
+ CIK: 0001924868 (see all company filings)
+
+EIN.: 000000000 | State of Incorp.: DE | Fiscal Year End: 1231
+
+Type: 497K | Act: 33 | File No.: 333-264478 | Film No.: 24654237

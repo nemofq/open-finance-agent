@@ -1,0 +1,40 @@
+# dependencies
+/node_modules
+
+# next.js
+/.next/
+
+# testing
+/e2e/test-results/
+
+# env files
+.env*
+!.env.example
+
+# misc
+.DS_Store
+*.tsbuildinfo
+next-env.d.ts
+.pnpm-debug.log*
+
+# benchmark runs (baselines are committed under evals/baselines/)
+/evals/results/
+
+# `--fixtures record` captures; the offline dataset under evals/dataset/ is what ships
+/evals/fixtures/
+
+# calculator runtime packages fetched at install
+/.sandbox/
+
+# pdf.js worker copied from pdfjs-dist at install
+/public/pdf.worker.min.mjs
+
+# python bytecode from the fin golden tests
+__pycache__/
+*.pyc
+
+# Claude Code local state and worktrees, each worktree a full checkout (eslint ignores them too)
+/.claude/
+
+# working plans stay local; git history keeps the ones that shipped
+/plans/

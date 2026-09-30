@@ -1,0 +1,1325 @@
+497K
+1
+tsly-497k_022824.htm
+SUMMARY PROSPECTUS
+
+ 
+
+ 
+
+ | | 
+ | 
+YieldMax™ TSLA Option Income Strategy ETF 
+
+Trading Symbol: TSLY
+
+Listed on NYSE Arca, Inc.
+
+Summary Prospectus 
+
+February
+28, 2024
+
+www.yieldmaxetfs.com
+
+ | 
+
+ 
+
+Before you invest, you may
+want to review the YieldMax™ TSLA Option Income Strategy ETF (the “Fund”) statutory prospectus and statement
+of additional information, which contain more information about the Fund and its risks. The current statutory prospectus and
+statement of additional information dated February 28, 2024 are incorporated by reference into this Summary Prospectus. You can find
+the Fund’s statutory prospectus, statement of additional information, reports to shareholders, and other information about the
+Fund online at www.yieldmaxetfs.com. You can also get this information at no cost by calling at (866) 864-3968 or by sending an
+e-mail request to info@yieldmaxetfs.com. 
+
+SUMMARY
+INFORMATION
+
+ 
+
+Investment
+Objective
+
+ 
+
+The
+Fund’s primary investment objective is to seek current income. The Fund’s secondary investment objective is to seek
+exposure to the share price of the common stock of Tesla, Inc. (“TSLA”), subject to a limit on potential investment
+gains.
+
+ 
+
+Fees
+and Expenses of the Fund 
+
+ 
+
+This
+table describes the fees and expenses that you may pay if you buy, hold, and sell shares of the Fund (“Shares”). You
+may pay other fees, such as brokerage commissions and other fees to financial intermediaries, which are not reflected in the table
+and Example below. 
+
+ 
+
+ | Annual
+ Fund Operating Expenses(1) (expenses that you pay each year as a percentage of the value of your investment) | 
+ | | 
+
+ | Management
+ Fee | 
+ | 0.99% | 
+
+ | Distribution
+ and Service (12b-1) Fees | 
+ | None | 
+
+ | Other
+ Expenses | 
+ | 0.02% | 
+
+ | Total
+ Annual Fund Operating Expenses | 
+ | 1.01% | 
+
+ 
+
+ | (1) | 
+ | | 
+ | The
+ Fund’s investment adviser, Tidal Investments LLC (the “Adviser”), a Tidal Financial Group company, will
+ pay, or require a sub-adviser to pay, all expenses incurred by the Fund (except for advisory fees and sub-advisory fees, as
+ the case may be) excluding interest charges on any borrowings made for investment purposes, dividends and other expenses on securities sold short, taxes,
+ brokerage commissions and other expenses incurred in placing orders for the purchase and sale of securities and other investment
+ instruments, acquired fund fees and expenses, accrued deferred tax liability, distribution fees and expenses paid by the Fund
+ under any distribution plan adopted pursuant to Rule 12b-1 under the Investment Company Act of 1940, as amended (the “1940
+ Act”), and litigation expenses and other non-routine or extraordinary expenses. | 
+
+ 
+
+Expense
+Example
+
+ 
+
+This
+Example is intended to help you compare the cost of investing in the Fund with the cost of investing in other funds. The Example assumes
+that you invest $10,000 in the Fund for the time periods indicated and then redeem or hold all of your Shares at the end of those periods.
+The Example also assumes that your investment has a 5% return each year and that the Fund’s operating expenses remain the same.
+The Example does not take into account brokerage commissions that you may pay on your purchases and sales of Shares. Although your actual
+costs may be higher or lower, based on these assumptions your costs would be:
+
+ 
+
+ | 1
+ Year | 
+ | | 
+ | 3
+ Years | 
+ | | 
+ | 5 Years | 
+ | | 
+ | 10 Years | 
+
+ | $103 | 
+ | | 
+ | $322 | 
+ | | 
+ | $558 | 
+ | | 
+ | $1,236 | 
+
+ 
+
+Portfolio
+Turnover
+
+ 
+
+The
+Fund pays transaction costs, such as commissions, when it buys and sells securities (or “turns over” its portfolio).
+A higher portfolio turnover rate may indicate higher transaction costs and may result in higher taxes when Shares are held in
+a taxable account. These costs, which are not reflected in total annual fund operating expenses or in the expense example above,
+affect the Fund’s performance. For the fiscal period November 22, 2022 (commencement of operations) to October 31, 2023,
+the Fund’s portfolio turnover rate was 168% of the average value of its portfolio.
+
+ 
+
+Principal
+Investment Strategies
+
+ 
+
+The
+Fund is an actively managed exchange-traded fund (“ETF”) that seeks current income while providing indirect exposure
+to the share price (i.e., the price returns) of the common stock of Tesla, Inc. (“TSLA”), subject to a limit
+on potential investment gains. The Fund will employ its investment strategy as it relates to TSLA regardless of whether there
+are periods of adverse market, economic, or other conditions and will not take temporary defensive positions during such periods.
+As further described below, the Fund uses a synthetic covered call strategy to provide income and indirect exposure to the share
+price returns of TSLA, subject to a limit on potential investment gains as a result of the nature of the options strategy it employs.
+That is, the Fund not only seeks to generate income from its options investments but also aims to derive gains when the value
+of TSLA increases. The Fund’s options contracts provide:
+
+ 
+
+ | | | ● | | indirect
+ exposure to the share price returns of TSLA, | 
+
+ | | | ● | | current
+ income from the option premiums, and | 
+
+ | | | ● | | a
+ limit on the Fund’s participation in gains, if any, of the share price returns
+ of TSLA. | 
+
+ 
+
+For
+more information, see sections “The Fund’s Use of TSLA Option Contracts” and “Synthetic Covered Call Strategy”
+below.
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+The
+Fund’s investment adviser is Tidal Investments LLC (the “Adviser”) and the investment sub-adviser is ZEGA Financial,
+LLC (“ZEGA” or the “Sub-Adviser”).
+
+ 
+
+Why
+invest in the Fund?
+
+ 
+
+ | | | ● | | The
+ Fund seeks to participate in a portion of the gains experienced by TSLA. | 
+
+ | | | ● | | The
+ Fund seeks to generate monthly income, which is not dependent on the price appreciation
+ of TSLA. | 
+
+ 
+
+That
+is, although the Fund may not fully participate in gains in TSLA’s stock price, the Fund’s portfolio is designed to
+generate income.
+
+ 
+
+An
+Investment in the Fund is not an investment in TSLA
+
+ 
+
+ | | | ● | | The
+ Fund’s strategy will cap its potential gains if TSLA shares increase in value. | 
+
+ | | | ● | | The
+ Fund’s strategy is subject to all potential losses if TSLA shares decrease in value,
+ which may not be offset by income received by the Fund. | 
+
+ | | | ● | | The
+ Fund does not invest directly in TSLA. | 
+
+ | | | ● | | Fund
+ shareholders are not entitled to any TSLA dividends. | 
+
+ 
+
+Additional
+information regarding TSLA is also set forth below.
+
+ 
+
+The
+Fund’s Use of TSLA Option Contracts
+
+ 
+
+As
+part of the Fund’s synthetic covered call strategy, the Fund will purchase and sell a combination of standardized exchange-traded
+and FLexible EXchange® (“FLEX”) call and put option contracts that are based on the value of the price returns
+of TSLA.
+
+ 
+
+ | | | ● | | In
+ general, an option contract gives the purchaser of the option contract the right to purchase
+ (for a call option) or sell (for a put option) the underlying asset (like shares of TSLA)
+ at a specified price (the “strike price”). | 
+
+ | | | ● | | If
+ exercised, an option contract obligates the seller to deliver shares (for a sold or “short”
+ call) or buy shares (for a sold or “short” put) of the underlying asset at
+ a specified price (the “strike price”). | 
+
+ | | | ● | | Options
+ contracts must be exercised or traded to close within a specified time frame, or they
+ expire. See the chart in section “Fund Portfolio” below for a description
+ of the option contracts utilized by the Fund. | 
+
+ 
+
+Standardized
+exchange-traded options include standardized terms. FLEX options are also exchange-traded, but they allow for customizable terms
+(e.g., the strike price can be negotiated). For more information on FLEX options, see “Additional Information about the
+Funds – Exchange Traded Options Portfolio.”
+
+ 
+
+The
+Fund’s options contracts are based on the value of TSLA, which gives the Fund the right or obligation to receive or deliver
+shares of TSLA on the expiration date of the applicable option contract in exchange for the stated strike price, depending on
+whether the option contract is a call option or a put option, and whether the Fund purchases or sells the option contract.
+
+ 
+
+Synthetic
+Covered Call Strategy
+
+ 
+
+In
+seeking to achieve its investment objective, the Fund will implement a “synthetic covered call” strategy using
+the standardized exchange-traded and FLEX options described above.
+
+ 
+
+ | | | ● | | A
+ traditional covered call strategy is an investment strategy where an investor
+ (the Fund) sells a call option on an underlying security it owns. | 
+
+ | | | ● | | A
+ synthetic covered call strategy is similar to a traditional covered call strategy
+ in that the investor sells a call option that is based on the value of the underlying
+ security. However, in a synthetic covered call strategy, the investor (the Fund) does
+ not own the underlying security, but rather seeks to synthetically replicate
+ 100% of the price movements of the underlying security through the use of various investment
+ instruments. | 
+
+ 
+
+The
+Fund’s synthetic covered call strategy consists of the following three elements, each of which is described in greater detail
+farther below:
+
+ 
+
+ | | | ● | | Synthetic
+ long exposure to TSLA, which allows the Fund to seek to participate in the changes, up
+ or down, in the price of TSLA’s stock. | 
+
+ | | | ● | | Covered
+ call writing (where TSLA call options are sold against the synthetic long portion of
+ the strategy), which allows the Fund to generate income. | 
+
+ | | | ● | | U.S.
+ Treasuries, which are used for collateral for the options, and which also generate income. | 
+
+ 
+
+ | | | 1. | | Synthetic
+ Long Exposure | 
+
+ 
+
+To
+achieve a synthetic long exposure to TSLA, the Fund will buy TSLA call options and, simultaneously, sell TSLA put options to try
+to replicate the price movements of TSLA. The call options purchased by the Fund and the put options sold by the Fund will generally
+have one-month to six-month terms and strike prices that are approximately equal to the then-current share price of TSLA at the
+time the contracts are purchased and sold, respectively. The combination of the long call options and sold put options provides
+the Fund with indirect investment exposure equal to approximately 100% of TSLA for the duration of the applicable options exposure.
+
+ 
+
+ 
+
+2
+
+ 
+
+ 
+
+ 
+
+ 
+
+ | | | 2. | | Covered
+ Call Writing | 
+
+ 
+
+As
+part of its strategy, the Fund will write (sell) call option contracts on TSLA to generate income. Since the Fund does not directly
+own TSLA, these written call options will be sold short (i.e., selling a position it does not currently own). The Fund will seek
+to participate in the share price appreciation of TSLA, if any. However, due to the nature of covered call strategies, the Fund’s
+participation may be subject to a cap (as described below). In this strategy, the call options written (sold) by the Fund will
+generally have an expiration of one month or less (the “Call Period”) and generally have a strike price that is approximately
+0%-15% above the then-current TSLA share price. 
+
+ 
+
+It
+is important to note that the sale of the TSLA call option contracts will limit the Fund’s participation in the appreciation
+in TSLA’s stock price. If the stock price of TSLA increases, the above-referenced synthetic long exposure alone would allow
+the Fund to experience similar percentage gains. However, if TSLA’s stock price appreciates beyond the strike price of one
+or more of the sold (short) call option contracts, the Fund will lose money on those short call positions, and the losses will,
+in turn, limit the upside return of the Fund’s synthetic long exposure. As a result, the Fund’s overall strategy (i.e.,
+the combination of the synthetic long exposure to TSLA and the sold (short) TSLA call positions) will limit the Fund’s participation
+in gains in the TSLA stock price beyond a certain point.
+
+ 
+
+ | | | 3. | | U.S.
+ Treasuries | 
+
+ 
+
+The
+Fund will hold short-term U.S. Treasury securities as collateral in connection with the Fund’s synthetic covered call strategy.
+
+ 
+
+The
+Fund intends to continuously maintain indirect exposure to TSLA through the use of options contracts. As the options contracts
+it holds are exercised or expire it may enter into new options contracts, a practice referred to as “rolling.” The
+Fund’s practice of rolling options may result in high portfolio turnover.
+
+ 
+
+Fund’s
+Monthly Distributions 
+
+ 
+
+The
+Fund will seek to provide monthly income in the form of cash distributions. The Fund will seek to generate such income in the
+following ways:
+
+ 
+
+ | | | ● | | Writing
+ (selling) call option contracts on TSLA as described above. The income comes mainly from
+ the option premiums received from these option sales. A premium, in this context, refers
+ to the price the option buyer pays to the option seller (the Fund) for the rights granted
+ by the option. The amount of these premiums is largely affected by the fluctuations in
+ TSLA stock prices. However, other elements like interest rates can also influence the
+ income level. | 
+
+ | | | ● | | Investing
+ in short-term U.S. Treasury securities. The income generated by these securities will
+ be influenced by interest rates at the time of investment. | 
+
+ 
+
+Fund’s
+Return Profile vs TSLA
+
+ 
+
+For
+the reasons stated above, the Fund’s performance will differ from that of TSLA’s stock price. The performance differences
+will depend on, among other things, the price of TSLA, changes in the value of the TSLA options contracts the Fund holds, and
+changes in the value of the U.S. Treasuries.
+
+ 
+
+ 
+
+3
+
+ 
+
+ 
+
+ 
+
+ 
+
+Fund
+Portfolio
+
+ 
+
+The
+Fund’s principal holdings are described below:
+
+ 
+
+ | YieldMax™
+ TSLA Option Income Strategy ETF – Principal Holdings | 
+
+ | 
+Portfolio
+ Holdings 
+
+ 
+(All
+ options are based on the
+
+ 
+value
+ of TSLA) 
+ | 
+ | Investment
+ Terms | 
+ | Expected
+ Target Maturity | 
+
+ | 
+Purchased
+ call option contracts
+
+ 
+
+ | 
+ | 
+“at-the-money”
+ (i.e., the strike price is equal to the then-current share price of TSLA at the
+ time of purchase) to provide indirect exposure to positive price returns of TSLA.
+
+ 
+
+ 
+If
+ the TSLA share price increases, these options will generate corresponding increases to the Fund. 
+ | 
+ | 1-month
+ to 6-month expiration dates | 
+
+ | 
+Sold
+ put option contracts
+
+ 
+
+ | 
+ | 
+“at-the-money”
+ (i.e., the strike price is equal to the then-current share price of TSLA at the
+ time of sale).
+
+ 
+
+ 
+They
+ are sold to help pay for the purchased call options described above.
+
+ 
+
+ 
+However,
+ the sold put option contracts provide exposure to the full extent of any share price losses experienced by TSLA. 
+ | 
+ | 1-month
+ to 6-month expiration dates | 
+
+ | 
+Sold
+ (short) call option contracts
+
+ 
+
+ | 
+ | 
+The
+ strike price is approximately 0%-15% more than the then-current share price of TSLA at
+ the time of sale.
+
+ 
+
+ 
+They
+ generate current income. However, they also limit some potential positive returns that the Fund may have otherwise experienced
+ from gains in the TSLA share price. 
+ | 
+ | 1-month
+ or less expiration dates | 
+
+ | U.S
+ Treasury Securities and Cash | 
+ | 
+Multiple
+ series of U.S. Treasury Bills supported by the full faith and credit of the U.S. government.
+
+ 
+
+ 
+These
+ instruments are used as collateral for the Fund’s derivative investments.
+
+ 
+
+ 
+They
+ will also generate income. 
+ | 
+ | 6-month
+ to 2-year maturities | 
+
+ 
+
+The
+market value of the cash and treasuries held by the Fund is expected to be between 50% and 100% of the Fund’s net assets
+and the market value of the options package is expected to be between 0% and 50% of the Fund’s net assets. In terms of notional
+value, the combination of these investment instruments provides investment exposure to TSLA equal to at least 100% of the Fund’s
+total assets.
+
+ 
+
+The
+Fund is classified as “non-diversified” under the 1940 Act.
+
+ 
+
+There
+is no guarantee that the Fund’s investment strategy will be properly implemented, and an investor may lose some or all of
+its investment. 
+
+ 
+
+Tesla,
+Inc.
+
+ 
+
+Tesla,
+Inc. is an operating company that designs develops, manufactures, leases and sells high performance fully electric vehicles, solar
+energy generation systems and energy storage products. Tesla, Inc. operates two segments: (i) automotive and (ii) energy generation
+and storage. The automotive segment includes the design, development, manufacturing, sales and leasing of electric vehicles as
+well as sales of automotive regulatory credits. The energy generation and storage segment includes the design, manufacture, installation,
+sales and leasing of solar energy generation and energy storage products and related services and sales of solar energy systems
+incentives. Tesla, Inc. is listed on Nasdaq. The aggregate market value of voting stock held by non-affiliates of Tesla, Inc.,
+as of June 30, 2023, was approximately $722.5 billion (based on the closing price for shares of Tesla, Inc.’s common stock
+as reported by Nasdaq on June 30, 2023).
+
+ 
+
+Tesla,
+Inc. is registered under the Securities Exchange Act of 1934, as amended (the “Exchange Act”). Information provided
+to or filed with the SEC by Tesla, Inc. pursuant to the Exchange Act can be located by reference to the SEC file number 001-34756
+through the SEC’s website at www.sec.gov. In addition, information regarding Tesla, Inc. may be obtained from other sources
+including, but not limited to, press releases, newspaper articles and other publicly disseminated documents.
+
+ 
+
+This
+document relates only to the securities offered hereby and does not relate to TSLA or other securities of Tesla, Inc. The Fund
+has derived all disclosures contained in this document regarding Tesla, Inc. from the publicly available documents. None of the
+Fund, the Trust, the Adviser, the Sub-Adviser, or their respective affiliates has participated in the preparation of such publicly
+available offering documents or made any due diligence inquiry regarding such documents with respect to Tesla, Inc. None of the
+Fund, the Trust, the Adviser, the Sub-Adviser, or their respective affiliates makes any representation that such publicly available
+documents or any other publicly available information regarding Tesla, Inc. is accurate or complete. Furthermore, the Fund cannot
+give any assurance that all events occurring prior to the date hereof (including events that would affect the accuracy or completeness
+of the publicly available documents described above) that would affect the trading price of Tesla, Inc. (and therefore the price
+of Tesla, Inc. at the time we price the securities) have been publicly disclosed. Subsequent disclosure of any such events or
+the disclosure of or failure to disclose material future events concerning Tesla, Inc. could affect the value received with respect
+to the securities and therefore the value of the securities.
+
+ 
+
+ 
+
+4
+
+ 
+
+ 
+
+ 
+
+ 
+
+None
+of the Fund, the Trust, the Adviser, the Sub-Adviser, or their respective affiliates makes any representation to you as to the
+performance of TSLA.
+
+ 
+
+THE
+FUND, TRUST, ADVISER, AND SUB-ADVISER ARE NOT AFFILIATED WITH TESLA, INC.
+
+ 
+
+Due
+to the Fund’s investment strategy, the Fund’s investment exposure is concentrated in (or substantially exposed to)
+the same industry as that assigned to TSLA. As of the date of the Prospectus, TSLA is assigned to the auto manufacturing industry.
+
+ 
+
+Principal
+Investment Risks
+
+ 
+
+The
+principal risks of investing in the Fund are summarized below. As with any investment, there is a risk that you could lose all or a portion
+of your investment in the Fund. Some or all of these risks may adversely affect the Fund’s net asset value (“NAV”)
+per share, trading price, yield, total return, and/or ability to meet its objective.
+
+ 
+
+An
+investment in the Fund entails risk. The Fund may not achieve its investment objective and there is a risk that you could lose
+all of your money invested in the Fund. The Fund is not a complete investment program. It is important that investors closely
+review all of the risks listed below and understand them before making an investment in the Fund.
+
+ 
+
+Each
+risk summarized below is considered a “principal risk” of investing in the Fund, regardless of the order in which
+they appear.
+
+ 
+
+TSLA
+Risk. The Fund invests in options contracts that are based on the value of TSLA. This subjects the Fund to certain of the
+same risks as if it owned shares of TSLA, even though it does not. By virtue of the Fund’s investments in options contracts
+that are based on the value of TSLA, the Fund may also be subject to the following risks:
+
+ 
+
+Indirect
+Investment in TSLA Risk. Tesla, Inc. is not affiliated with the Trust, the Fund, the Adviser, the Sub-Adviser, or their respective
+affiliates and is not involved with this offering in any way and has no obligation to consider your Shares in taking any corporate
+actions that might affect the value of Shares. Investors in the Fund will not have voting rights and will not be able to influence
+management of Tesla, Inc. but will be exposed to the performance of TSLA (the underlying stock). Investors in the Fund will not
+have rights to receive dividends or other distributions or any other rights with respect to the underlying stock but will be subject
+to declines in the performance of the underlying stock.
+
+ 
+
+TSLA
+Trading Risk. The trading price of TSLA may be highly volatile and could continue to be subject to wide fluctuations in response
+to various factors. The stock market in general, and the market for technology companies in particular, has experienced extreme
+price and volume fluctuations that have often been unrelated or disproportionate to the operating performance of those companies.
+In particular, a large proportion of TSLA may be traded by short sellers which may put pressure on the supply and demand for the
+common stock of Tesla, Inc., further influencing volatility in its market price. Public perception and other factors outside of
+the control of Tesla, Inc. may additionally impact TSLA’s stock price due to Tesla, Inc. garnering a disproportionate degree
+of public attention, regardless of actual operating performance. In addition, in the past, following periods of volatility in
+the overall market and the market price of a particular company’s securities, securities class action litigation has often
+been instituted against companies such as these. Moreover, stockholder litigation like this has been filed against Tesla, Inc.
+in the past. While Tesla, Inc. continues to defend such actions, any judgment against Tesla, Inc., or any future stockholder litigation
+could result in substantial costs and a diversion of the management of Tesla, Inc.’s attention and resources. If TSLA trading
+is halted, trading in Shares of the TSLA Fund may be impacted, either temporarily or indefinitely.
+
+ 
+
+Tesla,
+Inc. Performance Risk. Tesla, Inc. may fail to meet its publicly announced guidelines or other expectations about its business,
+which could cause the price of TSLA to decline. Tesla, Inc. provides guidance regarding its expected financial and business performance,
+such as projections regarding sales and production, as well as anticipated future revenues, gross margins, profitability and cash
+flows. Correctly identifying key factors affecting business conditions and predicting future events is inherently an uncertain
+process, and the guidance Tesla, Inc. provides may not ultimately be accurate and has in the past been inaccurate in certain respects,
+such as the timing of new product manufacturing ramps. The guidance is based on certain assumptions such as those relating to
+global and local economic conditions, anticipated production and sales volumes (which generally are not linear throughout a given
+period), average sales prices, supplier and commodity costs, and planned cost reductions. If Tesla, Inc.’s guidance is not
+accurate or varies from actual results due to its inability to meet the assumptions or the impact on its financial performance
+that could occur as a result of various risks and uncertainties, the market value of common stock issued by Tesla, Inc. could
+decline significantly.
+
+ 
+
+Electric
+Vehicles Risk. The future growth and success of Tesla, Inc. are dependent upon consumers’ demand for electric vehicles,
+and specifically, its vehicles in an automotive industry that is generally competitive, cyclical and volatile. If the market for
+electric vehicles in general and Tesla, Inc. vehicles in particular does not develop as Tesla, Inc. expects, develops more slowly
+than it expects, or if demand for its vehicles decreases in its markets or its vehicles compete with each other, the business,
+prospects, financial condition and operating results of Tesla, Inc. may be harmed. Tesla, Inc. is still at an earlier stage of
+development and have limited resources and production relative to established competitors that offer internal combustion engine
+vehicles. In addition, electric vehicles still comprise a small percentage of overall vehicle sales. As a result, the market for
+Tesla, Inc. vehicles could be negatively affected by numerous factors, such as: (i) perceptions about electric vehicle features,
+quality, safety, performance and cost; (ii) perceptions about the limited range over which electric vehicles may be driven on
+a single battery charge, and access to charging facilities; (iii) competition, including from other types of alternative fuel
+vehicles, plug-in hybrid electric vehicles and high fuel-economy internal combustion engine vehicles; (iv) volatility in the cost
+of oil and gasoline, such as wide fluctuations in crude oil prices; (v) government regulations and economic incentives; and (vi)
+concerns about the future viability of Tesla, Inc. Finally, the target demographics for Tesla, Inc. vehicles are highly competitive.
+Sales of vehicles in the automotive industry tend to be cyclical in many markets, which may expose Tesla, Inc. to further volatility.
+
+ 
+
+ 
+
+5
+
+ 
+
+ 
+
+ 
+
+ 
+
+Automotive
+Companies Risk. The automotive industry can be highly cyclical, and companies in the industry may suffer periodic operating
+losses. Automotive companies can be significantly affected by labor relations, fluctuating component prices and supplier disruptions.
+Developments in automotive technologies (e.g., autonomous vehicle technologies) may require significant capital expenditures that
+may not generate profits for several years, if ever. Automotive companies may be significantly subject to government policies
+and regulations regarding imports and exports of automotive products. Governmental policies affecting the automotive industry,
+such as taxes, tariffs, duties, subsidies, and import and export restrictions on automotive products can influence industry profitability.
+In addition, such companies must comply with environmental laws and regulations, for which there may be severe consequences for
+non-compliance. While most of the major automotive manufacturers are large companies, certain others may be non-diversified in
+both product line and customer base and may be more vulnerable to certain events that may negatively impact the automotive industry.
+
+ 
+
+Derivatives
+Risk. Derivatives are financial instruments that derive value from the underlying reference asset or assets, such as stocks,
+bonds, or funds (including ETFs), interest rates or indexes. The Fund’s investments in derivatives may pose risks in addition
+to, and greater than, those associated with directly investing in securities or other ordinary investments, including risk related
+to the market, imperfect correlation with underlying investments or the Fund’s other portfolio holdings, higher price volatility,
+lack of availability, counterparty risk, liquidity, valuation and legal restrictions. The use of derivatives is a highly specialized
+activity that involves investment techniques and risks different from those associated with ordinary portfolio securities transactions.
+The use of derivatives may result in larger losses or smaller gains than directly investing in securities. When the Fund uses
+derivatives, there may be an imperfect correlation between the value of TSLA and the derivative, which may prevent the Fund from
+achieving its investment objective. Because derivatives often require only a limited initial investment, the use of derivatives
+may expose the Fund to losses in excess of those amounts initially invested. In addition, the Fund’s investments in derivatives
+are subject to the following risks:
+
+ 
+
+Options
+Contracts. The use of options contracts involves investment strategies and risks different from those associated with ordinary
+portfolio securities transactions. The prices of options are volatile and are influenced by, among other things, actual and anticipated
+changes in the value of the underlying instrument, including the anticipated volatility, which are affected by fiscal and monetary
+policies and by national and international political, changes in the actual or implied volatility or the reference asset, the
+time remaining until the expiration of the option contract and economic events. For the Fund in particular, the value of the options
+contracts in which it invests are substantially influenced by the value of TSLA. The Fund may experience substantial downside
+from specific option positions and certain option positions held by the Fund may expire worthless. The options held by the Fund
+are exercisable at the strike price on their expiration date. As an option approaches its expiration date, its value typically
+increasingly moves with the value of the underlying instrument. However, prior to such date, the value of an option generally
+does not increase or decrease at the same rate at the underlying instrument. There may at times be an imperfect correlation between
+the movement in the values of options contracts and the underlying instrument, and there may at times not be a liquid secondary
+market for certain options contracts. The value of the options held by the Fund will be determined based on market quotations
+or other recognized pricing methods. Additionally, as the Fund intends to continuously maintain indirect exposure to TSLA through
+the use of options contracts, as the options contracts it holds are exercised or expire it will enter into new options contracts,
+a practice referred to as “rolling.” If the expiring options contracts do not generate proceeds enough to cover the
+cost of entering into new options contracts, the Fund may experience losses.
+
+ 
+
+Counterparty
+Risk. The Fund is subject to counterparty risk by virtue of its investments in options contracts. Transactions in some types
+of derivatives, including options, are required to be centrally cleared (“cleared derivatives”). In a transaction
+involving cleared derivatives, the Fund’s counterparty is a clearing house rather than a bank or broker. Since the Fund
+is not a member of clearing houses and only members of a clearing house (“clearing members”) can participate directly
+in the clearing house, the Fund will hold cleared derivatives through accounts at clearing members. In cleared derivatives positions,
+the Fund will make payments (including margin payments) to and receive payments from a clearing house through their accounts at
+clearing members. Customer funds held at a clearing organization in connection with any options contracts are held in a commingled
+omnibus account and are not identified to the name of the clearing member’s individual customers. As a result, assets deposited
+by the Fund with any clearing member as margin for options may, in certain circumstances, be used to satisfy losses of other clients
+of the Fund’s clearing member. In addition, although clearing members guarantee performance of their clients’ obligations
+to the clearing house, there is a risk that the assets of the Fund might not be fully protected in the event of the clearing member’s
+bankruptcy, as the Fund would be limited to recovering only a pro rata share of all available funds segregated on behalf of the
+clearing member’s customers for the relevant account class. The Fund is also subject to the risk that a limited number of
+clearing members are willing to transact on the Fund’s behalf, which heightens the risks associated with a clearing member’s
+default. This risk is greater for the Fund as it seeks to hold options contracts on a single security, and not a broader range
+of options contracts, which may limit the number of clearing members that are willing to transact on the Fund’s behalf.
+If a clearing member defaults the Fund could lose some or all of the benefits of a transaction entered into by the Fund with the
+clearing member. If the Fund cannot find a clearing member to transact with on the Fund’s behalf, the Fund may be unable
+to effectively implement its investment strategy.
+
+ 
+
+ 
+
+6
+
+ 
+
+ 
+
+ 
+
+ 
+
+Price
+Participation Risk. The Fund employs an investment strategy that includes the sale of call option contracts, which limits
+the degree to which the Fund will participate in increases in value experienced by TSLA over the Call Period. This means that
+if TSLA experiences an increase in value above the strike price of the sold call options during a Call Period, the Fund will likely
+not experience that increase to the same extent and may significantly underperform TSLA over the Call Period. Additionally, because
+the Fund is limited in the degree to which it will participate in increases in value experienced by TSLA over each Call Period,
+but has full exposure to any decreases in value experienced by TSLA over the Call Period, the NAV of the Fund may decrease over
+any given time period. The Fund’s NAV is dependent on the value of each options portfolio, which is based principally upon
+the performance of TSLA. The degree of participation in TSLA gains the Fund will experience will depend on prevailing market conditions,
+especially market volatility, at the time the Fund enters into the sold call option contracts and will vary from Call Period to
+Call Period. The value of the options contracts is affected by changes in the value and dividend rates of TSLA, changes in interest
+rates, changes in the actual or perceived volatility of TSLA and the remaining time to the options’ expiration, as well
+as trading conditions in the options market. As the price of TSLA changes and time moves towards the expiration of each Call Period,
+the value of the options contracts, and therefore the Fund’s NAV, will change. However, it is not expected for the Fund’s
+NAV to directly correlate on a day-to-day basis with the returns of TSLA. The amount of time remaining until the options contract’s
+expiration date affects the impact of the potential options contract income on the Fund’s NAV, which may not be in full
+effect until the expiration date of the Fund’s options contracts. Therefore, while changes in the price of the TSLA will
+result in changes to the Fund’s NAV, the Fund generally anticipates that the rate of change in the Fund’s NAV will
+be different than that experienced by TSLA.
+
+ 
+
+Distribution
+Risk. As part of the Fund’s investment objective, the Fund seeks to provide current monthly income. There is no assurance
+that the Fund will make a distribution in any given month. If the Fund does make distributions, the amounts of such distributions
+will likely vary greatly from one distribution to the next. Additionally, the monthly distributions, if any, may consist of returns
+of capital, which would decrease the Fund’s NAV and trading price over time. As a result, an investor may suffer significant
+losses to their investment. In addition, the underlying stock may pay dividends, the Fund’s returns will not include any
+dividends paid by the underlying stock, and any income generated by the Fund may be less than the income generated by a direct
+investment in the underlying stock.
+
+ 
+
+NAV
+Erosion Risk Due to Distributions. When the Fund makes a distribution, the Fund’s NAV will typically drop by the amount
+of the distribution on the related ex-dividend date. The repeated payment of distributions by the Fund, if any, may significantly
+erode the Fund’s NAV and trading price over time. As a result, an investor may suffer significant losses to their investment.
+
+ 
+
+Call
+Writing Strategy Risk. The path dependency (i.e., the continued use) of the Fund’s call writing strategy will impact
+the extent that the Fund participates in the positive price returns of TSLA and, in turn, the Fund’s returns, both during
+the term of the sold call options and over longer time periods. If, for example, each month the Fund were to sell 7% out-of-the-money
+call options having a one-month term, the Fund’s participation in the positive price returns of TSLA will be capped at 7%
+in any given month. However, over a longer period (e.g., 5 months), the Fund should not be expected to participate fully in the
+first 35% (i.e., 5 months x 7%) of the positive price returns of TSLA, or the Fund may even lose money, even if the TSLA share
+price has appreciated by at least that much over such period, if during any month over that period TSLA had a return less than
+7%. This example illustrates that both the Fund’s participation in the positive price returns of TSLA and its returns will
+depend not only on the price of TSLA but also on the path that TSLA takes over time.
+
+ 
+
+ETF
+Risks.
+
+ 
+
+Authorized
+Participants, Market Makers, and Liquidity Providers Concentration Risk. The Fund has a limited number of financial institutions
+that are authorized to purchase and redeem Shares directly from the Fund (known as “Authorized Participants” or “APs”).
+In addition, there may be a limited number of market makers and/or liquidity providers in the marketplace. To the extent either
+of the following events occur, Shares may trade at a material discount to NAV and possibly face delisting: (i) APs exit the business
+or otherwise become unable to process creation and/or redemption orders and no other APs step forward to perform these services;
+or (ii) market makers and/or liquidity providers exit the business or significantly reduce their business activities and no other
+entities step forward to perform their functions.
+
+ 
+
+Cash
+Redemption Risk. The Fund’s investment strategy may require it to redeem Shares for cash or to otherwise include cash
+as part of its redemption proceeds. For example, the Fund may not be able to redeem in-kind certain securities held by the Fund
+(e.g., derivative instruments). In such a case, the Fund may be required to sell or unwind portfolio investments to obtain the
+cash needed to distribute redemption proceeds. This may cause the Fund to recognize a capital gain that it might not have recognized
+if it had made a redemption in-kind. As a result, the Fund may pay out higher annual capital gain distributions than if the in-kind
+redemption process was used. By paying out higher annual capital gain distributions, investors may be subjected to increased capital
+gains taxes. Additionally, there may be brokerage costs or taxable gains or losses that may be imposed on the Fund in connection
+with a cash redemption that may not have occurred if the Fund had made a redemption in-kind. These costs could decrease the value
+of the Fund to the extent they are not offset by a transaction fee payable by an AP.
+
+ 
+
+ 
+
+7
+
+ 
+
+ 
+
+ 
+
+ 
+
+Costs
+of Buying or Selling Shares. Due to the costs of buying or selling Shares, including brokerage commissions imposed by brokers
+and bid-ask spreads, frequent trading of Shares may significantly reduce investment results and an investment in Shares may not
+be advisable for investors who anticipate regularly making small investments.
+
+ 
+
+Management
+Risk. The Fund is subject to management risk because it is an actively managed portfolio. In managing the Fund’s investment
+portfolio, the portfolio managers will apply investment techniques and risk analyses that may not produce the desired result.
+There can be no guarantee that the Fund will meet its investment objective.
+
+ 
+
+Shares
+May Trade at Prices Other Than NAV. As with all ETFs, Shares may be bought and sold in the secondary market at market prices.
+Although it is expected that the market price of Shares will approximate the Fund’s NAV, there may be times when the market
+price of Shares is more than the NAV intra-day (premium) or less than the NAV intra-day (discount) due to supply and demand of
+Shares or during periods of market volatility. This risk is heightened in times of market volatility, periods of steep market
+declines, and periods when there is limited trading activity for Shares in the secondary market, in which case such premiums or
+discounts may be significant.
+
+ 
+
+Trading.
+Although Shares are listed on a national securities exchange, such as NYSE Arca, Inc. (the “Exchange”), and may
+be traded on U.S. exchanges other than the Exchange, there can be no assurance that an active trading market for the Shares will
+develop or be maintained or that the Shares will trade with any volume, or at all, on any stock exchange. This risk may be greater
+for the Fund as it seeks to have exposure to a single underlying stock as opposed to a more diverse portfolio like a traditional
+pooled investment. In stressed market conditions, the liquidity of Shares may begin to mirror the liquidity of the Fund’s
+underlying portfolio holdings, which can be significantly less liquid than Shares. Shares trade on the Exchange at market price
+that may be below, at or above the Fund’s NAV. Trading in Shares on the Exchange may be halted due to market conditions
+or for reasons that, in the view of the Exchange, make trading in Shares inadvisable. In addition, trading in Shares on the Exchange
+is subject to trading halts caused by extraordinary market volatility pursuant to the Exchange “circuit breaker” rules.
+There can be no assurance that the requirements of the Exchange necessary to maintain the listing of the Fund will continue to
+be met or will remain unchanged. In the event of an unscheduled market close for options contracts that reference a single stock,
+such as TSLA’s securities being halted or a market wide closure, settlement prices will be determined by the procedures
+of the listing exchange of the options contracts. As a result, the Fund could be adversely affected and be unable to implement
+its investment strategies in the event of an unscheduled closing.
+
+ 
+
+High
+Portfolio Turnover Risk. The Fund may actively and frequently trade all or a significant portion of the Fund’s holdings.
+A high portfolio turnover rate increases transaction costs, which may increase the Fund’s expenses. Frequent trading may
+also cause adverse tax consequences for investors in the Fund due to an increase in short-term capital gains.
+
+ 
+
+Inflation
+Risk. Inflation risk is the risk that the value of assets or income from investments will be less in the future as inflation
+decreases the value of money. As inflation increases, the present value of the Fund’s assets and distributions, if any,
+may decline.
+
+ 
+
+Liquidity
+Risk. Some securities held by the Fund, including options contracts, may be difficult to sell or be illiquid, particularly
+during times of market turmoil. This risk is greater for the Fund as it will hold options contracts on a single security, and
+not a broader range of options contracts. Markets for securities or financial instruments could be disrupted by a number of events,
+including, but not limited to, an economic crisis, natural disasters, epidemics/pandemics, new legislation or regulatory changes
+inside or outside the United States. Illiquid securities may be difficult to value, especially in changing or volatile markets.
+If the Fund is forced to sell an illiquid security at an unfavorable time or price, the Fund may be adversely impacted. Certain
+market conditions or restrictions, such as market rules related to short sales, may prevent the Fund from limiting losses, realizing
+gains or achieving a high correlation with TSLA. There is no assurance that a security that is deemed liquid when purchased will
+continue to be liquid. Market illiquidity may cause losses for the Fund.
+
+ 
+
+Money
+Market Instrument Risk. The Fund may use a variety of money market instruments for cash management purposes, including money
+market funds, depositary accounts and repurchase agreements. Repurchase agreements are contracts in which a seller of securities
+agrees to buy the securities back at a specified time and price. Repurchase agreements may be subject to market and credit risk
+related to the collateral securing the repurchase agreement. Money market instruments, including money market funds, may lose
+money through fees or other means.
+
+ 
+
+Newer
+Fund Risk. The Fund is a recently organized management investment company with limited operating history. As a result, prospective
+investors have a limited track record or history on which to base their investment decisions. There can be no assurance that the
+Fund will maintain an economically viable size.
+
+ 
+
+Non-Diversification
+Risk. Because the Fund is “non-diversified,” it may invest a greater percentage of its assets in the securities
+of a single issuer or a smaller number of issuers than if it was a diversified fund. As a result, a decline in the value of an
+investment in a single issuer or a smaller number of issuers could cause the Fund’s overall value to decline to a greater
+degree than if the Fund held a more diversified portfolio.
+
+ 
+
+Operational
+Risk. The Fund is subject to risks arising from various operational factors, including, but not limited to, human error, processing
+and communication errors, errors of the Fund’s service providers, counterparties or other third-parties, failed or inadequate
+processes and technology or systems failures. The Fund relies on third-parties for a range of services, including custody. Any
+delay or failure relating to engaging or maintaining such service providers may affect the Fund’s ability to meet its investment
+objective. Although the Fund, Adviser, and Sub-Adviser seek to reduce these operational risks through controls and procedures,
+there is no way to completely protect against such risks.
+
+ 
+
+ 
+
+8
+
+ 
+
+ 
+
+ 
+
+ 
+
+Recent
+Market Events Risk. U.S. and international markets have experienced significant periods of volatility in recent years and
+months due to a number of economic, political and global macro factors including the impact of COVID-19 as a global pandemic,
+which has resulted in a public health crisis, disruptions to business operations and supply chains, stress on the global healthcare
+system, growth concerns in the U.S. and overseas, staffing shortages and the inability to meet consumer demand, and widespread
+concern and uncertainty. The global recovery from COVID-19 is proceeding at slower than expected rates due to the emergence of
+variant strains and may last for an extended period of time. Continuing uncertainties regarding interest rates, rising inflation,
+political events, rising government debt in the U.S. and trade tensions also contribute to market volatility. Conflict, loss of
+life and disaster connected to ongoing armed conflict between Ukraine and Russia in Europe and between Israel and Hamas in the
+Middle East could have severe adverse effects on the related region, including significant adverse effects on the regional or
+global economies and the markets for certain securities. The U.S. and the European Union have imposed sanctions on certain Russian
+individuals and companies, including certain financial institutions, and have limited certain exports and imports to and from
+Russia. These conflicts have contributed to recent market volatility and may continue to do so.
+
+ 
+
+Single
+Issuer Risk. Issuer-specific attributes may cause an investment in the Fund to be more volatile than a traditional pooled
+investment which diversifies risk or the market generally. The value of the Fund, which focuses on an individual security (TSLA),
+may be more volatile than a traditional pooled investment or the market as a whole and may perform differently from the value
+of a traditional pooled investment or the market as a whole.
+
+ 
+
+Tax
+Risk. The Fund intends to elect and to qualify each year to be treated as a RIC under Subchapter M of the Code. As a
+RIC, the Fund will not be subject to U.S. federal income tax on the portion of its net investment income and net capital gain
+that it distributes to Shareholders, provided that it satisfies certain requirements of the Code. If the Fund does not qualify
+as a RIC for any taxable year and certain relief provisions are not available, the Fund’s taxable income will be subject
+to tax at the Fund level and to a further tax at the shareholder level when such income is distributed. To comply with the asset
+diversification test applicable to a RIC, the Fund will attempt to ensure that the value of options it holds is never 25% of the
+total value of Fund assets at the close of any quarter. If the Fund’s investments in options were to exceed 25% of the Fund’s
+total assets at the end of a tax quarter, the Fund, generally, has a grace period to cure such lack of compliance. If the Fund
+fails to timely cure, it may no longer be eligible to be treated as a RIC.
+
+ 
+
+U.S.
+Government and U.S. Agency Obligations Risk. The Fund may invest in securities issued by the U.S. government or its agencies
+or instrumentalities. U.S. Government obligations include securities issued or guaranteed as to principal and interest by the
+U.S. Government, its agencies or instrumentalities, such as the U.S. Treasury. Payment of principal and interest on U.S. Government
+obligations may be backed by the full faith and credit of the United States or may be backed solely by the issuing or guaranteeing
+agency or instrumentality itself. In the latter case, the investor must look principally to the agency or instrumentality issuing
+or guaranteeing the obligation for ultimate repayment, which agency or instrumentality may be privately owned. There can be no
+assurance that the U.S. Government would provide financial support to its agencies or instrumentalities (including government-sponsored
+enterprises) where it is not obligated to do so.
+
+ 
+
+Performance 
+
+ 
+
+The
+following performance information provides some indication of the risks of investing in the Fund by showing changes in the Fund’s
+performance over time. The bar chart shows the annual returns for the Fund year over year. The table illustrates how the
+Fund’s average annual returns for the 1-year and since inception periods compare with those of a broad measure of market
+performance. The Fund’s past performance, before and after taxes, does not necessarily indicate how it will perform
+in the future. Updated performance information is available on the Fund’s website at www.yieldmaxetfs.com.
+
+ 
+
+Calendar
+Year Ended December 31,
+
+ 
+
+ 
+
+ | | 
+ | | 
+
+ 
+
+ | 2023 | 
+ | 50.24% | 
+
+ 
+
+ 
+
+During
+the period of time shown in the bar chart, the Fund’s highest quarterly return was 40.68% for the quarter
+ended March 31, 2023 and the lowest quarterly return was -6.31% for the quarter ended September
+30, 2023.
+
+ 
+
+Average
+Annual Total Returns 
+
+ 
+
+For
+the Periods Ended December 31, 2023
+
+ 
+
+ | | 
+ | 1
+ Year | 
+ | Since
+ Inception
+
+ November 22, 2022 | 
+
+ | Return
+ Before Taxes | 
+ | 50.24% | 
+ | 9.03% | 
+
+ | Return
+ After Taxes on Distributions | 
+ | 41.79% | 
+ | 3.47% | 
+
+ | Return
+ After Taxes on Distributions and Sale of Fund Shares | 
+ | 29.41% | 
+ | 4.50% | 
+
+ | S&P
+ 500® Total Return Index (reflects no deduction for fees, expenses, or taxes)(1) | 
+ | 26.29% | 
+ | 19.10% | 
+
+ 
+
+ | | 
+ | (1) | 
+ | The
+ S&P 500® Total Return Index is a free-float market capitalization-weighted index of 500 of the largest
+ U.S. companies. The index is calculated on a total return basis with dividends reinvested. | 
+
+ 
+
+ 
+
+9
+
+ 
+
+ 
+
+ 
+
+ 
+
+After-tax
+returns are calculated using the historical highest individual federal marginal income tax rates during the period covered by
+the table above and do not reflect the impact of state and local taxes. Actual after-tax returns depend on an investor’s
+tax situation and may differ from those shown. After-tax returns shown are not relevant to investors who hold their Shares
+through tax-deferred or other tax-advantaged arrangements such as an individual retirement account (“IRA”).
+
+ 
+
+Management
+
+ 
+
+Investment
+Adviser: Tidal Investments LLC (the “Adviser”) serves as investment adviser
+to the Fund. 
+
+ 
+
+Investment
+Sub-Adviser. ZEGA Financial, LLC serves as the investment sub-adviser to the Fund. 
+
+ 
+
+Portfolio
+Managers:
+
+ 
+
+The
+following individuals are jointly and primarily responsible for the day-to-day management of the Fund.
+
+ 
+
+Mick
+Brokaw, Portfolio Manager for the Sub-Adviser, has been a portfolio manager of the Fund since its inception in 2022. 
+
+ 
+
+Jay
+Pestrichelli, Portfolio Manager for the Sub-Adviser, has been a portfolio manager of the Fund since its inception in 2022.
+
+ 
+
+Qiao
+Duan, CFA, Portfolio Manager for the Adviser, has been a portfolio manager of the Fund since its inception in 2022. 
+
+ 
+
+Charles
+A. Ragauss, CFA, Portfolio Manager for the Adviser, has been a portfolio manager of the Fund since its inception in 2022. 
+
+ 
+
+CFA®
+is a registered trademark owned by the CFA Institute.
+
+ 
+
+Purchase
+and Sale of Shares
+
+ 
+
+The
+Fund issues and redeems Shares at NAV only in large blocks known as “Creation Units,” which only Authorized Participants
+(APs) (typically, broker-dealers) may purchase or redeem. The Fund generally issues and redeems Creation Units in exchange for
+a portfolio of securities (the “Deposit Securities”) and/or a designated amount of U.S. cash.
+
+ 
+
+Shares
+are listed on a national securities exchange, such as the Exchange, and individual Shares may only be bought and sold in the secondary
+market through brokers at market prices, rather than NAV. Because Shares trade at market prices rather than NAV, Shares may trade
+at a price greater than NAV (premium) or less than NAV (discount).
+
+ 
+
+An
+investor may incur costs attributable to the difference between the highest price a buyer is willing to pay to purchase Shares
+(the “bid” price) and the lowest price a seller is willing to accept for Shares (the “ask” price) when
+buying or selling Shares in the secondary market. This difference in bid and ask prices is often referred to as the “bid-ask
+spread.”
+
+ 
+
+When
+available, information regarding the Fund’s NAV, market price, how often Shares traded on the Exchange at a premium or discount,
+and bid-ask spreads can be found on the Fund’s website at www.yieldmaxetfs.com.
+
+ 
+
+Tax
+Information
+
+ 
+
+Fund
+distributions are generally taxable as ordinary income, qualified dividend income, or capital gains (or a combination), unless
+an investment is in an individual retirement account (“IRA”) or other tax-advantaged account. Distributions on investments
+made through tax-deferred arrangements may be taxed later upon withdrawal of assets from those accounts.
+
+ 
+
+Financial
+Intermediary Compensation
+
+ 
+
+If
+you purchase Shares through a broker-dealer or other financial intermediary (such as a bank) (an “Intermediary”),
+the Adviser or its affiliates may pay Intermediaries for certain activities related to the Fund, including participation in activities
+that are designed to make Intermediaries more knowledgeable about exchange-traded products, including the Fund, or for other activities,
+such as marketing, educational training, or other initiatives related to the sale or promotion of Shares. These payments may create
+a conflict of interest by influencing the Intermediary and your salesperson to recommend the Fund over another investment. Any
+such arrangements do not result in increased Fund expenses. Ask your salesperson or visit the Intermediary’s website for
+more information.
+
+ 
+
+ 
+
+10

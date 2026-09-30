@@ -1,0 +1,75 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: Lint, typecheck, test and build
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: pnpm/action-setup@v6.1.0
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: pnpm
+
+      # ~30 MB of calculator wheels postinstall downloads, keyed on the pinned Pyodide version.
+      - name: Cache downloaded Python packages
+        uses: actions/cache@v4
+        with:
+          path: .sandbox
+          key: sandbox-${{ runner.os }}-${{ hashFiles('package.json') }}
+
+      # postinstall copies the pdf.js worker, and under CI a failed copy fails the install.
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      - run: pnpm typecheck
+      - run: pnpm test
+      - run: pnpm build
+
+  browser:
+    name: Browser smoke test
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: pnpm/action-setup@v6.1.0
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: pnpm
+
+      # ~30 MB of calculator wheels postinstall downloads, keyed on the pinned Pyodide version.
+      - name: Cache downloaded Python packages
+        uses: actions/cache@v4
+        with:
+          path: .sandbox
+          key: sandbox-${{ runner.os }}-${{ hashFiles('package.json') }}
+
+      - run: pnpm install --frozen-lockfile
+      # Headless Chromium only, at the revision the pinned @playwright/test expects.
+      - run: pnpm exec playwright install --with-deps --only-shell chromium
+      - run: pnpm build
+      - run: pnpm test:browser
+
+      - if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: browser-smoke-results
+          path: e2e/test-results/
+          retention-days: 7

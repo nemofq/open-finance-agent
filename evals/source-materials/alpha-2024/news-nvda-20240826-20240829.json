@@ -1,0 +1,1275 @@
+{
+    "items": "26",
+    "sentiment_score_definition": "x <= -0.35: Bearish; -0.35 < x <= -0.15: Somewhat-Bearish; -0.15 < x < 0.15: Neutral; 0.15 <= x < 0.35: Somewhat_Bullish; x >= 0.35: Bullish",
+    "relevance_score_definition": "0 < x <= 1, with a higher score indicating higher relevance.",
+    "feed": [
+        {
+            "title": "Jim Cramer on Astera Labs Inc. (ALAB): ‘I Didn’t Like That It Spiked 72% Right Out The Gate’",
+            "url": "https://www.insidermonkey.com/blog/jim-cramer-on-astera-labs-inc-alab-i-didnt-like-that-it-spiked-72-right-out-the-gate-1342394/",
+            "time_published": "20240829T112100",
+            "authors": [
+                "Jose Karlo Mari Tottoc"
+            ],
+            "summary": "Jim Cramer reflects on the current stock market, the impact of the Federal Reserve's actions, and the extraordinary attention surrounding Nvidia. He expresses caution regarding Astera Labs Inc. (ALAB) due to its initial 72% surge, deeming it overpriced despite its strong position in the AI and cloud infrastructure market. The article also includes hedge fund perspectives on ALAB, highlighting its potential and challenges.",
+            "banner_image": null,
+            "source": "Insider Monkey",
+            "category_within_source": "General",
+            "source_domain": "Insider Monkey",
+            "topics": [
+                {
+                    "topic": "earnings",
+                    "relevance_score": "0.935295"
+                },
+                {
+                    "topic": "ipo",
+                    "relevance_score": "0.934862"
+                },
+                {
+                    "topic": "financial_markets",
+                    "relevance_score": "1.000000"
+                },
+                {
+                    "topic": "economy_monetary",
+                    "relevance_score": "0.803034"
+                },
+                {
+                    "topic": "technology",
+                    "relevance_score": "1.000000"
+                }
+            ],
+            "overall_sentiment_score": 0.037828,
+            "overall_sentiment_label": "Neutral",
+            "ticker_sentiment": [
+                {
+                    "ticker": "ALAB",
+                    "relevance_score": "1.000000",
+                    "ticker_sentiment_score": "-0.239171",
+                    "ticker_sentiment_label": "Somewhat-Bearish"
+                },
+                {
+                    "ticker": "NVDA",
+                    "relevance_score": "0.641238",
+                    "ticker_sentiment_score": "0.208321",
+                    "ticker_sentiment_label": "Somewhat-Bullish"
+                }
+            ]
+        },
+        {
+            "title": "CXL memory drives the future of data centers with low-latency solutions",
+            "url": "https://siliconangle.com/2024/08/29/cxl-memory-openstoragesummit/",
+            "time_published": "20240829T111415",
+            "authors": [
+                "Chad Wilson"
+            ],
+            "summary": "CXL memory is emerging as a critical solution for modern data centers, offering high speed and low latency to boost data throughput and scalability for applications like generative AI and autonomous driving. Industry leaders from Micron Technology, Supermicro, Intel, and MemVerge discussed the transformative impact of CXL on data center architectures, highlighting its ability to leverage existing PCIe interfaces for lower latency and its potential to repurpose older memory technologies like DDR4. Supermicro is playing a key role in CXL adoption by integrating it into its latest platforms, supporting up to eight CXL memory modules to expand memory capacity efficiently.",
+            "banner_image": "https://d15shllkswkct0.cloudfront.net/wp-content/blogs.dir/1/files/2024/08/FI-Anand-Godbole-Kudryavtsev-Scarga.jpg",
+            "source": "SiliconANGLE",
+            "category_within_source": "General",
+            "source_domain": "SiliconANGLE",
+            "topics": [
+                {
+                    "topic": "technology",
+                    "relevance_score": "1.000000"
+                }
+            ],
+            "overall_sentiment_score": 0.346323,
+            "overall_sentiment_label": "Somewhat-Bullish",
+            "ticker_sentiment": [
+                {
+                    "ticker": "MU",
+                    "relevance_score": "1.000000",
+                    "ticker_sentiment_score": "0.405035",
+                    "ticker_sentiment_label": "Bullish"
+                },
+                {
+                    "ticker": "SMCI",
+                    "relevance_score": "0.948940",
+                    "ticker_sentiment_score": "0.347635",
+                    "ticker_sentiment_label": "Somewhat-Bullish"
+                },
+                {
+                    "ticker": "INTC",
+                    "relevance_score": "0.837491",
+                    "ticker_sentiment_score": "0.324220",
+                    "ticker_sentiment_label": "Somewhat-Bullish"
+                },
+                {
+                    "ticker": "NVDA",
+                    "relevance_score": "0.628943",
+                    "ticker_sentiment_score": "0.347664",
+                    "ticker_sentiment_label": "Somewhat-Bullish"
+                }
+            ]
+        },
+        {
+            "title": "What You Need To Know Ahead of Marvell Technology's Earnings Report",
+            "url": "https://www.investopedia.com/marvell-technology-q2-fy-2025-earnings-preview-what-you-need-to-know-8699754",
+            "time_published": "20240829T111349",
+            "authors": [
+                "Naomi Buchanan"
+            ],
+            "summary": "Marvell Technology (MRVL) is scheduled to report its fiscal second-quarter earnings after the market closes on Thursday. Analysts anticipate a decline in revenue compared to the previous year but expect narrower losses. Investors will keenly watch for indications that the company's sales have bottomed out and for updates on its artificial intelligence initiatives, with Marvell's shares already up nearly 4% ahead of the announcement.",
+            "banner_image": "https://www.investopedia.com/thmb/gwfybATguFgmt58NnCh71PFXb_4=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/GettyImages-1679337219-67830b73e8d741b4b343271edb098ccb.jpg",
+            "source": "Investopedia",
+            "category_within_source": "General",
+            "source_domain": "Investopedia",
+            "topics": [
+                {
+                    "topic": "earnings",
+                    "relevance_score": "0.942419"
+                },
+                {
+                    "topic": "technology",
+                    "relevance_score": "0.824928"
+                }
+            ],
+            "overall_sentiment_score": 0.163274,
+            "overall_sentiment_label": "Somewhat-Bullish",
+            "ticker_sentiment": [
+                {
+                    "ticker": "MRVL",
+                    "relevance_score": "0.999267",
+                    "ticker_sentiment_score": "0.286655",
+                    "ticker_sentiment_label": "Somewhat-Bullish"
+                },
+                {
+                    "ticker": "AMD",
+                    "relevance_score": "0.666915",
+                    "ticker_sentiment_score": "0.108507",
+                    "ticker_sentiment_label": "Neutral"
+                },
+                {
+                    "ticker": "AMAT",
+                    "relevance_score": "0.622007",
+                    "ticker_sentiment_score": "0.113289",
+                    "ticker_sentiment_label": "Neutral"
+                },
+                {
+                    "ticker": "NVDA",
+                    "relevance_score": "0.592836",
+                    "ticker_sentiment_score": "0.118204",
+                    "ticker_sentiment_label": "Neutral"
+                }
+            ]
+        },
+        {
+            "title": "SMHX Stock Fund Price and Chart — NASDAQ:SMHX",
+            "url": "https://www.tradingview.com/symbols/NASDAQ-SMHX/",
+            "time_published": "20240829T110838",
+            "authors": [],
+            "summary": "The SMHX VanEck Fabless Semiconductor ETF is a passively managed fund targeting US-listed semiconductor stocks specializing in high-value design and chip development. The fund tracks the MarketVector US Listed Fabless Semiconductor Index, holding the top 22 stocks weighted by market capitalization with individual security caps at 20%. As of the article, SMHX has assets under management of $151.56 million and shows a 47.81% increase over the last year.",
+            "banner_image": null,
+            "source": "TradingView",
+            "category_within_source": "General",
+            "source_domain": "TradingView",
+            "topics": [
+                {
+                    "topic": "financial_markets",
+                    "relevance_score": "0.931584"
+                },
+                {
+                    "topic": "technology",
+                    "relevance_score": "0.824932"
+                }
+            ],
+            "overall_sentiment_score": -0.102715,
+            "overall_sentiment_label": "Neutral",
+            "ticker_sentiment": [
+                {
+                    "ticker": "SMHX",
+                    "relevance_score": "1.000000",
+                    "ticker_sentiment_score": "0.036615",
+                    "ticker_sentiment_label": "Neutral"
+                },
+                {
+                    "ticker": "AMAT",
+                    "relevance_score": "0.610178",
+                    "ticker_sentiment_score": "-0.114407",
+                    "ticker_sentiment_label": "Neutral"
+                },
+                {
+                    "ticker": "AMD",
+                    "relevance_score": "0.619235",
+                    "ticker_sentiment_score": "-0.142933",
+                    "ticker_sentiment_label": "Neutral"
+                },
+                {
+                    "ticker": "QCOM",
+                    "relevance_score": "0.632256",
+                    "ticker_sentiment_score": "-0.143671",
+                    "ticker_sentiment_label": "Neutral"
+                },
+                {
+                    "ticker": "NVDA",
+                    "relevance_score": "0.627962",
+                    "ticker_sentiment_score": "-0.109392",
+                    "ticker_sentiment_label": "Neutral"
+                }
+            ]
+        },
+        {
+            "title": "Warren Buffett's Berkshire Hathaway is Worth $1 Trillion. Should I Buy Shares?",
+            "url": "https://global.morningstar.com/en-gb/stocks/warren-buffett-s-berkshire-hathaway-is-worth-1-trillion-should-i-buy-shares",
+            "time_published": "20240829T105059",
+            "authors": [
+                "Sarah Hansen"
+            ],
+            "summary": "Berkshire Hathaway's market capitalization has surpassed $1 trillion, driven by a 30% rise in its shares this year. Despite this, Morningstar deems the stock moderately overvalued with a 2-star rating, maintaining fair value estimates of $640,000 for Class A and $427 for Class B shares. The article highlights strong insurance results and a record cash pile but notes headwinds from BNSF Railway and Berkshire Hathaway Energy, as well as concerns about CEO Warren Buffett's longevity and succession.",
+            "banner_image": "https://cloudfront-us-east-1.images.arcpublishing.com/morningstar/HUPAYM3YAYAIAQELITE6W54C3E.jpg",
+            "source": "Morningstar Canada",
+            "category_within_source": "General",
+            "source_domain": "Morningstar Canada",
+            "topics": [
+                {
+                    "topic": "earnings",
+                    "relevance_score": "0.913528"
+                },
+                {
+                    "topic": "financial_markets",
+                    "relevance_score": "0.810845"
+                },
+                {
+                    "topic": "economy_monetary",
+                    "relevance_score": "0.646466"
+                }
+            ],
+            "overall_sentiment_score": 0.088458,
+            "overall_sentiment_label": "Neutral",
+            "ticker_sentiment": [
+                {
+                    "ticker": "BRK-B",
+                    "relevance_score": "0.320198",
+                    "ticker_sentiment_score": "0.047869",
+                    "ticker_sentiment_label": "Neutral"
+                },
+                {
+                    "ticker": "AAPL",
+                    "relevance_score": "0.718492",
+                    "ticker_sentiment_score": "0.102104",
+                    "ticker_sentiment_label": "Neutral"
+                },
+                {
+                    "ticker": "MSFT",
+                    "relevance_score": "0.604961",
+                    "ticker_sentiment_score": "0.109932",
+                    "ticker_sentiment_label": "Neutral"
+                },
+                {
+                    "ticker": "NVDA",
+                    "relevance_score": "0.614634",
+                    "ticker_sentiment_score": "0.112419",
+                    "ticker_sentiment_label": "Neutral"
+                }
+            ]
+        },
+        {
+            "title": "Semiconductor ETFs Dip Before Nvidia's Strong Earnings",
+            "url": "https://www.etf.com/sections/news/semiconductor-etfs-dip-nvidias-strong-earnings",
+            "time_published": "20240828T172600",
+            "authors": [
+                "DJ Shaw",
+                "Kent Thune"
+            ],
+            "summary": "Major semiconductor ETFs experienced a dip ahead of Nvidia's Q2 earnings report, with the company's stock falling before its after-hours release. Despite the pre-earnings decline in ETFs like SOXX and SMH, Nvidia later reported strong revenue growth, a $50 billion stock buyback program, and an optimistic third-quarter forecast, exceeding Wall Street expectations. This positive earnings report is anticipated to potentially lead to a rebound for semiconductor ETFs, similar to their performance after previous Nvidia earnings calls.",
+            "banner_image": null,
+            "source": "ETF.com",
+            "category_within_source": "General",
+            "source_domain": "ETF.com",
+            "topics": [
+                {
+                    "topic": "earnings",
+                    "relevance_score": "0.900672"
+                },
+                {
+                    "topic": "financial_markets",
+                    "relevance_score": "0.816844"
+                },
+                {
+                    "topic": "technology",
+                    "relevance_score": "0.722047"
+                }
+            ],
+            "overall_sentiment_score": 0.548096,
+            "overall_sentiment_label": "Bullish",
+            "ticker_sentiment": [
+                {
+                    "ticker": "SHOC",
+                    "relevance_score": "1.000000",
+                    "ticker_sentiment_score": "0.333296",
+                    "ticker_sentiment_label": "Somewhat-Bullish"
+                },
+                {
+                    "ticker": "NVDA",
+                    "relevance_score": "0.927260",
+                    "ticker_sentiment_score": "0.732027",
+                    "ticker_sentiment_label": "Bullish"
+                }
+            ]
+        },
+        {
+            "title": "There's a New Nvidia Leveraged ETF. Here's What Investors Should Know Before Buying It.",
+            "url": "https://www.theglobeandmail.com/investing/markets/stocks/NVDA/pressreleases/28245969/theres-a-new-nvidia-leveraged-etf-heres-what-investors-should-know-before-buying-it/",
+            "time_published": "20240828T133936",
+            "authors": [
+                "Motley Fool"
+            ],
+            "summary": "This article discusses the new GraniteShares 2x Long NVDA Daily ETF (NASDAQ: NVDL), designed to double the daily returns of Nvidia stock. It highlights that while attractive, leveraged ETFs carry higher risks, significant fees, and are generally suited for short-term traders rather than long-term buy-and-hold investors. The author advises that investors looking to profit from Nvidia long-term should simply buy the stock directly.",
+            "banner_image": "https://barchart-news-media-prod.aws.barchart.com/FC/402235dce78c7cf89c2e63c93cffe504/%3Furl%3Dhttps%253a%252f%252fg.foolcdn.com%252feditorial%252fimages%252f788084%252fnvidia-nvda-stock-market-chart.jpg%26amp%3Bw%3D700",
+            "source": "The Globe and Mail",
+            "category_within_source": "General",
+            "source_domain": "The Globe and Mail",
+            "topics": [
+                {
+                    "topic": "financial_markets",
+                    "relevance_score": "0.937022"
+                },
+                {
+                    "topic": "technology",
+                    "relevance_score": "0.813280"
+                }
+            ],
+            "overall_sentiment_score": 0.019551,
+            "overall_sentiment_label": "Neutral",
+            "ticker_sentiment": [
+                {
+                    "ticker": "NVDL",
+                    "relevance_score": "1.000000",
+                    "ticker_sentiment_score": "-0.329348",
+                    "ticker_sentiment_label": "Somewhat-Bearish"
+                },
+                {
+                    "ticker": "NVDA",
+                    "relevance_score": "0.911730",
+                    "ticker_sentiment_score": "0.345278",
+                    "ticker_sentiment_label": "Somewhat-Bullish"
+                }
+            ]
+        },
+        {
+            "title": "Investors await earnings from $3T Nvidia, stocks edge higher",
+            "url": "https://www.investmentnews.com/ria-news/investors-await-earnings-from-3t-nvidia-stocks-edge-higher/256810",
+            "time_published": "20240828T111649",
+            "authors": [
+                "Bloomberg"
+            ],
+            "summary": "Global equities saw a slight rise as investors anticipated the crucial earnings report from Nvidia Corp., a $3 trillion company central to the AI industry boom. Nvidia's results are considered a key market indicator, with analysts expecting over 70% revenue growth, and any disappointment could trigger significant market volatility. The report is particularly scrutinized as markets ponder a potential US recession and the Federal Reserve's interest rate policies.",
+            "banner_image": "https://cdn-res.keymedia.com/cdn-cgi/image/w=1000,h=600,f=auto/https://cdn-res.keymedia.com/investmentnews/uploads/2024/08/market-analyze.jpg_s1024x1024wisk20ceQDgCNVzZ_MGzQuko_UXmDmceei8o7cFM-PlKrEv3Oo.jpg",
+            "source": "InvestmentNews",
+            "category_within_source": "General",
+            "source_domain": "InvestmentNews",
+            "topics": [
+                {
+                    "topic": "earnings",
+                    "relevance_score": "0.930298"
+                },
+                {
+                    "topic": "financial_markets",
+                    "relevance_score": "0.947414"
+                },
+                {
+                    "topic": "economy_monetary",
+                    "relevance_score": "0.740587"
+                },
+                {
+                    "topic": "technology",
+                    "relevance_score": "0.814388"
+                },
+                {
+                    "topic": "economy_macro",
+                    "relevance_score": "0.637624"
+                }
+            ],
+            "overall_sentiment_score": -0.260914,
+            "overall_sentiment_label": "Somewhat-Bearish",
+            "ticker_sentiment": [
+                {
+                    "ticker": "NVDA",
+                    "relevance_score": "1.000000",
+                    "ticker_sentiment_score": "-0.210406",
+                    "ticker_sentiment_label": "Somewhat-Bearish"
+                },
+                {
+                    "ticker": "SMCI",
+                    "relevance_score": "0.705434",
+                    "ticker_sentiment_score": "-0.343028",
+                    "ticker_sentiment_label": "Somewhat-Bearish"
+                }
+            ]
+        },
+        {
+            "title": "Nvidia’s Earnings Will Test the S&P 500’s $4 Trillion Recovery",
+            "url": "https://www.bloomberg.com/news/articles/2024-08-28/nvidia-s-earnings-will-test-the-s-p-500-s-4-trillion-recovery",
+            "time_published": "20240828T103200",
+            "authors": [
+                "Carmen Reinicke"
+            ],
+            "summary": "Nvidia's upcoming earnings report is highly anticipated by investors as the company has significantly influenced the S&P 500's recent $4 trillion recovery. The chipmaking giant's shares have surged nearly $3 trillion since ChatGPT's launch, giving it a dominant role in equity indexes. Traders are preparing for potential market volatility following Wednesday's earnings release.",
+            "banner_image": null,
+            "source": "Bloomberg.com",
+            "category_within_source": "General",
+            "source_domain": "Bloomberg.com",
+            "topics": [
+                {
+                    "topic": "earnings",
+                    "relevance_score": "0.930964"
+                },
+                {
+                    "topic": "financial_markets",
+                    "relevance_score": "0.936242"
+                },
+                {
+                    "topic": "technology",
+                    "relevance_score": "0.842075"
+                },
+                {
+                    "topic": "economy_macro",
+                    "relevance_score": "0.647354"
+                },
+                {
+                    "topic": "finance",
+                    "relevance_score": "0.607046"
+                }
+            ],
+            "overall_sentiment_score": 0.360505,
+            "overall_sentiment_label": "Bullish",
+            "ticker_sentiment": [
+                {
+                    "ticker": "NVDA",
+                    "relevance_score": "1.000000",
+                    "ticker_sentiment_score": "0.471548",
+                    "ticker_sentiment_label": "Bullish"
+                },
+                {
+                    "ticker": "SPGI",
+                    "relevance_score": "0.738978",
+                    "ticker_sentiment_score": "0.318630",
+                    "ticker_sentiment_label": "Somewhat-Bullish"
+                },
+                {
+                    "ticker": "AMD",
+                    "relevance_score": "0.644268",
+                    "ticker_sentiment_score": "0.233112",
+                    "ticker_sentiment_label": "Somewhat-Bullish"
+                }
+            ]
+        },
+        {
+            "title": "Berkshire Just Crossed $1 Trillion. Is It a Buy?",
+            "url": "https://www.morningstar.com/stocks/after-earnings-is-berkshire-hathaway-stock-buy",
+            "time_published": "20240828T000000",
+            "authors": [
+                "Sarah Hansen"
+            ],
+            "summary": "Berkshire Hathaway recently reached a market capitalization of $1 trillion, joining an exclusive group of U.S. firms. Despite its significant rally this year, Morningstar analysts currently rate Berkshire Hathaway stock as moderately overvalued, with a 2-star rating. The article details the company's strong Q2 earnings, insurance operations, rising cash pile, and continued equity selling, while also addressing risks such as CEO longevity and competitive markets.",
+            "banner_image": "NULL",
+            "source": "Morningstar",
+            "category_within_source": "General",
+            "source_domain": "Morningstar",
+            "topics": [
+                {
+                    "topic": "earnings",
+                    "relevance_score": "0.927799"
+                },
+                {
+                    "topic": "financial_markets",
+                    "relevance_score": "0.938271"
+                }
+            ],
+            "overall_sentiment_score": 0.067392,
+            "overall_sentiment_label": "Neutral",
+            "ticker_sentiment": [
+                {
+                    "ticker": "BRK-A",
+                    "relevance_score": "0.341193",
+                    "ticker_sentiment_score": "0.018381",
+                    "ticker_sentiment_label": "Neutral"
+                },
+                {
+                    "ticker": "AAPL",
+                    "relevance_score": "0.722885",
+                    "ticker_sentiment_score": "-0.068013",
+                    "ticker_sentiment_label": "Neutral"
+                },
+                {
+                    "ticker": "MSFT",
+                    "relevance_score": "0.566545",
+                    "ticker_sentiment_score": "0.147300",
+                    "ticker_sentiment_label": "Neutral"
+                },
+                {
+                    "ticker": "NVDA",
+                    "relevance_score": "0.584094",
+                    "ticker_sentiment_score": "0.137261",
+                    "ticker_sentiment_label": "Neutral"
+                }
+            ]
+        },
+        {
+            "title": "NVIDIA Announces Financial Results for Second Quarter Fiscal 2025",
+            "url": "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-second-quarter-fiscal-2025",
+            "time_published": "20240828T000000",
+            "authors": [],
+            "summary": "NVIDIA reported record quarterly revenue of $30.0 billion for Q2 fiscal 2025, marking a 122% increase year-over-year, driven by record Data Center revenue of $26.3 billion. The company's CEO, Jensen Huang, highlighted strong demand for Hopper and anticipation for Blackwell, emphasizing NVIDIA's full-stack data center platform for generative AI. NVIDIA also announced a new $50.0 billion share repurchase authorization and provided a positive outlook for Q3 fiscal 2025.",
+            "banner_image": null,
+            "source": "NVIDIA Newsroom",
+            "category_within_source": "General",
+            "source_domain": "NVIDIA Newsroom",
+            "topics": [
+                {
+                    "topic": "earnings",
+                    "relevance_score": "0.903043"
+                },
+                {
+                    "topic": "technology",
+                    "relevance_score": "0.816237"
+                }
+            ],
+            "overall_sentiment_score": 0.495874,
+            "overall_sentiment_label": "Bullish",
+            "ticker_sentiment": [
+                {
+                    "ticker": "NVDA",
+                    "relevance_score": "1.000000",
+                    "ticker_sentiment_score": "0.498028",
+                    "ticker_sentiment_label": "Bullish"
+                }
+            ]
+        },
+        {
+            "title": "AMD's stock price has risen, and market signals indicate that it is gradually challenging NVIDIA's position.",
+            "url": "https://news.futunn.com/en/post/61222315/amd-s-stock-price-has-risen-and-market-signals-indicate",
+            "time_published": "20240827T180000",
+            "authors": [
+                "Golden10 Data"
+            ],
+            "summary": "AMD's stock price saw a 2% rise following an analyst upgrade to 'Buy' from Truist Securities, indicating a growing challenge to NVIDIA's dominance in the AI chip market. Industry insiders are increasingly taking AMD's technology seriously, with hyperscalers adopting their chips for AI data centers. While AMD's market share in data center CPUs has grown significantly, analysts don't expect a similar level of dominance in GPUs but anticipate opportunities for inroads, especially with products like the Instinct MI355 AI accelerator.",
+            "banner_image": null,
+            "source": "富途牛牛",
+            "category_within_source": "General",
+            "source_domain": "富途牛牛",
+            "topics": [
+                {
+                    "topic": "technology",
+                    "relevance_score": "0.947833"
+                },
+                {
+                    "topic": "earnings",
+                    "relevance_score": "0.845157"
+                },
+                {
+                    "topic": "financial_markets",
+                    "relevance_score": "0.705476"
+                }
+            ],
+            "overall_sentiment_score": 0.247273,
+            "overall_sentiment_label": "Somewhat-Bullish",
+            "ticker_sentiment": [
+                {
+                    "ticker": "AMDL",
+                    "relevance_score": "0.892903",
+                    "ticker_sentiment_score": "0.334681",
+                    "ticker_sentiment_label": "Somewhat-Bullish"
+                },
+                {
+                    "ticker": "AMD",
+                    "relevance_score": "1.000000",
+                    "ticker_sentiment_score": "0.485137",
+                    "ticker_sentiment_label": "Bullish"
+                },
+                {
+                    "ticker": "NVDA",
+                    "relevance_score": "0.942095",
+                    "ticker_sentiment_score": "0.271495",
+                    "ticker_sentiment_label": "Somewhat-Bullish"
+                },
+                {
+                    "ticker": "INTC",
+                    "relevance_score": "0.603354",
+                    "ticker_sentiment_score": "-0.126301",
+                    "ticker_sentiment_label": "Neutral"
+                }
+            ]
+        },
+        {
+            "title": "Taiwan’s Semiconductor Sustainability and Global Implications",
+            "url": "https://newlinesinstitute.org/tech-econ-sov-sec/taiwans-semiconductor-sustainability-and-global-implications/",
+            "time_published": "20240827T112928",
+            "authors": [
+                "Chaouki Ghenai",
+                "Eugene Chausovsky"
+            ],
+            "summary": "This article examines the critical link between Taiwan's semiconductor industry and its energy security, highlighting the global economic repercussions of potential energy crises due to the island's reliance on imported resources and geopolitical tensions. Authors Chaouki Ghenai and Eugene Chausovsky recommend diversifying energy sources, promoting efficiency, investing in renewables, and fostering international cooperation to safeguard Taiwan's vital semiconductor sector and ensure global supply chain stability. The piece also details the energy-intensive nature of semiconductor manufacturing and Taiwan's efforts to transition to cleaner energy while facing significant challenges in meeting its renewable energy targets.",
+            "banner_image": "https://newlinesinstitute.org/wp-content/uploads/GettyImages-1414156216-2048x1366.jpg",
+            "source": "New Lines Institute",
+            "category_within_source": "General",
+            "source_domain": "New Lines Institute",
+            "topics": [
+                {
+                    "topic": "manufacturing",
+                    "relevance_score": "0.902619"
+                },
+                {
+                    "topic": "technology",
+                    "relevance_score": "0.842117"
+                },
+                {
+                    "topic": "economy_macro",
+                    "relevance_score": "0.748227"
+                },
+                {
+                    "topic": "energy_transportation",
+                    "relevance_score": "0.731900"
+                }
+            ],
+            "overall_sentiment_score": 0.153695,
+            "overall_sentiment_label": "Somewhat-Bullish",
+            "ticker_sentiment": [
+                {
+                    "ticker": "TSM",
+                    "relevance_score": "0.965208",
+                    "ticker_sentiment_score": "0.290299",
+                    "ticker_sentiment_label": "Somewhat-Bullish"
+                },
+                {
+                    "ticker": "AMAT",
+                    "relevance_score": "0.644358",
+                    "ticker_sentiment_score": "0.139380",
+                    "ticker_sentiment_label": "Neutral"
+                },
+                {
+                    "ticker": "INTC",
+                    "relevance_score": "0.567248",
+                    "ticker_sentiment_score": "0.053849",
+                    "ticker_sentiment_label": "Neutral"
+                },
+                {
+                    "ticker": "NVDA",
+                    "relevance_score": "0.566322",
+                    "ticker_sentiment_score": "0.090656",
+                    "ticker_sentiment_label": "Neutral"
+                }
+            ]
+        },
+        {
+            "title": "IBM Is America’s Worst Big Tech Company",
+            "url": "https://247wallst.com/technology-3/2024/08/27/ibm-is-americas-worst-big-tech-company-3/",
+            "time_published": "20240827T110619",
+            "authors": [
+                "Douglas A. McIntyre"
+            ],
+            "summary": "International Business Machines Corp. (IBM) is highlighted as America's worst big tech company, lagging significantly behind competitors like Microsoft in market capitalization, revenue, net income, and cloud market share. The article attributes IBM's decline to missing major technological shifts such as PC operating systems, e-commerce, search, and smartphones. This has resulted in a much smaller market presence and lower financial performance compared to leading tech giants.",
+            "banner_image": "https://247wallst.com/wp-content/uploads/2019/01/imageForEntry14-8.jpg",
+            "source": "24/7 Wall St.",
+            "category_within_source": "General",
+            "source_domain": "24/7 Wall St.",
+            "topics": [
+                {
+                    "topic": "earnings",
+                    "relevance_score": "0.931681"
+                },
+                {
+                    "topic": "technology",
+                    "relevance_score": "1.000000"
+                },
+                {
+                    "topic": "financial_markets",
+                    "relevance_score": "0.828683"
+                }
+            ],
+            "overall_sentiment_score": -0.175048,
+            "overall_sentiment_label": "Somewhat-Bearish",
+            "ticker_sentiment": [
+                {
+                    "ticker": "IBM",
+                    "relevance_score": "1.000000",
+                    "ticker_sentiment_score": "-0.635065",
+                    "ticker_sentiment_label": "Bearish"
+                },
+                {
+                    "ticker": "MSFT",
+                    "relevance_score": "0.810892",
+                    "ticker_sentiment_score": "-0.120732",
+                    "ticker_sentiment_label": "Neutral"
+                },
+                {
+                    "ticker": "AMZN",
+                    "relevance_score": "0.609824",
+                    "ticker_sentiment_score": "-0.143498",
+                    "ticker_sentiment_label": "Neutral"
+                },
+                {
+                    "ticker": "NVDA",
+                    "relevance_score": "0.634540",
+                    "ticker_sentiment_score": "0.245711",
+                    "ticker_sentiment_label": "Somewhat-Bullish"
+                }
+            ]
+        },
+        {
+            "title": "VMware goes all-in on the private cloud, as Broadcom unit showcases AI and counters price concerns",
+            "url": "https://siliconangle.com/2024/08/27/vmware-goes-private-cloud-broadcom-unit-showcases-ai-counters-price-concerns/",
+            "time_published": "20240827T104803",
+            "authors": [
+                "Mark Albertson"
+            ],
+            "summary": "VMware, under Broadcom, is heavily focusing on private cloud solutions, asserting it's more cost-effective than public cloud for enterprise computing. During VMware Explore, the company unveiled enhancements for VMware Cloud Foundation (VCF) and Tanzu, alongside advancements in its Private AI initiative, aiming to simplify offerings and accelerate application delivery. VMware executives also addressed cost concerns, explaining that while a shift to a subscription model might increase prices for some, VCF subscription prices have been significantly reduced, emphasizing the enduring value of private infrastructure.",
+            "banner_image": "https://d15shllkswkct0.cloudfront.net/wp-content/blogs.dir/1/files/2024/08/VMware-Explore1.jpg",
+            "source": "SiliconANGLE",
+            "category_within_source": "General",
+            "source_domain": "SiliconANGLE",
+            "topics": [
+                {
+                    "topic": "technology",
+                    "relevance_score": "0.928723"
+                },
+                {
+                    "topic": "mergers_and_acquisitions",
+                    "relevance_score": "0.621606"
+                }
+            ],
+            "overall_sentiment_score": 0.352163,
+            "overall_sentiment_label": "Bullish",
+            "ticker_sentiment": [
+                {
+                    "ticker": "AVGO",
+                    "relevance_score": "1.000000",
+                    "ticker_sentiment_score": "0.431890",
+                    "ticker_sentiment_label": "Bullish"
+                },
+                {
+                    "ticker": "NVDA",
+                    "relevance_score": "0.615638",
+                    "ticker_sentiment_score": "0.309542",
+                    "ticker_sentiment_label": "Somewhat-Bullish"
+                }
+            ]
+        },
+        {
+            "title": "TSMY ETF Stock Price History",
+            "url": "https://www.investing.com/etfs/tsmy-historical-data",
+            "time_published": "20240827T081031",
+            "authors": [],
+            "summary": "This article provides comprehensive historical stock price data for the YieldMax TSM Option Income Strategy ETF (TSMY). It details closing prices, opening prices, high and low values, price changes, and percentage changes, allowing for analysis across daily, weekly, or monthly intervals. The data includes stock performance for a specified date range, along with key summary statistics and an FAQ section covering recent performance and trading range.",
+            "banner_image": null,
+            "source": "Investing.com",
+            "category_within_source": "General",
+            "source_domain": "Investing.com",
+            "topics": [
+                {
+                    "topic": "financial_markets",
+                    "relevance_score": "1.000000"
+                }
+            ],
+            "overall_sentiment_score": -0.187725,
+            "overall_sentiment_label": "Somewhat-Bearish",
+            "ticker_sentiment": [
+                {
+                    "ticker": "TSMY",
+                    "relevance_score": "1.000000",
+                    "ticker_sentiment_score": "-0.075440",
+                    "ticker_sentiment_label": "Neutral"
+                },
+                {
+                    "ticker": "NVDA",
+                    "relevance_score": "0.635872",
+                    "ticker_sentiment_score": "-0.303026",
+                    "ticker_sentiment_label": "Somewhat-Bearish"
+                }
+            ]
+        },
+        {
+            "title": "Broadcom Charts the Path Forward for Private Cloud",
+            "url": "https://news.broadcom.com/vmware-explore/vmware-explore-2024-news-summary",
+            "time_published": "20240827T000000",
+            "authors": [],
+            "summary": "At VMware Explore 2024, Broadcom Inc. announced new and enhanced solutions for private cloud acceleration, addressing infrastructure challenges, public cloud complexities, and AI implementation risks. Key introductions include VMware Cloud Foundation 9 for modernized infrastructure, VMware Tanzu Platform 10 for accelerated intelligent application delivery, and new enterprise AI capabilities including VMware Private AI Foundation with NVIDIA. These offerings aim to boost innovation by improving infrastructure, streamlining application deployment, and ensuring secure and scalable AI development.",
+            "banner_image": null,
+            "source": "Broadcom",
+            "category_within_source": "General",
+            "source_domain": "Broadcom",
+            "topics": [
+                {
+                    "topic": "technology",
+                    "relevance_score": "0.912997"
+                }
+            ],
+            "overall_sentiment_score": 0.325938,
+            "overall_sentiment_label": "Somewhat-Bullish",
+            "ticker_sentiment": [
+                {
+                    "ticker": "AVGO",
+                    "relevance_score": "1.000000",
+                    "ticker_sentiment_score": "0.439295",
+                    "ticker_sentiment_label": "Bullish"
+                },
+                {
+                    "ticker": "NVDA",
+                    "relevance_score": "0.615507",
+                    "ticker_sentiment_score": "0.342142",
+                    "ticker_sentiment_label": "Somewhat-Bullish"
+                },
+                {
+                    "ticker": "MSFT",
+                    "relevance_score": "0.578049",
+                    "ticker_sentiment_score": "0.233120",
+                    "ticker_sentiment_label": "Somewhat-Bullish"
+                }
+            ]
+        },
+        {
+            "title": "Nvidia’s Earnings: Biggest News of the Week for ETFs",
+            "url": "https://www.etf.com/sections/features/nvidia-earnings-etf-news",
+            "time_published": "20240826T210915",
+            "authors": [
+                "Sumit Roy"
+            ],
+            "summary": "Nvidia's upcoming earnings report is the most anticipated financial event of the week, with high expectations for a blowout quarter driven by AI chip demand. Investors will closely watch for Q2 revenue numbers and guidance for Q3, especially regarding potential delays in the next-generation Blackwell chips. Movements in Nvidia's stock could significantly impact various ETFs, given its substantial weighting in major funds like SPY, QQQ, SOXX, and SMH.",
+            "banner_image": "https://www.etf.com/sites/default/files/styles/related_latest_news_262x195/public/2023-08/Nvidia_ETFs.jpg.webp?itok=6lGFRK-p",
+            "source": "ETF.com",
+            "category_within_source": "General",
+            "source_domain": "ETF.com",
+            "topics": [
+                {
+                    "topic": "earnings",
+                    "relevance_score": "1.000000"
+                },
+                {
+                    "topic": "financial_markets",
+                    "relevance_score": "0.910513"
+                },
+                {
+                    "topic": "technology",
+                    "relevance_score": "0.816224"
+                }
+            ],
+            "overall_sentiment_score": 0.144202,
+            "overall_sentiment_label": "Neutral",
+            "ticker_sentiment": [
+                {
+                    "ticker": "SPXD",
+                    "relevance_score": "0.307306",
+                    "ticker_sentiment_score": "0.029999",
+                    "ticker_sentiment_label": "Neutral"
+                },
+                {
+                    "ticker": "NVDA",
+                    "relevance_score": "1.000000",
+                    "ticker_sentiment_score": "0.274939",
+                    "ticker_sentiment_label": "Somewhat-Bullish"
+                }
+            ]
+        },
+        {
+            "title": "This ETF Could Be the Easiest Way to Own the Future of AI",
+            "url": "https://www.theglobeandmail.com/investing/markets/markets-news/Motley%20Fool/34400264/this-etf-could-be-the-easiest-way-to-own-the-future-of-ai/",
+            "time_published": "20240826T171100",
+            "authors": [
+                "Motley Fool"
+            ],
+            "summary": "The article discusses the Ark Autonomous Technology & Robotics ETF (NYSEMKT: ARKQ) as an easy way for investors to gain exposure to the AI sector. Managed by Cathie Wood, this actively managed ETF focuses on a concentrated portfolio of AI-related companies, including Tesla and Kratos Defense and Security, rather than just the largest AI stocks. Despite its volatility, the ETF has delivered strong annualized returns of approximately 15.7% since its inception in September 2014, offering long-term investors a reasonable option for AI investment.",
+            "banner_image": null,
+            "source": "The Globe and Mail",
+            "category_within_source": "General",
+            "source_domain": "The Globe and Mail",
+            "topics": [
+                {
+                    "topic": "financial_markets",
+                    "relevance_score": "0.925777"
+                },
+                {
+                    "topic": "technology",
+                    "relevance_score": "0.833750"
+                }
+            ],
+            "overall_sentiment_score": 0.332776,
+            "overall_sentiment_label": "Somewhat-Bullish",
+            "ticker_sentiment": [
+                {
+                    "ticker": "ARKQ",
+                    "relevance_score": "1.000000",
+                    "ticker_sentiment_score": "0.493286",
+                    "ticker_sentiment_label": "Bullish"
+                },
+                {
+                    "ticker": "TSLA",
+                    "relevance_score": "0.713399",
+                    "ticker_sentiment_score": "0.319250",
+                    "ticker_sentiment_label": "Somewhat-Bullish"
+                },
+                {
+                    "ticker": "NVDA",
+                    "relevance_score": "0.623795",
+                    "ticker_sentiment_score": "0.275631",
+                    "ticker_sentiment_label": "Somewhat-Bullish"
+                },
+                {
+                    "ticker": "AMD",
+                    "relevance_score": "0.587756",
+                    "ticker_sentiment_score": "0.291000",
+                    "ticker_sentiment_label": "Somewhat-Bullish"
+                }
+            ]
+        },
+        {
+            "title": "What Are the Benefits of Windows 11 for AI?",
+            "url": "https://www.hp.com/us-en/shop/tech-takes/benefits-windows-11-ai",
+            "time_published": "20240826T110532",
+            "authors": [
+                "Anna-Marie Brittain"
+            ],
+            "summary": "Windows 11 leverages AI and machine learning to enhance productivity, security, and user experience across various applications. Key benefits include optimized UI with features like Snap Assist and Copilot, improved performance in productivity tools and gaming, and robust cybersecurity measures. HP and other manufacturers are integrating these AI capabilities into their hardware, such as the HP Spectre and ENVY lines, to deliver powerful and secure computing experiences.",
+            "banner_image": "https://www.hp.com/us-en/shop/app/assets/images/uploads/prod/What Are the Benefits of Windows 11 for AI1724694889189484.png",
+            "source": "HP",
+            "category_within_source": "General",
+            "source_domain": "HP",
+            "topics": [
+                {
+                    "topic": "technology",
+                    "relevance_score": "0.944989"
+                }
+            ],
+            "overall_sentiment_score": 0.305562,
+            "overall_sentiment_label": "Somewhat-Bullish",
+            "ticker_sentiment": [
+                {
+                    "ticker": "HPQ",
+                    "relevance_score": "1.000000",
+                    "ticker_sentiment_score": "0.420014",
+                    "ticker_sentiment_label": "Bullish"
+                },
+                {
+                    "ticker": "MSFT",
+                    "relevance_score": "0.899435",
+                    "ticker_sentiment_score": "0.326148",
+                    "ticker_sentiment_label": "Somewhat-Bullish"
+                },
+                {
+                    "ticker": "INTC",
+                    "relevance_score": "0.718514",
+                    "ticker_sentiment_score": "0.271658",
+                    "ticker_sentiment_label": "Somewhat-Bullish"
+                },
+                {
+                    "ticker": "NVDA",
+                    "relevance_score": "0.644401",
+                    "ticker_sentiment_score": "0.295457",
+                    "ticker_sentiment_label": "Somewhat-Bullish"
+                },
+                {
+                    "ticker": "AMD",
+                    "relevance_score": "0.569055",
+                    "ticker_sentiment_score": "0.204762",
+                    "ticker_sentiment_label": "Somewhat-Bullish"
+                }
+            ]
+        },
+        {
+            "title": "Amplify CWP Growth & Income ETF (QDVO) Stock Price, Quote, News & History",
+            "url": "https://www.benzinga.com/quote/QDVO",
+            "time_published": "20240826T104017",
+            "authors": [],
+            "summary": "This article provides a detailed profile of the Amplify CWP Growth & Income ETF (QDVO), including its current stock price, key statistics like AUM, dividend yield, and management fees. It also lists recent news concerning companies within its top holdings, such as Nvidia, and answers frequently asked questions about purchasing, competitors, forecasts, and dividend payments for QDVO. The ETF focuses on growth-oriented U.S. equities with an opportunistic option-selling strategy.",
+            "banner_image": "https://image-util.benzinga.com/api/v2/logos/file/image/1633061/mark_composite_light__eda37828ae2efb87e1ea2110701f720f.png?height=60&max_width=&width=60&x-bz-cred=sb~qUb9UeGDLq8eYNc0S_I9VtNmZv_iUGPo6SUox55KU98lXwY8_neUJPPDcpbhE3GNO6OP3NPrAg3Sf4hQK8rp5ujrgr8LQuvrb4IUngOP-GJ7EIME4k2GG5Ynd8xfHouBMjhh3xkzWCLqyQTizbf07tyQUB43&x-bz-exp=1776854992&x-bz-security-isin=&x-bz-security-symbol=QDVO&x-bz-signature=95cbb83bebed0d434e785c463c9d6ffd4fb7f2cee95329a550d488b603f0765",
+            "source": "Benzinga",
+            "category_within_source": "General",
+            "source_domain": "Benzinga",
+            "topics": [
+                {
+                    "topic": "financial_markets",
+                    "relevance_score": "0.918323"
+                },
+                {
+                    "topic": "finance",
+                    "relevance_score": "0.846771"
+                },
+                {
+                    "topic": "technology",
+                    "relevance_score": "0.731913"
+                }
+            ],
+            "overall_sentiment_score": 0.139883,
+            "overall_sentiment_label": "Neutral",
+            "ticker_sentiment": [
+                {
+                    "ticker": "QDVO",
+                    "relevance_score": "1.000000",
+                    "ticker_sentiment_score": "0.011849",
+                    "ticker_sentiment_label": "Neutral"
+                },
+                {
+                    "ticker": "NVDA",
+                    "relevance_score": "0.837747",
+                    "ticker_sentiment_score": "0.340048",
+                    "ticker_sentiment_label": "Somewhat-Bullish"
+                },
+                {
+                    "ticker": "AAPL",
+                    "relevance_score": "0.711012",
+                    "ticker_sentiment_score": "0.056860",
+                    "ticker_sentiment_label": "Neutral"
+                },
+                {
+                    "ticker": "MSFT",
+                    "relevance_score": "0.639193",
+                    "ticker_sentiment_score": "0.058019",
+                    "ticker_sentiment_label": "Neutral"
+                }
+            ]
+        },
+        {
+            "title": "Beamr Imaging Ltd. (BMR): A Popular AI Penny Stock Under $5",
+            "url": "https://finance.yahoo.com/news/beamr-imaging-ltd-bmr-popular-190531743.html",
+            "time_published": "20240826T070531",
+            "authors": [
+                "Maham Fatima"
+            ],
+            "summary": "This article discusses Beamr Imaging Ltd. (NASDAQ:BMR) as a popular AI penny stock under $5, highlighted within a broader analysis of the booming AI market. Beamr's video technology and image science software, which enhances media quality with reduced data usage and integrates AI features, positions it within this high-growth sector. The article details AI's economic impact, market valuations, and the increasing trend of businesses adopting AI, underscoring the potential for companies like Beamr.",
+            "banner_image": null,
+            "source": "Yahoo Finance",
+            "category_within_source": "General",
+            "source_domain": "Yahoo Finance",
+            "topics": [
+                {
+                    "topic": "technology",
+                    "relevance_score": "0.907691"
+                },
+                {
+                    "topic": "financial_markets",
+                    "relevance_score": "0.734799"
+                },
+                {
+                    "topic": "economy_macro",
+                    "relevance_score": "0.601370"
+                },
+                {
+                    "topic": "finance",
+                    "relevance_score": "0.647693"
+                }
+            ],
+            "overall_sentiment_score": 0.379187,
+            "overall_sentiment_label": "Bullish",
+            "ticker_sentiment": [
+                {
+                    "ticker": "BMR",
+                    "relevance_score": "1.000000",
+                    "ticker_sentiment_score": "0.401950",
+                    "ticker_sentiment_label": "Bullish"
+                },
+                {
+                    "ticker": "NVDA",
+                    "relevance_score": "0.619046",
+                    "ticker_sentiment_score": "0.339753",
+                    "ticker_sentiment_label": "Somewhat-Bullish"
+                }
+            ]
+        },
+        {
+            "title": "Stay Flexible With the AI Trade With These 2 ETFs",
+            "url": "https://www.etftrends.com/leveraged-inverse-content-hub/stay-flexible-ai-trade-2-etfs/",
+            "time_published": "20240826T011108",
+            "authors": [
+                "Ben Hernandez"
+            ],
+            "summary": "This article discusses being flexible with AI stock market trades using leveraged and inverse ETFs from Direxion. It highlights the Direxion Daily AI and Big Data Bull 2X Shares (AIBU) for bullish trends and the Direxion Daily AI and Big Data Bear 2X Shares (AIBD) for bearish turns, allowing traders to adapt to short-term market volatility especially with the forthcoming U.S. presidential election.",
+            "banner_image": "https://www.etftrends.com/wp-content/uploads/2025/09/Leveraged_Inverse_Direxion_masthead_overlay_1600x121@2x.png",
+            "source": "ETF Trends",
+            "category_within_source": "General",
+            "source_domain": "ETF Trends",
+            "topics": [
+                {
+                    "topic": "financial_markets",
+                    "relevance_score": "0.931980"
+                },
+                {
+                    "topic": "technology",
+                    "relevance_score": "0.832835"
+                },
+                {
+                    "topic": "economy_macro",
+                    "relevance_score": "0.645868"
+                }
+            ],
+            "overall_sentiment_score": 0.347384,
+            "overall_sentiment_label": "Somewhat-Bullish",
+            "ticker_sentiment": [
+                {
+                    "ticker": "AIBU",
+                    "relevance_score": "1.000000",
+                    "ticker_sentiment_score": "0.433055",
+                    "ticker_sentiment_label": "Bullish"
+                },
+                {
+                    "ticker": "NVDA",
+                    "relevance_score": "0.725094",
+                    "ticker_sentiment_score": "0.323518",
+                    "ticker_sentiment_label": "Somewhat-Bullish"
+                },
+                {
+                    "ticker": "AAPL",
+                    "relevance_score": "0.646906",
+                    "ticker_sentiment_score": "0.301604",
+                    "ticker_sentiment_label": "Somewhat-Bullish"
+                },
+                {
+                    "ticker": "MSFT",
+                    "relevance_score": "0.618034",
+                    "ticker_sentiment_score": "0.317419",
+                    "ticker_sentiment_label": "Somewhat-Bullish"
+                }
+            ]
+        },
+        {
+            "title": "What if Nvidia Misses Earnings?",
+            "url": "https://www.morningstar.com/stocks/what-if-nvidia-misses-earnings",
+            "time_published": "20240826T000000",
+            "authors": [
+                "Sarah Hansen"
+            ],
+            "summary": "This article discusses the anticipation surrounding Nvidia's second-quarter earnings report, highlighting the potential widespread market ramifications if the company misses expectations due to its heavy weighting in major indexes and its critical role in AI technology. Despite strong past performance and analyst optimism, the piece explores the risks of AI spending sustainability and concentration risk for index fund investors.",
+            "banner_image": null,
+            "source": "Morningstar",
+            "category_within_source": "General",
+            "source_domain": "Morningstar",
+            "topics": [
+                {
+                    "topic": "earnings",
+                    "relevance_score": "0.927771"
+                },
+                {
+                    "topic": "technology",
+                    "relevance_score": "0.818553"
+                },
+                {
+                    "topic": "financial_markets",
+                    "relevance_score": "0.732175"
+                },
+                {
+                    "topic": "economy_macro",
+                    "relevance_score": "0.616854"
+                }
+            ],
+            "overall_sentiment_score": 0.330028,
+            "overall_sentiment_label": "Somewhat-Bullish",
+            "ticker_sentiment": [
+                {
+                    "ticker": "GOOG",
+                    "relevance_score": "0.620108",
+                    "ticker_sentiment_score": "0.270238",
+                    "ticker_sentiment_label": "Somewhat-Bullish"
+                },
+                {
+                    "ticker": "NVDA",
+                    "relevance_score": "1.000000",
+                    "ticker_sentiment_score": "0.321154",
+                    "ticker_sentiment_label": "Somewhat-Bullish"
+                },
+                {
+                    "ticker": "MSFT",
+                    "relevance_score": "0.616268",
+                    "ticker_sentiment_score": "0.336230",
+                    "ticker_sentiment_label": "Somewhat-Bullish"
+                },
+                {
+                    "ticker": "AMZN",
+                    "relevance_score": "0.602695",
+                    "ticker_sentiment_score": "0.315338",
+                    "ticker_sentiment_label": "Somewhat-Bullish"
+                }
+            ]
+        },
+        {
+            "title": "Joel Greenblatt – Top 10 Holdings – Latest 13F",
+            "url": "https://acquirersmultiple.com/2024/08/joel-greenblatt-top-10-holdings-latest-13f-7/",
+            "time_published": "20240826T000000",
+            "authors": [
+                "Johnny Hopkins"
+            ],
+            "summary": "This article details the top 10 holdings of superinvestor Joel Greenblatt based on his latest 13F-HR filing as of June 30, 2024. His portfolio has a market value of over $7.7 billion, with 25.34% concentration in his top ten positions, which include major ETFs and tech stocks like NVIDIA, Microsoft, Apple, Alphabet, and Amazon. The piece emphasizes the value of 13F documents for investors tracking prominent fund managers' strategies.",
+            "banner_image": null,
+            "source": "The Acquirer's Multiple",
+            "category_within_source": "General",
+            "source_domain": "The Acquirer's Multiple",
+            "topics": [
+                {
+                    "topic": "financial_markets",
+                    "relevance_score": "0.940530"
+                },
+                {
+                    "topic": "finance",
+                    "relevance_score": "0.834828"
+                },
+                {
+                    "topic": "technology",
+                    "relevance_score": "0.643172"
+                }
+            ],
+            "overall_sentiment_score": 0.366222,
+            "overall_sentiment_label": "Bullish",
+            "ticker_sentiment": [
+                {
+                    "ticker": "GSPY",
+                    "relevance_score": "1.000000",
+                    "ticker_sentiment_score": "0.377036",
+                    "ticker_sentiment_label": "Bullish"
+                },
+                {
+                    "ticker": "NVDA",
+                    "relevance_score": "0.615789",
+                    "ticker_sentiment_score": "0.354934",
+                    "ticker_sentiment_label": "Bullish"
+                },
+                {
+                    "ticker": "MSFT",
+                    "relevance_score": "0.610252",
+                    "ticker_sentiment_score": "0.368479",
+                    "ticker_sentiment_label": "Bullish"
+                }
+            ]
+        },
+        {
+            "title": "AMD's $4.9 Billion Acquisition of ZT Systems: A Strategic Move to Challenge Nvidia's AI Dominance",
+            "url": "https://datacentremagazine.com/technology-and-ai/amd-acquiring-zt-systems-to-challenge-nvidias-ai-dominance",
+            "time_published": "20240826T000000",
+            "authors": [
+                "Helen Sydney Adams"
+            ],
+            "summary": "AMD has announced its US$4.9 billion acquisition of ZT Systems, a leading provider of AI infrastructure. This strategic move aims to strengthen AMD's position in the AI infrastructure market and enable it to better compete with industry leader Nvidia by offering comprehensive, optimized AI solutions to cloud and enterprise customers. The acquisition is intended to combine AMD's silicon and software capabilities with ZT Systems' expertise in designing and deploying data center AI compute and storage infrastructure.",
+            "banner_image": null,
+            "source": "Data Centre Magazine",
+            "category_within_source": "General",
+            "source_domain": "Data Centre Magazine",
+            "topics": [
+                {
+                    "topic": "mergers_and_acquisitions",
+                    "relevance_score": "1.000000"
+                },
+                {
+                    "topic": "technology",
+                    "relevance_score": "0.926392"
+                }
+            ],
+            "overall_sentiment_score": 0.069922,
+            "overall_sentiment_label": "Neutral",
+            "ticker_sentiment": [
+                {
+                    "ticker": "AMD",
+                    "relevance_score": "1.000000",
+                    "ticker_sentiment_score": "0.448206",
+                    "ticker_sentiment_label": "Bullish"
+                },
+                {
+                    "ticker": "NVDA",
+                    "relevance_score": "0.885756",
+                    "ticker_sentiment_score": "-0.321604",
+                    "ticker_sentiment_label": "Somewhat-Bearish"
+                },
+                {
+                    "ticker": "DELL",
+                    "relevance_score": "0.558756",
+                    "ticker_sentiment_score": "0.146185",
+                    "ticker_sentiment_label": "Neutral"
+                }
+            ]
+        }
+    ]
+}

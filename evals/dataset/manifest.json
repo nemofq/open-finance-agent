@@ -1,0 +1,142 @@
+{
+  "version": "mock-mcp-v5",
+  "coverageContractVersion": 7,
+  "coverageContractHash": "48a113b4dc327a479e0134282aa39c0fc184edda5c4d8f97252bd06cfcd264ae",
+  "taskCount": 12,
+  "taskIds": [
+    "retail-01-nvda-beat-and-drop",
+    "retail-02-nike-moat-erosion",
+    "retail-03-nuclear-thematic-purity",
+    "retail-04-dividend-yield-trap",
+    "retail-05-intel-value-trap",
+    "retail-06-mstr-proxy-leverage",
+    "retail-09-narrative-factcheck-apple",
+    "retail-10-smci-accounting-red-flag",
+    "retail-11-nike-earnings-review-report",
+    "retail-12-concentration-profile-fit",
+    "retail-13-semis-figure-survival",
+    "retail-14-apple-pre-open-timing"
+  ],
+  "dbHash": "2f6842969d3e8de26476ca6e279c2778dafb75d84262a3872f5f0363747f54d6",
+  "taskHashes": {
+    "retail-01-nvda-beat-and-drop": "e5e74a6aafe3db5a813972593c65f2a367fab88b35529ad7bfeae0ee6a637f83",
+    "retail-02-nike-moat-erosion": "0e13fd766cec366fc40d1bbf1316b31d90ad404703cc87e082ee5b7614933b74",
+    "retail-03-nuclear-thematic-purity": "b845a3aa7dfc7366ad50f42b278601ef85da443538f74fd2258f34f67f7888bb",
+    "retail-04-dividend-yield-trap": "319d99637610f800933ad02e10a3e052fa35ee1373a830791d63ca8d2e53c17b",
+    "retail-05-intel-value-trap": "c1fef434ee74c0ec199ba8d728d22131b403fb08c015e19030441571cc277365",
+    "retail-06-mstr-proxy-leverage": "85232de2988a4d07bc909457096507b0d80679eb2c59e7e30f81d95886e7fff2",
+    "retail-09-narrative-factcheck-apple": "c4eaee5c139ef5cb7cb78e389e05cbe92fb31dcc32bfe01dff1fd79cee42e267",
+    "retail-10-smci-accounting-red-flag": "1bc66234eccc04e97539e50e8bebfecfd17493091743cce684819b66d2ecc350",
+    "retail-11-nike-earnings-review-report": "3be87a8eb8044c1bc9605be8b6f9c21040ae0819f2a27b17baa21df1033f36e4",
+    "retail-12-concentration-profile-fit": "70b9dedc03e691671157141c7a87ff49c391764885fce5804571c1f645a7c9d0",
+    "retail-13-semis-figure-survival": "b6cb927e7c147be9ab491a1782191613255f5b182a39afa587a40002721bc60e",
+    "retail-14-apple-pre-open-timing": "9bad037db6ae275ff7fc3b650d322d0adc20fe86aaac21379169c16b37001f3c"
+  },
+  "counts": {
+    "companies": 39,
+    "filings": 307,
+    "financialFacts": 30419,
+    "marketData": 7525,
+    "documents": 112,
+    "alphaRecords": 54
+  },
+  "coverageIssues": [],
+  "compilerWarnings": [
+    {
+      "taskId": "retail-01-nvda-beat-and-drop",
+      "operation": "TIME_SERIES_DAILY",
+      "symbol": "NVDA",
+      "reason": "captured tool text is not a parseable provider JSON payload (Unexpected non-whitespace character after JSON at position 260 (line 12 column 1))"
+    },
+    {
+      "taskId": "retail-01-nvda-beat-and-drop",
+      "operation": "GLOBAL_QUOTE",
+      "symbol": "NVDA",
+      "reason": "captured tool text is not a parseable provider JSON payload (Unexpected token 'Q', \"Quote with\"... is not valid JSON)"
+    },
+    {
+      "taskId": "retail-01-nvda-beat-and-drop",
+      "operation": "EARNINGS",
+      "symbol": "NVDA",
+      "reason": "captured tool text is not a parseable provider JSON payload (Unexpected non-whitespace character after JSON at position 27186 (line 1027 column 1))"
+    },
+    {
+      "taskId": "retail-01-nvda-beat-and-drop",
+      "operation": "TIME_SERIES_DAILY",
+      "symbol": "NVDA",
+      "reason": "captured tool text is not a parseable provider JSON payload (Unexpected non-whitespace character after JSON at position 260 (line 12 column 1))"
+    },
+    {
+      "taskId": "retail-02-nike-moat-erosion",
+      "operation": "GLOBAL_QUOTE",
+      "symbol": "NKE",
+      "reason": "captured tool text is not a parseable provider JSON payload (Unexpected token 'Q', \"Quote with\"... is not valid JSON)"
+    },
+    {
+      "taskId": "retail-02-nike-moat-erosion",
+      "operation": "TIME_SERIES_DAILY",
+      "symbol": "NKE",
+      "reason": "captured tool text is not a parseable provider JSON payload (Unexpected non-whitespace character after JSON at position 259 (line 12 column 1))"
+    },
+    {
+      "taskId": "retail-03-nuclear-thematic-purity",
+      "operation": "NEWS_SENTIMENT",
+      "symbol": "CCJ",
+      "reason": "captured tool text is not a parseable provider JSON payload (Unexpected non-whitespace character after JSON at position 306 (line 8 column 1))"
+    },
+    {
+      "taskId": "retail-03-nuclear-thematic-purity",
+      "operation": "GLOBAL_QUOTE",
+      "symbol": "VST",
+      "reason": "captured tool text is not a parseable provider JSON payload (Unexpected token 'Q', \"Quote with\"... is not valid JSON)"
+    },
+    {
+      "taskId": "retail-03-nuclear-thematic-purity",
+      "operation": "GLOBAL_QUOTE",
+      "symbol": "CCJ",
+      "reason": "captured tool text is not a parseable provider JSON payload (Unexpected token 'Q', \"Quote with\"... is not valid JSON)"
+    },
+    {
+      "taskId": "retail-03-nuclear-thematic-purity",
+      "operation": "GLOBAL_QUOTE",
+      "symbol": "SMR",
+      "reason": "captured tool text is not a parseable provider JSON payload (Unexpected token 'Q', \"Quote with\"... is not valid JSON)"
+    },
+    {
+      "taskId": "retail-03-nuclear-thematic-purity",
+      "operation": "TIME_SERIES_DAILY",
+      "symbol": "TLN",
+      "reason": "captured tool text is not a parseable provider JSON payload (Unexpected non-whitespace character after JSON at position 259 (line 12 column 1))"
+    },
+    {
+      "taskId": "retail-03-nuclear-thematic-purity",
+      "operation": "TIME_SERIES_DAILY",
+      "symbol": "CEG",
+      "reason": "captured tool text is not a parseable provider JSON payload (Unexpected non-whitespace character after JSON at position 259 (line 12 column 1))"
+    },
+    {
+      "taskId": "retail-04-dividend-yield-trap",
+      "operation": "GLOBAL_QUOTE",
+      "symbol": "TSLY",
+      "reason": "captured tool text is not a parseable provider JSON payload (Unexpected token 'Q', \"Quote with\"... is not valid JSON)"
+    },
+    {
+      "taskId": "retail-04-dividend-yield-trap",
+      "operation": "TIME_SERIES_DAILY",
+      "symbol": "TSLY",
+      "reason": "captured tool text is not a parseable provider JSON payload (Unexpected non-whitespace character after JSON at position 260 (line 12 column 1))"
+    },
+    {
+      "taskId": "retail-04-dividend-yield-trap",
+      "operation": "TIME_SERIES_DAILY",
+      "symbol": "TSLA",
+      "reason": "captured tool text is not a parseable provider JSON payload (Unexpected non-whitespace character after JSON at position 260 (line 12 column 1))"
+    },
+    {
+      "taskId": "retail-05-intel-value-trap",
+      "operation": "GLOBAL_QUOTE",
+      "symbol": "INTC",
+      "reason": "captured tool text is not a parseable provider JSON payload (Unexpected token 'Q', \"Quote with\"... is not valid JSON)"
+    }
+  ]
+}

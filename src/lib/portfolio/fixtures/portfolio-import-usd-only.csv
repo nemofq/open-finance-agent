@@ -1,0 +1,14 @@
+Ticker,Description,Quantity,Last Price,Market Value,Cost Basis,Currency,Scenario,Notes
+NKE,Nike,10,75.00,750.00,650.00,USD,normal,Complete security row
+MSFT,Microsoft Corp,1,425.10,425.10,390.00,USD,normal,Quoted numeric values
+BRK.B,Berkshire Hathaway Class B,3,410.00,1230.00,950.00,USD,normal,Dot ticker is preserved
+QQQ,Invesco QQQ Trust,,480.00,480.00,300.00,USD,value_only,Quantity is intentionally blank
+,Cash Reserve,,,2500.00,,USD,name_only,Custom asset with market value only
+,Private Company Note,10,1000.00,10000.00,8000.00,USD,custom_name_only,Custom asset without ticker
+NVDA,NVIDIA Corporation,4,120.00,,400.00,USD,derive_value,Market value should be quantity times price
+SPY,SPDR S&P 500 ETF,2,500.00,1000.00,,USD,missing_cost,Missing cost basis stays empty
+TSLA,Tesla Inc,-5,250.00,-1250.00,-900.00,USD,short,Short position is allowed
+ZERO,Zero holding,0,10.00,0.00,0.00,USD,zero,Explicit zero quantity remains visible
+AAPL,Apple Inc duplicate lot,1,185.25,185.25,150.00,USD,duplicate_symbol,Duplicate ticker rows remain distinct
+,Total Portfolio,,,,,USD,summary_row,Exclude this summary row during preview
+BADNUM,Invalid Number Example,2,not-a-number,,80.00,USD,invalid_number,Preview should flag the invalid price

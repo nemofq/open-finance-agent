@@ -1,0 +1,108 @@
+CHICAGO, MILWAUKEE and NEW YORK, June 05, 2024 (GLOBE NEWSWIRE) -- YieldMax™ today announced monthly distributions for the following YieldMax™ ETFs:
+
+ 
+ | ETF Ticker1 | | ETF Name | | Reference Asset | | Distribution per Share | | Distribution Rate2 | | 30-Day SEC Yield3 | | Ex-Date* | | Record Date* | | Payment Date | 
+
+ | TSLY | | YieldMax™ TSLA Option Income Strategy ETF | | TSLA | | $0.6448 | | 51.06% | | 4.20% | | 6/6/2024 | | 6/6/2024 | | 6/7/2024 | 
+
+ | OARK | | YieldMax™ Innovation Option Income Strategy ETF | | ARKK | | $0.4003 | | 43.76% | | 4.76% | | 6/6/2024 | | 6/6/2024 | | 6/7/2024 | 
+
+ | APLY | | YieldMax™ AAPL Option Income Strategy ETF | | AAPL | | $0.4043 | | 27.40% | | 4.01% | | 6/6/2024 | | 6/6/2024 | | 6/7/2024 | 
+
+ | NVDY | | YieldMax™ NVDA Option Income Strategy ETF | | NVDA | | $2.5630 | | 101.82% | | 4.00% | | 6/6/2024 | | 6/6/2024 | | 6/7/2024 | 
+
+ | AMZY | | YieldMax™ AMZN Option Income Strategy ETF | | AMZN | | $0.9541 | | 50.74% | | 4.32% | | 6/6/2024 | | 6/6/2024 | | 6/7/2024 | 
+
+ | FBY | | YieldMax™ META Option Income Strategy ETF | | META | | $0.6919 | | 42.56% | | 4.56% | | 6/6/2024 | | 6/6/2024 | | 6/7/2024 | 
+
+ | GOOY | | YieldMax™ GOOGL Option Income Strategy ETF | | GOOGL | | $0.6858 | | 45.12% | | 4.18% | | 6/6/2024 | | 6/6/2024 | | 6/7/2024 | 
+
+ | NFLY | | YieldMax™ NFLX Option Income Strategy ETF | | NFLX | | $0.6297 | | 43.96% | | 4.32% | | 6/6/2024 | | 6/6/2024 | | 6/7/2024 | 
+
+ | CONY | | YieldMax™ COIN Option Income Strategy ETF | | COIN | | $1.6982 | | 84.85% | | 4.73% | | 6/6/2024 | | 6/6/2024 | | 6/7/2024 | 
+
+ | MSFO | | YieldMax™ MSFT Option Income Strategy ETF | | MSFT | | $0.4798 | | 26.85% | | 4.31% | | 6/6/2024 | | 6/6/2024 | | 6/7/2024 | 
+
+ | DISO | | YieldMax™ DIS Option Income Strategy ETF | | DIS | | $0.4423 | | 28.47% | | 4.48% | | 6/6/2024 | | 6/6/2024 | | 6/7/2024 | 
+
+ | XOMO | | YieldMax™ XOM Option Income Strategy ETF | | XOM | | $0.3013 | | 20.94% | | 4.27% | | 6/6/2024 | | 6/6/2024 | | 6/7/2024 | 
+
+ | JPMO | | YieldMax™ JPM Option Income Strategy ETF | | JPM | | $0.3483 | | 21.11% | | 4.18% | | 6/6/2024 | | 6/6/2024 | | 6/7/2024 | 
+
+ | AMDY | | YieldMax™ AMD Option Income Strategy ETF | | AMD | | $0.9008 | | 62.52% | | 4.13% | | 6/6/2024 | | 6/6/2024 | | 6/7/2024 | 
+
+ | PYPY | | YieldMax™ PYPL Option Income Strategy ETF | | PYPL | | $0.6694 | | 43.92% | | 4.28% | | 6/6/2024 | | 6/6/2024 | | 6/7/2024 | 
+
+ | SQY | | YieldMax™ SQ Option Income Strategy ETF | | SQ | | $0.9641 | | 58.66% | | 5.03% | | 6/6/2024 | | 6/6/2024 | | 6/7/2024 | 
+
+ | MRNY | | YieldMax™ MRNA Option Income Strategy ETF | | MRNA | | $0.8447 | | 52.32% | | 4.50% | | 6/6/2024 | | 6/6/2024 | | 6/7/2024 | 
+
+ | AIYY | | YieldMax™ AI Option Income Strategy ETF | | AI | | $0.8750 | | 78.90% | | 4.31% | | 6/6/2024 | | 6/6/2024 | | 6/7/2024 | 
+
+ | MSTY | | YieldMax™ MSTR Option Income Strategy ETF | | MSTR | | $3.0300 | | 106.33% | | 0.00% | | 6/6/2024 | | 6/6/2024 | | 6/7/2024 | 
+
+ | YBIT | | YieldMax™ Bitcoin Option Income Strategy ETF | | Bitcoin ETP | | $1.3707 | | 81.00% | | 3.94% | | 6/6/2024 | | 6/6/2024 | | 6/7/2024 | 
+
+ | CRSH | | YieldMax™ Short TSLA Option Income Strategy ETF | | TSLA | | $0.9535 | | 54.91% | | 4.01% | | 6/6/2024 | | 6/6/2024 | | 6/7/2024 | 
+
+ | GDXY** | | YieldMax™ Gold Miners Option Income Strategy ETF | | GDX® | | - | | - | | - | | - | | - | | - | 
+
+* Starting on May 28,2024, the settlement cycle for ETF trades changed from “T+2” to “T+1”. This change makes the Ex-Date fall on the same day as the Record Date.
+
+** The inception date for GDXY is May 20, 2024.
+
+1 All YieldMax™ ETFs shown in the table above have a gross expense ratio of 0.99%.
+
+2 The Distribution Rate shown is as of close on June 4, 2024. The Distribution Rate is the annual yield an investor would receive if the most recent distribution, which includes option income, remained the same going forward. The Distribution Rate is calculated by multiplying an ETF’s Distribution per Share by twelve (12), and dividing the resulting amount by the ETF’s most recent NAV. The Distribution Rate represents a single distribution from the ETF and does not represent its total return. Distributions may also include a combination of ordinary dividends, capital gain, and return of investor capital, which may decrease an ETF’s NAV and trading price over time. As a result, an investor may suffer significant losses to their investment. These Distribution Rates may be caused by unusually favorable market conditions and may not be sustainable. Such conditions may not continue to exist and there should be no expectation that this performance may be repeated in the future.
+
+3 The 30-Day SEC Yield represents net investment income, which excludes option income, earned by such ETF over the 30-Day period ended May 31, 2024, expressed as an annual percentage rate based on such ETF’s share price at the end of the 30-Day period.
+
+Each Fund has a limited operating history and while each Fund's objective is to provide current income, there is no guarantee the Fund will make a distribution. Distributions are likely to vary greatly in amount.
+
+Standardized Performance
+
+For TSLY, click here. For OARK, click here. For APLY, click here. For NVDY, click here. For AMZY, click here. For FBY, click here. For GOOY, click here. For NFLY, click here. For CONY, click here. For MSFO, click here. For DISO, click here. For XOMO, click here. For JPMO, click here. For AMDY, click here. For PYPY, click here. For SQY, click here. For MRNY, click here. For AIYY, click here. For MSTY, click here. For YBIT, click here. For CRSH, click here.
+
+Prospectus
+
+Click here.
+
+Before investing you should carefully consider the Fund’s investment objectives, risks, charges and expenses. This and other information are in the prospectus. Please read the prospectuses carefully before you invest.
+
+Contact Gavin Filmore at gfilmore@tidalfg.com for more information.
+
+Investors in the Funds will not have rights to receive dividends or other distributions with respect to the underlying reference asset(s).
+
+The performance data quoted above represents past performance. Past performance does not guarantee future results. The investment return and principal value of an investment will fluctuate so that an investor’s shares, when sold or redeemed, may be worth more or less than their original cost and current performance may be lower or higher than the performance quoted above. Performance current to the most recent month-end can be obtained by calling (833) 378-0717. 
+
+Distributions are not guaranteed. The Distribution Rate and 30-Day SEC Yield are not indicative of future distributions, if any, on the ETFs. In particular, future distributions on any ETF may differ significantly from its Distribution Rate or 30-Day SEC Yield. You are not guaranteed a distribution under the ETFs. Distributions for the ETFs (if any) are variable and may vary significantly from month to month and may be zero. Accordingly, the Distribution Rate and 30-Day SEC Yield will change over time, and such change may be significant.
+
+Tidal Financial Group is the adviser for all YieldMax™ ETFs and ZEGA Financial is their sub-adviser.
+
+THE FUND, TRUST, AND SUB-ADVISER ARE NOT AFFILIATED WITH ANY UNDERLYING REFERNCE ASSET.
+
+Risk Disclosures (applicable to all YieldMax ETFs referenced above, except CRSH)
+
+Investing involves risk. Principal loss is possible. Call Writing Strategy Risk. The path dependency (i.e., the continued use) of the Fund’s call writing strategy will impact the extent that the Fund participates in the positive price returns of the underlying reference asset and, in turn, the Fund’s returns, both during the term of the sold call options and over longer time periods. Counterparty Risk. The Fund is subject to counterparty risk by virtue of its investments in options contracts. Transactions in some types of derivatives, including options, are required to be centrally cleared (“cleared derivatives”). In a transaction involving cleared derivatives, the Fund’s counterparty is a clearing house rather than a bank or broker. Since the Fund is not a member of clearing houses and only members of a clearing house (“clearing members”) can participate directly in the clearing house, the Fund will hold cleared derivatives through accounts at clearing members. Derivatives Risk. Derivatives are financial instruments that derive value from the underlying reference asset or assets, such as stocks, bonds, or funds (including ETFs), interest rates or indexes. The Fund’s investments in derivatives may pose risks in addition to, and greater than, those associated with directly investing in securities or other ordinary investments, including risk related to the market, imperfect correlation with underlying investments or the Fund’s other portfolio holdings, higher price volatility, lack of availability, counterparty risk, liquidity, valuation and legal restrictions. Options Contracts. The use of options contracts involves investment strategies and risks different from those associated with ordinary portfolio securities transactions. The prices of options are volatile and are influenced by, among other things, actual and anticipated changes in the value of the underlying instrument, including the anticipated volatility, which are affected by fiscal and monetary policies and by national and international political, changes in the actual or implied volatility or the reference asset, the time remaining until the expiration of the option contract and economic events. Distribution Risk. As part of the Fund’s investment objective, the Fund seeks to provide current income. There is no assurance that the Fund will make a distribution in any given month. If the Fund does make distributions, the amounts of such distributions will likely vary greatly from one distribution to the next. High Portfolio Turnover Risk. The Fund may actively and frequently trade all or a significant portion of the Fund’s holdings. Liquidity Risk. Some securities held by the Fund, including options contracts, may be difficult to sell or be illiquid, particularly during times of market turmoil. Non-Diversification Risk. Because the Fund is “non-diversified,” it may invest a greater percentage of its assets in the securities of a single issuer or a smaller number of issuers than if it was a diversified fund. New Fund Risk. The Fund is a recently organized management investment company with no operating history. As a result, prospective investors do not have a track record or history on which to base their investment decisions. Price Participation Risk. The Fund employs an investment strategy that includes the sale of call option contracts, which limits the degree to which the Fund will participate in increases in value experienced by the underlying reference asset over the Call Period. Single Issuer Risk. Issuer-specific attributes may cause an investment in the Fund to be more volatile than a traditional pooled investment which diversifies risk or the market generally. The value of the Fund, which focuses on an individual security (ARKK, TSLA, AAPL, NVDA, AMZN, META, GOOGL, NFLX, COIN, MSFT, DIS, XOM, JPM, AMD, PYPL, SQ, MRNA, AI, MSTR, Bitcoin ETP, GDX®), may be more volatile than a traditional pooled investment or the market as a whole and may perform differently from the value of a traditional pooled investment or the market as a whole.
+
+Investors in the Funds will not have rights to receive dividends or other distributions with respect to the underlying reference assets.
+
+Risk Disclosures (applicable only to GDXY)
+
+Risk of Investing in Foreign Securities. The Fund is exposed indirectly to the securities of foreign issuers selected by GDX®’s investment adviser, which subjects the Fund to the risks associated with such companies. Investments in the securities of foreign issuers involve risks beyond those associated with investments in U.S. securities. Risk of Investing in Gold and Silver Mining Companies. The Fund is exposed indirectly to gold and silver mining companies selected by GDX®’s investment adviser, which subjects the Fund to the risks associated with such companies.
+
+There is no guarantee that the Fund’s investment strategy will be properly implemented, and an investor may lose some or all of its investment.
+
+Risk Disclosures (applicable only to YBIT)
+
+YBIT does not invest directly in Bitcoin or any other digital assets. YBIT does not invest directly in derivatives that track the performance of Bitcoin or any other digital assets. YBIT does not invest in or seek direct exposure to the current “spot” or cash price of Bitcoin. Investors seeking direct exposure to the price of Bitcoin should consider an investment other than YBIT.
+
+Bitcoin Investment Risk: The Fund’s indirect investment in Bitcoin, through holdings in one or more Underlying ETPs, exposes it to the unique risks of this emerging innovation. Bitcoin’s price is highly volatile, and its market is influenced by the changing Bitcoin network, fluctuating acceptance levels, and unpredictable usage trends. Digital Assets Risk: Digital assets like Bitcoin, designed as mediums of exchange, are still an emerging asset class. They operate independently of any central authority or government backing and are subject to regulatory changes and extreme price volatility. Potentially No 1940 Act Protections. As of the date of this Prospectus, there is only a single eligible Underlying ETP, and it is an investment company subject to the 1940 Act. Bitcoin ETP Risk: The Fund invests in options contracts that are based on the value of the Bitcoin ETP. This subjects the Fund to certain of the same risks as if it owned shares of the Bitcoin ETP, even though it does not. Bitcoin ETPs are subject, but not limited, to significant risk and heightened volatility. An investor in a Bitcoin ETP may lose their entire investment. Bitcoin ETPs are not suitable for all investors. In addition, not all Bitcoin ETPs are registered under the Investment Company Act of 1940. Those Bitcoin ETPs that are not registered under such statute are therefore not subject to the same regulations as exchange traded products that are so registered.
+
+Risk Disclosures (applicable only to CRSH)
+
+Investing involves risk. Principal loss is possible. TSLA Price Appreciation Risk. As part of the Fund’s synthetic covered put strategy, the Fund purchases and sells call and put option contracts that are based on the share price of TSLA common stock (TSLA). This strategy subjects the Fund to certain of the same risks as if it shorted shares of TSLA, even though it does not. By virtue of the Fund’s indirect inverse exposure to changes in the share price of TSLA, the Fund is subject to the risk that TSLA’s share price increases. Put Writing Strategy Risk. The path dependency (i.e., the continued use) of the Fund’s put writing (selling) strategy will impact the extent that the Fund participates in the price decreases of TSLA and, in turn, the Fund’s returns, both during the term of the sold put options and over longer time periods. Purchased OTM Call Options Risk. The Fund’s strategy is subject to potential losses if TSLA shares increase in value, which may not be offset by the purchase of out-of-the-money (OTM) call options. The Fund purchases OTM calls to seek to manage (cap) the Fund’s potential losses from the Fund’s short exposure to TSLA if it appreciates significantly in value. However, the OTM call options will cap the Fund’s losses only to the extent that the share price of TSLA increases to a price that is at or above the strike price of the purchased OTM call options. Any increase in the share price of TSLA to a price that is below the strike price of the purchased OTM call options will result in a corresponding loss for the Fund. For example, if the OTM call options have a strike price that is approximately 100% above the then-current share price of TSLA at the time of the call option purchase, and the share price of TSLA increases by at least 100% during the term of the purchased OTM call options, the Fund will lose all its value. Since the Fund bears the costs of purchasing the OTM calls, such costs will decrease the Fund’s value and/or any income otherwise generated by the Fund’s investment strategy. Counterparty Risk. The Fund is subject to counterparty risk by virtue of its investments in options contracts. Transactions in some types of derivatives, including options, are required to be centrally cleared ("cleared derivatives"). In a transaction involving cleared derivatives, the Fund's counterparty is a clearing house rather than a bank or broker. Since the Fund is not a member of clearing houses and only members of a clearing house ("clearing members") can participate directly in the clearing house, the Fund will hold cleared derivatives through accounts at clearing members. Derivatives Risk. Derivatives are financial instruments that derive value from the underlying reference asset or assets, such as stocks, bonds, or funds (including ETFs), interest rates or indexes. The Fund’s investments in derivatives may pose risks in addition to, and greater than, those associated with directly investing in securities or other ordinary investments, including risk related to the market, imperfect correlation with underlying investments or the Fund’s other portfolio holdings, higher price volatility, lack of availability, counterparty risk, liquidity, valuation and legal restrictions. Options Contracts. The use of options contracts involves investment strategies and risks different from those associated with ordinary portfolio securities transactions. The prices of options are volatile and are influenced by, among other things, actual and anticipated changes in the value of the underlying reference asset, including the anticipated volatility, which are affected by fiscal and monetary policies and by national and international political, changes in the actual or implied volatility or the reference asset, the time remaining until the expiration of the option contract and economic events. Distribution Risk. As part of the Fund’s investment objective, the Fund seeks to provide current income. There is no assurance that the Fund will make a distribution in any given month. If the Fund does make distributions, the amounts of such distributions will likely vary greatly from one distribution to the next. High Portfolio Turnover Risk. The Fund may actively and frequently trade all or a significant portion of the Fund’s holdings. Liquidity Risk. Some securities held by the Fund, including options contracts, may be difficult to sell or be illiquid, particularly during times of market turmoil. Non-Diversification Risk. Because the Fund is “non-diversified,” it may invest a greater percentage of its assets in the securities of a single issuer or a smaller number of issuers than if it was a diversified fund. New Fund Risk. The Fund is a recently organized management investment company with no operating history. As a result, prospective investors do not have a track record or history on which to base their investment decisions. Price Participation Risk. The Fund employs an investment strategy that includes the sale of put option contracts, which limits the degree to which the Fund will participate in decreases in value experienced by TSLA over the Put Period. Single Issuer Risk. Issuer-specific attributes may cause an investment in the Fund to be more volatile than a traditional pooled investment which diversifies risk or the market generally. The value of the Fund, which focuses on an individual security (e.g., TSLA), may be more volatile than a traditional pooled investment or the market as a whole and may perform differently from the value of a traditional pooled investment or the market as a whole.
+
+YieldMax™ ETFs are distributed by Foreside Fund Services, LLC. Foreside is not affiliated with Tidal Financial Group, YieldMax™ ETFs or ZEGA Financial.
+
+© 2024 YieldMax™ ETFs

@@ -1,0 +1,292 @@
+497K
+1
+f36277d1.htm
+PROSHARES ULTRAPRO QQQ
+ProShares UltraPro QQQ
+SUMMARY PROSPECTUS
+October 1, 2023
+UltraPro QQQ®
+This Summary Prospectus is designed to provide investors with key fund information in a clear and concise format. Before you
+invest, you may want to review the Fund’s Full Prospectus, which contains more information about the Fund and its risks. The Fund’s Full Prospectus,
+dated October 1, 2023, and Statement of Additional Information, dated October 1, 2023, and as each hereafter may be supplemented,
+are incorporated by reference into this Summary Prospectus. All of this information may be obtained at no cost either: online at ProShares.com/resources/prospectus_reports.html; by calling 866-PRO-5125 (866-776-5125); or by sending an email request to info@ProShares.com. The Securities and Exchange Commission has not approved or disapproved these securities or passed upon the adequacy of this Summary Prospectus.
+Any representation to the contrary is a criminal offense.
+TQQQ LISTED ON THE NASDAQ STOCK MARKET
+Receive investor materials electronically:
+Shareholders may sign up for electronic delivery of investor materials. By doing so, you will receive the information faster
+and help us reduce the impact on the environment of providing these materials. To enroll in electronic delivery,
+1.
+Go to www.icsdelivery.com
+2.
+Select the first letter of your brokerage firm’s name.
+3.
+From the list that follows, select your brokerage firm. If your brokerage firm is not listed, electronic delivery may not
+be available. Please contact your brokerage firm.
+4.
+Complete the information requested, including the e-mail address where you would like to receive notifications for electronic
+documents.
+Your information will be kept confidential and will not be used for any purpose other than electronic delivery. If you change
+your mind, you can cancel electronic delivery at any time and revert to physical delivery of your materials. Just go to www.icsdelivery.com, perform
+the first three steps above, and follow the instructions for cancelling electronic delivery. If you have any questions, please contact your brokerage firm.
+UltraPro QQQ® :: 3
+PROSHARES.COM
+Investment Objective
+ProShares UltraPro QQQ® (the “Fund”) seeks daily investment results, before fees and expenses, that correspond to three times (3x) the daily performance of the Nasdaq-100® Index (the “Index”).
+Important Information About the Fund
+If the Fund is successful in meeting its investment objective, it should gain approximately three times as much as the Index when the Index rises on a given day. Conversely, it should lose approximately three times as much as the Index when the Index falls on a given day. The Fund does not seek to achieve three times (3x) the daily performance of the Index (the “Daily Target”) for any period other than a day.
+While the Fund has a daily investment objective, you may hold Fund shares for longer than one day if you believe doing so is consistent with your goals and risk tolerance. If you hold fund shares for any period other than a day, it is important for you to understand that over your holding period:
+•Your return may be higher or lower than the Daily Target, and this difference may be significant.
+•Factors that contribute to returns that are worse than the Daily Target include smaller Index gains or losses and higher Index volatility, as well as longer holding periods when these factors apply.
+•Factors that contribute to returns that are better than the Daily Target include larger Index gains or losses and lower Index volatility, as well as longer holding periods when these factors apply.
+•The more extreme these factors are, and the more they occur together, the more your return will tend to deviate from the Daily Target.
+Fees and Expenses of the Fund
+The table below describes the fees and expenses that you may pay if you buy, hold, and sell shares of the Fund. You may pay other fees, such as brokerage commissions and other fees to financial intermediaries, which are not reflected in the tables and examples below.
+Annual Fund Operating Expenses
+(expenses that you pay each year as a percentage
+of the value of your investment)
+Management Fees
+0.75%
+Other Expenses
+0.23%
+Total Annual Fund Operating Expenses Before Fee
+Waivers and Expense Reimbursements
+0.98%
+Fee Waiver/Reimbursement1,2
+-0.10%
+Total Annual Fund Operating Expenses After Fee
+Waivers and Expense Reimbursements
+0.88%
+1
+ProShare Advisors LLC (“ProShare Advisors”) has contractually agreed to waive a portion of the Investment Advisory Fee through September 30, 2024. For the fiscal year ended May 31, 2023, the amount of the waiver was 0.10%.
+2
+ProShare Advisors LLC (“ProShare Advisors”) has agreed to waive fees and to reimburse expenses to the extent Total Annual Fund Operating Expenses Before Fee Waivers and Expense Reimbursements, as a percentage of average daily net assets, exceed 0.95% through September 30, 2024. Amounts waived or reimbursed in a particular contractual period may be recouped by ProShare Advisors within five years subject to certain limitations.
+Example: This example is intended to help you compare the cost of investing in the Fund with the cost of investing in other funds.
+The example assumes that you invest $10,000 in the Fund for the time periods indicated and then redeem or hold all of your shares at the end of each period. The example also assumes that your investment has a 5% return each year and that the Fund’s operating expenses remain the same, except that the fee waiver/expense reimbursement is assumed only to pertain to the first year. Although your actual costs may be higher or lower, based on these assumptions your approximate costs would be:
+1 Year
+3 Years
+5 Years
+10 Years
+$90
+$302
+$532
+$1,192
+The Fund pays transaction and financing costs associated with the purchase and sale of securities and derivatives. These costs are not reflected in the table or the example above.
+Portfolio Turnover
+The Fund pays transaction costs, such as commissions, when it buys and sells securities (or “turns over” its portfolio). A higher portfolio turnover rate may indicate higher transaction costs and may result in higher taxes when the Fund’s shares are held in a taxable account. These costs, which are not reflected in Annual Fund Operating Expenses or in the example above, affect the Fund’s performance. During the most recent fiscal year, the Fund’s annual portfolio turnover rate was 168% of the average value of its portfolio. This portfolio turnover rate is calculated without regard to cash instruments or derivatives transactions. If such transactions were included, the Fund’s portfolio turnover rate would be significantly higher.
+Principal Investment Strategies
+The Fund invests in financial instruments that ProShare Advisors believes, in combination, should produce daily returns consistent with the Daily Target.
+The Index is constructed and maintained by Nasdaq Inc. (the “Index Provider”). The Index includes 100 of the largest domestic and international non-financial companies listed on The Nasdaq Stock Market based on market capitalization. The Index reflects companies across major industry groups including computer hardware and software, telecommunications, retail/wholesale trade and biotechnology. Companies selected for inclusion are non-financial companies that meet appropriate trading volumes and other eligibility criteria. The Index is published under the Bloomberg ticker symbol “NDX.”
+4 :: UltraPro QQQ®
+PROSHARES.COM
+Under normal circumstances, the Fund will obtain leveraged exposure to at least 80% of its total assets in component securities of the Index or in instruments with similar economic characteristics.
+The Fund will invest principally in the financial instruments listed below.
+•Equity Securities — Common stock issued by public companies.
+•Derivatives — Financial instruments whose value is derived from the value of an underlying asset or assets, such as stocks, bonds, ETFs, interest rates or indexes. These derivatives principally include:
+○Swap Agreements — Contracts entered into primarily with major global financial institutions for a specified period ranging from a day to more than one year. In a standard swap transaction, two parties agree to exchange or “swap” payments based on the change in value of an underlying asset or benchmark. For example, two parties may agree to exchange the return (or differentials in rates of returns) earned or realized on a particular investment or instrument.
+○Futures Contracts — Standardized contracts that obligate the parties to buy or sell an asset at a predetermined price and date in the future.
+•Money Market Instruments — The Fund expects that any cash balances maintained in connection with its use of derivatives will typically be held in high quality, short-term money market instruments, for example:
+○U.S. Treasury Bills — U.S. government securities that have initial maturities of one year or less, and are supported by the full faith and credit of the U.S. government.
+○Repurchase Agreements — Contracts in which a seller of securities, usually U.S. government securities or other money market instruments, agrees to buy the securities back at a specified time and price.
+ProShare Advisors uses a mathematical approach to investing in which it determines the type, quantity and mix of investment positions that it believes, in combination, the Fund should hold to produce daily returns consistent with the Daily Target. For these purposes a day is measured from the time of one net asset value (“NAV”) calculation to the next.
+The Fund seeks to remain fully invested at all times in financial instruments that, in combination, provide leveraged exposure consistent with the investment objective, without regard to market conditions, trends or direction. However, the Fund
+may invest in or gain exposure to only a representative sample of the securities in the Index or to securities not contained in the Index or in financial instruments, with the intent of obtaining leveraged exposure consistent with the investment objective.
+The Fund seeks to rebalance its portfolio each day so that its exposure to the Index is consistent with the Daily Target. The Index’s movements during the day will affect whether the Fund’s portfolio needs to be rebalanced. For example, if the Index has risen on a given day, net assets of the Fund should rise (assuming there were no Creation Unit redemptions). As a result, the Fund’s exposure will need to be increased. Conversely, if the Index has fallen on a given day, net assets of the Fund should fall (assuming there were no Creation Units issued). As a result, the Fund’s exposure will need to be decreased.
+Please see “Investment Objectives, Principal Investment Strategies and Related Risks” in the Fund’s Prospectus for additional details.
+Principal Risks
+•Leverage Risk — The Fund uses leverage and will lose more money when the value of the Index falls than a similar fund that does not use leverage. The use of leverage increases the risk of a total loss of your investment. If the Index approaches a 33% loss at any point in the day, you could lose your entire investment. As a result, an investment in the Fund may not be suitable for all investors. The use of leverage increases the volatility of your returns. The cost of obtaining this leverage will lower your returns.
+•Holding Period Risk — The performance of the Fund for periods longer than a single day will likely differ from the Daily Target. This difference may be significant. If you are considering holding fund shares for longer than a day, it’s important that you understand the impact of Index returns and Index volatility (how much the value of the Index moves up and down from day-to-day) on your holding period return.
+The table below uses hypothetical annualized Index volatility and Index returns to illustrate the impact of these two principal factors on Fund performance over a one-year period. It does not represent actual returns. Each row corresponds to the level of a hypothetical Index return for a one-year period. Each column corresponds to a level of hypothetical annualized Index volatility. For example, the Fund may mistakenly be expected to achieve a -60% return on a yearly basis if the annual Index return were -20%; however,
+UltraPro QQQ® :: 5
+PROSHARES.COM
+as the table shows, with a one-year Index return of -20% and an annualized Index volatility of 50%, the Fund could be expected to return -75.8%.
+Areas shaded darker represent those scenarios where the Fund can be expected to return less than the Daily Target.
+Estimated Fund Returns
+Index Performance
+One Year Volatility Rate
+One
+Year
+Index
+Three times
+(3x) the
+One Year
+Index
+10%
+25%
+50%
+75%
+100%
+-60%
+-180%
+-93.8%
+-94.7%
+-97.0%
+-98.8%
+-99.7%
+-50%
+-150%
+-87.9%
+-89.6%
+-94.1%
+-97.7%
+-99.4%
+-40%
+-120%
+-79.0%
+-82.1%
+-89.8%
+-96.0%
+-98.9%
+-30%
+-90%
+-66.7%
+-71.6%
+-83.8%
+-93.7%
+-98.3%
+-20%
+-60%
+-50.3%
+-57.6%
+-75.8%
+-90.5%
+-97.5%
+-10%
+-30%
+-29.3%
+-39.6%
+-65.6%
+-86.5%
+-96.4%
+0%
+0%
+-3.0%
+-17.1%
+-52.8%
+-81.5%
+-95.0%
+10%
+30%
+29.2%
+10.3%
+-37.1%
+-75.4%
+-93.4%
+20%
+60%
+67.7%
+43.3%
+-18.4%
+-68.0%
+-91.4%
+30%
+90%
+113.2%
+82.1%
+3.8%
+-59.4%
+-89.1%
+40%
+120%
+166.3%
+127.5%
+29.6%
+-49.2%
+-86.3%
+50%
+150%
+227.5%
+179.8%
+59.4%
+-37.6%
+-83.2%
+60%
+180%
+297.5%
+239.6%
+93.5%
+-24.2%
+-79.6%
+Assumes: (a) no dividends paid with respect to securities included in the Index; (b) no Fund expenses; and (c) borrowing/lending rates (to obtain leveraged exposure) of zero percent. If these were included the Fund’s performance would be different from that shown.
+As the table illustrates, your return will tend to be worse than the Daily Target when there are smaller Index gains or losses and higher Index volatility. During periods of higher Index volatility, the Index volatility may affect the Fund’s return as much as or more than the return of the Index. Your return will tend to be better than the Daily Target when there are larger Index gains or losses and lower Index volatility. You may lose money when the Index return is flat (i.e., close to zero) and you may lose money when the Index rises.
+The Index’s annualized historical volatility rate for the five-year period ended May 31, 2023 was 26.53%. The Index’s highest May to May volatility rate during the five-year period was 33.62% (May 29, 2020). The Index’s annualized total return performance for the five-year period ended May 31, 2023 was 16.42%. Historical Index volatility and performance are not indications of what the Index volatility and performance will be in the future.
+The table illustrates the impact of Index volatility and Index return on Fund returns for a hypothetical one-year period. However, these effects will impact your return for
+any holding period other than a day. The longer you hold shares of the Fund, the more magnified these effects will be. As a result, you should consider monitoring your investments in the Fund in light of your individual investment goals and risk tolerances.
+If you hold Fund shares for any period other than a day, it is important for you to understand the risks and long-term performance of a daily objective fund. For more information, including additional graphs and charts demonstrating the effects of Index volatility and Index return on the long-term performance of the Fund, see “Understanding the Risks and Long-Term Performance of a Daily Objective Fund” in the Fund’s Prospectus.
+•Correlation Risk — A number of factors may affect the Fund’s ability to achieve a high degree of leveraged correlation with the Index. Fees, expenses, transaction costs, financing costs associated with the use of derivatives, among other factors, will adversely impact the Fund’s ability to meet its Daily Target. In addition, the Fund may not have leveraged exposure to all of the securities in the Index, its weighting of securities may be different from that of the Index, and it may invest in instruments not included in the Index. Moreover, if for any reason the Fund is unable to rebalance all or a portion of its investments, the Fund may have exposure to the Index that is significantly greater or less than the Daily Target. Any of these factors may prevent the Fund from achieving exposure consistent with the Daily Target.
+•Risks Associated with the Use of Derivatives — Investing in derivatives to obtain leveraged exposure may be considered aggressive and may expose the Fund to greater risks including counterparty risk and correlation risk. The Fund may lose money if its derivatives do not perform as expected. To the extent to the Fund invests in swaps that use an ETF as the reference asset, the Fund may be subject to greater correlation risk since the performance of an ETF may not track the performance of the Index. Any costs associated with using derivatives will reduce the Fund’s return.
+•Counterparty Risk — The Fund may lose money if a counterparty does not meet its contractual obligations. With respect to swap agreements, if the Index has a dramatic intraday move that causes a material decline in the Fund’s net assets, the terms of a swap agreement between the Fund and its counterparty may permit the counterparty to immediately close out the transaction with the Fund. In that event, the Fund may be unable to enter into another swap agreement or invest in other derivatives to achieve its investment objective.
+•Equity and Market Risk — Equity markets are volatile, and the value of equity securities and other instruments correlated
+6 :: UltraPro QQQ®
+PROSHARES.COM
+with equity markets may fluctuate dramatically from day to day. Equity markets are subject to corporate, political, regulatory, market and economic developments, as well as developments that impact specific economic sectors, industries or segments of the market.
+•Money Market Instruments Risk — Adverse economic, political or market events affecting issuers of money market instruments or defaults by counterparties may have a negative impact on the performance of the Fund.
+•Industry Concentration Risk — The Index may have a significant portion of its value in issuers in an industry or group of industries. The Fund will allocate its investments to approximately the same extent as the Index. As a result, the Fund may be subject to greater market fluctuations than a fund that is more broadly invested across industries. As of May 31, 2023, the Index had a significant portion of its value in issuers in the information technology and communication services industry groups.
+○Information Technology Industry Risk — Companies in this industry may experience: intense competition, obsolescence of existing technology, and changing economic conditions and government regulation.
+○Communication Services Industry Risk — Companies in this industry may experience: product obsolescence; increased research and development costs and capital requirements to formulate new products and services; and regulation by the Federal Communications Commission, and various state regulatory authorities.
+•Non-Diversification Risk — The Fund has the ability to invest a relatively high percentage of its assets in the securities of a small number of issuers or in financial instruments with a single counterparty or a few counterparties. This may increase the Fund’s volatility and increase the risk that the Fund’s performance will decline based on the performance of a single issuer or the credit of a single counterparty.
+•Index Performance Risk — The Index used by the Fund may underperform other asset classes and may underperform other similar indices. The Index is maintained by a third party provider unaffiliated with the Fund or ProShare Advisors. There can be no guarantee that the methodology underlying the Index or the daily calculation of the Index will be free from error.
+•Intraday Price Performance Risk — The intraday performance of Fund shares traded in the secondary market generally will be different from the performance of the Fund when measured from one NAV calculation-time to the next. When shares are bought intraday, the performance of the Fund’s shares relative to the Index until the Fund’s next NAV calculation time will generally be higher or lower than the Daily Target.
+•Market Price Variance Risk — Investors buy and sell Fund shares in the secondary market at market prices. Market prices may be different from the NAV per share of the Fund (i.e., the secondary market price may trade at a price greater than NAV (a premium) or less than NAV (a discount)). The market price of the Fund’s shares will fluctuate in response to changes in the value of the Fund’s holdings, supply and demand for shares and other market factors.
+•Early Close/Late Close/Trading Halt Risk — An exchange or market may close early, close late or issue trading halts on specific securities or financial instruments. In these circumstances, the Fund may be unable to rebalance its portfolio, may be unable to accurately price its investments and/or may incur substantial trading losses.
+Please see “Investment Objectives, Principal Investment Strategies and Related Risks” in the Fund’s Prospectus for additional details.
+Investment Results
+The bar chart below shows how the Fund’s investment results have varied from year to year, and the table shows how the Fund’s average annual total returns for various periods compare with a broad measure of market performance. This information provides some indication of the risks of investing in the Fund. In addition, the Fund’s performance information reflects applicable fee waivers and/or expense limitations, if any, in effect during the periods presented. Absent such fee waivers/expense limitations, if any, performance would have been lower. Past results (before and after taxes) are not predictive of future results. Updated information on the Fund’s results can be obtained by visiting the Fund’s website (www.proshares.com).
+UltraPro QQQ® :: 7
+PROSHARES.COM
+Annual Returns as of December 31
+Best Quarter
+(ended
+6/30/2020
+):
+104.49%
+Worst Quarter
+(ended
+6/30/2022
+):
+-58.60%
+Year-to-Date
+(ended
+6/30/2023
+):
+139.68%
+Average Annual Total Returns
+As of December 31, 2022
+One
+Year
+Five
+Years
+Ten
+Years
+Before Tax
+-79.03%
+8.57%
+32.10%
+After Taxes on Distributions
+-79.05%
+8.53%
+32.07%
+After Taxes on Distributions and
+Sale of Shares
+-46.76%
+6.76%
+28.80%
+Nasdaq-100® Index1
+-32.38%
+12.35%
+16.44%
+1
+Reflects no deduction for fees, expenses or taxes. Adjusted to reflect the reinvestment of dividends paid by issuers in the Index.
+Average annual total returns are shown on a before- and after-tax basis for the Fund. After-tax returns are calculated using the historical highest individual federal marginal income tax rates and do not reflect the impact of state and local taxes. Actual after-tax returns depend on an investor’s tax situation and may differ from those shown. After-tax returns shown are not relevant to investors who hold shares through tax-deferred arrangements, such as a retirement account. After-tax returns may exceed the return before taxes due to a tax benefit from realizing a capital loss on a sale of shares.
+Annual returns are required to be shown and should not be interpreted as suggesting that the Fund should or should not be held for longer periods of time.
+Management
+The Fund is advised by ProShare Advisors. Michael Neches, Senior Portfolio Manager, and Devin Sullivan, Portfolio Manager, have jointly and primarily managed the Fund since October 2013 and April 2018, respectively.
+Purchase and Sale of Fund Shares
+The Fund will issue and redeem shares only to Authorized Participants (typically broker-dealers) in exchange for the deposit or delivery of a basket of assets (securities and/or cash) in large blocks, known as Creation Units. Shares of the Fund may only be purchased and sold by retail investors in secondary market transactions through broker-dealers or other financial intermediaries. Shares of the Fund are listed for trading on a national securities exchange and because shares trade at market prices rather than NAV, shares of the Fund may trade at a price greater than NAV (premium) or less than NAV (discount). In addition to brokerage commissions, investors incur the costs of the difference between the highest price a buyer is willing to pay to purchase shares of the Fund (bid) and the lowest price a seller is willing to accept for shares of the Fund (ask) when buying or selling shares in the secondary market (the “bid-ask spread”). The bid-ask spread varies over time for Fund shares based on trading volume and market liquidity. Recent information, including information about a Fund’s NAV, market price, premiums and discounts, and bid-ask spreads, is included on the Fund’s website (www.proshares.com).
+Tax Information
+Income and capital gains distributions you receive from the Fund generally are subject to federal income taxes and may also be subject to state and local taxes. The Fund intends to distribute income, if any, quarterly, and capital gains, if any, at least annually. Distributions for this Fund may be higher than those of most ETFs.
+Investment Company Act file number 811-21114
+ProShares Trust
+7272 Wisconsin Avenue, 21st Floor, Bethesda, MD 20814
+866.PRO.5125 866.776.5125
+ProShares.com
+© 2023 ProShare Advisors LLC. All rights reserved.TQQQ--OCT23

@@ -1,0 +1,205 @@
+EDGAR Filing Documents for 0001999371-24-002901
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+ SEC.gov
+
+ 
+
+ 
+
+ EDGAR
+
+ 
+
+ 
+
+ Latest Filings 
+
+ 
+
+ Filings search tools
+
+ 
+
+ 
+
+Filing Detail
+
+ 
+
+SEC Home »
+
+ 
+Company Search »
+
+ 
+Current Page
+
+ 
+
+ 
+
+ 
+
+ Form 497K - Summary Prospectus for certain open-end management investment companies filed pursuant to Securities Act Rule 497(K): 
+
+ 
+
+ SEC Accession No. 0001999371-24-002901
+
+ 
+
+ 
+
+ 
+
+ 
+Filing Date
+
+ 
+2024-02-29
+
+ 
+Accepted
+
+ 
+2024-02-29 13:38:36
+
+ 
+Documents
+
+ 
+3
+
+ 
+
+ 
+
+ 
+Effectiveness Date
+
+ 
+2024-02-29
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+Document Format Files
+
+ 
+
+ | Seq | 
+ | Description | 
+ | Document | 
+ | Type | 
+ | Size | 
+
+ 
+
+ | 1 | 
+ | SUMMARY PROSPECTUS | 
+ | tsly-497k_022824.htm | 
+ | 497K | 
+ | 154174 | 
+
+ 
+
+ | 2 | 
+ | GRAPHIC | 
+ | yieldmax-logo.jpg | 
+ | GRAPHIC | 
+ | 8914 | 
+
+ 
+
+ | 3 | 
+ | GRAPHIC | 
+ | yieldmax_chart.jpg | 
+ | GRAPHIC | 
+ | 29332 | 
+
+ 
+
+ | | 
+ | Complete submission text file | 
+ | 0001999371-24-002901.txt | 
+ | | 
+ | 207049 | 
+
+ 
+
+ 
+Series and Classes/Contracts Information:
+
+ 
+
+ | Existing | 
+
+ 
+
+ | | 
+ | Status | 
+ | Name | 
+ | Ticker Symbol | 
+
+ 
+
+ | CIK 0001924868 | 
+ | | 
+ | | 
+ | | 
+
+ 
+
+ | Series S000077650 | 
+ | | 
+ | YieldMax TSLA Option Income Strategy ETF | 
+
+ 
+
+ | Class/Contract C000238138 | 
+ | | 
+ | YieldMax TSLA Option Income Strategy ETF | 
+ | TSLY | 
+
+ 
+
+ 
+Mailing Address
+ 234 WEST FLORIDA STREET, SUITE 203
+
+MILWAUKEE WI
+53204 
+
+ 
+Business Address
+ 234 WEST FLORIDA STREET, SUITE 203
+
+MILWAUKEE WI
+53204 
+ (844) 986-7676
+
+ Tidal Trust II (Filer)
+ CIK: 0001924868 (see all company filings)
+
+EIN.: 000000000 | State of Incorp.: DE | Fiscal Year End: 1231
+
+Type: 497K | Act: 33 | File No.: 333-264478 | Film No.: 24702195

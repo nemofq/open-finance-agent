@@ -1,0 +1,46 @@
+{
+  "retail-01-nvda-beat-and-drop": {
+    "entries": {
+      "edgar_financials:{\"limit\":8,\"period\":\"quarterly\",\"statement\":\"income\",\"ticker\":\"NVDA\"}": {
+        "toolName": "edgar_financials",
+        "params": {
+          "limit": 8,
+          "period": "quarterly",
+          "statement": "income",
+          "ticker": "NVDA"
+        },
+        "recordedAt": "2024-08-29T12:00:00Z",
+        "result": {
+          "content": [
+            {
+              "type": "text",
+              "text": "NVDA (Source: SEC EDGAR 10-Q/8-K as-reported)\n\nPeriod: FY25 Q2 (Ended 2024-07-28)\n- Revenue: $30,040M (YoY growth: +122.4% from $13,507M in FY24 Q2)\n- Data Center Revenue: $26,300M (+154% YoY)\n- Gross Profit: $22,574M\n- Gross Margin: 75.1% (down 330 bps from 78.4% in FY25 Q1)\n- Operating Income: $18,642M\n- Net Income: $16,599M\n- Diluted EPS: $0.67 (GAAP)\n- Q3 Guidance: Revenue guided to $32.5B \u00b12%, Gross Margin guided to 74.4%-75.0% (further slight compression)\nAccession: 0001045810-24-000029"
+            }
+          ],
+          "details": {
+            "statement": "income"
+          }
+        }
+      }
+    }
+  },
+  "retail-08-macro-rate-cut-reinvestment": {
+    "entries": {
+      "web_search:{\"query\":\"Federal Reserve rate cut September 2024 dot plot treasury yields\"}": {
+        "toolName": "web_search",
+        "params": {
+          "query": "Federal Reserve rate cut September 2024 dot plot treasury yields"
+        },
+        "recordedAt": "2024-09-19T12:00:00Z",
+        "result": {
+          "content": [
+            {
+              "type": "text",
+              "text": "FOMC September 18, 2024 Decision:\n- Cut Federal Funds Rate by 50 bps to 4.75%-5.00% target range.\n- Dot Plot projection: median expectations of an additional 50 bps in cuts before end of 2024, and 100 bps in 2025.\n- 10-Year Treasury Yield: ~3.72%. Money market funds and T-bill yields (~4.8%) will systematically reprice lower.\n- Reinvestment risk is active: Cash yields decline as Fed cuts; long-duration bonds offer capital appreciation if yields drop; equity valuations are elevated (S&P 500 forward P/E ~21.5x). Recommended framework: liquidity sleeve in money market/short duration (BIL), fixed income duration lock (3-7y Treasury / BND / bond ladder), and dollar-cost averaging (DCA) into broad market equities (VOO/SPY)."
+            }
+          ]
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,1086 @@
+[
+  {
+    "label": "mock edgar lookup",
+    "tool": "edgar_lookup_company",
+    "entry": {
+      "entity": {
+        "cik": "1045810",
+        "name": "NVIDIA CORP",
+        "ticker": "NVDA"
+      },
+      "source": {
+        "id": "edgar",
+        "name": "SEC EDGAR",
+        "tier": 1
+      },
+      "summary": "SEC EDGAR — NVIDIA CORP"
+    }
+  },
+  {
+    "label": "mock edgar filings",
+    "tool": "edgar_filings",
+    "entry": {
+      "asOf": "2024-08-29",
+      "entity": {
+        "cik": "1045810",
+        "name": "NVIDIA CORP",
+        "ticker": "NVDA"
+      },
+      "numbers": [
+        {
+          "context": "8 | 2024-08-28 | 0001045810-24-000262 | https://www.sec.gov/Archives/edgar/data/1045810/000104581024000262/nvda-20240828.htm | metadata only; body not captured",
+          "value": 1045810
+        },
+        {
+          "context": "00262 | https://www.sec.gov/Archives/edgar/data/1045810/000104581024000262/nvda-20240828.htm | metadata only; body not captured | | 8-K | 2024-07-02 | 2024-06-2",
+          "value": 20240828
+        },
+        {
+          "context": "00206 | https://www.sec.gov/Archives/edgar/data/1045810/000104581024000206/nvda-20240626.htm | metadata only; body not captured | | 8-K | 2024-06-07 | 2024-06-0",
+          "value": 20240626
+        },
+        {
+          "context": "00144 | https://www.sec.gov/Archives/edgar/data/1045810/000104581024000144/nvda-20240607.htm | metadata only; body not captured | | 8-K | 2024-05-22 | 2024-05-2",
+          "value": 20240607
+        },
+        {
+          "context": "00113 | https://www.sec.gov/Archives/edgar/data/1045810/000104581024000113/nvda-20240522.htm | metadata only; body not captured | | 8-K | 2024-03-14 | 2024-03-0",
+          "value": 20240522
+        },
+        {
+          "context": "00069 | https://www.sec.gov/Archives/edgar/data/1045810/000104581024000069/nvda-20240308.htm | metadata only; body not captured | | 8-K | 2024-02-21 | 2024-02-2",
+          "value": 20240308
+        },
+        {
+          "context": "00028 | https://www.sec.gov/Archives/edgar/data/1045810/000104581024000028/nvda-20240221.htm | metadata only; body not captured | | 8-K | 2023-11-21 | 2023-11-2",
+          "value": 20240221
+        },
+        {
+          "context": "00225 | https://www.sec.gov/Archives/edgar/data/1045810/000104581023000225/nvda-20231121.htm | metadata only; body not captured | | 8-K | 2023-10-24 | 2023-10-2",
+          "value": 20231121
+        },
+        {
+          "context": "00221 | https://www.sec.gov/Archives/edgar/data/1045810/000104581023000221/nvda-20231023.htm | metadata only; body not captured | | 8-K | 2023-10-17 | 2023-10-1",
+          "value": 20231023
+        },
+        {
+          "context": "00217 | https://www.sec.gov/Archives/edgar/data/1045810/000104581023000217/nvda-20231017.htm | metadata only; body not captured | | 8-K | 2023-08-23 | 2023-08-2",
+          "value": 20231017
+        },
+        {
+          "context": "00171 | https://www.sec.gov/Archives/edgar/data/1045810/000104581023000171/nvda-20230823.htm | metadata only; body not captured | Point in time: filings filed",
+          "value": 20230823
+        }
+      ],
+      "source": {
+        "id": "edgar",
+        "name": "SEC EDGAR",
+        "tier": 1
+      },
+      "summary": "SEC EDGAR — NVIDIA CORP (NVDA) — 10 filings",
+      "table": {
+        "columns": [
+          "form",
+          "filed",
+          "reportDate",
+          "accession",
+          "url",
+          "bodyCaptured"
+        ],
+        "rows": [
+          [
+            "8-K",
+            "2024-08-28",
+            "2024-08-28",
+            "0001045810-24-000262",
+            "https://www.sec.gov/Archives/edgar/data/1045810/000104581024000262/nvda-20240828.htm",
+            "metadata only; body not captured"
+          ],
+          [
+            "8-K",
+            "2024-07-02",
+            "2024-06-26",
+            "0001045810-24-000206",
+            "https://www.sec.gov/Archives/edgar/data/1045810/000104581024000206/nvda-20240626.htm",
+            "metadata only; body not captured"
+          ],
+          [
+            "8-K",
+            "2024-06-07",
+            "2024-06-07",
+            "0001045810-24-000144",
+            "https://www.sec.gov/Archives/edgar/data/1045810/000104581024000144/nvda-20240607.htm",
+            "metadata only; body not captured"
+          ],
+          [
+            "8-K",
+            "2024-05-22",
+            "2024-05-22",
+            "0001045810-24-000113",
+            "https://www.sec.gov/Archives/edgar/data/1045810/000104581024000113/nvda-20240522.htm",
+            "metadata only; body not captured"
+          ],
+          [
+            "8-K",
+            "2024-03-14",
+            "2024-03-08",
+            "0001045810-24-000069",
+            "https://www.sec.gov/Archives/edgar/data/1045810/000104581024000069/nvda-20240308.htm",
+            "metadata only; body not captured"
+          ],
+          [
+            "8-K",
+            "2024-02-21",
+            "2024-02-21",
+            "0001045810-24-000028",
+            "https://www.sec.gov/Archives/edgar/data/1045810/000104581024000028/nvda-20240221.htm",
+            "metadata only; body not captured"
+          ],
+          [
+            "8-K",
+            "2023-11-21",
+            "2023-11-21",
+            "0001045810-23-000225",
+            "https://www.sec.gov/Archives/edgar/data/1045810/000104581023000225/nvda-20231121.htm",
+            "metadata only; body not captured"
+          ],
+          [
+            "8-K",
+            "2023-10-24",
+            "2023-10-23",
+            "0001045810-23-000221",
+            "https://www.sec.gov/Archives/edgar/data/1045810/000104581023000221/nvda-20231023.htm",
+            "metadata only; body not captured"
+          ],
+          [
+            "8-K",
+            "2023-10-17",
+            "2023-10-17",
+            "0001045810-23-000217",
+            "https://www.sec.gov/Archives/edgar/data/1045810/000104581023000217/nvda-20231017.htm",
+            "metadata only; body not captured"
+          ],
+          [
+            "8-K",
+            "2023-08-23",
+            "2023-08-23",
+            "0001045810-23-000171",
+            "https://www.sec.gov/Archives/edgar/data/1045810/000104581023000171/nvda-20230823.htm",
+            "metadata only; body not captured"
+          ]
+        ]
+      }
+    }
+  },
+  {
+    "label": "mock edgar income",
+    "tool": "edgar_financials",
+    "entry": {
+      "asOf": "2024-08-29",
+      "currency": "USD",
+      "entity": {
+        "cik": "1045810",
+        "name": "NVIDIA CORP",
+        "ticker": "NVDA"
+      },
+      "facts": {
+        "length": 54,
+        "sha256": "1a0b7c69677f76e35c72fbddc1e33b31aa82caecfd0596b395102a40cf027498",
+        "head": [
+          {
+            "end": "2024-07-28",
+            "metric": "revenue",
+            "period": "2024-07-28",
+            "periodType": "quarterly",
+            "ref": "0001045810-24-000264",
+            "unit": "USD",
+            "value": 30040000000
+          },
+          {
+            "end": "2024-04-28",
+            "metric": "revenue",
+            "period": "2024-04-28",
+            "periodType": "quarterly",
+            "ref": "0001045810-24-000124",
+            "unit": "USD",
+            "value": 26044000000
+          },
+          {
+            "end": "2024-01-28",
+            "metric": "revenue",
+            "period": "2024-01-28",
+            "periodType": "quarterly",
+            "ref": "0001045810-24-000029",
+            "unit": "USD",
+            "value": 22103000000
+          }
+        ]
+      },
+      "periods": [
+        "2024-07-28",
+        "2024-04-28",
+        "2024-01-28",
+        "2023-10-29",
+        "2023-07-30",
+        "2023-04-30",
+        "2023-01-29",
+        "2022-10-30"
+      ],
+      "source": {
+        "id": "edgar",
+        "name": "SEC EDGAR",
+        "tier": 1
+      },
+      "summary": "EDGAR income statement, quarterly, $NVDA, 8 periods (latest 2024-07-28)",
+      "table": {
+        "columns": [
+          "Line",
+          "2024-07-28",
+          "2024-04-28",
+          "2024-01-28",
+          "2023-10-29",
+          "2023-07-30",
+          "2023-04-30",
+          "2023-01-29",
+          "2022-10-30"
+        ],
+        "index": "Line",
+        "rows": [
+          [
+            "Revenue",
+            30040000000,
+            26044000000,
+            22103000000,
+            18120000000,
+            13507000000,
+            7192000000,
+            6051000000,
+            5931000000
+          ],
+          [
+            "Cost of revenue",
+            7466000000,
+            5638000000,
+            5312000000,
+            4720000000,
+            4045000000,
+            2544000000,
+            2218000000,
+            2754000000
+          ],
+          [
+            "Gross profit",
+            22574000000,
+            20406000000,
+            16791000000,
+            13400000000,
+            9462000000,
+            4648000000,
+            3833000000,
+            3177000000
+          ],
+          [
+            "Operating income",
+            18642000000,
+            16909000000,
+            13615000000,
+            10417000000,
+            6800000000,
+            2140000000,
+            1256000000,
+            601000000
+          ],
+          [
+            "Net income",
+            16599000000,
+            14881000000,
+            12286000000,
+            9243000000,
+            6188000000,
+            2043000000,
+            1414000000,
+            680000000
+          ],
+          [
+            "Diluted EPS",
+            0.67,
+            0.598,
+            0.49,
+            0.371,
+            0.25,
+            0.082,
+            0.056999999999999995,
+            0.027
+          ],
+          [
+            "Diluted shares",
+            24848000000,
+            24890000000,
+            null,
+            24940000000,
+            24994000000,
+            24900000000,
+            null,
+            24990000000
+          ]
+        ]
+      }
+    }
+  },
+  {
+    "label": "mock edgar key metrics, annual",
+    "tool": "edgar_financials",
+    "entry": {
+      "asOf": "2024-08-29",
+      "currency": "USD",
+      "entity": {
+        "cik": "1045810",
+        "name": "NVIDIA CORP",
+        "ticker": "NVDA"
+      },
+      "facts": {
+        "length": 51,
+        "sha256": "ab85b459c63791ace4e428f361e34deb83d40edab1c6f2552b2172760bddd4e6",
+        "head": [
+          {
+            "end": "2024-01-28",
+            "metric": "revenue",
+            "period": "2024-01-28",
+            "periodType": "annual",
+            "ref": "0001045810-24-000029",
+            "unit": "USD",
+            "value": 60922000000
+          },
+          {
+            "end": "2023-01-29",
+            "metric": "revenue",
+            "period": "2023-01-29",
+            "periodType": "annual",
+            "ref": "0001045810-24-000029",
+            "unit": "USD",
+            "value": 26974000000
+          },
+          {
+            "end": "2022-01-30",
+            "metric": "revenue",
+            "period": "2022-01-30",
+            "periodType": "annual",
+            "ref": "0001045810-22-000036",
+            "unit": "USD",
+            "value": 26914000000
+          }
+        ]
+      },
+      "periods": [
+        "2024-01-28",
+        "2023-01-29",
+        "2022-01-30",
+        "2021-01-31",
+        "2020-01-26",
+        "2019-01-27",
+        "2018-01-28",
+        "2017-01-29"
+      ],
+      "source": {
+        "id": "edgar",
+        "name": "SEC EDGAR",
+        "tier": 1
+      },
+      "summary": "EDGAR key metrics, annual, $NVDA, 8 periods (latest 2024-01-28)",
+      "table": {
+        "columns": [
+          "Line",
+          "2024-01-28",
+          "2023-01-29",
+          "2022-01-30",
+          "2021-01-31",
+          "2020-01-26",
+          "2019-01-27",
+          "2018-01-28",
+          "2017-01-29"
+        ],
+        "index": "Line",
+        "rows": [
+          [
+            "Revenue",
+            60922000000,
+            26974000000,
+            26914000000,
+            16675000000,
+            10918000000,
+            11716000000,
+            9714000000,
+            6910000000
+          ],
+          [
+            "Gross margin",
+            72.71757329043696,
+            56.928894490991325,
+            64.92903321691314,
+            62.3448275862069,
+            61.9893753434695,
+            61.206896551724135,
+            59.934115709285564,
+            58.798842257597684
+          ],
+          [
+            "Operating margin",
+            54.121663766783755,
+            15.65952398606065,
+            37.307720888756776,
+            27.178410794602698,
+            26.06704524638212,
+            32.46841925571868,
+            33.045089561457694,
+            27.988422575976845
+          ],
+          [
+            "Net margin",
+            48.84934834706674,
+            16.193371394676355,
+            36.23393029649996,
+            25.979010494752625,
+            25.609085913170908,
+            35.3448275862069,
+            31.36709903232448,
+            24.109985528219973
+          ],
+          [
+            "Diluted EPS",
+            1.193,
+            0.174,
+            0.385,
+            0.173,
+            0.113,
+            0.16575,
+            0.1205,
+            0.06425
+          ],
+          [
+            "Free cash flow",
+            27021000000,
+            3808000000,
+            8132000000,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            "Revenue YoY",
+            125.85452658115221,
+            0.22293230289068885,
+            61.403298350824585,
+            52.729437625938814,
+            -6.811198361215432,
+            20.609429689108502,
+            40.57887120115774,
+            37.924151696606785
+          ]
+        ]
+      }
+    }
+  },
+  {
+    "label": "mock edgar financials, unknown company",
+    "tool": "edgar_financials",
+    "entry": {
+      "asOf": "2024-08-29",
+      "entity": {
+        "ticker": "ZZZZ"
+      },
+      "source": {
+        "id": "edgar",
+        "name": "SEC EDGAR",
+        "tier": 1
+      },
+      "summary": "SEC EDGAR — No SEC filer for \"ZZZZ\" is in the offline company directory."
+    }
+  },
+  {
+    "label": "mock edgar search",
+    "tool": "edgar_search_filings",
+    "entry": {
+      "asOf": "2024-08-28",
+      "numbers": {
+        "length": 18,
+        "sha256": "fb024f330b3808a94daa8feceaf7d566c0085fb26432ea53efc39fa71c2a5c0b",
+        "head": [
+          {
+            "context": "EDGAR full-text search for \"data center\" — 3 matching captured document bodies.",
+            "value": 3
+          },
+          {
+            "context": "- NVDA 8-K filed 2024-08-28 — https://www.sec.gov/Archives/edgar/data/1045810/000104581024000262/q2fy25cfocommentary.htm — https://www.sec.gov/Archives/edgar/da",
+            "value": 1045810
+          },
+          {
+            "context": "024-08-28 — https://www.sec.gov/Archives/edgar/data/1045810/000104581024000262/q2fy25cfocommentary.htm — https://www.sec.gov/Archives/edgar/data/1045810/0001045",
+            "value": 2
+          }
+        ]
+      },
+      "source": {
+        "id": "edgar",
+        "name": "SEC EDGAR",
+        "tier": 1
+      },
+      "summary": "SEC EDGAR — EDGAR full-text search for \"data center\" — 3 matching captured document bodies."
+    }
+  },
+  {
+    "label": "mock edgar search, no match",
+    "tool": "edgar_search_filings",
+    "entry": {
+      "source": {
+        "id": "edgar",
+        "name": "SEC EDGAR",
+        "tier": 1
+      },
+      "summary": "SEC EDGAR — EDGAR full-text search for \"zirconium widgets\" — no matching captured body."
+    }
+  },
+  {
+    "label": "mock edgar read",
+    "tool": "edgar_read_filing",
+    "entry": {
+      "asOf": "2024-08-28",
+      "entity": {
+        "ticker": "NVDA"
+      },
+      "numbers": [
+        {
+          "context": "https://www.sec.gov/Archives/edgar/data/1045810/000104581024000262/nvda-20240828.htm",
+          "value": 1045810
+        },
+        {
+          "context": "https://www.sec.gov/Archives/edgar/data/1045810/000104581024000262/nvda-20240828.htm",
+          "value": 20240828
+        }
+      ],
+      "source": {
+        "id": "edgar",
+        "name": "SEC EDGAR",
+        "tier": 1
+      },
+      "summary": "SEC EDGAR — https://www.sec.gov/Archives/edgar/data/1045810/000104581024000262/nvda-20240828.htm"
+    }
+  },
+  {
+    "label": "mock edgar read, query",
+    "tool": "edgar_read_filing",
+    "entry": {
+      "asOf": "2024-08-28",
+      "entity": {
+        "ticker": "NVDA"
+      },
+      "numbers": [
+        {
+          "context": "https://www.sec.gov/Archives/edgar/data/1045810/000104581024000262/nvda-20240828.htm",
+          "value": 1045810
+        },
+        {
+          "context": "https://www.sec.gov/Archives/edgar/data/1045810/000104581024000262/nvda-20240828.htm",
+          "value": 20240828
+        }
+      ],
+      "source": {
+        "id": "edgar",
+        "name": "SEC EDGAR",
+        "tier": 1
+      },
+      "summary": "SEC EDGAR — https://www.sec.gov/Archives/edgar/data/1045810/000104581024000262/nvda-20240828.htm"
+    }
+  },
+  {
+    "label": "mock av daily",
+    "tool": "alphavantage__TIME_SERIES_DAILY",
+    "entry": {
+      "asOf": "2024-08-29",
+      "currency": "USD",
+      "entity": {
+        "ticker": "NVDA"
+      },
+      "facts": [
+        {
+          "end": "2024-08-29",
+          "metric": "close",
+          "period": "2024-08-29",
+          "unit": "USD",
+          "value": 117.589996
+        }
+      ],
+      "source": {
+        "description": "Alpha Vantage-shaped sandbox projection of pinned Yahoo historical OHLCV",
+        "synthetic": true,
+        "url": "https://query2.finance.yahoo.com/v8/finance/chart/NVDA?period1=1704067200&period2=1790208000&interval=1d&events=splits"
+      },
+      "summary": "Alpha Vantage TIME_SERIES_DAILY, $NVDA, 100 rows (latest 2024-08-29, close 117.589996)",
+      "table": {
+        "columns": [
+          "date",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ],
+        "index": "date",
+        "rows": {
+          "length": 100,
+          "sha256": "7be4328fd953c5ca60e6c01dd78e14dff61423d31db07519d830305c6f21842c",
+          "head": [
+            [
+              "2024-08-29",
+              121.360001,
+              124.43,
+              116.709999,
+              117.589996,
+              453023300
+            ],
+            [
+              "2024-08-28",
+              128.119995,
+              128.330002,
+              122.639999,
+              125.610001,
+              448101100
+            ],
+            [
+              "2024-08-27",
+              125.050003,
+              129.199997,
+              123.879997,
+              128.300003,
+              303134600
+            ]
+          ]
+        }
+      }
+    }
+  },
+  {
+    "label": "mock av quote",
+    "tool": "alphavantage__GLOBAL_QUOTE",
+    "entry": {
+      "asOf": "2024-08-29",
+      "currency": "USD",
+      "entity": {
+        "ticker": "NVDA"
+      },
+      "facts": [
+        {
+          "metric": "price",
+          "period": "2024-08-29",
+          "unit": "USD",
+          "value": 117.589996
+        },
+        {
+          "metric": "open",
+          "period": "2024-08-29",
+          "unit": "USD",
+          "value": 121.360001
+        },
+        {
+          "metric": "high",
+          "period": "2024-08-29",
+          "unit": "USD",
+          "value": 124.43
+        },
+        {
+          "metric": "low",
+          "period": "2024-08-29",
+          "unit": "USD",
+          "value": 116.709999
+        },
+        {
+          "metric": "volume",
+          "period": "2024-08-29",
+          "unit": "shares",
+          "value": 453023300
+        },
+        {
+          "metric": "previousClose",
+          "period": "2024-08-29",
+          "unit": "USD",
+          "value": 125.610001
+        },
+        {
+          "metric": "change",
+          "period": "2024-08-29",
+          "unit": "USD",
+          "value": -8.020005
+        },
+        {
+          "metric": "changePercent",
+          "period": "2024-08-29",
+          "unit": "%",
+          "value": -6.384846
+        }
+      ],
+      "periods": [
+        "2024-08-29"
+      ],
+      "source": {
+        "description": "Alpha Vantage-shaped sandbox projection of pinned Yahoo historical OHLCV",
+        "synthetic": true,
+        "url": "https://query2.finance.yahoo.com/v8/finance/chart/NVDA?period1=1704067200&period2=1790208000&interval=1d&events=splits"
+      },
+      "summary": "Alpha Vantage quote, $NVDA as of 2024-08-29"
+    }
+  },
+  {
+    "label": "mock av overview",
+    "tool": "alphavantage__COMPANY_OVERVIEW",
+    "entry": {
+      "asOf": "2024-08-29",
+      "currency": "USD",
+      "entity": {
+        "name": "NVIDIA CORP",
+        "ticker": "NVDA"
+      },
+      "facts": [
+        {
+          "metric": "cIK",
+          "period": "",
+          "unit": "USD",
+          "value": 1045810
+        },
+        {
+          "metric": "price",
+          "period": "",
+          "unit": "USD",
+          "value": 117.589996
+        },
+        {
+          "metric": "sharesOutstanding",
+          "period": "",
+          "unit": "shares",
+          "value": 24530000000
+        },
+        {
+          "metric": "marketCap",
+          "period": "",
+          "unit": "USD",
+          "value": 2884482601880
+        }
+      ],
+      "source": {
+        "description": "Point-in-time overview assembled from the pinned SEC issuer directory and historical market quote; recent filed shares are included when available, and absent provider fields are omitted",
+        "priceSource": "https://query2.finance.yahoo.com/v8/finance/chart/NVDA?period1=1704067200&period2=1790208000&interval=1d&events=splits",
+        "sharesFiledAt": "2024-08-28",
+        "sharesSource": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001045810.json",
+        "synthetic": true
+      },
+      "summary": "Alpha Vantage OVERVIEW, $NVDA"
+    }
+  },
+  {
+    "label": "mock av news",
+    "tool": "alphavantage__NEWS_SENTIMENT",
+    "entry": {
+      "asOf": "2024-08-29",
+      "entity": {
+        "ticker": "NVDA"
+      },
+      "numbers": {
+        "length": 30,
+        "sha256": "3d16c1abe1ec38b71dfe30f43ef6b584957438a49f44fd1e2dacb9e33ee0db7b",
+        "head": [
+          {
+            "context": "Jim Cramer on Astera Labs Inc. (ALAB): ‘I Didn’t Like That It Spiked 72% Right Out The Gate’. Jim Cramer reflects on the current stock market, the impact of the",
+            "unit": "%",
+            "value": 72
+          },
+          {
+            "context": "lower latency and its potential to repurpose older memory technologies like DDR4. Supermicro is playing a key role in CXL adoption by integrating it into its l",
+            "value": 4
+          },
+          {
+            "context": "ts artificial intelligence initiatives, with Marvell's shares already up nearly 4% ahead of the announcement. SMHX Stock Fund Price and Chart — NASDAQ:SMHX. The",
+            "unit": "%",
+            "value": 4
+          }
+        ]
+      },
+      "source": {
+        "id": "alphavantage",
+        "name": "Alpha Vantage",
+        "tier": 2
+      },
+      "summary": "Alpha Vantage NEWS_SENTIMENT, 26 articles"
+    }
+  },
+  {
+    "label": "mock av earnings",
+    "tool": "alphavantage__EARNINGS",
+    "entry": {
+      "asOf": "2024-08-28",
+      "entity": {
+        "ticker": "NVDA"
+      },
+      "facts": {
+        "length": 406,
+        "sha256": "9c0ab0b1487475ec82908d64e8f499acc61220605d79db01b4c8f864f7fec8a1",
+        "head": [
+          {
+            "metric": "dilutedEps",
+            "period": "2024-07-31",
+            "periodType": "quarterly",
+            "unit": "USD/share",
+            "value": 0.68
+          },
+          {
+            "metric": "estimatedEps",
+            "period": "2024-07-31",
+            "periodType": "quarterly",
+            "unit": "USD/share",
+            "value": 0.63
+          },
+          {
+            "metric": "surprise",
+            "period": "2024-07-31",
+            "periodType": "quarterly",
+            "unit": "USD/share",
+            "value": 0.05
+          }
+        ]
+      },
+      "periods": {
+        "length": 102,
+        "sha256": "190172c3e11e4db5b0731caa2c3834d0c5d2721a62165d9855efbc99ff2c1a6c",
+        "head": [
+          "2024-07-31",
+          "2024-04-30",
+          "2024-01-31"
+        ]
+      },
+      "source": {
+        "id": "alphavantage",
+        "name": "Alpha Vantage",
+        "tier": 2
+      },
+      "summary": "Alpha Vantage EARNINGS, $NVDA, 102 periods",
+      "table": {
+        "columns": [
+          "fiscalDateEnding",
+          "reportedDate",
+          "reportedEPS",
+          "estimatedEPS",
+          "surprise",
+          "surprisePercentage"
+        ],
+        "index": "fiscalDateEnding",
+        "rows": {
+          "length": 102,
+          "sha256": "30c1085be2a7773e3509afa4ad49643cec2c4f90917edd2e5fb79c09b5dac29f",
+          "head": [
+            [
+              "2024-07-31",
+              "2024-08-28",
+              0.68,
+              0.63,
+              0.05,
+              7.9365
+            ],
+            [
+              "2024-04-30",
+              "2024-05-22",
+              0.612,
+              0.559,
+              0.053,
+              9.4812
+            ],
+            [
+              "2024-01-31",
+              "2024-02-21",
+              0.516,
+              0.461,
+              0.055,
+              11.9306
+            ]
+          ]
+        }
+      }
+    }
+  },
+  {
+    "label": "mock market quotes",
+    "tool": "market_quotes",
+    "entry": {
+      "asOf": "2024-08-29",
+      "currency": "USD",
+      "entity": {
+        "ticker": "NVDA"
+      },
+      "facts": [
+        {
+          "end": "2024-08-29",
+          "metric": "price",
+          "period": "2024-08-29",
+          "periodType": "instant",
+          "unit": "USD",
+          "value": 117.589996
+        },
+        {
+          "end": "2024-08-29",
+          "metric": "changePercent",
+          "period": "2024-08-29",
+          "periodType": "instant",
+          "unit": "%",
+          "value": -6.384846
+        }
+      ],
+      "periods": [
+        "2024-08-29"
+      ],
+      "source": {
+        "id": "quotes",
+        "name": "Market Quotes",
+        "tier": 2
+      },
+      "summary": "Market quotes, $NVDA, as of 2024-08-29",
+      "table": {
+        "columns": [
+          "symbol",
+          "price",
+          "changePercent",
+          "currency",
+          "date",
+          "sector",
+          "industry"
+        ],
+        "index": "symbol",
+        "rows": [
+          [
+            "NVDA",
+            117.589996,
+            -6.384846,
+            "USD",
+            "2024-08-29",
+            null,
+            null
+          ]
+        ]
+      }
+    }
+  },
+  {
+    "label": "mock market quotes, batch with a missing symbol",
+    "tool": "market_quotes",
+    "entry": {
+      "asOf": "2024-08-29",
+      "currency": "USD",
+      "entity": {
+        "ticker": "NVDA"
+      },
+      "facts": [
+        {
+          "end": "2024-08-29",
+          "metric": "NVDA price",
+          "period": "2024-08-29",
+          "periodType": "instant",
+          "unit": "USD",
+          "value": 117.589996
+        },
+        {
+          "end": "2024-08-29",
+          "metric": "NVDA changePercent",
+          "period": "2024-08-29",
+          "periodType": "instant",
+          "unit": "%",
+          "value": -6.384846
+        },
+        {
+          "end": "2024-08-29",
+          "metric": "AMD price",
+          "period": "2024-08-29",
+          "periodType": "instant",
+          "unit": "USD",
+          "value": 145.490005
+        },
+        {
+          "end": "2024-08-29",
+          "metric": "AMD changePercent",
+          "period": "2024-08-29",
+          "periodType": "instant",
+          "unit": "%",
+          "value": -0.594422
+        }
+      ],
+      "periods": [
+        "2024-08-29"
+      ],
+      "source": {
+        "id": "quotes",
+        "name": "Market Quotes",
+        "tier": 2
+      },
+      "summary": "Market quotes, $NVDA, $AMD, as of 2024-08-29",
+      "table": {
+        "columns": [
+          "symbol",
+          "price",
+          "changePercent",
+          "currency",
+          "date",
+          "sector",
+          "industry"
+        ],
+        "index": "symbol",
+        "rows": [
+          [
+            "NVDA",
+            117.589996,
+            -6.384846,
+            "USD",
+            "2024-08-29",
+            null,
+            null
+          ],
+          [
+            "AMD",
+            145.490005,
+            -0.594422,
+            "USD",
+            "2024-08-29",
+            null,
+            null
+          ]
+        ]
+      }
+    }
+  },
+  {
+    "label": "mock web search",
+    "tool": "web_search",
+    "entry": {
+      "asOf": "2024-08-29",
+      "numbers": {
+        "length": 31,
+        "sha256": "d63967425c8fc248925a8ab72e511f0b89af656257cc3bc38e2f402047a80749",
+        "head": [
+          {
+            "context": "s/stocks/stock-market-today-nvidia-stock-earnings-chipmaker-ai-jobless-gdp-2024-8 (2024-08-29) Indexes rose Thursday as investors focused on encouraging econ",
+            "value": 8
+          },
+          {
+            "context": "3. https://www.sec.gov/Archives/edgar/data/1045810/000104581024000262/q2fy25cfocommentary.htm — https://www.sec.gov/Archives/edgar/data/1045810/0001045810240002",
+            "value": 1045810
+          },
+          {
+            "context": "3. https://www.sec.gov/Archives/edgar/data/1045810/000104581024000262/q2fy25cfocommentary.htm — https://www.sec.gov/Archives/edgar/data/1045810/0001045810240002",
+            "value": 2
+          }
+        ]
+      },
+      "source": {
+        "id": "web",
+        "name": "Web",
+        "tier": 1
+      },
+      "summary": "Web search \"Nvidia second quarter fiscal 2025 results\" — 5 URLs, best tier 1"
+    }
+  }
+]

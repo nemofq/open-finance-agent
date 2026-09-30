@@ -1,0 +1,206 @@
+{
+  "version": 1,
+  "taskId": "retail-04-dividend-yield-trap",
+  "cutoff": "2024-06-15",
+  "sources": [
+    {
+      "id": "tsly-filing-index",
+      "taskId": "retail-04-dividend-yield-trap",
+      "url": "https://www.sec.gov/Archives/edgar/data/1924868/000199937124002901/0001999371-24-002901-index.html",
+      "title": "SEC EDGAR filing index - TSLY summary prospectus, Form 497K",
+      "publisher": "SEC EDGAR",
+      "documentType": "filing_index",
+      "publishedAt": "2024-02-29",
+      "availableAt": "2024-02-29T13:38:36Z",
+      "sourceTier": 1,
+      "entities": [
+        "TSLY"
+      ],
+      "topics": [
+        "TSLY",
+        "YieldMax",
+        "prospectus",
+        "filing index"
+      ],
+      "rawFile": "tsly-filing-index.html",
+      "rawSha256": "aa6ff7a5852c67088ee11ce320b9448dcf9738893cbbc769d542e56b1a70333c",
+      "bodyFile": "tsly-filing-index.txt",
+      "bodySha256": "131389c49687c3a6e1cfb7de2f1f7e0d3861e3651b4cba081853c2c94e340754",
+      "provenance": "official_historical_capture",
+      "filing": {
+        "ticker": "TSLY",
+        "companyName": "YieldMax TSLA Option Income Strategy ETF",
+        "cik": "1924868",
+        "form": "497K",
+        "filedAt": "2024-02-29",
+        "reportDate": "2024-02-29",
+        "accession": "0001999371-24-002901",
+        "url": "https://www.sec.gov/Archives/edgar/data/1924868/000199937124002901/tsly-497k_022824.htm",
+        "indexUrl": "https://www.sec.gov/Archives/edgar/data/1924868/000199937124002901/0001999371-24-002901-index.html"
+      },
+      "exhibits": [
+        "https://www.sec.gov/Archives/edgar/data/1924868/000199937124002901/tsly-497k_022824.htm"
+      ],
+      "verificationFiles": [
+        {
+          "file": "tsly-filing-headers.html",
+          "sha256": "1ebe366d10b7299700097a6d5cacac97f5a56238d7efbb8b5168733beada33d3"
+        },
+        {
+          "file": "tsly-prospectus-index.json",
+          "sha256": "a968c77d754f2daa4317d0eaff4f513c32a9de1bf9567f3da59aee22e047b2c7"
+        }
+      ]
+    },
+    {
+      "id": "tsly-prospectus",
+      "taskId": "retail-04-dividend-yield-trap",
+      "url": "https://www.sec.gov/Archives/edgar/data/1924868/000199937124002901/tsly-497k_022824.htm",
+      "title": "YieldMax TSLA Option Income Strategy ETF summary prospectus dated February 28, 2024",
+      "publisher": "SEC EDGAR",
+      "documentType": "regulatory",
+      "publishedAt": "2024-02-28",
+      "availableAt": "2024-02-29T13:38:36Z",
+      "sourceTier": 1,
+      "entities": [
+        "TSLY"
+      ],
+      "topics": [
+        "TSLY",
+        "YieldMax",
+        "covered call",
+        "option income",
+        "distribution"
+      ],
+      "rawFile": "tsly-prospectus.html",
+      "rawSha256": "9ddcbb85ce4563e395d3c0a11fce07aab81011895d4df5ea72d872b647f28bf0",
+      "bodyFile": "tsly-prospectus.txt",
+      "bodySha256": "204ec359765c810ca5faae22329f4f74082741533aa27ab75946df4dcd9b6e4b",
+      "provenance": "official_historical_capture"
+    },
+    {
+      "id": "msty-filing-index",
+      "taskId": "retail-04-dividend-yield-trap",
+      "url": "https://www.sec.gov/Archives/edgar/data/1924868/000199937124002527/0001999371-24-002527-index.html",
+      "title": "SEC EDGAR filing index - MSTY summary prospectus, Form 497K",
+      "publisher": "SEC EDGAR",
+      "documentType": "filing_index",
+      "publishedAt": "2024-02-20",
+      "availableAt": "2024-02-20T16:41:25Z",
+      "sourceTier": 1,
+      "entities": [
+        "MSTY"
+      ],
+      "topics": [
+        "MSTY",
+        "YieldMax",
+        "prospectus",
+        "filing index"
+      ],
+      "rawFile": "msty-filing-index.html",
+      "rawSha256": "544559d1ced85089af7e94325bb6b5bf27b2134f78ab52a2a5ec21945e8ee23b",
+      "bodyFile": "msty-filing-index.txt",
+      "bodySha256": "28c660a9d8ed882a5bcd0269e223c956a47322de1b4e0c8e1a720a889e1f262c",
+      "provenance": "official_historical_capture",
+      "filing": {
+        "ticker": "MSTY",
+        "companyName": "YieldMax MSTR Option Income Strategy ETF",
+        "cik": "1924868",
+        "form": "497K",
+        "filedAt": "2024-02-20",
+        "reportDate": "2024-02-20",
+        "accession": "0001999371-24-002527",
+        "url": "https://www.sec.gov/Archives/edgar/data/1924868/000199937124002527/msty-497k_022024.htm",
+        "indexUrl": "https://www.sec.gov/Archives/edgar/data/1924868/000199937124002527/0001999371-24-002527-index.html"
+      },
+      "exhibits": [
+        "https://www.sec.gov/Archives/edgar/data/1924868/000199937124002527/msty-497k_022024.htm"
+      ],
+      "verificationFiles": [
+        {
+          "file": "msty-filing-headers.html",
+          "sha256": "67a9311ef3cf722d16610e7508017abc0e469d899586f78d4960634d954b20da"
+        },
+        {
+          "file": "msty-prospectus-index.json",
+          "sha256": "3c7c71a72a4766d77153ecc33b8ba71837aa3f2681cdee2e4a9a10dba6d4321a"
+        }
+      ]
+    },
+    {
+      "id": "msty-prospectus",
+      "taskId": "retail-04-dividend-yield-trap",
+      "url": "https://www.sec.gov/Archives/edgar/data/1924868/000199937124002527/msty-497k_022024.htm",
+      "title": "YieldMax MSTR Option Income Strategy ETF summary prospectus dated February 20, 2024",
+      "publisher": "SEC EDGAR",
+      "documentType": "regulatory",
+      "publishedAt": "2024-02-20",
+      "availableAt": "2024-02-20T16:41:25Z",
+      "sourceTier": 1,
+      "entities": [
+        "MSTY"
+      ],
+      "topics": [
+        "MSTY",
+        "YieldMax",
+        "covered call",
+        "option income",
+        "distribution"
+      ],
+      "rawFile": "msty-prospectus.html",
+      "rawSha256": "fe5905a3693d7b3a6bf733c1782f896ddc9c4e3d1fe39c1fe40181f2e9d166dd",
+      "bodyFile": "msty-prospectus.txt",
+      "bodySha256": "c13b35756f8b3fb11243ba8de4806519d9426237015abaf26fa1943d416153f1",
+      "provenance": "official_historical_capture"
+    },
+    {
+      "id": "yieldmax-distribution-release-2024-06-05",
+      "taskId": "retail-04-dividend-yield-trap",
+      "url": "https://rss.globenewswire.com/news-release/2024/06/05/2893716/0/en/YieldMax-ETFs-Announces-Monthly-Distributions-on-MSTY-106-33-NVDY-101-82-CONY-84-85-YBIT-81-00-AIYY-78-90-and-Others.html",
+      "title": "YieldMax ETFs Announces Monthly Distributions on MSTY and Others",
+      "publisher": "YieldMax via GlobeNewswire",
+      "documentType": "company_release",
+      "publishedAt": "2024-06-05",
+      "availableAt": "2024-06-05T10:55:00Z",
+      "sourceTier": 1,
+      "entities": [
+        "TSLY",
+        "MSTY"
+      ],
+      "topics": [
+        "TSLY",
+        "MSTY",
+        "YieldMax",
+        "distribution",
+        "return of capital",
+        "total return"
+      ],
+      "rawFile": "yieldmax-distributions-2024-06-05.html",
+      "rawSha256": "10bbce27008b71dd40e3acb46349bc3b85ac77282996bcce666e043e3557548e",
+      "bodyFile": "yieldmax-distributions-2024-06-05.txt",
+      "bodySha256": "af1c3da5aac1acc3dba264de4e48b0619be8c47ed0c127578539ec2deed3661f",
+      "provenance": "official_historical_capture",
+      "publicationMetadata": {
+        "article:published_time": "2024-06-05T10:55:00Z",
+        "dateModified": "2024-06-05T10:55:00Z",
+        "sourceOrganization": "YieldMax"
+      }
+    }
+  ],
+  "excludedSources": [
+    {
+      "ticker": "TSLY",
+      "url": "https://www.yieldmaxetfs.com/wp-content/uploads/TaxDocuments/Fiscal%20Year%202024%2019a-1%20Notices/TSLY%2019a-1%20Notice%20%28Payable%20Date%206_7_24%29%20Final.pdf",
+      "sha256": "c8bae528d31871e720be94b76333208ca49d03c7692bf88591ba212b6372970f",
+      "embeddedCreationDate": "2024-07-25",
+      "reason": "Excluded from the 2024-06-15 task corpus: the retrieved PDF itself carries a July 25, 2024 creation date, and the June 7 payable date does not prove the PDF was available before cutoff."
+    },
+    {
+      "ticker": "MSTY",
+      "url": "https://www.yieldmaxetfs.com/wp-content/uploads/TaxDocuments/Fiscal%20Year%202024%2019a-1%20Notices/MSTY%2019a-1%20Notice%20%28Payable%20Date%206_7_24%29%20Final.pdf",
+      "sha256": "0add9bbc1cefd10c113e0bb7076d08af68491273f283edea7c20c2be72d861c8",
+      "embeddedCreationDate": "2024-07-25",
+      "reason": "Excluded from the 2024-06-15 task corpus: the retrieved PDF itself carries a July 25, 2024 creation date, and the June 7 payable date does not prove the PDF was available before cutoff."
+    }
+  ]
+}

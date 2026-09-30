@@ -1,0 +1,33 @@
+{
+  "version": 1,
+  "taskId": "retail-12-concentration-profile-fit",
+  "cutoff": "2024-09-20",
+  "sources": [
+    {
+      "id": "tqqq-2023-prospectus",
+      "taskId": "retail-12-concentration-profile-fit",
+      "url": "https://www.sec.gov/Archives/edgar/data/1174610/000168386323006700/f36277d1.htm",
+      "title": "ProShares UltraPro QQQ summary prospectus dated October 1, 2023",
+      "publisher": "SEC EDGAR",
+      "documentType": "prospectus",
+      "publishedAt": "2023-10-01",
+      "availableAt": "2023-10-01",
+      "sourceTier": 1,
+      "entities": [
+        "TQQQ"
+      ],
+      "topics": [
+        "TQQQ",
+        "leveraged ETF",
+        "daily target",
+        "volatility",
+        "concentration"
+      ],
+      "rawFile": "tqqq-2023-prospectus.html",
+      "rawSha256": "5d2685558f70680e581fb5ab2a0174e9ca141941a003a948310cd409ed56328c",
+      "bodyFile": "tqqq-2023-prospectus.txt",
+      "bodySha256": "3e050675939c31536b51087380796fa50f8a6eb2c203973ced41984f35db56e1",
+      "provenance": "official_historical_capture"
+    }
+  ]
+}

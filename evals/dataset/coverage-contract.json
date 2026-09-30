@@ -1,0 +1,1071 @@
+{
+  "version": 7,
+  "tasks": {
+    "retail-01-nvda-beat-and-drop": {
+      "cutoff": "2024-08-29",
+      "coreTickers": [
+        "NVDA"
+      ],
+      "documents": [
+        {
+          "url": "https://www.sec.gov/Archives/edgar/data/1045810/000104581024000262/q2fy25pr.htm",
+          "kind": "filing_body",
+          "minBodyChars": 3000
+        },
+        {
+          "url": "https://www.sec.gov/Archives/edgar/data/1045810/000104581024000262/q2fy25cfocommentary.htm",
+          "kind": "filing_body",
+          "minBodyChars": 3000
+        }
+      ],
+      "financialStatements": [
+        {
+          "ticker": "NVDA",
+          "statement": "key_metrics",
+          "period": "quarterly",
+          "minPeriods": 2,
+          "metrics": [
+            "revenue",
+            "grossMargin",
+            "operatingMargin",
+            "dilutedEps",
+            "freeCashFlow"
+          ]
+        }
+      ],
+      "market": [
+        {
+          "symbol": "NVDA",
+          "date": "2024-08-29"
+        }
+      ],
+      "requiredEvidence": [
+        {
+          "kind": "source",
+          "label": "NVIDIA Q2 FY25 results (8-K Ex. 99.1 / 99.2)",
+          "points": 7,
+          "urls": [
+            "https://www.sec.gov/Archives/edgar/data/1045810/000104581024000262/q2fy25pr.htm",
+            "https://www.sec.gov/Archives/edgar/data/1045810/000104581024000262/q2fy25cfocommentary.htm"
+          ]
+        },
+        {
+          "kind": "fact",
+          "label": "NVDA gross margin, Q2 FY25 (2024-07-28)",
+          "points": 5,
+          "ticker": "NVDA",
+          "statement": "key_metrics",
+          "metric": "grossMargin",
+          "period": "2024-07-28"
+        },
+        {
+          "kind": "fact",
+          "label": "NVDA revenue, Q2 FY25 (2024-07-28)",
+          "points": 3,
+          "ticker": "NVDA",
+          "statement": "key_metrics",
+          "metric": "revenue",
+          "period": "2024-07-28"
+        }
+      ],
+      "alpha": {
+        "daily": [
+          "NVDA"
+        ],
+        "earnings": [
+          "NVDA"
+        ],
+        "news": [
+          "NVDA"
+        ],
+        "verifiedEmptyNews": []
+      }
+    },
+    "retail-02-nike-moat-erosion": {
+      "cutoff": "2024-07-05",
+      "coreTickers": [
+        "NKE",
+        "DECK",
+        "ONON"
+      ],
+      "documents": [
+        {
+          "url": "https://www.sec.gov/Archives/edgar/data/320187/000032018724000028/q4fy24exhibit991er.htm",
+          "kind": "filing_body",
+          "minBodyChars": 5000
+        },
+        {
+          "url": "https://www.sec.gov/Archives/edgar/data/910521/000091052124000017/deck-20240331.htm",
+          "kind": "filing_body",
+          "minBodyChars": 3000
+        },
+        {
+          "url": "https://www.sec.gov/Archives/edgar/data/1858985/000185898524000012/onholdingag-20231231.htm",
+          "kind": "filing_body",
+          "minBodyChars": 3000
+        }
+      ],
+      "financialStatements": [
+        {
+          "ticker": "NKE",
+          "statement": "key_metrics",
+          "period": "quarterly",
+          "minPeriods": 2,
+          "metrics": [
+            "revenue",
+            "grossMargin",
+            "dilutedEps"
+          ]
+        },
+        {
+          "ticker": "DECK",
+          "statement": "key_metrics",
+          "period": "quarterly",
+          "minPeriods": 2,
+          "metrics": [
+            "revenue",
+            "grossMargin",
+            "dilutedEps"
+          ]
+        },
+        {
+          "ticker": "ONON",
+          "statement": "income",
+          "period": "annual",
+          "minPeriods": 3,
+          "metrics": [
+            "revenue",
+            "grossProfit",
+            "operatingIncome",
+            "netIncome"
+          ]
+        }
+      ],
+      "market": [
+        {
+          "symbol": "NKE",
+          "date": "2024-07-05"
+        },
+        {
+          "symbol": "DECK",
+          "date": "2024-07-05"
+        },
+        {
+          "symbol": "ONON",
+          "date": "2024-07-05"
+        }
+      ],
+      "requiredEvidence": [
+        {
+          "kind": "source",
+          "label": "Nike Q4 FY24 results release",
+          "points": 6,
+          "urls": [
+            "https://www.sec.gov/Archives/edgar/data/320187/000032018724000028/q4fy24exhibit991er.htm"
+          ]
+        },
+        {
+          "kind": "fact",
+          "label": "Deckers revenue growth",
+          "points": 5,
+          "ticker": "DECK",
+          "statement": "key_metrics",
+          "metric": "revenue"
+        },
+        {
+          "kind": "fact",
+          "label": "On Holding revenue growth",
+          "points": 4,
+          "ticker": "ONON",
+          "statement": "income",
+          "metric": "revenue"
+        }
+      ],
+      "alpha": {
+        "daily": [
+          "NKE",
+          "DECK",
+          "ONON"
+        ],
+        "earnings": [
+          "NKE",
+          "DECK",
+          "ONON"
+        ],
+        "news": [
+          "NKE"
+        ],
+        "verifiedEmptyNews": []
+      }
+    },
+    "retail-03-nuclear-thematic-purity": {
+      "cutoff": "2024-09-23",
+      "coreTickers": [
+        "CEG",
+        "VST",
+        "TLN"
+      ],
+      "documents": [
+        {
+          "url": "https://www.sec.gov/Archives/edgar/data/1868275/000186827524000058/ceg-202409208kexh991.htm",
+          "kind": "filing_body",
+          "minBodyChars": 2000
+        },
+        {
+          "url": "https://www.sec.gov/Archives/edgar/data/1692819/000169281924000061/vistra-20240630.htm",
+          "kind": "filing_body",
+          "minBodyChars": 3000
+        },
+        {
+          "url": "https://www.sec.gov/Archives/edgar/data/1622536/000162828024036935/tln-20240630.htm",
+          "kind": "filing_body",
+          "minBodyChars": 3000
+        },
+        {
+          "url": "https://www.sec.gov/Archives/edgar/data/1168165/000186827524000058/ceg-202409208kexh991.htm",
+          "kind": "filing_body",
+          "minBodyChars": 2000
+        },
+        {
+          "url": "https://www.sec.gov/Archives/edgar/data/1868275/000186827524000058/ceg-20240920.htm",
+          "kind": "filing_body",
+          "minBodyChars": 2000
+        }
+      ],
+      "financialStatements": [
+        {
+          "ticker": "CEG",
+          "statement": "key_metrics",
+          "period": "quarterly",
+          "minPeriods": 1,
+          "metrics": [
+            "revenue",
+            "netMargin"
+          ]
+        },
+        {
+          "ticker": "VST",
+          "statement": "key_metrics",
+          "period": "quarterly",
+          "minPeriods": 1,
+          "metrics": [
+            "revenue",
+            "netMargin"
+          ]
+        }
+      ],
+      "market": [
+        {
+          "symbol": "CEG",
+          "date": "2024-09-23"
+        },
+        {
+          "symbol": "VST",
+          "date": "2024-09-23"
+        }
+      ],
+      "requiredEvidence": [
+        {
+          "kind": "source",
+          "label": "Constellation-Microsoft Crane PPA announcement",
+          "points": 9,
+          "urls": [
+            "https://www.sec.gov/Archives/edgar/data/1868275/000186827524000058/ceg-202409208kexh991.htm",
+            "https://www.sec.gov/Archives/edgar/data/1168165/000186827524000058/ceg-202409208kexh991.htm",
+            "https://www.sec.gov/Archives/edgar/data/1868275/000186827524000058/ceg-20240920.htm"
+          ]
+        },
+        {
+          "kind": "source",
+          "label": "Talen-AWS data-center PPA (Q2 2024 10-Q)",
+          "points": 6,
+          "urls": [
+            "https://www.sec.gov/Archives/edgar/data/1622536/000162828024036935/tln-20240630.htm"
+          ]
+        }
+      ],
+      "alpha": {
+        "daily": [
+          "CEG",
+          "VST",
+          "TLN"
+        ],
+        "earnings": [
+          "CEG",
+          "VST",
+          "TLN"
+        ],
+        "news": [
+          "CEG"
+        ],
+        "verifiedEmptyNews": [
+          "CCJ"
+        ]
+      }
+    },
+    "retail-04-dividend-yield-trap": {
+      "cutoff": "2024-06-15",
+      "coreTickers": [
+        "TSLY",
+        "MSTY"
+      ],
+      "documents": [
+        {
+          "url": "https://www.sec.gov/Archives/edgar/data/1924868/000199937124002901/0001999371-24-002901-index.html",
+          "kind": "filing_index",
+          "minBodyChars": 500,
+          "exhibits": [
+            "https://www.sec.gov/Archives/edgar/data/1924868/000199937124002901/tsly-497k_022824.htm"
+          ]
+        },
+        {
+          "url": "https://www.sec.gov/Archives/edgar/data/1924868/000199937124002901/tsly-497k_022824.htm",
+          "kind": "prospectus",
+          "minBodyChars": 1500
+        },
+        {
+          "url": "https://www.sec.gov/Archives/edgar/data/1924868/000199937124002527/0001999371-24-002527-index.html",
+          "kind": "filing_index",
+          "minBodyChars": 500,
+          "exhibits": [
+            "https://www.sec.gov/Archives/edgar/data/1924868/000199937124002527/msty-497k_022024.htm"
+          ]
+        },
+        {
+          "url": "https://www.sec.gov/Archives/edgar/data/1924868/000199937124002527/msty-497k_022024.htm",
+          "kind": "prospectus",
+          "minBodyChars": 1500
+        },
+        {
+          "url": "https://rss.globenewswire.com/news-release/2024/06/05/2893716/0/en/YieldMax-ETFs-Announces-Monthly-Distributions-on-MSTY-106-33-NVDY-101-82-CONY-84-85-YBIT-81-00-AIYY-78-90-and-Others.html",
+          "kind": "distribution_announcement",
+          "minBodyChars": 1000
+        }
+      ],
+      "market": [
+        {
+          "symbol": "TSLY",
+          "date": "2024-06-14"
+        },
+        {
+          "symbol": "MSTY",
+          "date": "2024-06-14"
+        }
+      ],
+      "requiredEvidence": [
+        {
+          "kind": "source",
+          "label": "TSLY",
+          "points": 8,
+          "urls": [
+            "https://www.sec.gov/Archives/edgar/data/1924868/000199937124002901/tsly-497k_022824.htm",
+            "https://rss.globenewswire.com/news-release/2024/06/05/2893716/0/en/YieldMax-ETFs-Announces-Monthly-Distributions-on-MSTY-106-33-NVDY-101-82-CONY-84-85-YBIT-81-00-AIYY-78-90-and-Others.html"
+          ]
+        },
+        {
+          "kind": "source",
+          "label": "MSTY",
+          "points": 7,
+          "urls": [
+            "https://www.sec.gov/Archives/edgar/data/1924868/000199937124002527/msty-497k_022024.htm",
+            "https://rss.globenewswire.com/news-release/2024/06/05/2893716/0/en/YieldMax-ETFs-Announces-Monthly-Distributions-on-MSTY-106-33-NVDY-101-82-CONY-84-85-YBIT-81-00-AIYY-78-90-and-Others.html"
+          ]
+        }
+      ],
+      "alpha": {
+        "daily": [
+          "TSLY",
+          "MSTY",
+          "TSLA"
+        ],
+        "earnings": [],
+        "news": [],
+        "verifiedEmptyNews": [
+          "TSLY",
+          "MSTY"
+        ]
+      }
+    },
+    "retail-05-intel-value-trap": {
+      "cutoff": "2024-08-05",
+      "coreTickers": [
+        "INTC"
+      ],
+      "documents": [
+        {
+          "url": "https://www.sec.gov/Archives/edgar/data/50863/000005086324000122/q224_earningsrelease.htm",
+          "kind": "filing_body",
+          "minBodyChars": 3000
+        },
+        {
+          "url": "https://www.sec.gov/Archives/edgar/data/50863/000005086324000124/intc-20240629.htm",
+          "kind": "filing_body",
+          "minBodyChars": 3000
+        }
+      ],
+      "financialStatements": [
+        {
+          "ticker": "INTC",
+          "statement": "key_metrics",
+          "period": "quarterly",
+          "minPeriods": 2,
+          "metrics": [
+            "revenue",
+            "operatingMargin",
+            "dilutedEps",
+            "freeCashFlow"
+          ]
+        },
+        {
+          "ticker": "INTC",
+          "statement": "cashflow",
+          "period": "annual",
+          "minPeriods": 1,
+          "metrics": [
+            "capex",
+            "operatingCashFlow",
+            "freeCashFlow"
+          ]
+        },
+        {
+          "ticker": "INTC",
+          "statement": "cashflow",
+          "period": "quarterly",
+          "minPeriods": 2,
+          "metrics": [
+            "capex",
+            "operatingCashFlow",
+            "freeCashFlow"
+          ]
+        },
+        {
+          "ticker": "INTC",
+          "statement": "income",
+          "period": "quarterly",
+          "minPeriods": 2,
+          "metrics": [
+            "operatingIncome"
+          ]
+        }
+      ],
+      "market": [
+        {
+          "symbol": "INTC",
+          "date": "2024-08-05"
+        }
+      ],
+      "requiredEvidence": [
+        {
+          "kind": "source",
+          "label": "Intel Q2 2024 earnings release (dividend suspension)",
+          "points": 7,
+          "urls": [
+            "https://www.sec.gov/Archives/edgar/data/50863/000005086324000122/q224_earningsrelease.htm"
+          ]
+        },
+        {
+          "kind": "fact",
+          "label": "INTC capital expenditure",
+          "points": 4,
+          "ticker": "INTC",
+          "statement": "cashflow",
+          "metric": "capex"
+        },
+        {
+          "kind": "fact",
+          "label": "INTC free cash flow, Q2 2024 (2024-06-29)",
+          "points": 4,
+          "ticker": "INTC",
+          "statement": "cashflow",
+          "metric": "freeCashFlow",
+          "period": "2024-06-29"
+        }
+      ],
+      "alpha": {
+        "daily": [
+          "INTC"
+        ],
+        "earnings": [
+          "INTC"
+        ],
+        "news": [
+          "INTC"
+        ],
+        "verifiedEmptyNews": []
+      }
+    },
+    "retail-06-mstr-proxy-leverage": {
+      "cutoff": "2024-11-25",
+      "coreTickers": [
+        "MSTR",
+        "BTC-USD",
+        "IBIT"
+      ],
+      "documents": [
+        {
+          "url": "https://www.sec.gov/Archives/edgar/data/1050446/000095017024119263/mstr-20240930.htm",
+          "kind": "filing_body",
+          "minBodyChars": 3000
+        },
+        {
+          "url": "https://www.sec.gov/Archives/edgar/data/1050446/000119312524262151/d850321d8k.htm",
+          "kind": "filing_body",
+          "minBodyChars": 2000
+        },
+        {
+          "url": "https://www.sec.gov/Archives/edgar/data/1050446/000119312524264733/d844494d8k.htm",
+          "kind": "filing_body",
+          "minBodyChars": 3000
+        }
+      ],
+      "financialStatements": [
+        {
+          "ticker": "MSTR",
+          "statement": "key_metrics",
+          "period": "quarterly",
+          "minPeriods": 2,
+          "metrics": [
+            "revenue",
+            "dilutedEps",
+            "freeCashFlow"
+          ]
+        },
+        {
+          "ticker": "MSTR",
+          "statement": "balance",
+          "period": "quarterly",
+          "minPeriods": 1,
+          "metrics": [
+            "longTermDebt"
+          ]
+        }
+      ],
+      "market": [
+        {
+          "symbol": "MSTR",
+          "date": "2024-11-25"
+        },
+        {
+          "symbol": "BTC-USD",
+          "date": "2024-11-25"
+        },
+        {
+          "symbol": "IBIT",
+          "date": "2024-11-25"
+        }
+      ],
+      "requiredEvidence": [
+        {
+          "kind": "source",
+          "label": "MSTR bitcoin holdings as of Nov 2024 (Nov 25 8-K)",
+          "points": 5,
+          "urls": [
+            "https://www.sec.gov/Archives/edgar/data/1050446/000119312524264733/d844494d8k.htm"
+          ]
+        },
+        {
+          "kind": "source",
+          "label": "MSTR $2.6B 0% 2029 convertible notes (Nov 20 8-K)",
+          "points": 4,
+          "urls": [
+            "https://www.sec.gov/Archives/edgar/data/1050446/000119312524262151/d850321d8k.htm"
+          ]
+        },
+        {
+          "kind": "ledger",
+          "label": "MSTR dated share price (mNAV input)",
+          "points": 3,
+          "source": "quote",
+          "ticker": "MSTR"
+        },
+        {
+          "kind": "ledger",
+          "label": "BTC-USD dated price (mNAV input)",
+          "points": 3,
+          "source": "quote",
+          "ticker": "BTC-USD"
+        }
+      ],
+      "alpha": {
+        "daily": [
+          "MSTR",
+          "IBIT"
+        ],
+        "earnings": [
+          "MSTR"
+        ],
+        "news": [
+          "MSTR"
+        ],
+        "verifiedEmptyNews": []
+      }
+    },
+    "retail-09-narrative-factcheck-apple": {
+      "cutoff": "2024-08-06",
+      "coreTickers": [
+        "AAPL",
+        "BRK-B"
+      ],
+      "documents": [
+        {
+          "url": "https://www.sec.gov/Archives/edgar/data/320193/000032019324000080/a8-kex991q3202406292024.htm",
+          "kind": "filing_body",
+          "minBodyChars": 3000
+        },
+        {
+          "url": "https://www.sec.gov/Archives/edgar/data/1067983/000095012324005622/32398.xml",
+          "kind": "filing_body",
+          "minBodyChars": 2000
+        },
+        {
+          "url": "https://www.sec.gov/Archives/edgar/data/1067983/000095012324005622/xslForm13F_X02/32398.xml",
+          "kind": "filing_body",
+          "minBodyChars": 1000
+        }
+      ],
+      "financialStatements": [
+        {
+          "ticker": "AAPL",
+          "statement": "key_metrics",
+          "period": "quarterly",
+          "minPeriods": 2,
+          "metrics": [
+            "revenue",
+            "grossMargin",
+            "dilutedEps",
+            "freeCashFlow"
+          ]
+        }
+      ],
+      "market": [
+        {
+          "symbol": "AAPL",
+          "date": "2024-08-06"
+        }
+      ],
+      "requiredEvidence": [
+        {
+          "kind": "source",
+          "label": "Apple Q3 FY24 results release",
+          "points": 8,
+          "urls": [
+            "https://www.sec.gov/Archives/edgar/data/320193/000032019324000080/a8-kex991q3202406292024.htm"
+          ]
+        },
+        {
+          "kind": "source",
+          "label": "Berkshire 13F Apple position (Q1 2024)",
+          "points": 7,
+          "urls": [
+            "https://www.sec.gov/Archives/edgar/data/1067983/000095012324005622/32398.xml",
+            "https://www.sec.gov/Archives/edgar/data/1067983/000095012324005622/xslForm13F_X02/32398.xml"
+          ]
+        }
+      ],
+      "alpha": {
+        "daily": [
+          "AAPL"
+        ],
+        "earnings": [
+          "AAPL"
+        ],
+        "news": [
+          "AAPL"
+        ],
+        "verifiedEmptyNews": []
+      }
+    },
+    "retail-10-smci-accounting-red-flag": {
+      "cutoff": "2024-10-31",
+      "coreTickers": [
+        "SMCI"
+      ],
+      "documents": [
+        {
+          "url": "https://www.sec.gov/Archives/edgar/data/1375365/000137536524000036/0001375365-24-000036-index.htm",
+          "kind": "filing_index",
+          "minBodyChars": 700,
+          "exhibits": [
+            "https://www.sec.gov/Archives/edgar/data/1375365/000137536524000036/lettertothesectobeattach.htm"
+          ]
+        },
+        {
+          "url": "https://www.sec.gov/Archives/edgar/data/1375365/000137536524000036/lettertothesectobeattach.htm",
+          "kind": "filing_body",
+          "minBodyChars": 600
+        },
+        {
+          "url": "https://www.sec.gov/Archives/edgar/data/1375365/000137536524000036/smci-20241024.htm",
+          "kind": "filing_body",
+          "minBodyChars": 3000
+        },
+        {
+          "url": "https://www.sec.gov/Archives/edgar/data/1375365/000137536524000033/smci-20240917.htm",
+          "kind": "filing_body",
+          "minBodyChars": 1500
+        },
+        {
+          "url": "https://www.sec.gov/Archives/edgar/data/1375365/000137536524000031/smci-form12bx25nt10xkx2024.htm",
+          "kind": "filing_body",
+          "minBodyChars": 2000
+        }
+      ],
+      "financialStatements": [
+        {
+          "ticker": "SMCI",
+          "statement": "key_metrics",
+          "period": "quarterly",
+          "minPeriods": 2,
+          "metrics": [
+            "revenue",
+            "grossMargin",
+            "freeCashFlow"
+          ]
+        }
+      ],
+      "market": [
+        {
+          "symbol": "SMCI",
+          "date": "2024-10-30"
+        }
+      ],
+      "requiredEvidence": [
+        {
+          "kind": "source",
+          "label": "SMCI 8-K Item 4.01: EY resignation",
+          "points": 10,
+          "urls": [
+            "https://www.sec.gov/Archives/edgar/data/1375365/000137536524000036/smci-20241024.htm",
+            "https://www.sec.gov/Archives/edgar/data/1375365/000137536524000036/lettertothesectobeattach.htm"
+          ]
+        },
+        {
+          "kind": "source",
+          "label": "SMCI delayed 10-K / Nasdaq non-compliance",
+          "points": 5,
+          "urls": [
+            "https://www.sec.gov/Archives/edgar/data/1375365/000137536524000033/smci-20240917.htm",
+            "https://www.sec.gov/Archives/edgar/data/1375365/000137536524000031/smci-form12bx25nt10xkx2024.htm"
+          ]
+        }
+      ],
+      "alpha": {
+        "daily": [
+          "SMCI"
+        ],
+        "earnings": [
+          "SMCI"
+        ],
+        "news": [
+          "SMCI"
+        ],
+        "verifiedEmptyNews": []
+      }
+    },
+    "retail-11-nike-earnings-review-report": {
+      "cutoff": "2024-06-28",
+      "coreTickers": [
+        "NKE"
+      ],
+      "documents": [
+        {
+          "url": "https://www.sec.gov/Archives/edgar/data/320187/000032018724000028/0000320187-24-000028-index.htm",
+          "kind": "filing_index",
+          "minBodyChars": 700,
+          "exhibits": [
+            "https://www.sec.gov/Archives/edgar/data/320187/000032018724000028/q4fy24exhibit991er.htm"
+          ]
+        },
+        {
+          "url": "https://www.sec.gov/Archives/edgar/data/320187/000032018724000028/q4fy24exhibit991er.htm",
+          "kind": "filing_body",
+          "minBodyChars": 5000
+        }
+      ],
+      "financialStatements": [
+        {
+          "ticker": "NKE",
+          "statement": "key_metrics",
+          "period": "quarterly",
+          "minPeriods": 4,
+          "metrics": [
+            "revenue",
+            "grossMargin",
+            "dilutedEps"
+          ]
+        }
+      ],
+      "market": [
+        {
+          "symbol": "NKE",
+          "date": "2024-06-28"
+        }
+      ],
+      "requiredEvidence": [
+        {
+          "kind": "source",
+          "label": "Nike Q4 FY24 8-K Exhibit 99.1",
+          "points": 15,
+          "urls": [
+            "https://www.sec.gov/Archives/edgar/data/320187/000032018724000028/q4fy24exhibit991er.htm"
+          ]
+        }
+      ],
+      "alpha": {
+        "daily": [
+          "NKE"
+        ],
+        "earnings": [
+          "NKE"
+        ],
+        "news": [],
+        "verifiedEmptyNews": [
+          "NKE"
+        ]
+      }
+    },
+    "retail-12-concentration-profile-fit": {
+      "cutoff": "2024-09-20",
+      "coreTickers": [
+        "AAPL",
+        "MSFT",
+        "NVDA",
+        "VOO"
+      ],
+      "documents": [
+        {
+          "url": "https://www.sec.gov/Archives/edgar/data/1174610/000168386323006700/f36277d1.htm",
+          "kind": "prospectus",
+          "minBodyChars": 3000
+        }
+      ],
+      "market": [
+        {
+          "symbol": "AAPL",
+          "date": "2024-09-20"
+        },
+        {
+          "symbol": "MSFT",
+          "date": "2024-09-20"
+        },
+        {
+          "symbol": "NVDA",
+          "date": "2024-09-20"
+        },
+        {
+          "symbol": "VOO",
+          "date": "2024-09-20"
+        }
+      ],
+      "requiredEvidence": [
+        {
+          "kind": "ledger",
+          "label": "Declared holdings read and cited",
+          "points": 7,
+          "source": "holdings"
+        },
+        {
+          "kind": "ledger",
+          "label": "NVDA dated quote",
+          "points": 2,
+          "source": "quote",
+          "ticker": "NVDA"
+        },
+        {
+          "kind": "ledger",
+          "label": "AAPL dated quote",
+          "points": 2,
+          "source": "quote",
+          "ticker": "AAPL"
+        },
+        {
+          "kind": "ledger",
+          "label": "MSFT dated quote",
+          "points": 2,
+          "source": "quote",
+          "ticker": "MSFT"
+        },
+        {
+          "kind": "ledger",
+          "label": "VOO dated quote",
+          "points": 2,
+          "source": "quote",
+          "ticker": "VOO"
+        }
+      ],
+      "alpha": {
+        "daily": [
+          "AAPL",
+          "MSFT",
+          "NVDA",
+          "VOO"
+        ],
+        "earnings": [],
+        "news": [],
+        "verifiedEmptyNews": []
+      }
+    },
+    "retail-13-semis-figure-survival": {
+      "cutoff": "2024-11-22",
+      "coreTickers": [
+        "NVDA",
+        "AMD",
+        "INTC"
+      ],
+      "documents": [
+        {
+          "url": "https://www.sec.gov/Archives/edgar/data/50863/000005086324000147/q324_earningsrelease.htm",
+          "kind": "filing_body",
+          "minBodyChars": 3000
+        },
+        {
+          "url": "https://www.sec.gov/Archives/edgar/data/50863/000005086324000149/intc-20240928.htm",
+          "kind": "filing_body",
+          "minBodyChars": 3000
+        }
+      ],
+      "financialStatements": [
+        {
+          "ticker": "NVDA",
+          "statement": "key_metrics",
+          "period": "quarterly",
+          "minPeriods": 8,
+          "metrics": [
+            "revenue",
+            "grossMargin",
+            "dilutedEps"
+          ]
+        },
+        {
+          "ticker": "AMD",
+          "statement": "key_metrics",
+          "period": "quarterly",
+          "minPeriods": 8,
+          "metrics": [
+            "revenue",
+            "grossMargin",
+            "dilutedEps"
+          ]
+        },
+        {
+          "ticker": "INTC",
+          "statement": "key_metrics",
+          "period": "quarterly",
+          "minPeriods": 8,
+          "metrics": [
+            "revenue",
+            "grossMargin",
+            "dilutedEps"
+          ]
+        }
+      ],
+      "market": [
+        {
+          "symbol": "NVDA",
+          "date": "2024-11-22"
+        },
+        {
+          "symbol": "AMD",
+          "date": "2024-11-22"
+        },
+        {
+          "symbol": "INTC",
+          "date": "2024-11-22"
+        }
+      ],
+      "requiredEvidence": [
+        {
+          "kind": "fact",
+          "label": "AMD revenue, latest quarter (2024-09-28)",
+          "points": 8,
+          "ticker": "AMD",
+          "statement": "key_metrics",
+          "metric": "revenue",
+          "period": "2024-09-28"
+        },
+        {
+          "kind": "fact",
+          "label": "Intel gross margin, same quarter (2024-09-28)",
+          "points": 7,
+          "ticker": "INTC",
+          "statement": "key_metrics",
+          "metric": "grossMargin",
+          "period": "2024-09-28"
+        }
+      ],
+      "alpha": {
+        "daily": [
+          "NVDA",
+          "AMD",
+          "INTC"
+        ],
+        "earnings": [
+          "NVDA",
+          "AMD",
+          "INTC"
+        ],
+        "news": [
+          "AMD"
+        ],
+        "verifiedEmptyNews": []
+      }
+    },
+    "retail-14-apple-pre-open-timing": {
+      "cutoff": "2024-10-31",
+      "asOfTime": "08:15",
+      "coreTickers": [
+        "AAPL"
+      ],
+      "documents": [
+        {
+          "url": "https://www.sec.gov/Archives/edgar/data/320193/000032019323000104/0000320193-23-000104-index.htm",
+          "kind": "filing_index",
+          "minBodyChars": 700
+        },
+        {
+          "url": "https://www.sec.gov/Archives/edgar/data/320193/000032019323000104/a8-kex991q4202309302023.htm",
+          "kind": "filing_body",
+          "minBodyChars": 3000
+        }
+      ],
+      "financialStatements": [
+        {
+          "ticker": "AAPL",
+          "statement": "key_metrics",
+          "period": "quarterly",
+          "minPeriods": 1,
+          "metrics": [
+            "revenue"
+          ]
+        }
+      ],
+      "market": [
+        {
+          "symbol": "AAPL",
+          "date": "2024-10-30"
+        }
+      ],
+      "requiredEvidence": [
+        {
+          "kind": "ledger",
+          "label": "Dated prior close (2024-10-30) cited",
+          "points": 15,
+          "source": "quote",
+          "ticker": "AAPL"
+        }
+      ],
+      "alpha": {
+        "daily": [
+          "AAPL"
+        ],
+        "earnings": [
+          "AAPL"
+        ],
+        "news": [
+          "AAPL"
+        ],
+        "verifiedEmptyNews": []
+      }
+    }
+  }
+}

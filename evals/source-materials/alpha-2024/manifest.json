@@ -1,0 +1,295 @@
+{
+  "version": 1,
+  "kind": "alphavantage",
+  "sources": [
+    {
+      "file": "earnings-aapl.json",
+      "operation": "EARNINGS",
+      "symbol": "AAPL",
+      "args": {
+        "symbol": "AAPL"
+      },
+      "sha256": "8539025d35df5dffdb155a67ede3bf69d20869ed12bf9fe2a566ab6d35edb593",
+      "url": "https://www.alphavantage.co/query?function=EARNINGS&symbol=AAPL"
+    },
+    {
+      "file": "earnings-amd.json",
+      "operation": "EARNINGS",
+      "symbol": "AMD",
+      "args": {
+        "symbol": "AMD"
+      },
+      "sha256": "d6bda93d7de976e98523ccdd11021a9ad9f25b7b9f26eef48323a100db858f53",
+      "url": "https://www.alphavantage.co/query?function=EARNINGS&symbol=AMD"
+    },
+    {
+      "file": "earnings-ceg.json",
+      "operation": "EARNINGS",
+      "symbol": "CEG",
+      "args": {
+        "symbol": "CEG"
+      },
+      "sha256": "8d35304ff9f7f72266a0d00fff18ccc291588fa4d6d83f5bd02cb3eb6f252b0c",
+      "url": "https://www.alphavantage.co/query?function=EARNINGS&symbol=CEG"
+    },
+    {
+      "file": "earnings-deck.json",
+      "operation": "EARNINGS",
+      "symbol": "DECK",
+      "args": {
+        "symbol": "DECK"
+      },
+      "sha256": "882620d4834ca2dbfafa36284e015cd32d7b8a86587f289e06dcf7e8ac537625",
+      "url": "https://www.alphavantage.co/query?function=EARNINGS&symbol=DECK"
+    },
+    {
+      "file": "earnings-intc.json",
+      "operation": "EARNINGS",
+      "symbol": "INTC",
+      "args": {
+        "symbol": "INTC"
+      },
+      "sha256": "33c2133712689ca361731bfa27f2778bc464d372c3d76d167e71c4c1c052a283",
+      "url": "https://www.alphavantage.co/query?function=EARNINGS&symbol=INTC"
+    },
+    {
+      "file": "earnings-mstr.json",
+      "operation": "EARNINGS",
+      "symbol": "MSTR",
+      "args": {
+        "symbol": "MSTR"
+      },
+      "sha256": "dc8fd112c3a28c066bb07c25c5fb016695fb89dc43b367cbb0dcf32f84403251",
+      "url": "https://www.alphavantage.co/query?function=EARNINGS&symbol=MSTR"
+    },
+    {
+      "file": "earnings-nke.json",
+      "operation": "EARNINGS",
+      "symbol": "NKE",
+      "args": {
+        "symbol": "NKE"
+      },
+      "sha256": "0cf8f7255755d4690ffa92b2b3ee17e5b0a7ed37444fe328681f09627a60dd3d",
+      "url": "https://www.alphavantage.co/query?function=EARNINGS&symbol=NKE"
+    },
+    {
+      "file": "earnings-nvda.json",
+      "operation": "EARNINGS",
+      "symbol": "NVDA",
+      "args": {
+        "symbol": "NVDA"
+      },
+      "sha256": "6eadba612515b6000cd6bbc30449e78bcb28f62b7d291864c8106b8d12e56438",
+      "url": "https://www.alphavantage.co/query?function=EARNINGS&symbol=NVDA"
+    },
+    {
+      "file": "earnings-onon.json",
+      "operation": "EARNINGS",
+      "symbol": "ONON",
+      "args": {
+        "symbol": "ONON"
+      },
+      "sha256": "ea1ae073e9196f901be6f77337d194bb7c7f61aaba19926a6e2f3e4ca7e48515",
+      "url": "https://www.alphavantage.co/query?function=EARNINGS&symbol=ONON"
+    },
+    {
+      "file": "earnings-smci.json",
+      "operation": "EARNINGS",
+      "symbol": "SMCI",
+      "args": {
+        "symbol": "SMCI"
+      },
+      "sha256": "80048355db9ce168fa310bc7583fdfaa1b2ad80b67041dab9df348037fe2964a",
+      "url": "https://www.alphavantage.co/query?function=EARNINGS&symbol=SMCI"
+    },
+    {
+      "file": "earnings-tln.json",
+      "operation": "EARNINGS",
+      "symbol": "TLN",
+      "args": {
+        "symbol": "TLN"
+      },
+      "sha256": "79e88d294be4a5755c488edc007906f2b43a44ba32dd4e4c77aab6c1a02015c7",
+      "url": "https://www.alphavantage.co/query?function=EARNINGS&symbol=TLN"
+    },
+    {
+      "file": "earnings-vst.json",
+      "operation": "EARNINGS",
+      "symbol": "VST",
+      "args": {
+        "symbol": "VST"
+      },
+      "sha256": "415517a5b30bda7a1a04c1efb0eb1f775fb49ad5e4fb2cf41b933faa2d997c8a",
+      "url": "https://www.alphavantage.co/query?function=EARNINGS&symbol=VST"
+    },
+    {
+      "file": "news-aapl-20240801-20240806.json",
+      "operation": "NEWS_SENTIMENT",
+      "symbol": "AAPL",
+      "args": {
+        "tickers": "AAPL",
+        "time_from": "20240801T0000",
+        "time_to": "20240806T2359",
+        "limit": 1000
+      },
+      "sha256": "f900886a3462e2b3b62b603f0077a49755c1463102e1ba13d9e0f119cb3423ed",
+      "url": "https://www.alphavantage.co/query?function=NEWS_SENTIMENT&tickers=AAPL&time_from=20240801T0000&time_to=20240806T2359&limit=1000"
+    },
+    {
+      "file": "news-aapl-20241025-20241031.json",
+      "operation": "NEWS_SENTIMENT",
+      "symbol": "AAPL",
+      "args": {
+        "tickers": "AAPL",
+        "time_from": "20241025T0000",
+        "time_to": "20241031T2359",
+        "limit": 1000
+      },
+      "sha256": "b4236b91150c2d27f0768950625cbac0772a801e2a71625859c52ae97ab250f7",
+      "url": "https://www.alphavantage.co/query?function=NEWS_SENTIMENT&tickers=AAPL&time_from=20241025T0000&time_to=20241031T2359&limit=1000"
+    },
+    {
+      "file": "news-amd-20241101-20241122.json",
+      "operation": "NEWS_SENTIMENT",
+      "symbol": "AMD",
+      "args": {
+        "tickers": "AMD",
+        "time_from": "20241101T0000",
+        "time_to": "20241122T2359",
+        "limit": 1000
+      },
+      "sha256": "e45883be53ba24271e7796d4550c62383490bcf759bbb71d3c5cd246d3e7d40c",
+      "url": "https://www.alphavantage.co/query?function=NEWS_SENTIMENT&tickers=AMD&time_from=20241101T0000&time_to=20241122T2359&limit=1000"
+    },
+    {
+      "file": "news-ccj-20240905-20240923.json",
+      "operation": "NEWS_SENTIMENT",
+      "symbol": "CCJ",
+      "args": {
+        "tickers": "CCJ",
+        "time_from": "20240905T0000",
+        "time_to": "20240923T2359",
+        "limit": 1000
+      },
+      "sha256": "650e0de7156a9cffe49f34457794bf8c5af89828d11654e579740b08837f1aa3",
+      "url": "https://www.alphavantage.co/query?function=NEWS_SENTIMENT&tickers=CCJ&time_from=20240905T0000&time_to=20240923T2359&limit=1000"
+    },
+    {
+      "file": "news-ceg-20240901-20240923.json",
+      "operation": "NEWS_SENTIMENT",
+      "symbol": "CEG",
+      "args": {
+        "tickers": "CEG",
+        "time_from": "20240901T0000",
+        "time_to": "20240923T2359",
+        "limit": 1000
+      },
+      "sha256": "546123c9208a7bfafaec9c5be2df4ba685b586e76d71a30d8fe50b40023bb8ef",
+      "url": "https://www.alphavantage.co/query?function=NEWS_SENTIMENT&tickers=CEG&time_from=20240901T0000&time_to=20240923T2359&limit=1000"
+    },
+    {
+      "file": "news-intc-20240801-20240805.json",
+      "operation": "NEWS_SENTIMENT",
+      "symbol": "INTC",
+      "args": {
+        "tickers": "INTC",
+        "time_from": "20240801T0000",
+        "time_to": "20240805T2359",
+        "limit": 1000
+      },
+      "sha256": "4b79426bda59f0b3a31d0505427e887e2d36b3d72c1c07100cf0b7cddcc964d2",
+      "url": "https://www.alphavantage.co/query?function=NEWS_SENTIMENT&tickers=INTC&time_from=20240801T0000&time_to=20240805T2359&limit=1000"
+    },
+    {
+      "file": "news-mstr-20241101-20241125.json",
+      "operation": "NEWS_SENTIMENT",
+      "symbol": "MSTR",
+      "args": {
+        "tickers": "MSTR",
+        "time_from": "20241101T0000",
+        "time_to": "20241125T2359",
+        "limit": 1000
+      },
+      "sha256": "9c3bda85d826e1f139bdd91564309e325c8ae0074a10a26585efd4dce341d864",
+      "url": "https://www.alphavantage.co/query?function=NEWS_SENTIMENT&tickers=MSTR&time_from=20241101T0000&time_to=20241125T2359&limit=1000"
+    },
+    {
+      "file": "news-msty-20240601-20240615.json",
+      "operation": "NEWS_SENTIMENT",
+      "symbol": "MSTY",
+      "args": {
+        "tickers": "MSTY",
+        "time_from": "20240601T0000",
+        "time_to": "20240615T2359",
+        "limit": 1000
+      },
+      "sha256": "650e0de7156a9cffe49f34457794bf8c5af89828d11654e579740b08837f1aa3",
+      "url": "https://www.alphavantage.co/query?function=NEWS_SENTIMENT&tickers=MSTY&time_from=20240601T0000&time_to=20240615T2359&limit=1000"
+    },
+    {
+      "file": "news-nke-20240627-20240628.json",
+      "operation": "NEWS_SENTIMENT",
+      "symbol": "NKE",
+      "args": {
+        "tickers": "NKE",
+        "time_from": "20240627T0000",
+        "time_to": "20240628T2359",
+        "limit": 1000
+      },
+      "sha256": "650e0de7156a9cffe49f34457794bf8c5af89828d11654e579740b08837f1aa3",
+      "url": "https://www.alphavantage.co/query?function=NEWS_SENTIMENT&tickers=NKE&time_from=20240627T0000&time_to=20240628T2359&limit=1000"
+    },
+    {
+      "file": "news-nke-20240627-20240705.json",
+      "operation": "NEWS_SENTIMENT",
+      "symbol": "NKE",
+      "args": {
+        "tickers": "NKE",
+        "time_from": "20240627T0000",
+        "time_to": "20240705T2359",
+        "limit": 1000
+      },
+      "sha256": "3b9dc0a49157f00cb15e82f3e3ae5b8c0ddb0df98100e5e3b3b5526cdf213b68",
+      "url": "https://www.alphavantage.co/query?function=NEWS_SENTIMENT&tickers=NKE&time_from=20240627T0000&time_to=20240705T2359&limit=1000"
+    },
+    {
+      "file": "news-nvda-20240826-20240829.json",
+      "operation": "NEWS_SENTIMENT",
+      "symbol": "NVDA",
+      "args": {
+        "tickers": "NVDA",
+        "time_from": "20240826T0000",
+        "time_to": "20240829T2359",
+        "limit": 1000
+      },
+      "sha256": "63e6d87ec936d3186b5a135aae66f7d6c746484d1a8f50258963901edea53404",
+      "url": "https://www.alphavantage.co/query?function=NEWS_SENTIMENT&tickers=NVDA&time_from=20240826T0000&time_to=20240829T2359&limit=1000"
+    },
+    {
+      "file": "news-smci-20241025-20241031.json",
+      "operation": "NEWS_SENTIMENT",
+      "symbol": "SMCI",
+      "args": {
+        "tickers": "SMCI",
+        "time_from": "20241025T0000",
+        "time_to": "20241031T2359",
+        "limit": 1000
+      },
+      "sha256": "5db763d35572e770491097e6553eb139e600f0ea7516738c0469f458b8e65827",
+      "url": "https://www.alphavantage.co/query?function=NEWS_SENTIMENT&tickers=SMCI&time_from=20241025T0000&time_to=20241031T2359&limit=1000"
+    },
+    {
+      "file": "news-tsly-20240601-20240615.json",
+      "operation": "NEWS_SENTIMENT",
+      "symbol": "TSLY",
+      "args": {
+        "tickers": "TSLY",
+        "time_from": "20240601T0000",
+        "time_to": "20240615T2359",
+        "limit": 1000
+      },
+      "sha256": "650e0de7156a9cffe49f34457794bf8c5af89828d11654e579740b08837f1aa3",
+      "url": "https://www.alphavantage.co/query?function=NEWS_SENTIMENT&tickers=TSLY&time_from=20240601T0000&time_to=20240615T2359&limit=1000"
+    }
+  ]
+}

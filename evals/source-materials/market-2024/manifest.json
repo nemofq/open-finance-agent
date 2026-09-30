@@ -1,0 +1,204 @@
+{
+  "version": 1,
+  "kind": "yahoo_chart",
+  "sources": [
+    {
+      "file": "aapl.json",
+      "symbol": "AAPL",
+      "sha256": "16a945c4586720da9f06711b07c7b3bd38f025bcc7676d2a802eb3fd17911d02",
+      "url": "https://query2.finance.yahoo.com/v8/finance/chart/AAPL?period1=1704067200&period2=1790208000&interval=1d&events=splits"
+    },
+    {
+      "file": "amd.json",
+      "symbol": "AMD",
+      "sha256": "de8b5e5f7488615206036b5c0f01007db42d78da04daf4a202c5ee2e05e377f4",
+      "url": "https://query2.finance.yahoo.com/v8/finance/chart/AMD?period1=1704067200&period2=1790208000&interval=1d&events=splits"
+    },
+    {
+      "file": "avgo.json",
+      "symbol": "AVGO",
+      "sha256": "f169737c30b06becbb5fb3114376b068ce67be40ea5a46507f72220580482f9d",
+      "url": "https://query2.finance.yahoo.com/v8/finance/chart/AVGO?period1=1704067200&period2=1790208000&interval=1d&events=splits"
+    },
+    {
+      "file": "btc-usd.json",
+      "symbol": "BTC-USD",
+      "sha256": "1807c874fbcb0ac0fd40f90a797ef24af3ce80b62dfe30948221725faba48375",
+      "url": "https://query2.finance.yahoo.com/v8/finance/chart/BTC-USD?period1=1704067200&period2=1790208000&interval=1d&events=splits"
+    },
+    {
+      "file": "bwxt.json",
+      "symbol": "BWXT",
+      "sha256": "830914e42409b715303e1388f31490c1d2e97ed2ebfbe45dbb5873a88cac14ff",
+      "url": "https://query2.finance.yahoo.com/v8/finance/chart/BWXT?period1=1704067200&period2=1790208000&interval=1d&events=splits"
+    },
+    {
+      "file": "ccj.json",
+      "symbol": "CCJ",
+      "sha256": "fceb92a008be4674d96cb421a607847449593cba6d57f0dfafff620d78fcd64a",
+      "url": "https://query2.finance.yahoo.com/v8/finance/chart/CCJ?period1=1704067200&period2=1790208000&interval=1d&events=splits"
+    },
+    {
+      "file": "ceg.json",
+      "symbol": "CEG",
+      "sha256": "fc2ba35205ba656a38339fd34f1db76d76ed90565530ff4ff0a12d89702260fe",
+      "url": "https://query2.finance.yahoo.com/v8/finance/chart/CEG?period1=1704067200&period2=1790208000&interval=1d&events=splits"
+    },
+    {
+      "file": "deck.json",
+      "symbol": "DECK",
+      "sha256": "a6ce7233e84a759835c0bcc1a2643f9d6fbaf6b658e0765db5b44bd01caa85fd",
+      "url": "https://query2.finance.yahoo.com/v8/finance/chart/DECK?period1=1704067200&period2=1790208000&interval=1d&events=splits"
+    },
+    {
+      "file": "gev.json",
+      "symbol": "GEV",
+      "sha256": "b5137844c587e3825fd7e1a2743d4a116ce9679c9a3bbe6ecdd403958114689a",
+      "url": "https://query2.finance.yahoo.com/v8/finance/chart/GEV?period1=1704067200&period2=1790208000&interval=1d&events=splits"
+    },
+    {
+      "file": "googl.json",
+      "symbol": "GOOGL",
+      "sha256": "6aca14dacfb2c9e422128d31636f517cf52ceeb24565c7cdf973db5ab19edd13",
+      "url": "https://query2.finance.yahoo.com/v8/finance/chart/GOOGL?period1=1704067200&period2=1790208000&interval=1d&events=splits"
+    },
+    {
+      "file": "ibit.json",
+      "symbol": "IBIT",
+      "sha256": "4d35c961beeb7c933cc2ed5b8ee1f2f59808bd3a358f03ddc386379ffae266e1",
+      "url": "https://query2.finance.yahoo.com/v8/finance/chart/IBIT?period1=1704067200&period2=1790208000&interval=1d&events=splits"
+    },
+    {
+      "file": "intc.json",
+      "symbol": "INTC",
+      "sha256": "912d6e56a1baec91b5352ecd4753bea592340acf6f39ab3ea99d943cd374bdde",
+      "url": "https://query2.finance.yahoo.com/v8/finance/chart/INTC?period1=1704067200&period2=1790208000&interval=1d&events=splits"
+    },
+    {
+      "file": "leu.json",
+      "symbol": "LEU",
+      "sha256": "1c467ae55d8c7c4633e46057df5224b459ef91b197ab288155705c9c3f7d32ea",
+      "url": "https://query2.finance.yahoo.com/v8/finance/chart/LEU?period1=1704067200&period2=1790208000&interval=1d&events=splits"
+    },
+    {
+      "file": "meta.json",
+      "symbol": "META",
+      "sha256": "42f47dc84d0d8b394e94b46d34a5a2a388aac2b4c532e2014e63a4c29a4824b9",
+      "url": "https://query2.finance.yahoo.com/v8/finance/chart/META?period1=1704067200&period2=1790208000&interval=1d&events=splits"
+    },
+    {
+      "file": "msft.json",
+      "symbol": "MSFT",
+      "sha256": "1970c64986b708ce9f9d134e9295942b2bbf11ead11e2c4a22ebf6976062c53c",
+      "url": "https://query2.finance.yahoo.com/v8/finance/chart/MSFT?period1=1704067200&period2=1790208000&interval=1d&events=splits"
+    },
+    {
+      "file": "mstr.json",
+      "symbol": "MSTR",
+      "sha256": "fb3636f3e5a67879e81e241524672f4bc34e7e56e5d2bff53b2a981348e8c175",
+      "url": "https://query2.finance.yahoo.com/v8/finance/chart/MSTR?period1=1704067200&period2=1790208000&interval=1d&events=splits"
+    },
+    {
+      "file": "msty.json",
+      "symbol": "MSTY",
+      "sha256": "9d2865a98653673a1728cf51ba8d6c2f1d51fcd0275d5c7a6b5bc12945917103",
+      "url": "https://query2.finance.yahoo.com/v8/finance/chart/MSTY?period1=1704067200&period2=1790208000&interval=1d&events=splits"
+    },
+    {
+      "file": "nke.json",
+      "symbol": "NKE",
+      "sha256": "4b5fce47ba7488ce7d2374b37a3130f6ca57f6d2f5a4ef44bfc5a99d0a78f5ba",
+      "url": "https://query2.finance.yahoo.com/v8/finance/chart/NKE?period1=1704067200&period2=1790208000&interval=1d&events=splits"
+    },
+    {
+      "file": "nvda.json",
+      "symbol": "NVDA",
+      "sha256": "e1224956444344029fe5ce65d26782427bb2900c90b5d48fe8074a104d912a31",
+      "url": "https://query2.finance.yahoo.com/v8/finance/chart/NVDA?period1=1704067200&period2=1790208000&interval=1d&events=splits"
+    },
+    {
+      "file": "oklo.json",
+      "symbol": "OKLO",
+      "sha256": "28615ab4e8a962c2e1b23eae73a354e26ec5ae818e0547d3962b294e66d37178",
+      "url": "https://query2.finance.yahoo.com/v8/finance/chart/OKLO?period1=1704067200&period2=1790208000&interval=1d&events=splits"
+    },
+    {
+      "file": "on.json",
+      "symbol": "ON",
+      "sha256": "b9eec13a73ff78d60736b3ebfb98a3236d3991326ed7c793ce29fb08a11953ee",
+      "url": "https://query2.finance.yahoo.com/v8/finance/chart/ON?period1=1704067200&period2=1790208000&interval=1d&events=splits"
+    },
+    {
+      "file": "onon.json",
+      "symbol": "ONON",
+      "sha256": "d40effc6b1ae70130317326ef57ef5281892eaf18b5fa6fe22bf6bcdb77fc71e",
+      "url": "https://query2.finance.yahoo.com/v8/finance/chart/ONON?period1=1704067200&period2=1790208000&interval=1d&events=splits"
+    },
+    {
+      "file": "pltr.json",
+      "symbol": "PLTR",
+      "sha256": "8a2be0576b04c41b222e1205f20a5b71faab710cc9adbe40612b7f06d8311d37",
+      "url": "https://query2.finance.yahoo.com/v8/finance/chart/PLTR?period1=1704067200&period2=1790208000&interval=1d&events=splits"
+    },
+    {
+      "file": "smci.json",
+      "symbol": "SMCI",
+      "sha256": "8736b9a49a01ba395099017d00b9cf3685bc3a253287bb5854c8bb7c774eb794",
+      "url": "https://query2.finance.yahoo.com/v8/finance/chart/SMCI?period1=1704067200&period2=1790208000&interval=1d&events=splits"
+    },
+    {
+      "file": "smh.json",
+      "symbol": "SMH",
+      "sha256": "3ee597e321da2756bc18ba9788fc33f1f5f67e1e521d7068ff396cdf9e42e4ee",
+      "url": "https://query2.finance.yahoo.com/v8/finance/chart/SMH?period1=1704067200&period2=1790208000&interval=1d&events=splits"
+    },
+    {
+      "file": "smr.json",
+      "symbol": "SMR",
+      "sha256": "fe75d8b56a7a067ff69e62c670da204df6f9100f6791bf6494fab968172c8a84",
+      "url": "https://query2.finance.yahoo.com/v8/finance/chart/SMR?period1=1704067200&period2=1790208000&interval=1d&events=splits"
+    },
+    {
+      "file": "spy.json",
+      "symbol": "SPY",
+      "sha256": "404b954209505a406a7b731b8993f167cf6558e8503deee828117673626b7173",
+      "url": "https://query2.finance.yahoo.com/v8/finance/chart/SPY?period1=1704067200&period2=1790208000&interval=1d&events=splits"
+    },
+    {
+      "file": "tln.json",
+      "symbol": "TLN",
+      "sha256": "5de5fdfe1be92fbaad7430f71d928d59cddbaab34d4d873147c56c61b2205b49",
+      "url": "https://query2.finance.yahoo.com/v8/finance/chart/TLN?period1=1704067200&period2=1790208000&interval=1d&events=splits"
+    },
+    {
+      "file": "tsla.json",
+      "symbol": "TSLA",
+      "sha256": "d4f7247c3e81fa77126a97bc4dfbdcfbcc3977ab70582bcbc08cc8c8cdf5af3b",
+      "url": "https://query2.finance.yahoo.com/v8/finance/chart/TSLA?period1=1704067200&period2=1790208000&interval=1d&events=splits"
+    },
+    {
+      "file": "tsly.json",
+      "symbol": "TSLY",
+      "sha256": "eb393dc1a8edd7976bd4bf716aac51697de012fcbf85e7c1fe03f34143b5ac7f",
+      "url": "https://query2.finance.yahoo.com/v8/finance/chart/TSLY?period1=1704067200&period2=1790208000&interval=1d&events=splits"
+    },
+    {
+      "file": "tsm.json",
+      "symbol": "TSM",
+      "sha256": "6ab55d0e554f83dad579142f0cc517c4062de326d356b4664325d242e9b36746",
+      "url": "https://query2.finance.yahoo.com/v8/finance/chart/TSM?period1=1704067200&period2=1790208000&interval=1d&events=splits"
+    },
+    {
+      "file": "voo.json",
+      "symbol": "VOO",
+      "sha256": "ca564679e6196cf42d9d297ac72ea47ebafb2bec368d72f02d558ad1d61fb782",
+      "url": "https://query2.finance.yahoo.com/v8/finance/chart/VOO?period1=1704067200&period2=1790208000&interval=1d&events=splits"
+    },
+    {
+      "file": "vst.json",
+      "symbol": "VST",
+      "sha256": "4e61cb631ecc50197f99c240817e2298a9f06354f2a62ab7bcbbfe240bc1dd29",
+      "url": "https://query2.finance.yahoo.com/v8/finance/chart/VST?period1=1704067200&period2=1790208000&interval=1d&events=splits"
+    }
+  ]
+}

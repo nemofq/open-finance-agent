@@ -1,0 +1,290 @@
+[
+  {
+    "name": "scheduled_task_create",
+    "label": "Create scheduled task",
+    "description": "Create a recurring or one-time background task. The prompt must say what to do on every run and when to stop or ask the user for input. If destination is omitted, the current chat is continued.",
+    "parameters": {
+      "type": "object",
+      "required": [
+        "title",
+        "prompt",
+        "schedule"
+      ],
+      "properties": {
+        "title": {
+          "type": "string",
+          "description": "Short title shown in Scheduled."
+        },
+        "prompt": {
+          "type": "string",
+          "description": "Durable instructions to run each time."
+        },
+        "skill": {
+          "type": "string",
+          "description": "Optional exact skill name, such as earnings-preview."
+        },
+        "destination": {
+          "anyOf": [
+            {
+              "type": "object",
+              "required": [
+                "type",
+                "sessionId"
+              ],
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "const": "chat"
+                },
+                "sessionId": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "type": "object",
+              "required": [
+                "type",
+                "model"
+              ],
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "const": "standalone"
+                },
+                "model": {
+                  "type": "object",
+                  "required": [
+                    "provider",
+                    "model"
+                  ],
+                  "properties": {
+                    "provider": {
+                      "type": "string"
+                    },
+                    "model": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "schedule": {
+          "anyOf": [
+            {
+              "type": "object",
+              "required": [
+                "kind",
+                "runAt",
+                "timeZone"
+              ],
+              "properties": {
+                "kind": {
+                  "type": "string",
+                  "const": "once"
+                },
+                "runAt": {
+                  "type": "string"
+                },
+                "timeZone": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "type": "object",
+              "required": [
+                "kind",
+                "dtStartLocal",
+                "timeZone",
+                "rrule"
+              ],
+              "properties": {
+                "kind": {
+                  "type": "string",
+                  "const": "recurring"
+                },
+                "dtStartLocal": {
+                  "type": "string"
+                },
+                "timeZone": {
+                  "type": "string"
+                },
+                "rrule": {
+                  "type": "string"
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  },
+  {
+    "name": "scheduled_task_update",
+    "label": "Update scheduled task",
+    "description": "Update a scheduled task's prompt, schedule, title or active/paused status. Use the exact task id from a prior confirmation.",
+    "parameters": {
+      "type": "object",
+      "required": [
+        "taskId"
+      ],
+      "properties": {
+        "taskId": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "prompt": {
+          "type": "string"
+        },
+        "skill": {
+          "type": "string"
+        },
+        "status": {
+          "anyOf": [
+            {
+              "type": "string",
+              "const": "active"
+            },
+            {
+              "type": "string",
+              "const": "paused"
+            }
+          ]
+        },
+        "destination": {
+          "anyOf": [
+            {
+              "type": "object",
+              "required": [
+                "type",
+                "sessionId"
+              ],
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "const": "chat"
+                },
+                "sessionId": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "type": "object",
+              "required": [
+                "type",
+                "model"
+              ],
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "const": "standalone"
+                },
+                "model": {
+                  "type": "object",
+                  "required": [
+                    "provider",
+                    "model"
+                  ],
+                  "properties": {
+                    "provider": {
+                      "type": "string"
+                    },
+                    "model": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "schedule": {
+          "anyOf": [
+            {
+              "type": "object",
+              "required": [
+                "kind",
+                "runAt",
+                "timeZone"
+              ],
+              "properties": {
+                "kind": {
+                  "type": "string",
+                  "const": "once"
+                },
+                "runAt": {
+                  "type": "string"
+                },
+                "timeZone": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "type": "object",
+              "required": [
+                "kind",
+                "dtStartLocal",
+                "timeZone",
+                "rrule"
+              ],
+              "properties": {
+                "kind": {
+                  "type": "string",
+                  "const": "recurring"
+                },
+                "dtStartLocal": {
+                  "type": "string"
+                },
+                "timeZone": {
+                  "type": "string"
+                },
+                "rrule": {
+                  "type": "string"
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  },
+  {
+    "name": "scheduled_task_delete",
+    "label": "Delete scheduled task",
+    "description": "Delete a scheduled task. It does not delete chats or reports. Do not use this unless the user explicitly asks to delete the task.",
+    "parameters": {
+      "type": "object",
+      "required": [
+        "taskId"
+      ],
+      "properties": {
+        "taskId": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  {
+    "name": "scheduled_task_pause_self",
+    "label": "Pause current scheduled task",
+    "description": "Pause the scheduled task that is running this turn when its durable instructions say it should stop.",
+    "parameters": {
+      "type": "object",
+      "required": [
+        "taskId"
+      ],
+      "properties": {
+        "taskId": {
+          "type": "string"
+        }
+      }
+    }
+  }
+]
