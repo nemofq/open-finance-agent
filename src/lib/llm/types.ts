@@ -10,6 +10,11 @@ export interface LlmModelInfo {
   pricing: { input: number; output: number };
   supportsReasoning: boolean;
   /**
+   * How far a catalog says thinking can be controlled, where it says so: whether thinking can be
+   * turned off, and the efforts the model takes. OpenRouter reports it; absent where unknown.
+   */
+  reasoningControl?: { mandatory: boolean; efforts?: string[] };
+  /**
    * The thinking levels the model accepts, from pi-ai's `getSupportedThinkingLevels` on the model a
    * request is built from; any other level is clamped to the nearest of these. Computed on the
    * server, so the browser never loads a pi catalog; absent where no pi model was built.

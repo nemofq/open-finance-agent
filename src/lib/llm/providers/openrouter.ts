@@ -1,6 +1,6 @@
 import { getSupportedThinkingLevels, type Model, type Models, type Provider } from "@earendil-works/pi-ai";
 import { cached } from "@/lib/cache";
-import type { OpenRouterProviderConfig } from "@/lib/config/schema";
+import { type OpenRouterProviderConfig, thinkingLevels } from "@/lib/config/schema";
 import type { LlmModelInfo, LlmProviderDefinition, ProviderValidation } from "@/lib/llm/types";
 import { errorMessage } from "@/lib/utils";
 import { configKeyAuth } from "./auth";
@@ -21,6 +21,8 @@ interface OpenRouterModel {
   context_length: number | null;
   pricing: { prompt: string; completion: string };
   supported_parameters?: string[];
+  /** Whether thinking can be turned off (`mandatory`) and the efforts the model takes. */
+  reasoning?: { mandatory?: boolean; supported_efforts?: string[] };
   /** `input_modalities` is how OpenRouter reports vision; a model without it is read as text-only. */
   architecture?: { input_modalities?: string[] };
 }
@@ -61,8 +63,14 @@ function toInfo(m: OpenRouterModel): LlmModelInfo {
     contextLength: m.context_length ?? 0,
     pricing: { input: perMillion(m.pricing.prompt), output: perMillion(m.pricing.completion) },
     supportsReasoning: params.includes("reasoning"),
+    ...(m.reasoning ? { reasoningControl: reasoningControl(m.reasoning) } : {}),
     supportsImages: m.architecture?.input_modalities?.includes("image") ?? false,
   };
+}
+
+function reasoningControl(reasoning: NonNullable<OpenRouterModel["reasoning"]>): LlmModelInfo["reasoningControl"] {
+  const efforts = reasoning.supported_efforts;
+  return { mandatory: reasoning.mandatory === true, ...(efforts?.length ? { efforts } : {}) };
 }
 
 async function fetchCatalog(): Promise<LlmModelInfo[]> {
@@ -79,7 +87,7 @@ async function listModels(
   _models: Models,
   options?: { refresh?: boolean },
 ): Promise<LlmModelInfo[]> {
-  const models = await cached("llm-models:openrouter:v2", MODELS_TTL_SECONDS, fetchCatalog, { refresh: options?.refresh });
+  const models = await cached("llm-models:openrouter:v3", MODELS_TTL_SECONDS, fetchCatalog, { refresh: options?.refresh });
   return models.map((info) => ({ ...info, thinkingLevels: getSupportedThinkingLevels(toPiModel(config, info)) }));
 }
 
@@ -98,9 +106,24 @@ async function validate(config: OpenRouterProviderConfig, models: Models): Promi
   }
 }
 
+/**
+ * The levels a reasoning model is sent, from what the catalog says it controls. Off goes out as effort
+ * `"none"` unless thinking is mandatory; with no `reasoning` block nothing says Off is honoured, so it
+ * is not sent and the model keeps its default. Listed efforts limit the levels above Off to those.
+ */
+function thinkingLevelMap(info: LlmModelInfo): Model<"openai-completions">["thinkingLevelMap"] {
+  if (!info.supportsReasoning) return undefined;
+  const control = info.reasoningControl;
+  if (!control) return { off: null };
+  const map: NonNullable<Model<"openai-completions">["thinkingLevelMap"]> = { off: control.mandatory ? null : "none" };
+  const { efforts } = control;
+  if (efforts) for (const level of thinkingLevels.slice(1)) map[level] = efforts.includes(level) ? level : null;
+  return map;
+}
+
 function toPiModel(config: OpenRouterProviderConfig, info: LlmModelInfo): Model<"openai-completions"> {
   return completionsModel(config, info, BASE_URL, {
-    thinkingLevelMap: info.supportsReasoning ? { off: null } : undefined,
+    thinkingLevelMap: thinkingLevelMap(info),
     headers: appHeaders,
     compat: { supportsDeveloperRole: false, thinkingFormat: "openrouter" },
   });
