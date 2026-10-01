@@ -94,8 +94,27 @@ function fillReferences(text: string, ctx: RenderContext, literal?: (chunk: stri
   }).text;
 }
 
+/** A Markdown link, `[label](https://…)`, or a bare autolink, `<https://…>`, written into prose. */
+const MARKDOWN_LINK_RE = /\[([^\][\n]+)\]\((https?:\/\/[^\s()]+(?:\([^\s()]*\)[^\s()]*)*)\)|<(https?:\/\/[^\s<>]+)>/g;
+
+/** A label that is itself a citation, kept bracketed so `fillCitations` still turns it into a marker. */
+const CITATION_LABEL_RE = new RegExp(String.raw`^${CITABLE_CLASS}\d+$`);
+
+/**
+ * Prose is plain text, so a link the model wrote in Markdown would show as raw brackets and a
+ * URL. It reads as its label alone: the iframe is sandboxed and could not follow a link anyway,
+ * and the source behind the claim is cited by its marker.
+ */
+function stripMarkdownLinks(text: string): string {
+  return text.replace(MARKDOWN_LINK_RE, (_raw, label: string | undefined, _url, bare: string | undefined) => {
+    if (label === undefined) return bare ?? "";
+    return CITATION_LABEL_RE.test(label) ? `[${label}]` : label;
+  });
+}
+
 /** Plain prose with its references filled in from the ledger; the rest is escaped. */
 function inlineHtml(text: string, ctx: RenderContext): string {
+  text = stripMarkdownLinks(text);
   const tickers = new Set(ctx.ledger.list().flatMap((entry) => entry.entity?.ticker ? [entry.entity.ticker] : []));
   for (const ticker of tickers) {
     if (!/^[A-Z][A-Z.\-]{0,9}$/.test(ticker)) continue;

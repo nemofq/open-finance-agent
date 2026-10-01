@@ -269,3 +269,38 @@ describe("a peer report", () => {
     expect(report.html).toContain('<span class="note">sum of last 4 quarters, derived</span>');
   });
 });
+
+describe("links written in Markdown", () => {
+  const linked: ReportSpec = {
+    title: "$ACME — Events",
+    sections: [
+      {
+        heading: "Calendar",
+        blocks: [
+          { type: "text", text: "See the [ACME events page](https://investor.acme.com/events-and-presentations/2026) for {E1:revenue:FY26 Q2}." },
+          { type: "callout", tone: "neutral", text: "Filed [10-Q](https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000012345) [E2](https://x.example/e2)." },
+          { type: "list", items: ["Webcast at <https://acme.example/live>", "Deck: [slides (PDF)](https://acme.example/q2_(final).pdf)"] },
+          { type: "table", columns: ["Item", "Link"], rows: [["Call", "[replay](http://acme.example/replay)"]] },
+        ],
+      },
+    ],
+  };
+  const page = renderReport(linked, ledger, "doc");
+
+  it("shows a link's label and drops its URL", () => {
+    expect(page.html).toContain('See the $ACME events page for <span class="fig">USD 4.32B');
+    expect(page.html).toContain("<li>Deck: slides (PDF)</li>");
+    expect(page.html).toContain("<td>replay</td>");
+    expect(page.html).not.toContain("](");
+    expect(page.html).not.toMatch(/https?:\/\/(?!acme\.example\/live)/);
+  });
+
+  it("keeps a linked citation as a marker", () => {
+    expect(page.html).toContain('Filed 10-Q<sup class="src" tabindex="0" title="[E2');
+    expect(page.figures).toContain("E2");
+  });
+
+  it("shows a bare autolink as its address", () => {
+    expect(page.html).toContain("<li>Webcast at https://acme.example/live</li>");
+  });
+});
