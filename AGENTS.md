@@ -6,6 +6,10 @@ A local finance research agent on Next.js and TypeScript. Before changing code, 
 - [docs/architecture.md](docs/architecture.md): the harness, its concerns and rules, evidence, the sandbox.
 - [docs/extending.md](docs/extending.md): one recipe per kind of contribution, with its checks.
 
+## GitHub workflow preference
+
+- For GitHub operations in this project, use the `gh` CLI. Do not use a browser or the GitHub API connector unless the user explicitly asks for one.
+
 The block below is managed by `next dev`; edit only outside it.
 
 <!-- BEGIN:nextjs-agent-rules -->
