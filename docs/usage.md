@@ -108,7 +108,8 @@ chat to use another.
 ## Data connections
 
 **Settings › Data connections** holds the sources the agent researches with. Each one you enable
-is a module the agent can call; each one you leave off makes no calls.
+is a module the agent can call; each one you leave off makes no calls. Saving a key or contact
+into a connection that is off turns it on, here and for Tavily under General tools.
 
 - **SEC EDGAR** (on by default, no key). Enter a contact string such as
   `Jane Doe jane@example.com`; the SEC requires it. Five tools: company lookup, recent filings,

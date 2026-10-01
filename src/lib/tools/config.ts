@@ -65,3 +65,34 @@ export function settingNumber(cfg: Readonly<Record<string, unknown>>, key: strin
   const parsed = typeof value === "number" ? value : typeof value === "string" && value.trim() !== "" ? Number(value) : Number.NaN;
   return Number.isFinite(parsed) ? parsed : undefined;
 }
+
+/*
+ * Whether a module has what it needs. `required` on a settings field is otherwise only a hint to the
+ * form; these read it to tell whether a module has been given what it needs to run.
+ */
+
+/** What the readiness checks need from a module; a `ModuleSummary` has it too. */
+export type ModuleRequirements = Pick<Module, "id" | "defaultConfig" | "settings">;
+
+/** The module's required text and secret fields; other field types always hold some value. */
+function requiredKeys(module: Pick<Module, "settings">): string[] {
+  return module.settings
+    .filter((field) => field.required === true && (field.type === "text" || field.type === "secret"))
+    .map((field) => field.key);
+}
+
+/** Every required text or secret field holds a value; a stored secret, masked for the browser, counts. */
+export function requiredFieldsFilled(module: Pick<Module, "settings">, cfg: Readonly<Record<string, unknown>>): boolean {
+  return requiredKeys(module).every((key) => settingString(cfg, key) !== "");
+}
+
+/**
+ * Whether saving `draft` should also turn the module on: it is off, and this save is what fills in
+ * its required fields. A module turned off while its fields were already saved stays off, and one
+ * with no required fields is never switched on by a save.
+ */
+export function enablesOnSave(module: ModuleRequirements, saved: SavedModules | undefined, draft: SavedModules | undefined): boolean {
+  if (requiredKeys(module).length === 0) return false;
+  const next = moduleSettings(draft, module);
+  return next.enabled !== true && !requiredFieldsFilled(module, moduleSettings(saved, module)) && requiredFieldsFilled(module, next);
+}

@@ -7,7 +7,21 @@ import { defaultConfig } from "@/lib/config/schema";
 import { readConfig } from "@/lib/config/store";
 import { configPath } from "@/lib/paths";
 import { mcpModule } from "@/lib/providers/mcp/module";
-import { moduleConfig, moduleEnabled, moduleSecretPaths, moduleSettings, settingList, settingNumber, settingString } from "./config";
+import { SECRET_MASK } from "@/lib/config/secrets";
+import { alphaVantageModule } from "@/lib/providers/alphavantage/module";
+import { edgarModule } from "@/lib/providers/edgar/module";
+import { reportsModule } from "@/lib/reports/tool";
+import {
+  enablesOnSave,
+  moduleConfig,
+  moduleEnabled,
+  moduleSecretPaths,
+  moduleSettings,
+  requiredFieldsFilled,
+  settingList,
+  settingNumber,
+  settingString,
+} from "./config";
 import type { Module } from "./contracts";
 import { builtinModules, toModuleSummary } from "./registry";
 import { offlineContext } from "./testing";
@@ -123,6 +137,54 @@ describe("hasDataConnection", () => {
   it("does not know when config.json cannot be read", () => {
     writeFileSync(configPath(), "{ not json");
     expect(hasDataConnection()).toBeUndefined();
+  });
+});
+
+describe("enablesOnSave", () => {
+  const off = (fields: object) => ({ alphavantage: { enabled: false, ...fields } });
+
+  it("turns a module on when the save fills in the key it was missing", () => {
+    expect(enablesOnSave(alphaVantageModule, off({ apiKey: "" }), off({ apiKey: "av-key" }))).toBe(true);
+    // Never saved at all: the defaults leave the key empty.
+    expect(enablesOnSave(alphaVantageModule, {}, off({ apiKey: "av-key" }))).toBe(true);
+  });
+
+  it("leaves off a module whose key was already stored, as one the user turned off", () => {
+    expect(enablesOnSave(alphaVantageModule, off({ apiKey: SECRET_MASK }), off({ apiKey: SECRET_MASK }))).toBe(false);
+    expect(enablesOnSave(alphaVantageModule, off({ apiKey: SECRET_MASK }), off({ apiKey: "av-other" }))).toBe(false);
+  });
+
+  it("has nothing to do for a module that is already on", () => {
+    const on = { alphavantage: { enabled: true, apiKey: "av-key" } };
+    expect(enablesOnSave(alphaVantageModule, off({ apiKey: "" }), on)).toBe(false);
+  });
+
+  it("never turns on a module without required fields", () => {
+    expect(enablesOnSave(reportsModule, { reports: { enabled: false } }, { reports: { enabled: false, format: "pdf" } })).toBe(false);
+  });
+
+  it("does not count whitespace as a value", () => {
+    expect(enablesOnSave(alphaVantageModule, off({ apiKey: "" }), off({ apiKey: "   " }))).toBe(false);
+  });
+
+  it("turns EDGAR on once its contact is filled in", () => {
+    const edgar = (contact: string) => ({ edgar: { enabled: false, contact } });
+    expect(enablesOnSave(edgarModule, edgar(""), edgar("Jane Doe jane@example.com"))).toBe(true);
+  });
+
+  it("reads only required text and secret fields", () => {
+    const mixed = {
+      id: "mixed",
+      defaultConfig: { enabled: false },
+      settings: [
+        { key: "token", label: "Token", type: "secret" as const, required: true },
+        { key: "mode", label: "Mode", type: "select" as const, required: true },
+        { key: "extra", label: "Extra", type: "toggle" as const, required: true },
+        { key: "note", label: "Note", type: "text" as const },
+      ],
+    };
+    expect(requiredFieldsFilled(mixed, { token: "t" })).toBe(true);
+    expect(enablesOnSave(mixed, {}, { mixed: { enabled: false, token: "t" } })).toBe(true);
   });
 });
 
