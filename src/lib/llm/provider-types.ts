@@ -220,7 +220,7 @@ export const llmProviderTypeTable = {
     name: "OpenCode Go",
     description: "OpenCode's monthly subscription for open models: GLM, Kimi, DeepSeek, Qwen, MiniMax and more.",
     keyHelp: {
-      text: "Subscribe to Go at opencode.ai/auth and copy your key there. It is the same key as Zen, but Go models need the subscription.",
+      text: "Subscribe to Go at opencode.ai/auth and copy your key there. It is the same key as Zen, but Go models need the subscription. OpenCode designs Go for coding agents and monitors its traffic.",
       url: "https://opencode.ai/auth",
     },
     authKinds: ["api_key"],

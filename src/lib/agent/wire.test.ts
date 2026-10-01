@@ -206,8 +206,9 @@ describe("the wire to OpenCode Go", () => {
     api: openAICompletions,
   };
 
-  // Go refuses a request without the header, and routes and caches a conversation by it.
-  it("sends the chat's id as x-opencode-session, on the turn and on its title alike", async () => {
+  // Go refuses a request without the header, routes and caches a conversation by it, and asks
+  // clients to name themselves rather than the SDK.
+  it("sends the chat's id as x-opencode-session and the app as user agent, on the turn and its title alike", async () => {
     const requests = stubProvider([go.api.text("Nothing to report."), go.api.text("Market check-in")]);
     const { id } = await createSession({ model: go.model });
     const session = await getSession(id);
@@ -220,6 +221,7 @@ describe("the wire to OpenCode Go", () => {
     for (const request of requests) {
       expect(request.url).toMatch(/^https:\/\/opencode\.ai\/zen\/go\//);
       expect(request.headers["x-opencode-session"]).toBe(id);
+      expect(request.headers["user-agent"]).toMatch(/^open-finance-agent\/\d+\.\d+\.\d+/);
     }
   });
 });

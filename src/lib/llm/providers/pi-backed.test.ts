@@ -10,6 +10,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { LlmProviderConfig } from "@/lib/config/schema";
 import { catalogEntries, llmProviderCatalog } from "@/lib/llm/catalog";
 import { draftModels } from "@/lib/llm/models";
+import { OPENCODE_USER_AGENT } from "@/lib/llm/opencode";
 import { streamDraftModel } from "@/lib/llm/stream";
 import { authPath } from "@/lib/paths";
 import { piAuthKinds, piBackedDefinitions, requestSettings } from "./pi-backed";
@@ -303,6 +304,23 @@ describe("opencode agent requests", () => {
     expect((await sentHeaders("0b7c9a52-chat")).get("x-opencode-session")).toBe("0b7c9a52-chat");
     expect((await sentHeaders()).get("x-opencode-session")).toMatch(/^[0-9a-f-]{36}$/);
   });
+
+  // OpenCode asks clients to name themselves rather than the SDK, whatever wire API a model speaks.
+  it.each(["openai-completions", "openai-responses", "anthropic-messages", "google-generative-ai"])(
+    "names the app as the user agent over %s",
+    async (api) => {
+      const fetchMock = vi.fn<typeof fetch>(async () => Response.json({ error: { message: "stop" } }, { status: 400 }));
+      vi.stubGlobal("fetch", fetchMock);
+      const model = opencodeProvider().getModels().find((entry) => entry.api === api);
+      if (!model) throw new Error(`pi's OpenCode catalog lost its ${api} models`);
+      await streamDraftModel(zen, model, { messages: [{ role: "user", content: "Hi", timestamp: 0 }] }).result();
+      expect(fetchMock).toHaveBeenCalled();
+      const [input, init] = fetchMock.mock.calls[0];
+      const headers = new Headers(input instanceof Request ? input.headers : init?.headers);
+      expect(headers.get("user-agent")).toBe(OPENCODE_USER_AGENT);
+      expect(headers.get("x-opencode-session")).toMatch(/^[0-9a-f-]{36}$/);
+    },
+  );
 
   it("validates an OpenCode Go key with a session, on a model the plan pays for", async () => {
     const go: LlmProviderConfig = { id: "opencode-go", type: "opencode-go", name: "OpenCode Go", apiKey: "sk-go", auth: "api_key" };
