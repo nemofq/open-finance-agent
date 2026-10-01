@@ -86,6 +86,18 @@ export function requiredFieldsFilled(module: Pick<Module, "settings">, cfg: Read
   return requiredKeys(module).every((key) => settingString(cfg, key) !== "");
 }
 
+/** A module named for the user, with the id code matches on. */
+export interface ModuleLabel {
+  id: string;
+  name: string;
+}
+
+/** On, and every required field filled in. */
+export function moduleReady(module: ModuleRequirements, saved: SavedModules | undefined): boolean {
+  const cfg = moduleSettings(saved, module);
+  return cfg.enabled === true && requiredFieldsFilled(module, cfg);
+}
+
 /**
  * Whether saving `draft` should also turn the module on: it is off, and this save is what fills in
  * its required fields. A module turned off while its fields were already saved stays off, and one

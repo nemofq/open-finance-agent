@@ -11,6 +11,7 @@ import { useLlmModels } from "@/components/shared/use-llm-models";
 import { Button } from "@/components/ui/button";
 import type { ModelRef } from "@/lib/config/schema";
 import type { SessionFile } from "@/lib/sessions/types";
+import type { ModuleLabel } from "@/lib/tools/config";
 import { cn } from "cn";
 import { documentBudget, imageSupportReason } from "./composer/attachments";
 import { ChatComposer } from "./composer/chat-composer";
@@ -50,12 +51,12 @@ function FixedModel({ label, available }: { label: string; available: boolean })
 export function Chat({
   session,
   running = false,
-  hasDataProvider,
+  missingData,
 }: {
   session: SessionFile | null;
   running?: boolean;
-  /** Whether any data connection is on; `undefined` when the server could not tell. */
-  hasDataProvider: boolean | undefined;
+  /** The suggested data connections not ready yet; `undefined` when the server could not tell. */
+  missingData: ModuleLabel[] | undefined;
 }) {
   /** A new chat's model override, picked before the first message. */
   const [picked, setPicked] = useState<ModelRef | null>(null);
@@ -85,6 +86,8 @@ export function Chat({
     refused: chat.refused,
   });
   const showSetup = need !== null;
+  // A tip for starting out, so a chat already under way is left alone.
+  const dataTip = !started && missingData !== undefined && missingData.length > 0 ? missingData : null;
   const fixedModel = started && models.data ? describeModel(providers, chat.sessionModel) : null;
   // Cheap enough to redo each render: a find over a handful of providers, and memoising it would
   // only pin down `providers`, which is a fresh array every time the models load.
@@ -117,10 +120,10 @@ export function Chat({
               <MessageList items={chat.items} footer={chat.work && <WorkingIndicator phase={chat.work} />} />
             )}
 
-            {(showSetup || hasDataProvider === false || error) && (
+            {(showSetup || dataTip || error) && (
               <div className="flex flex-col gap-2 px-4 pb-2">
                 {need && <SetupBanner need={need} canPickBelow={!started} />}
-                {hasDataProvider === false && <DataProviderHint />}
+                {dataTip && <DataProviderHint missing={dataTip} />}
                 {error && (
                   <Notice tone="error" className="mx-auto flex w-full max-w-3xl items-center gap-3">
                     <span className="min-w-0 flex-1 break-words">{error}</span>

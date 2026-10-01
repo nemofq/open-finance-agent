@@ -2,13 +2,12 @@ import type { AgentMessage } from "@earendil-works/pi-agent-core";
 import type { StoredAttachment } from "@/lib/attachments/types";
 import type { AppConfig } from "@/lib/config/schema";
 import { readConfig } from "@/lib/config/store";
-import { serverClass } from "@/lib/mcp/server-class";
 import { readMemory } from "@/lib/memory/store";
 import { portfolioPrivacySummary, type PrivacySummary } from "@/lib/portfolio/privacy";
 import { createPortfolioStore } from "@/lib/portfolio/store";
 import { loadSkills, modelInvocableSkills } from "@/lib/skills/loader";
 import { portfolioDir } from "@/lib/paths";
-import { moduleConfig, moduleEnabled } from "@/lib/tools/config";
+import { moduleConfig, moduleEnabled, moduleReady, type ModuleLabel } from "@/lib/tools/config";
 import type { FinanceTool, Module, ModuleContext } from "@/lib/tools/contracts";
 import { builtinModules } from "@/lib/tools/registry";
 import { messageDocuments } from "./messages";
@@ -17,22 +16,26 @@ export function enabledModules(config: AppConfig): Module[] {
   return builtinModules.filter((module) => moduleEnabled(config.modules, module));
 }
 
+/** The free connections grounded research leans on, which the chat suggests until both are ready. */
+const SUGGESTED_DATA_MODULES = ["quotes", "edgar"];
+
 /**
- * Whether the agent can reach any data at all: an enabled data-class MCP server or data provider
- * module. `undefined` when config.json cannot be read, so the chat hides its hint rather than
- * failing to open.
+ * The suggested data connections that are off or missing a required field; empty when
+ * all are ready. Other sources, such as Alpha Vantage or an MCP server,
+ * do not stand in for them. `undefined` when config.json cannot be read, so the chat hides its tip
+ * rather than failing to open.
  */
-export function hasDataConnection(): boolean | undefined {
+export function missingDataConnections(): ModuleLabel[] | undefined {
   let config: AppConfig;
   try {
     config = readConfig();
   } catch {
     return undefined;
   }
-  return (
-    config.mcp.servers.some((server) => server.enabled && serverClass(server) === "data") ||
-    enabledModules(config).some((module) => module.kind === "data-provider")
-  );
+  return SUGGESTED_DATA_MODULES.flatMap((id) => {
+    const found = builtinModules.find((candidate) => candidate.id === id);
+    return found && !moduleReady(found, config.modules) ? [{ id: found.id, name: found.name }] : [];
+  });
 }
 
 /** An id no built-in module has is off. */
