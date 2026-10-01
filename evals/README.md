@@ -207,11 +207,12 @@ finish a run whose judge failed.
 
 ## Comparing runs
 
-The committed baseline is the README's table row, in `evals/baselines/`; there is no comparison
-command yet. When a change could move the scores, report the numbers before and after with the
-same settings: agent, judge, thinking level, policy mode, task set, repeats and benchmark version.
-Use `--repeat 2` or more so each task's standard deviation (σ) is printed; a difference within 2σ
-is noise.
+The committed baselines, in `evals/baselines/`, are the rows of the README's table, and
+[evals/baselines/README.md](baselines/README.md) gives each one's per-task scores; there is no
+comparison command yet. When a change could move the scores, report the numbers before and after
+with the same settings: agent, judge, thinking level, policy mode, task set, repeats and benchmark
+version. Use `--repeat 2` or more so each task's standard deviation (σ) is printed; a difference
+within 2σ is noise.
 
 A run worth keeping can be promoted to a baseline:
 
@@ -241,7 +242,9 @@ The summary's header prints all of them (`Thinking`, `Judge thinking`, `Policy`,
 `judgeThinking`, `policyMode`, `repeat` and `benchmarkVersion`. The Model column names the agent
 followed by `avg@<repeats>`, Thinking effort is the agent's thinking level, and Judge model names
 the judge followed by its thinking level when one was set; policy mode and benchmark version go in
-the note under the table. One row is one run:
+the note under the table. Each row is one run, promoted with `--baseline`, and also gets a section
+in [evals/baselines/README.md](baselines/README.md) with its per-task scores, taken from the
+baseline's `results`:
 
 ```bash
 pnpm eval --agent <provider/model> --judge <provider/model> --thinking <level> \
