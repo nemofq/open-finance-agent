@@ -33,6 +33,34 @@ describe("sanitizeHtml", () => {
     );
   });
 
+  it("drops style declarations that size, place or unwrap a box, keeping colours and spacing", () => {
+    expect(sanitizeHtml('<div style="width:900px;white-space:nowrap;color:var(--neg);padding:.5rem 1rem">x</div>')).toBe(
+      '<div style="color:var(--neg);padding:.5rem 1rem">x</div>',
+    );
+    expect(sanitizeHtml('<div style="position:absolute;left:0;min-width:40rem;float:right">x</div>')).toBe("<div>x</div>");
+    expect(sanitizeHtml('<div style="display:grid;grid-template-columns:repeat(6,200px)">x</div>')).toBe("<div>x</div>");
+    expect(sanitizeHtml('<p style="border-left:3px solid #d1d5db;background-color:#f7f7f8">x</p>')).toBe(
+      '<p style="border-left:3px solid #d1d5db;background-color:#f7f7f8">x</p>',
+    );
+  });
+
+  it("keeps a font size only when it follows the report's own", () => {
+    expect(sanitizeHtml('<span style="font-size:.85em">a</span>')).toBe('<span style="font-size:.85em">a</span>');
+    expect(sanitizeHtml('<span style="font-size:40px">a</span>')).toBe("<span>a</span>");
+  });
+
+  it("drops spacing large enough to be layout", () => {
+    expect(sanitizeHtml('<div style="padding-left:900px;margin:0 50vw">x</div>')).toBe("<div>x</div>");
+  });
+
+  it("keeps geometry on SVG elements only", () => {
+    expect(sanitizeHtml('<table><colgroup><col width="400"></colgroup></table>')).toBe("<table><colgroup><col></colgroup></table>");
+    expect(sanitizeHtml('<div width="900" height="40">x</div>')).toBe("<div>x</div>");
+    expect(sanitizeHtml('<svg width="900" height="300" viewBox="0 0 900 300"><rect x="0" y="0" width="10" height="10"></rect></svg>')).toBe(
+      '<svg width="900" height="300" viewBox="0 0 900 300"><rect x="0" y="0" width="10" height="10"></rect></svg>',
+    );
+  });
+
   it("keeps tables and inline SVG", () => {
     const table = "<table><thead><tr><th>Q</th></tr></thead><tbody><tr><td>FY26 Q2</td></tr></tbody></table>";
     expect(sanitizeHtml(table)).toBe(table);
