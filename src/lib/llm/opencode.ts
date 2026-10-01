@@ -9,6 +9,7 @@ import type { LlmProviderType } from "./provider-types";
  */
 const OPENCODE_TYPES: ReadonlySet<LlmProviderType> = new Set(["opencode", "opencode-go"]);
 
+/** OpenCode Zen or Go, whose catalogs list free promotional models next to the plan's priced ones. */
 export function isOpenCode(type: LlmProviderType): boolean {
   return OPENCODE_TYPES.has(type);
 }

@@ -51,7 +51,7 @@ import {
 } from "@/lib/llm/catalog";
 import { CACHE_RETENTION } from "@/lib/llm/ambient-env";
 import { providerErrorText } from "@/lib/llm/error-text";
-import { openCodeOptions } from "@/lib/llm/opencode";
+import { isOpenCode, openCodeOptions } from "@/lib/llm/opencode";
 import { probeContext } from "@/lib/llm/probe";
 import type { HostedLlmProviderType } from "@/lib/llm/provider-types";
 import type { LlmModelInfo, LlmProviderDefinition, ProviderValidation } from "@/lib/llm/types";
@@ -219,10 +219,17 @@ function toPiModel(config: PiBackedConfig, info: LlmModelInfo): Model<Api> {
   return model;
 }
 
-/** The cheapest model to spend one request on, preferring one that will not think first. */
-function probeModel(models: readonly Model<Api>[]): Model<Api> | undefined {
+/**
+ * The cheapest model to spend one request on, preferring one that will not think first. For OpenCode
+ * a model the catalog lists as free is passed over while a priced one exists: a promotional model
+ * answers a key without the Go plan. Elsewhere free models stay in, since some keys (NVIDIA's) may
+ * reach only those.
+ */
+function probeModel(models: readonly Model<Api>[], skipFree: boolean): Model<Api> | undefined {
   const byCost = [...models].sort((a, b) => a.cost.output - b.cost.output || a.cost.input - b.cost.input);
-  return byCost.find((model) => !model.reasoning) ?? byCost[0];
+  const priced = skipFree ? byCost.filter((model) => model.cost.input > 0 || model.cost.output > 0) : [];
+  const pool = priced.length > 0 ? priced : byCost;
+  return pool.find((model) => !model.reasoning) ?? pool[0];
 }
 
 /** A key is only proven by spending it, so validation sends the shortest request the account allows. */
@@ -230,7 +237,7 @@ async function validateKey(config: PiBackedConfig, models: Models): Promise<Prov
   const missing = missingSetup(config);
   if (missing) return { ok: false, error: missing };
   const available = await models.getAvailable(config.id);
-  const probe = probeModel(available);
+  const probe = probeModel(available, isOpenCode(config.type));
   if (!probe) return { ok: false, error: `${config.name} lists no models` };
   // A cloud account reaches only the models it has enabled or deployed, which no catalog says, so
   // the cheapest one is no fair test; Test on a chosen model is.

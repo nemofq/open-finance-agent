@@ -5,6 +5,7 @@ import { getSupportedThinkingLevels } from "@earendil-works/pi-ai";
 import { anthropicProvider } from "@earendil-works/pi-ai/providers/anthropic";
 import { metaProvider } from "@earendil-works/pi-ai/providers/meta";
 import { opencodeProvider } from "@earendil-works/pi-ai/providers/opencode";
+import { opencodeGoProvider } from "@earendil-works/pi-ai/providers/opencode-go";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { LlmProviderConfig } from "@/lib/config/schema";
 import { catalogEntries, llmProviderCatalog } from "@/lib/llm/catalog";
@@ -303,17 +304,23 @@ describe("opencode agent requests", () => {
     expect((await sentHeaders()).get("x-opencode-session")).toMatch(/^[0-9a-f-]{36}$/);
   });
 
-  it("validates an OpenCode Go key with a session, which Go will not route a request without", async () => {
+  it("validates an OpenCode Go key with a session, on a model the plan pays for", async () => {
     const go: LlmProviderConfig = { id: "opencode-go", type: "opencode-go", name: "OpenCode Go", apiKey: "sk-go", auth: "api_key" };
-    const fetchMock = vi.fn<typeof fetch>(async () => reply());
+    const fetchMock = vi.fn<typeof fetch>(async () => Response.json({ error: { message: "no subscription" } }, { status: 401 }));
     vi.stubGlobal("fetch", fetchMock);
     const result = await piBackedDefinitions["opencode-go"].validate(go, draftModels(go));
 
-    expect(result).toMatchObject({ ok: true, message: expect.stringContaining("Key accepted") });
-    expect(fetchMock).toHaveBeenCalledTimes(1);
+    expect(fetchMock).toHaveBeenCalled();
     const [input, init] = fetchMock.mock.calls[0];
     const headers = new Headers(input instanceof Request ? input.headers : init?.headers);
     expect(headers.get("x-opencode-session")).toMatch(/^[0-9a-f-]{36}$/);
+    // The failure names the probe. Go lists free promotional models too, which would answer a key
+    // without the plan; the probe is a priced one.
+    expect(result.ok).toBe(false);
+    const probed = opencodeGoProvider().getModels().find((model) => result.error?.startsWith(`${model.name}: `));
+    expect(probed, result.error).toBeDefined();
+    expect(probed?.cost.output).toBeGreaterThan(0);
+    expect(opencodeGoProvider().getModels().some((model) => model.cost.input === 0 && model.cost.output === 0)).toBe(true);
   });
 });
 
