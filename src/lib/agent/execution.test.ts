@@ -4,7 +4,7 @@ import { Type } from "typebox";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { defaultConfig } from "@/lib/config/schema";
 import { fakeModel } from "@/lib/context/testing";
-import { streamModel } from "@/lib/llm/stream";
+import { type StreamOptions, streamModel } from "@/lib/llm/stream";
 import { execution, executionDeadline } from "./execution";
 import { answer, testTurn } from "@/lib/harness/testing";
 
@@ -176,6 +176,29 @@ describe("execution budget", () => {
     expect(caps(true, 8_000)).toEqual([8_000, 6_144, 8_000]);
   });
 
+  it("caps the recovery request's thinking at low, keeping a lower level and Off", async () => {
+    vi.mocked(streamModel).mockImplementation(() => {
+      const stream = createAssistantMessageEventStream();
+      const message = answer("Done");
+      stream.push({ type: "done", reason: "stop", message });
+      stream.end(message);
+      return stream;
+    });
+    const recovered = async (level: StreamOptions["reasoning"]) => {
+      const run = execution(defaultConfig(), testTurn(), { calls: 1 });
+      await run.stream(model, { messages: [] }, { reasoning: level }).result();
+      expect(run.recovery({ ...answer(""), stopReason: "length" })).toBeDefined();
+      await run.stream(model, { messages: [] }, { reasoning: level }).result();
+      expect(run.requests.at(-1)?.phase).toBe("recovery");
+      return vi.mocked(streamModel).mock.calls.splice(0).at(-1)?.[3]?.reasoning;
+    };
+    // Off reaches the run as no level.
+    expect(await recovered(undefined)).toBeUndefined();
+    expect(await recovered("minimal")).toBe("minimal");
+    expect(await recovered("low")).toBe("low");
+    for (const level of ["medium", "high", "xhigh"] as const) expect(await recovered(level)).toBe("low");
+  });
+
   it("keeps user cancellation distinct from recoverable execution failure", async () => {
     vi.mocked(streamModel).mockReturnValue(createAssistantMessageEventStream());
     const controller = new AbortController();
@@ -200,7 +223,7 @@ describe("execution budget", () => {
     expect(() => run.stream(model, { messages: [] })).toThrow("model-call limit");
     expect(run.stopFor("The turn reached its model-call limit")).toBe("calls");
     expect(run.recovery({ ...answer(""), stopReason: "error" })).toBeDefined();
-    await run.stream(model, { messages: [], tools: [{ name: "write", description: "effect", parameters: {} }] }).result();
+    await run.stream(model, { messages: [], tools: [{ name: "write", description: "effect", parameters: {} }] }, { reasoning: "medium" }).result();
     expect(vi.mocked(streamModel).mock.calls[1][2].tools).toEqual([]);
     expect(vi.mocked(streamModel).mock.calls[1][3]).toMatchObject({ maxTokens: 8192, reasoning: "low" });
     expect(() => run.stream(model, { messages: [] })).toThrow("reserved completion request");

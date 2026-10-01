@@ -31,6 +31,12 @@ const REPEATED = 3;
 const INPUT_ERROR = /\b(?:invalid|malformed|validation failed|json|arguments?|parameters?)\b/i;
 /** A model that declares reasoning spends part of each request thinking before it answers. */
 const THINKING = 1.5;
+/**
+ * Recovery thinks at most at low: its one answer has to fit `recoveryMs` and `OUTPUT.recovery`, and
+ * thinking counts against both. A lower level is kept, and so is Off, which arrives as no level.
+ */
+const recoveryReasoning = (level: StreamOptions["reasoning"]): StreamOptions["reasoning"] =>
+  level === undefined || level === "minimal" ? level : "low";
 /** pi's Gemini and Vertex adapters refuse any fetch but the global one. */
 const GLOBAL_FETCH_ONLY: ReadonlySet<Api> = new Set<Api>(["google-generative-ai", "google-vertex"]);
 const CLOSE = "No more tools are available; write plain prose, never tool-call markup. Do not repeat an unsupported claim from a prior draft. If a report was already created, give only its short summary.";
@@ -200,7 +206,7 @@ export function execution(config: AppConfig, turn: TurnState, overrides: Executi
           const stream = streamModel(config, model, recovering ? { ...context, tools: [] } : context, {
             ...options, signal, timeoutMs: requestMs,
             maxTokens: Math.min(options.maxTokens ?? model.maxTokens, output),
-            reasoning: model.reasoning && current === "recovery" ? "low" : options.reasoning,
+            reasoning: model.reasoning && current === "recovery" ? recoveryReasoning(options.reasoning) : options.reasoning,
             onResponse: async (response, selected) => { trace.status = response.status; await options.onResponse?.(response, selected); },
             ...(GLOBAL_FETCH_ONLY.has(model.api) ? {} : {
               fetch: async (...args: Parameters<typeof fetch>) => {
