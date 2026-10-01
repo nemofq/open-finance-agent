@@ -354,7 +354,9 @@ stands in for it. A model pi renamed has a row in `src/lib/llm/model-aliases.ts`
 moves the default model and standalone scheduled tasks to its successor
 (`src/lib/llm/model-rewrite.ts`); a started chat is never moved. Agent requests to OpenRouter,
 OpenCode and Baseten carry the chat's random id, so the provider can keep a chat on one backend
-and reuse its prompt cache.
+and reuse its prompt cache. OpenCode refuses a request without one, so its title and compaction
+requests carry the chat's id too, and a request outside any chat (Validate, Test, mapping
+assistance) a fresh one (`src/lib/llm/opencode.ts`).
 
 ## Shared contracts
 

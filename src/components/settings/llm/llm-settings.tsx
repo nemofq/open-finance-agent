@@ -91,7 +91,7 @@ export function LlmSettings() {
 
   const providers = config?.llm.providers ?? [];
   const validations = currentValidations(providers, checks);
-  const providerModels = draftProviderModels(providers, savedModels.data, validations, savedModels);
+  const providerModels = draftProviderModels(providers, savedModels.data, validations, savedModels, saved?.llm.providers);
   const clearsDefault =
     pendingDelete !== null &&
     [config?.llm.defaultModel, saved?.llm.defaultModel].some((ref) => ref?.provider === pendingDelete.id);

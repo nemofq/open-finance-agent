@@ -8,6 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import type { ModelRef } from "@/lib/config/schema";
 import { REAUTH_REQUIRED } from "@/lib/llm/catalog";
 import type { ProviderModels } from "@/lib/llm/types";
+import type { ModuleLabel } from "@/lib/tools/config";
 
 /**
  * What the chat is missing before it can run: any provider at all, a model to run on, or a
@@ -110,8 +111,28 @@ const hintDismissed = createStoredValue("ofa:data-provider-hint", (raw) => raw =
   serverValue: true,
 });
 
-/** Shown while no data connection is enabled, until the user dismisses it. */
-export function DataProviderHint() {
+/** The one suggested connection that asks for more than switching on. */
+const EDGAR_ID = "edgar";
+
+/**
+ * What to turn on, with a note on cost: "Market Quotes (free)", or "Market Quotes and SEC EDGAR
+ * (both free; EDGAR needs a contact name and email)". EDGAR's contact is mentioned only when it is listed.
+ */
+export function dataHintSuggestion(missing: readonly ModuleLabel[]): string {
+  const labels = missing.map((module) => module.name);
+  const names = labels.length > 1 ? `${labels.slice(0, -1).join(", ")} and ${labels.at(-1)}` : (labels[0] ?? "");
+  const free = missing.length > 1 ? "both free" : "free";
+  if (!missing.some((module) => module.id === EDGAR_ID)) return `${names} (${free})`;
+  return `${names} (${free}; ${missing.length > 1 ? "EDGAR" : "it"} needs a contact name and email)`;
+}
+
+export interface DataProviderHintProps {
+  /** The suggested data connections that are off or missing a required field; never empty. */
+  missing: readonly ModuleLabel[];
+}
+
+/** Shown on a new chat while a suggested data connection is not ready, until the user dismisses it. */
+export function DataProviderHint({ missing }: DataProviderHintProps) {
   const hidden = useStoredValue(hintDismissed);
 
   if (hidden) return null;
@@ -119,8 +140,7 @@ export function DataProviderHint() {
   return (
     <div className="mx-auto flex w-full max-w-3xl items-start gap-3 rounded-lg border border-border bg-muted/40 px-3 py-2 text-sm">
       <p className="min-w-0 flex-1 text-muted-foreground">
-        No data connection enabled — the agent can only use web search and memory. Enable SEC EDGAR (free,
-        no key) in{" "}
+        For grounded research, turn on {dataHintSuggestion(missing)} in{" "}
         <Link href="/settings/providers" className="text-foreground underline underline-offset-2">
           Settings › Data connections
         </Link>

@@ -49,6 +49,18 @@ describe("draftProviderModels", () => {
       providers: [{ provider: "openrouter", name: "OpenRouter", type: "openrouter" as const, models: [], error: "Add an API key" }],
     };
     expect(draftProviderModels([openRouter], saved, {})[0]).toMatchObject({ models: [], error: "Add an API key" });
+    // The same key as saved: the saved error still describes it.
+    expect(draftProviderModels([openRouter], saved, {}, undefined, [openRouter])[0].error).toBe("Add an API key");
+  });
+
+  it("asks to validate a newly typed key rather than repeating the saved key's error", () => {
+    const go: LlmProviderConfig = { id: "opencode-go", type: "opencode-go", name: "OpenCode Go", apiKey: "", auth: "api_key" };
+    const saved = {
+      defaultModel: null,
+      providers: [{ provider: "opencode-go", name: "OpenCode Go", type: "opencode-go" as const, models: [], error: "Add an API key" }],
+    };
+    const [entry] = draftProviderModels([{ ...go, apiKey: "sk-new" }], saved, {}, undefined, [go]);
+    expect(entry).toMatchObject({ models: [], error: "Validate the API key to load models" });
   });
 
   it("asks for validation when OpenRouter has no models from anywhere", () => {

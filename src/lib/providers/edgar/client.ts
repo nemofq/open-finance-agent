@@ -21,7 +21,7 @@ export function resourceOf(url: string): EdgarResource {
   if (url.includes("company_tickers")) return "tickers";
   if (url.includes("/submissions/")) return "submissions";
   if (url.includes("/companyfacts/")) return "companyfacts";
-  if (url.includes("efts.sec.gov")) return "search";
+  if (new URL(url).hostname === "efts.sec.gov") return "search";
   return "document";
 }
 

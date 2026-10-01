@@ -1,4 +1,4 @@
-import { createAssistantMessageEventStream, type Api, type AssistantMessage, type Context, type Model, type SimpleStreamOptions } from "@earendil-works/pi-ai";
+import { createAssistantMessageEventStream, type Api, type AssistantMessage, type Context, type Model } from "@earendil-works/pi-ai";
 import { isRetryableAssistantError } from "@earendil-works/pi-ai/utils/retry";
 import type { AgentTool } from "@earendil-works/pi-agent-core";
 import type { AppConfig } from "@/lib/config/schema";
@@ -8,7 +8,7 @@ import { isEvidenceRead } from "@/lib/evidence/tool";
 import type { ToolCall, ToolOutcome, TurnState } from "@/lib/harness/concern";
 import type { Block } from "@/lib/policy/types";
 import { hasToolProtocol } from "@/lib/llm/answer";
-import { streamModel } from "@/lib/llm/stream";
+import { type StreamOptions, streamModel } from "@/lib/llm/stream";
 import { blockText } from "@/lib/text/blocks";
 import { NO_USAGE } from "./messages";
 
@@ -152,7 +152,7 @@ export function execution(config: AppConfig, turn: TurnState, overrides: Executi
         followUp: early ? CUT_SHORT : INTERRUPTED,
       };
     },
-    stream(model: Model<Api>, context: Context, options: SimpleStreamOptions = {}) {
+    stream(model: Model<Api>, context: Context, options: StreamOptions = {}) {
       const current = phase(context);
       if (recovering && recoveryCalls >= 1) {
         exhausted = "The reserved completion request has been used";

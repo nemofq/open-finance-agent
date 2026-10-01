@@ -1,9 +1,10 @@
 import { type Api, clampThinkingLevel, getSupportedThinkingLevels, type Model, type SimpleStreamOptions } from "@earendil-works/pi-ai";
 import { amazonBedrockProvider } from "@earendil-works/pi-ai/providers/amazon-bedrock";
 import { anthropicProvider } from "@earendil-works/pi-ai/providers/anthropic";
+import { opencodeGoProvider } from "@earendil-works/pi-ai/providers/opencode-go";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { type AppConfig, defaultConfig } from "@/lib/config/schema";
-import { streamModel } from "./stream";
+import { type StreamOptions, streamModel } from "./stream";
 import { transmittedThinking } from "./thinking";
 import { runsAs } from "./thinking-clamp";
 
@@ -74,5 +75,45 @@ describe("the reasoning level a request sends", () => {
     expect(sentReasoning(catalogModel("claude-sonnet-4-6"), undefined)).toBeUndefined();
     const plain = { ...catalogModel("claude-sonnet-4-6"), reasoning: false };
     expect(sentReasoning(plain, "high")).toBeUndefined();
+  });
+});
+
+describe("the session a request is sent under", () => {
+  const goConfig = (): AppConfig => {
+    const base = config();
+    base.llm.providers.push({ id: "opencode-go", type: "opencode-go", name: "OpenCode Go", apiKey: "sk-go", auth: "api_key" });
+    return base;
+  };
+  const goModel = (): Model<Api> => {
+    const [model] = opencodeGoProvider().getModels();
+    if (!model) throw new Error("pi's OpenCode Go catalog is empty");
+    return model;
+  };
+  const sent = (cfg: AppConfig, model: Model<Api>, options?: StreamOptions): SimpleStreamOptions => {
+    streamSimple.mockClear();
+    streamModel(cfg, model, { messages: [] }, options);
+    return streamSimple.mock.calls[0][2] as SimpleStreamOptions;
+  };
+
+  it("is a fresh one for an OpenCode request that names none, since OpenCode refuses a request without", () => {
+    const first = sent(goConfig(), goModel()).sessionId;
+    expect(first).toMatch(/^[0-9a-f-]{36}$/);
+    expect(sent(goConfig(), goModel()).sessionId).not.toBe(first);
+  });
+
+  it("keeps the session an OpenCode request names, else uses the chat it belongs to", () => {
+    expect(sent(goConfig(), goModel(), { sessionId: "chat-1", conversationId: "other" }).sessionId).toBe("chat-1");
+    const options = sent(goConfig(), goModel(), { conversationId: "chat-2" });
+    expect(options.sessionId).toBe("chat-2");
+    expect(options).not.toHaveProperty("conversationId");
+  });
+
+  it("is left alone for every other provider, whose prompt-cache keys follow it", () => {
+    const sonnet = catalogModel("claude-sonnet-4-6");
+    expect(sent(config(), sonnet)).not.toHaveProperty("sessionId");
+    const options = sent(config(), sonnet, { conversationId: "chat-3" });
+    expect(options).not.toHaveProperty("sessionId");
+    expect(options).not.toHaveProperty("conversationId");
+    expect(sent(config(), sonnet, { sessionId: "chat-4" }).sessionId).toBe("chat-4");
   });
 });

@@ -378,6 +378,9 @@ describe("runTurn with composed concerns", () => {
     expect(messages.filter((m) => m.role === "assistant" && m.stopReason === "error")).toHaveLength(0);
     expect(JSON.stringify(seen.at(-1)?.messages)).toContain(args.text);
     expect(JSON.stringify(seen.at(-1)?.messages)).toContain("Research checkpoint");
+    // The summary is asked in the chat's own name, which OpenCode routes the request by.
+    const summary = vi.mocked(streamModel).mock.calls.find(([, , context]) => context.systemPrompt === CHECKPOINT);
+    expect(summary?.[3]).toMatchObject({ conversationId: args.session.id });
   });
 
   it("does not revise or recover an aborted answer", async () => {

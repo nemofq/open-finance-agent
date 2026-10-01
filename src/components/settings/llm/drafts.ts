@@ -76,6 +76,8 @@ export interface SavedModelsStatus {
   error: string | null;
 }
 
+const VALIDATE_TO_LOAD = "Validate the API key to load models";
+
 /** A provider missing from the saved models list: still loading, failed to load, or `otherwise`. */
 function unlistedModels(
   base: Pick<ProviderModels, "provider" | "name" | "type">,
@@ -89,13 +91,16 @@ function unlistedModels(
 /**
  * What each card's Test picker offers for its draft provider. OpenRouter uses its last validation,
  * else the saved provider's list from `/api/settings/llm/models`; endpoints use their draft model
- * rows, so unsaved edits can be tested before saving.
+ * rows, so unsaved edits can be tested before saving. The saved list's error describes the saved
+ * key, so once a different key is typed into the draft (`savedProviders` holds the saved configs)
+ * the picker asks for that key to be validated instead.
  */
 export function draftProviderModels(
   providers: LlmProviderConfig[],
   saved: LlmModelsResponse | null,
   validations: Record<string, ProviderValidation>,
   status: SavedModelsStatus = { loading: false, error: null },
+  savedProviders: LlmProviderConfig[] = [],
 ): ProviderModels[] {
   return providers.map((draft) => {
     const provider = requestProvider(draft);
@@ -107,8 +112,12 @@ export function draftProviderModels(
     const validated = validations[provider.id]?.models;
     if (validated) return { ...base, models: validated };
     const stored = saved?.providers.find((entry) => entry.provider === provider.id);
-    if (stored) return { ...base, models: stored.models, ...(stored.error ? { error: stored.error } : {}) };
-    return unlistedModels(base, status, "Validate the API key to load models");
+    if (stored) {
+      const savedKey = savedProviders.find((entry) => entry.id === provider.id)?.apiKey;
+      const error = stored.error && savedKey !== undefined && savedKey !== provider.apiKey ? VALIDATE_TO_LOAD : stored.error;
+      return { ...base, models: stored.models, ...(error ? { error } : {}) };
+    }
+    return unlistedModels(base, status, VALIDATE_TO_LOAD);
   });
 }
 

@@ -7,6 +7,10 @@
   <img src="https://img.shields.io/badge/pnpm-12-orange.svg" alt="pnpm" />
 </p>
 
+<p align="center">
+  <a href="docs/images/screenshot.png"><img src="docs/images/screenshot.png" alt="Open Finance Agent answering an NVIDIA earnings preview: the tool trace with source tiers and evidence ids on the left, the generated report with sourced numbers on the right" width="100%" /></a>
+</p>
+
 **Open Finance Agent is a harness built for financial research and analysis**, similar to
 [ChatGPT for Financial Services](https://openai.com/index/introducing-chatgpt-financial-services/)
 and [Claude for Financial Services](https://www.anthropic.com/news/claude-for-financial-services),

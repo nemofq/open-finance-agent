@@ -11,6 +11,7 @@ import type { AppConfig, LlmProviderConfig } from "@/lib/config/schema";
 import { CACHE_RETENTION } from "./ambient-env";
 import { takesKey } from "./catalog";
 import { draftModels, getModels } from "./models";
+import { openCodeOptions } from "./opencode";
 import { requestModel } from "./thinking";
 
 /**
@@ -18,6 +19,14 @@ import { requestModel } from "./thinking";
  * `streamSimple` is the seam the agent loop itself uses: provider-neutral options (`reasoning`,
  * `maxTokens`, `timeoutMs`) rather than one API's own option shape.
  */
+
+/**
+ * What a completion takes: pi's options, plus the chat a one-off request (a title, a compaction
+ * summary) belongs to. That id reaches only OpenCode, as its session (see `openCodeOptions`).
+ */
+export interface StreamOptions extends SimpleStreamOptions {
+  conversationId?: string;
+}
 
 /**
  * An instance whose way in takes a key sends it on every request, so a stale sign-in in `auth.json`
@@ -42,13 +51,14 @@ function stream(
   provider: LlmProviderConfig,
   model: Model<Api>,
   context: Context,
-  options?: SimpleStreamOptions,
+  { conversationId, ...options }: StreamOptions = {},
 ): AssistantMessageEventStream {
-  const clamped = options?.reasoning ? clampThinkingLevel(model, options.reasoning) : undefined;
+  const clamped = options.reasoning ? clampThinkingLevel(model, options.reasoning) : undefined;
   const reasoning = clamped === "off" ? undefined : clamped;
   const sent = withoutNativeToolChanges(requestModel(provider, model, reasoning));
-  const cacheRetention = options?.cacheRetention ?? CACHE_RETENTION;
-  return models.streamSimple(sent, context, { ...options, cacheRetention, reasoning, ...requestAuth(provider) });
+  const cacheRetention = options.cacheRetention ?? CACHE_RETENTION;
+  const routed = openCodeOptions(provider.type, options, conversationId);
+  return models.streamSimple(sent, context, { ...routed, cacheRetention, reasoning, ...requestAuth(provider) });
 }
 
 /**
@@ -66,7 +76,7 @@ export function streamModel(
   config: AppConfig,
   model: Model<Api>,
   context: Context,
-  options?: SimpleStreamOptions,
+  options?: StreamOptions,
 ): AssistantMessageEventStream {
   const provider = config.llm.providers.find((entry) => entry.id === model.provider);
   if (!provider) throw new Error(`The provider “${model.provider}” is no longer saved in Settings › LLM`);
@@ -78,7 +88,7 @@ export function streamDraftModel(
   provider: LlmProviderConfig,
   model: Model<Api>,
   context: Context,
-  options?: SimpleStreamOptions,
+  options?: StreamOptions,
 ): AssistantMessageEventStream {
   return stream(draftModels(provider), provider, model, context, options);
 }

@@ -2,12 +2,27 @@ import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { collectTools, enabledModules, hasDataConnection, isEnabled } from "@/lib/agent/modules";
+import { collectTools, enabledModules, isEnabled, missingDataConnections } from "@/lib/agent/modules";
 import { defaultConfig } from "@/lib/config/schema";
+import { SECRET_MASK } from "@/lib/config/secrets";
 import { readConfig } from "@/lib/config/store";
 import { configPath } from "@/lib/paths";
+import { alphaVantageModule } from "@/lib/providers/alphavantage/module";
+import { edgarModule } from "@/lib/providers/edgar/module";
 import { mcpModule } from "@/lib/providers/mcp/module";
-import { moduleConfig, moduleEnabled, moduleSecretPaths, moduleSettings, settingList, settingNumber, settingString } from "./config";
+import { reportsModule } from "@/lib/reports/tool";
+import {
+  enablesOnSave,
+  moduleConfig,
+  moduleEnabled,
+  moduleReady,
+  moduleSecretPaths,
+  moduleSettings,
+  requiredFieldsFilled,
+  settingList,
+  settingNumber,
+  settingString,
+} from "./config";
 import type { Module } from "./contracts";
 import { builtinModules, toModuleSummary } from "./registry";
 import { offlineContext } from "./testing";
@@ -102,27 +117,109 @@ describe("module settings", () => {
   });
 });
 
-describe("hasDataConnection", () => {
-  const save = (config: object) => writeFileSync(configPath(), JSON.stringify({ version: 3, ...config }));
-  const noProviders = { edgar: { enabled: false }, quotes: { enabled: false }, alphavantage: { enabled: false } };
-  const server = { id: "wiki", name: "Wiki", enabled: true, transport: "http", url: "https://wiki.test/mcp" };
+describe("missingDataConnections", () => {
+  const save = (modules: object, servers: object[] = []) =>
+    writeFileSync(configPath(), JSON.stringify({ version: 3, modules, mcp: { servers } }));
+  const contact = "Jane Doe jane@example.com";
+  const QUOTES = { id: "quotes", name: "Market Quotes" };
+  const EDGAR = { id: "edgar", name: "SEC EDGAR" };
+  const server = { id: "wiki", name: "Wiki", enabled: true, transport: "http", url: "https://wiki.test/mcp", class: "data" };
 
-  it("counts an enabled data provider module, as EDGAR is on a fresh install", () => {
-    expect(hasDataConnection()).toBe(true);
+  it("asks for EDGAR on a fresh install, which is on but has no contact", () => {
+    expect(missingDataConnections()).toEqual([EDGAR]);
   });
 
-  it("counts an enabled MCP server only when it is marked as a data connection", () => {
-    save({ modules: noProviders, mcp: { servers: [server] } });
-    expect(hasDataConnection()).toBe(false);
-    save({ modules: noProviders, mcp: { servers: [{ ...server, class: "data" }] } });
-    expect(hasDataConnection()).toBe(true);
-    save({ modules: noProviders, mcp: { servers: [{ ...server, class: "data", enabled: false }] } });
-    expect(hasDataConnection()).toBe(false);
+  it("asks for nothing once Market Quotes and EDGAR are both ready", () => {
+    save({ edgar: { enabled: true, contact } });
+    expect(missingDataConnections()).toEqual([]);
+  });
+
+  it("asks for Market Quotes when it is off", () => {
+    save({ edgar: { enabled: true, contact }, quotes: { enabled: false } });
+    expect(missingDataConnections()).toEqual([QUOTES]);
+    save({ edgar: { enabled: false, contact }, quotes: { enabled: false } });
+    expect(missingDataConnections()).toEqual([QUOTES, EDGAR]);
+  });
+
+  it("does not take a whitespace contact as one", () => {
+    save({ edgar: { enabled: true, contact: "   " } });
+    expect(missingDataConnections()).toEqual([EDGAR]);
+  });
+
+  it("does not let other data sources stand in for the two", () => {
+    save({ edgar: { enabled: false }, quotes: { enabled: false }, alphavantage: { enabled: true, apiKey: "av" } }, [server]);
+    expect(missingDataConnections()).toEqual([QUOTES, EDGAR]);
   });
 
   it("does not know when config.json cannot be read", () => {
     writeFileSync(configPath(), "{ not json");
-    expect(hasDataConnection()).toBeUndefined();
+    expect(missingDataConnections()).toBeUndefined();
+  });
+});
+
+describe("moduleReady", () => {
+  it("needs the module on", () => {
+    expect(moduleReady(edgarModule, { edgar: { enabled: false, contact: "Jane" } })).toBe(false);
+    expect(moduleReady(edgarModule, { edgar: { enabled: true, contact: "Jane" } })).toBe(true);
+  });
+
+  it("needs every required field filled, whitespace aside", () => {
+    expect(moduleReady(edgarModule, {})).toBe(false);
+    expect(moduleReady(edgarModule, { edgar: { enabled: true, contact: "  " } })).toBe(false);
+    expect(moduleReady(alphaVantageModule, { alphavantage: { enabled: true, apiKey: SECRET_MASK } })).toBe(true);
+  });
+
+  it("asks only that a module without required fields be on", () => {
+    expect(moduleReady(reportsModule, {})).toBe(true);
+    expect(moduleReady(reportsModule, { reports: { enabled: false } })).toBe(false);
+  });
+});
+
+describe("enablesOnSave", () => {
+  const off = (fields: object) => ({ alphavantage: { enabled: false, ...fields } });
+
+  it("turns a module on when the save fills in the key it was missing", () => {
+    expect(enablesOnSave(alphaVantageModule, off({ apiKey: "" }), off({ apiKey: "av-key" }))).toBe(true);
+    // Never saved at all: the defaults leave the key empty.
+    expect(enablesOnSave(alphaVantageModule, {}, off({ apiKey: "av-key" }))).toBe(true);
+  });
+
+  it("leaves off a module whose key was already stored, as one the user turned off", () => {
+    expect(enablesOnSave(alphaVantageModule, off({ apiKey: SECRET_MASK }), off({ apiKey: SECRET_MASK }))).toBe(false);
+    expect(enablesOnSave(alphaVantageModule, off({ apiKey: SECRET_MASK }), off({ apiKey: "av-other" }))).toBe(false);
+  });
+
+  it("has nothing to do for a module that is already on", () => {
+    const on = { alphavantage: { enabled: true, apiKey: "av-key" } };
+    expect(enablesOnSave(alphaVantageModule, off({ apiKey: "" }), on)).toBe(false);
+  });
+
+  it("never turns on a module without required fields", () => {
+    expect(enablesOnSave(reportsModule, { reports: { enabled: false } }, { reports: { enabled: false, format: "pdf" } })).toBe(false);
+  });
+
+  it("does not count whitespace as a value", () => {
+    expect(enablesOnSave(alphaVantageModule, off({ apiKey: "" }), off({ apiKey: "   " }))).toBe(false);
+  });
+
+  it("turns EDGAR on once its contact is filled in", () => {
+    const edgar = (contact: string) => ({ edgar: { enabled: false, contact } });
+    expect(enablesOnSave(edgarModule, edgar(""), edgar("Jane Doe jane@example.com"))).toBe(true);
+  });
+
+  it("reads only required text and secret fields", () => {
+    const mixed = {
+      id: "mixed",
+      defaultConfig: { enabled: false },
+      settings: [
+        { key: "token", label: "Token", type: "secret" as const, required: true },
+        { key: "mode", label: "Mode", type: "select" as const, required: true },
+        { key: "extra", label: "Extra", type: "toggle" as const, required: true },
+        { key: "note", label: "Note", type: "text" as const },
+      ],
+    };
+    expect(requiredFieldsFilled(mixed, { token: "t" })).toBe(true);
+    expect(enablesOnSave(mixed, {}, { mixed: { enabled: false, token: "t" } })).toBe(true);
   });
 });
 

@@ -54,7 +54,7 @@ export async function compactChat(id: string, options: { focus?: string } = {}):
     messages,
     ledger: await openSessionLedger(id, messages),
     budget,
-    summarize: summarizer((context) => streamModel(config, resolved.model, context)),
+    summarize: summarizer((context) => streamModel(config, resolved.model, context, { conversationId: id })),
     focus: options.focus,
     time: resolveTimeContext({ timeZone: stored.timeZone }),
   });

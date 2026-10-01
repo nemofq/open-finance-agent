@@ -1,7 +1,7 @@
 "use client";
 
 import { Skeleton } from "@/components/ui/skeleton";
-import { moduleSettings } from "@/lib/tools/config";
+import { enablesOnSave, moduleSettings } from "@/lib/tools/config";
 import type { Module, ModuleSummary } from "@/lib/tools/contracts";
 import { useJson } from "@/components/shared/use-json";
 import { ModuleSettingsForm } from "./module-settings-form";
@@ -24,7 +24,7 @@ export interface ModuleCardsProps {
 
 /** A settings card for every registered module of one kind. Each settings page renders one of these. */
 export function ModuleCards({ store, kind, emptyHint }: ModuleCardsProps) {
-  const { config, loadError, update, isDirty, isSaving, saveUnit, setUnitEnabled } = store;
+  const { config, saved, loadError, update, isDirty, isSaving, saveUnit, setUnitEnabled } = store;
   const listing = useJson<{ modules: ModuleSummary[] }>("/api/settings/modules");
   const modules = listing.data?.modules ?? null;
 
@@ -58,7 +58,15 @@ export function ModuleCards({ store, kind, emptyHint }: ModuleCardsProps) {
                   fallback: withEnabled(module.defaultConfig),
                 })
               }
-              onSave={() => void saveUnit(unit, { success: `${module.name} saved` })}
+              onSave={() => {
+                // Filling in what an off module was missing is taken as wanting it on.
+                const draft = unit.read(config);
+                if (draft && enablesOnSave(module, saved?.modules, config.modules)) {
+                  void saveUnit(unit, { value: { ...draft, enabled: true }, success: `${module.name} saved and enabled` });
+                } else {
+                  void saveUnit(unit, { success: `${module.name} saved` });
+                }
+              }}
               saving={isSaving(unit)}
               dirty={isDirty(unit)}
             />

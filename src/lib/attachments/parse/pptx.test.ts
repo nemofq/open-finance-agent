@@ -57,6 +57,31 @@ describe("parsing a pptx", () => {
     expect(parsed.warnings).toEqual([]);
   });
 
+  it("keeps a cell's own backslash-pipe inside its column", async () => {
+    const parsed = await deck({
+      table: [
+        ["Path", "Note"],
+        ["a\\|b", "C:\\x"],
+      ],
+    });
+
+    const markdown = parsed.parts[0]?.type === "text" ? parsed.parts[0].markdown : "";
+    const rows = markdown.split("\n").filter((line) => line.startsWith("|"));
+    // GFM splits on every pipe a backslash does not escape, and `\\` escapes itself; each row keeps
+    // the header's two columns.
+    const columns = (line: string) => {
+      let pipes = 0;
+      for (let index = 0; index < line.length; index++) {
+        if (line[index] === "\\") index++;
+        else if (line[index] === "|") pipes++;
+      }
+      return pipes;
+    };
+    expect(rows).toHaveLength(3);
+    for (const row of rows) expect(columns(row)).toBe(columns(rows[0] ?? ""));
+    expect(rows[2]).toBe("| a\\\\\\|b | C:\\\\x |");
+  });
+
   it("gives the outline one entry per slide", async () => {
     const parsed = await deck({ title: "Opening" }, { bullets: [{ text: "no title here" }] });
 

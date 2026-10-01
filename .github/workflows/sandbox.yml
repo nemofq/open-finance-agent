@@ -20,6 +20,9 @@ concurrency:
   group: sandbox-${{ github.ref }}
   cancel-in-progress: true
 
+permissions:
+  contents: read
+
 jobs:
   sandbox:
     name: ${{ matrix.os }}

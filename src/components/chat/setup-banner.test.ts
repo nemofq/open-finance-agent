@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import type { ModelRef } from "@/lib/config/schema";
 import { REAUTH_REQUIRED } from "@/lib/llm/catalog";
 import type { LlmModelInfo, ProviderModels } from "@/lib/llm/types";
-import { type SetupInput, setupNeed, setupNeedFor } from "./setup-banner";
+import { dataHintSuggestion, type SetupInput, setupNeed, setupNeedFor } from "./setup-banner";
 
 describe("setupNeedFor", () => {
   it("turns a lapsed sign-in into the reconnect banner", () => {
@@ -102,5 +102,25 @@ describe("setupNeed", () => {
 
   it("leaves a started chat's missing provider to its error line", () => {
     expect(setupNeed(newChat({ providers: [], turnModel: null, started: true, defaultAvailable: false }))).toBeNull();
+  });
+});
+
+describe("dataHintSuggestion", () => {
+  const QUOTES = { id: "quotes", name: "Market Quotes" };
+  const EDGAR = { id: "edgar", name: "SEC EDGAR" };
+
+  it("names both connections, with EDGAR's contact", () => {
+    expect(dataHintSuggestion([QUOTES, EDGAR])).toBe(
+      "Market Quotes and SEC EDGAR (both free; EDGAR needs a contact name and email)",
+    );
+  });
+
+  it("names only the one missing, mentioning a contact only for EDGAR", () => {
+    expect(dataHintSuggestion([EDGAR])).toBe("SEC EDGAR (free; it needs a contact name and email)");
+    expect(dataHintSuggestion([QUOTES])).toBe("Market Quotes (free)");
+  });
+
+  it("keys the contact note on the id, not the display name", () => {
+    expect(dataHintSuggestion([{ id: "edgar", name: "EDGAR" }])).toBe("EDGAR (free; it needs a contact name and email)");
   });
 });

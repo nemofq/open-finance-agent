@@ -87,7 +87,7 @@ export async function runTurn(input: TurnInput): Promise<TurnResult> {
       sessionId: session.id,
       sink,
       queue: queueWrite,
-      generate: () => generate({ config, model, text, skill, tickers: extractCashtags(text) }),
+      generate: () => generate({ config, model, sessionId: session.id, text, skill, tickers: extractCashtags(text) }),
     }).catch((err) => console.error("[titles] write failed:", err));
   }
 

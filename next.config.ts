@@ -25,7 +25,7 @@ const nextConfig: NextConfig = {
     // the modules they import. They are listed by name because the tracer's globs cannot leave out
     // a test file. `parse/worker.test.ts` checks this list still covers every file the worker loads.
     "/api/attachments": [
-      "./src/lib/attachments/{limits,signatures,tables,wording,zip}.ts",
+      "./src/lib/attachments/{digest,limits,signatures,tables,wording,zip}.ts",
       "./src/lib/attachments/parse/{worker,registry,text,html,docx,legacy-doc,tabular,pptx,pdf}.ts",
     ],
   },

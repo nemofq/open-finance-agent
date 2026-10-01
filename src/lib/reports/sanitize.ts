@@ -22,6 +22,11 @@ const DROP_WITH_CONTENT = new Set(["script", "style", "iframe", "object", "embed
 
 const GLOBAL_ATTRIBUTES = new Set(["class", "title", "colspan", "rowspan", "scope", "role", "aria-hidden", "aria-label"]);
 
+/** The SVG elements, which alone may carry geometry: on an HTML tag a `width` would size the box. */
+const SVG_TAGS = new Set([
+  "svg", "g", "path", "rect", "circle", "ellipse", "line", "polyline", "polygon", "text", "tspan", "defs", "desc",
+]);
+
 const SVG_ATTRIBUTES = new Set([
   "viewbox", "preserveaspectratio", "width", "height", "x", "y", "x1", "y1", "x2", "y2",
   "cx", "cy", "r", "rx", "ry", "d", "points", "fill", "fill-opacity", "stroke", "stroke-width",
@@ -35,8 +40,65 @@ const SVG_ATTRIBUTE_CASE: Record<string, string> = {
   preserveaspectratio: "preserveAspectRatio",
 };
 
-/** A `style` attribute may set colours and spacing, but never fetch or execute anything. */
+/**
+ * A `style` attribute may set colours, emphasis and modest spacing, nothing that sizes, places or
+ * unwraps a box: the report is read in a column as narrow as a phone, and a fixed width, a
+ * `nowrap` or an absolute position there pushes the whole page sideways. Anything else is dropped
+ * one declaration at a time, so the colours survive a stray `width`.
+ */
+const STYLE_PROPERTIES = new Set([
+  "color", "background", "background-color", "font-weight", "font-style", "text-align", "text-decoration",
+  "vertical-align",
+]);
+
+/** Borders, padding and margins, in any of their longhands. */
+const SPACING_PROPERTY = /^(?:border|padding|margin)(?:-[a-z-]+)?$/;
+
+/** A font size that follows the report's own: relative units only. */
+const RELATIVE_SIZE = /^\d*\.?\d+(?:em|rem|%)$/;
+
+/** A length in a value, never the digits of a hex colour or a name. */
+const LENGTH = /(?<![\w#.-])(-?\d*\.?\d+)([a-z%]+)/gi;
+
+/** Spacing past these is layout rather than spacing; so is spacing in viewport or print units. */
+const MAX_SPACING: Record<string, number> = { px: 48, pt: 36, em: 3, rem: 3, "%": 5 };
+const LAYOUT_UNITS = new Set(["vw", "vh", "vmin", "vmax", "dvw", "svw", "lvw", "ch", "ex", "cm", "mm", "in", "pc", "q"]);
+
+/** Whatever the property, a style never fetches or executes anything. */
 const UNSAFE_STYLE = /url\s*\(|expression\s*\(|@import|javascript:|behavior\s*:/i;
+
+function spacingAllowed(value: string): boolean {
+  for (const [, amount, rawUnit] of value.matchAll(LENGTH)) {
+    const unit = rawUnit.toLowerCase();
+    if (LAYOUT_UNITS.has(unit)) return false;
+    const limit = MAX_SPACING[unit];
+    if (limit !== undefined && Math.abs(Number(amount)) > limit) return false;
+  }
+  return true;
+}
+
+function declarationAllowed(property: string, value: string): boolean {
+  if (value === "") return false;
+  if (property === "font-size") return RELATIVE_SIZE.test(value);
+  // A rounded corner sizes nothing, so `border-radius:50%` is as harmless as a colour.
+  if (STYLE_PROPERTIES.has(property) || property === "border-radius") return true;
+  return SPACING_PROPERTY.test(property) && spacingAllowed(value);
+}
+
+/** The declarations of a `style` value that pass the allowlist; `""` when none do. */
+function sanitizeStyle(style: string): string {
+  if (UNSAFE_STYLE.test(style)) return "";
+  return style
+    .split(";")
+    .flatMap((declaration) => {
+      const colon = declaration.indexOf(":");
+      if (colon === -1) return [];
+      const property = declaration.slice(0, colon).trim().toLowerCase();
+      const value = declaration.slice(colon + 1).trim();
+      return declarationAllowed(property, value) ? [`${property}:${value}`] : [];
+    })
+    .join(";");
+}
 
 const TAG_START = /^<\/?([a-zA-Z][a-zA-Z0-9-]*)/;
 const ATTRIBUTE_RE = /([a-zA-Z_:][-a-zA-Z0-9_:.]*)(?:\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s"'>`]+)))?/g;
@@ -49,15 +111,17 @@ function attributeAllowed(tag: string, name: string): boolean {
   if (name.startsWith("on")) return false;
   if (GLOBAL_ATTRIBUTES.has(name)) return true;
   if (name === "style") return true;
-  return SVG_ATTRIBUTES.has(name) && tag !== "table" && tag !== "td" && tag !== "th";
+  return SVG_ATTRIBUTES.has(name) && SVG_TAGS.has(tag);
 }
 
 function renderAttributes(tag: string, source: string): string {
   let out = "";
   for (const match of source.matchAll(ATTRIBUTE_RE)) {
     const name = match[1].toLowerCase();
-    const value = match[2] ?? match[3] ?? match[4] ?? "";
-    if (!attributeAllowed(tag, name) || (name === "style" && UNSAFE_STYLE.test(value))) continue;
+    const raw = match[2] ?? match[3] ?? match[4] ?? "";
+    if (!attributeAllowed(tag, name)) continue;
+    const value = name === "style" ? sanitizeStyle(raw) : raw;
+    if (name === "style" && value === "") continue;
     const written = SVG_ATTRIBUTE_CASE[name] ?? name;
     out += ` ${written}="${value.replace(/"/g, "&quot;")}"`;
   }
@@ -129,14 +193,17 @@ export function sanitizeHtml(html: string): string {
   return out;
 }
 
-/** The words a sanitized block shows, with the markup taken out, for figure checking. */
+/**
+ * The words a sanitized block shows, with the markup taken out, for figure checking. `&amp;` is
+ * decoded last, or the `&amp;lt;` a block shows as the text `&lt;` would decode twice into `<`.
+ */
 export function textContent(html: string): string {
   return html
     .replace(/<[^>]*>/g, " ")
     .replace(/&nbsp;/g, " ")
-    .replace(/&amp;/g, "&")
     .replace(/&lt;/g, "<")
     .replace(/&gt;/g, ">")
+    .replace(/&amp;/g, "&")
     .replace(/\s+/g, " ")
     .trim();
 }

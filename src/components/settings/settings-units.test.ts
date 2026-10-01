@@ -115,6 +115,20 @@ describe("saveChange", () => {
     expect(unitDirty(unit, page.draft, page.saved)).toBe(true);
   });
 
+  it("adopts the server's copy when Save also turns the module on", () => {
+    const page = client();
+    const unit = moduleUnit("alphavantage");
+    const draft = { enabled: false, apiKey: "av-new" };
+    page.draft = unit.write(page.draft, draft);
+
+    // What the module card sends when the save fills in the key an off module was missing.
+    commit(page, saveChange(unit, { ...draft, enabled: true }, draft));
+
+    expect(page.server.disk.modules.alphavantage).toEqual({ enabled: true, apiKey: "av-new" });
+    expect(unit.read(page.draft)).toEqual({ enabled: true, apiKey: SECRET_MASK });
+    expect(unitDirty(unit, page.draft, page.saved)).toBe(false);
+  });
+
   it("adds an item from a dialog to the saved config and the draft", () => {
     const page = client();
     const unit = llmProviderUnit("local");

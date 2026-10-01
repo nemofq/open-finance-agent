@@ -75,10 +75,13 @@ export function columnsLine(table: AttachmentTablePart): string {
   return table.columns.map((name, index) => `${name || `column ${index + 1}`} (${columnType(table.rows, index)})`).join(", ");
 }
 
-/** One cell, safe to drop into a GFM table row. */
+/**
+ * One cell, safe to drop into a GFM table row. Backslashes are escaped first, so a cell's own
+ * `\|` cannot turn the added escape into a literal backslash followed by a column break.
+ */
 export function markdownCell(value: AttachmentCell | undefined): string {
   if (value === null || value === undefined) return "";
-  return String(value).replace(/\|/g, "\\|").replace(/\r?\n/g, " ");
+  return String(value).replace(/\\/g, "\\\\").replace(/\|/g, "\\|").replace(/\r?\n/g, " ");
 }
 
 /** The first `count` rows as a GFM table, and a line saying how many there are when that is not all. */

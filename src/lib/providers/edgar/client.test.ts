@@ -36,6 +36,8 @@ describe("resourceOf", () => {
     expect(resourceOf("https://data.sec.gov/api/xbrl/companyfacts/CIK0000320193.json")).toBe("companyfacts");
     expect(resourceOf("https://efts.sec.gov/LATEST/search-index?q=x")).toBe("search");
     expect(resourceOf("https://www.sec.gov/Archives/edgar/data/1/2/a.htm")).toBe("document");
+    // Full-text search is the efts host itself, not a URL that merely mentions it.
+    expect(resourceOf("https://www.sec.gov/Archives/a.htm?q=efts.sec.gov")).toBe("document");
   });
 });
 

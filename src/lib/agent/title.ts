@@ -24,12 +24,14 @@ export interface GenerateTitleInput extends TitlePromptInput {
   config: AppConfig;
   /** The model the chat is pinned to, so the title costs nothing the chat itself would not. */
   model: ModelRef;
+  /** The chat being titled, so a provider that routes by conversation keeps the title with it. */
+  sessionId?: string;
   timeoutMs?: number;
 }
 
 /** Ask the chat's model for a title. Returns `null` on any failure, having logged it once. */
 export async function generateTitle(input: GenerateTitleInput): Promise<string | null> {
-  const { config, model, timeoutMs = TIMEOUT_MS, ...prompt } = input;
+  const { config, model, sessionId, timeoutMs = TIMEOUT_MS, ...prompt } = input;
   try {
     const resolved = await resolveModel(config, model, { heldBy: "chat" });
     if (!resolved.ok) {
@@ -43,6 +45,7 @@ export async function generateTitle(input: GenerateTitleInput): Promise<string |
       // which is as far as a provider-neutral call can go. A model that thinks anyway is paid
       // for out of `MAX_TOKENS`.
       timeoutMs,
+      conversationId: sessionId,
     }).result();
     if (reply.stopReason === "error") {
       console.warn(`[titles] ${reply.errorMessage || "the model returned an error"}`);
