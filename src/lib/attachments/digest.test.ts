@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { approxTokens, columnsLine, columnType, digestOf, fullText, outlineLines, partsLabel, tableDigest } from "./digest";
+import { approxTokens, columnsLine, columnType, digestOf, fullText, markdownCell, outlineLines, partsLabel, tableDigest } from "./digest";
 import { describe as descriptorOf, tablePart, textParse } from "./testing";
 import type { ParsedAttachment } from "./types";
 
@@ -36,6 +36,21 @@ describe("partsLabel", () => {
 
   it("falls back to sections for a document whose parts are not numbered", () => {
     expect(partsLabel(textParse("a memo"))).toBe("1 section");
+  });
+});
+
+describe("markdownCell", () => {
+  it("escapes backslashes before pipes, so a cell cannot open an extra column", () => {
+    expect(markdownCell("a|b")).toBe("a\\|b");
+    expect(markdownCell("a\\|b")).toBe("a\\\\\\|b");
+    expect(markdownCell("C:\\x")).toBe("C:\\\\x");
+  });
+
+  it("flattens line breaks and leaves an empty cell empty", () => {
+    expect(markdownCell("one\r\ntwo\nthree")).toBe("one two three");
+    expect(markdownCell(null)).toBe("");
+    expect(markdownCell(undefined)).toBe("");
+    expect(markdownCell(12.5)).toBe("12.5");
   });
 });
 

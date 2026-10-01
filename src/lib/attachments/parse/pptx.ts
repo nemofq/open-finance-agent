@@ -11,6 +11,7 @@
  */
 import { XMLParser } from "fast-xml-parser";
 import type JSZip from "jszip";
+import { markdownCell } from "../digest";
 import { MAX_TEXT_CHARS } from "../limits";
 import type { AttachmentOutlineEntry, AttachmentPart, ParsedAttachment } from "../types";
 import { count, errorMessage } from "../wording";
@@ -138,7 +139,7 @@ function tableOf(table: XmlNode): string {
     allOf(childrenOf(row), "a:tc").map((cell) => {
       const txBody = firstOf(childrenOf(cell), "a:txBody");
       const text = txBody ? bulletsOf(txBody).map((bullet) => bullet.text).join(" ") : "";
-      return text.replace(/\|/g, "\\|");
+      return markdownCell(text);
     }),
   );
   const [header, ...body] = rows;
