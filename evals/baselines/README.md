@@ -1,5 +1,9 @@
 # Baselines
 
+> These checked-in runs are benchmark v1 history from main. Eval v2 keeps them readable but rejects
+> direct comparison; use `--rescore` on a full trace-bearing run before comparing across the scoring
+> migration. Baseline JSON intentionally omits traces and cannot itself be rescored.
+
 Each JSON file here is one committed run, promoted with `--baseline`, and one row of the
 [README's table](../../README.md#a-benchmark-that-favours-quality-over-quantity). This page breaks
 each row down by task; how a run is made and promoted is in

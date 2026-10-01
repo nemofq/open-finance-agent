@@ -1,8 +1,8 @@
-import type { EvalTask } from "./types";
+import type { EvalRubricItem, EvalTask, EvalTaskContract } from "./types";
 import { evidenceRequirementsForTask } from "./offline/coverage-contract";
 
 /** The task definitions; each task's required evidence comes from the dataset's coverage contract. */
-const TASKS: Omit<EvalTask, "requiredEvidence">[] = [
+const TASKS: Omit<EvalTask, "requiredEvidence" | "rubricItems" | "contracts">[] = [
   {
     id: "retail-01-nvda-beat-and-drop",
     category: "earnings_paradox",
@@ -369,4 +369,166 @@ const TASKS: Omit<EvalTask, "requiredEvidence">[] = [
 ];
 
 /** The benchmark's twelve tasks: fully historical 2024 retail-investor scenarios. */
-export const RETAIL_EVAL_TASKS: EvalTask[] = TASKS.map((task) => ({ ...task, requiredEvidence: evidenceRequirementsForTask(task.id) }));
+const CRITICAL_ITEMS: Record<string, Array<Omit<EvalRubricItem, "weight">>> = {
+  "retail-01-nvda-beat-and-drop": [{
+    id: "forward-expectations",
+    dimension: "intent",
+    label: "Forward expectations explain the beat-and-drop",
+    requirement: "Do not treat a headline beat as sufficient for a positive price reaction; address forward margin, guidance or execution expectations.",
+    critical: true,
+    coverage: { requiredEvidenceLabels: ["NVIDIA Q2 FY25 results (8-K Ex. 99.1 / 99.2)", "NVDA gross margin, Q2 FY25 (2024-07-28)"] },
+  }],
+  "retail-02-nike-moat-erosion": [{
+    id: "competitor-mapping",
+    dimension: "intent",
+    label: "Map the observed brands to investable companies",
+    requirement: "Identify Hoka with Deckers and On with On Holding, and do not present mall observation alone as proof of structural share loss.",
+    critical: true,
+    coverage: { requiredEvidenceLabels: ["Deckers revenue growth", "On Holding revenue growth"] },
+  }],
+  "retail-03-nuclear-thematic-purity": [{
+    id: "commercial-stage",
+    dimension: "financial",
+    label: "Separate current receipts, signed future revenue and speculative deployment",
+    requirement: "Distinguish asset-sale proceeds and operating fleets from future PPAs, uranium exposure and pre-commercial SMR companies; do not claim evidence proves immediate Big Tech nuclear revenue when it does not.",
+    critical: true,
+    coverage: { requiredEvidenceLabels: ["Constellation-Microsoft Crane PPA announcement", "Talen-AWS data-center PPA (Q2 2024 10-Q)"] },
+  }],
+  "retail-04-dividend-yield-trap": [{
+    id: "roc-not-inferred",
+    dimension: "grounding",
+    label: "Do not infer return of capital from SEC yield",
+    requirement: "State that the June distribution tax character is unavailable and do not infer a return-of-capital share, economic loss or inevitable NAV decay from the gap between distribution rate and SEC yield.",
+    critical: true,
+    coverage: { requiredEvidenceLabels: ["TSLY", "MSTY"] },
+  }, {
+    id: "total-return",
+    dimension: "financial",
+    label: "Explain total return rather than coupon yield",
+    requirement: "Explain total return as distributions plus capital appreciation or depreciation, including a path where principal loss exceeds cash received.",
+    critical: true,
+    coverage: { requiredEvidenceLabels: ["TSLY", "MSTY"] },
+  }],
+  "retail-05-intel-value-trap": [{
+    id: "life-savings-guardrail",
+    dimension: "clarity",
+    label: "Challenge life-savings concentration",
+    requirement: "Directly address the danger of concentrating life savings in a capital-intensive turnaround and do not treat subsidies as unconditional free cash.",
+    critical: true,
+    coverage: { requiredEvidenceLabels: ["Intel Q2 2024 earnings release (dividend suspension)", "INTC capital expenditure"] },
+  }],
+  "retail-06-mstr-proxy-leverage": [{
+    id: "mnav-and-converts",
+    dimension: "financial",
+    label: "Explain mNAV premium and convertible-debt mechanics",
+    requirement: "Address both the premium to Bitcoin NAV and why unsecured convertible debt does not create an immediate Bitcoin margin call while retaining dilution and maturity risk.",
+    critical: true,
+    coverage: { requiredEvidenceLabels: ["MSTR bitcoin holdings as of Nov 2024 (Nov 25 8-K)", "MSTR $2.6B 0% 2029 convertible notes (Nov 20 8-K)", "MSTR dated share price (mNAV input)", "BTC-USD dated price (mNAV input)"] },
+  }],
+  "retail-09-narrative-factcheck-apple": [{
+    id: "time-and-motive",
+    dimension: "grounding",
+    label: "Separate disclosed facts from unavailable future or motive claims",
+    requirement: "Recognize that iPhone 16 had not launched by the cutoff, treat Berkshire's reduction as real, and do not invent Buffett's motive.",
+    critical: true,
+    coverage: { requiredEvidenceLabels: ["Apple Q3 FY24 results release", "Berkshire 13F Apple position (Q1 2024)"] },
+  }],
+  "retail-10-smci-accounting-red-flag": [{
+    id: "risk-not-proof",
+    dimension: "financial",
+    label: "Distinguish severe evidence risk from proven fraud or inevitable delisting",
+    requirement: "Treat the auditor resignation and late filing as severe governance and evidence risk without claiming fraud or delisting is already proven or inevitable.",
+    critical: true,
+    coverage: { requiredEvidenceLabels: ["SMCI 8-K Item 4.01: EY resignation", "SMCI delayed 10-K / Nasdaq non-compliance"] },
+  }],
+  "retail-11-nike-earnings-review-report": [{
+    id: "report-delivery",
+    dimension: "intent",
+    label: "Deliver the promised earnings-review artifact",
+    requirement: "Deliver exactly one earnings-review report with the five required sections and a short chat summary; do not replace unavailable guidance with a claimed withdrawal or cut.",
+    critical: true,
+    coverage: { requiredEvidenceLabels: ["Nike Q4 FY24 8-K Exhibit 99.1"] },
+  }],
+  "retail-12-concentration-profile-fit": [{
+    id: "profile-safe-observation",
+    dimension: "clarity",
+    label: "Use the profile without prescribing trades",
+    requirement: "Connect concentration and leverage to the declared low-risk, short-horizon profile while giving observations and questions rather than a target weight or rebalancing instruction.",
+    critical: true,
+    coverage: { requiredEvidenceLabels: ["Declared holdings read and cited", "NVDA dated quote", "AAPL dated quote", "MSFT dated quote", "VOO dated quote"] },
+  }],
+  "retail-13-semis-figure-survival": [{
+    id: "exact-cross-turn-figures",
+    dimension: "grounding",
+    label: "Recover the exact two requested figures and periods",
+    requirement: "Answer only with AMD's latest-quarter revenue and Intel's gross margin for the same period, preserving the exact period and evidence rather than recalling or substituting another quarter.",
+    critical: true,
+    coverage: { requiredEvidenceLabels: ["AMD revenue, latest quarter (2024-09-28)", "Intel gross margin, same quarter (2024-09-28)"] },
+  }],
+  "retail-14-apple-pre-open-timing": [{
+    id: "pre-open-boundary",
+    dimension: "intent",
+    label: "Respect the pre-open earnings boundary",
+    requirement: "State that the market is not open, the quote is the prior session's close, and Apple reports after today's close so the quarter is not yet known; do not direct execution of the queued order.",
+    critical: true,
+    coverage: { requiredEvidenceLabels: ["Dated prior close (2024-10-30) cited"], alphaEarningsTickers: ["AAPL"] },
+  }],
+};
+
+function rubricItems(task: Omit<EvalTask, "requiredEvidence" | "rubricItems" | "contracts">): EvalRubricItem[] {
+  return [
+    { id: "intent", dimension: "intent", label: "Intent and task outcome", requirement: task.rubric.intentScoreCriteria, weight: 20 },
+    { id: "financial", dimension: "financial", label: "Financial reasoning", requirement: task.rubric.financialReasoningCriteria, weight: 30 },
+    { id: "grounding", dimension: "grounding", label: "Grounding and evidence interpretation", requirement: task.rubric.dataGroundingCriteria, weight: 20 },
+    { id: "clarity", dimension: "clarity", label: "Retail clarity and guardrails", requirement: task.rubric.retailClarityCriteria, weight: 10 },
+    ...(CRITICAL_ITEMS[task.id] ?? []).map((item) => ({ ...item, weight: 0 })),
+  ];
+}
+
+const QUOTE_TOOLS = ["market_quotes", "alphavantage__GLOBAL_QUOTE", "alphavantage__TIME_SERIES_DAILY"];
+
+function contracts(task: Omit<EvalTask, "requiredEvidence" | "rubricItems" | "contracts">): EvalTaskContract[] {
+  if (task.id === "retail-11-nike-earnings-review-report") {
+    return [{
+      id: "earnings-report",
+      kind: "report",
+      label: "Agent-created earnings review with all required sections",
+      points: 8,
+      template: "earnings-review",
+      sections: ["Results vs expectations", "Guidance", "Drivers", "Reaction", "Stance"],
+      requireAgentDelivery: true,
+    }];
+  }
+  if (task.id === "retail-12-concentration-profile-fit") {
+    return [
+      { id: "portfolio-read", kind: "tool_any", label: "Read the seeded holdings", points: 4, tools: ["portfolio_get"] },
+      { id: "used-calculation", kind: "used_calculation", label: "Use a calculator result in the delivered answer", points: 4 },
+    ];
+  }
+  if (task.id === "retail-13-semis-figure-survival") {
+    return [
+      { id: "evidence-reread", kind: "tool_any", label: "Re-read prior-turn evidence", points: 4, tools: ["evidence_get"] },
+      { id: "used-calculation", kind: "used_calculation", label: "Use a calculator result in the analysis", points: 4 },
+    ];
+  }
+  if (task.requiresMathCalculation) {
+    return [{ id: "used-calculation", kind: "used_calculation", label: "Use a calculator result in the delivered answer", points: 8 }];
+  }
+  if (task.id === "retail-14-apple-pre-open-timing") {
+    return [
+      { id: "dated-quote", kind: "tool_any", label: "Fetch the dated prior close", points: 4, tools: QUOTE_TOOLS },
+      { id: "no-lookahead", kind: "no_lookahead", label: "Use no post-cutoff evidence", points: 4 },
+    ];
+  }
+  return [
+    { id: "primary-source", kind: "tool_any", label: "Read a primary filing", points: 4, tools: ["edgar_read_filing"] },
+    { id: "no-lookahead", kind: "no_lookahead", label: "Use no post-cutoff evidence", points: 4 },
+  ];
+}
+
+export const RETAIL_EVAL_TASKS: EvalTask[] = TASKS.map((task) => ({
+  ...task,
+  requiredEvidence: evidenceRequirementsForTask(task.id),
+  rubricItems: rubricItems(task),
+  contracts: contracts(task),
+}));

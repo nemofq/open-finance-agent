@@ -32,6 +32,7 @@ describe("parseArgs", () => {
     const parsed = options(["--agent", "prov/model-a", "--judge", "prov/model-b"]);
     expect(parsed.fixtures).toBe("offline");
     expect(parsed.repeat).toBe(1);
+    expect(parsed.judgeRepeat).toBe(1);
     expect(parsed.observe).toBe(false);
     expect(parsed.keep).toBe(false);
     expect(parsed.agents).toEqual(["prov/model-a"]);
@@ -52,6 +53,8 @@ describe("parseArgs", () => {
     const parsed = options([
       "--repeat",
       "3",
+      "--judge-repeat",
+      "3",
       "--fixtures",
       "record",
       "--config",
@@ -65,6 +68,7 @@ describe("parseArgs", () => {
     ]);
     expect(parsed).toMatchObject({
       repeat: 3,
+      judgeRepeat: 3,
       fixtures: "record",
       configPath: "/tmp/config.json",
       outDir: "/tmp/out",
@@ -83,6 +87,7 @@ describe("parseArgs", () => {
     expect(parseArgs(["--fixtures", "sometimes"])).toMatchObject({ ok: false });
     expect(parseArgs(["--repeat", "0"])).toMatchObject({ ok: false });
     expect(parseArgs(["--repeat", "two"])).toMatchObject({ ok: false });
+    expect(parseArgs(["--judge-repeat", "0"])).toMatchObject({ ok: false });
     expect(parseArgs(["--nope"])).toMatchObject({ ok: false });
   });
 
@@ -110,6 +115,14 @@ describe("parseArgs", () => {
 
   it("leaves the judge thinking of a --judge-only run to the run itself", () => {
     expect(parseArgs(["--judge-only", "run.json", "--judge-thinking", "high"])).toMatchObject({ ok: false });
+  });
+
+  it("accepts saved-run rescoring and comparison without agent overrides", () => {
+    expect(options(["--rescore", "run.json", "--judge-repeat", "3", "--compare", "base.json"])).toMatchObject({
+      rescore: "run.json", judgeRepeat: 3, compare: "base.json",
+    });
+    expect(parseArgs(["--rescore", "run.json", "--agent", "p/a"])).toMatchObject({ ok: false });
+    expect(parseArgs(["--rescore", "run.json", "--judge", "p/j"])).toMatchObject({ ok: false });
   });
 
   it("recognises --list, --list-models and --help without any model", () => {
@@ -172,21 +185,21 @@ describe("--baseline preflight", () => {
   const judge = { provider: "q", model: "judge" };
 
   it("lets a repeated, independently judged run through", () => {
-    expect(baselinePreflight(options(["--baseline", "b", "--repeat", "3"]), [agent], judge)).toBeUndefined();
+    expect(baselinePreflight(options(["--baseline", "b", "--repeat", "3", "--judge-repeat", "3"]), [agent], judge)).toBeUndefined();
     expect(baselinePreflight(options(["--repeat", "1"]), [agent], agent)).toBeUndefined();
   });
 
   it("refuses a run that is not against the offline dataset before it starts", () => {
-    expect(baselinePreflight(options(["--baseline", "b", "--repeat", "3", "--fixtures", "live"]), [agent], judge)).toContain("fixture mode live");
+    expect(baselinePreflight(options(["--baseline", "b", "--repeat", "3", "--judge-repeat", "3", "--fixtures", "live"]), [agent], judge)).toContain("fixture mode live");
   });
 
   it("refuses a single-repeat run before it starts", () => {
-    expect(baselinePreflight(options(["--baseline", "b"]), [agent], judge)).toContain("needs --repeat 2 or more");
+    expect(baselinePreflight(options(["--baseline", "b"]), [agent], judge)).toContain("needs --repeat 3 or more");
   });
 
   it("refuses a self-judged run, including when only one of several agents is the judge", () => {
-    expect(baselinePreflight(options(["--baseline", "b", "--repeat", "3"]), [judge], judge)).toContain("self-judged");
-    expect(baselinePreflight(options(["--baseline", "b", "--repeat", "3"]), [agent, judge], judge)).toContain("self-judged");
+    expect(baselinePreflight(options(["--baseline", "b", "--repeat", "3", "--judge-repeat", "3"]), [judge], judge)).toContain("self-judged");
+    expect(baselinePreflight(options(["--baseline", "b", "--repeat", "3", "--judge-repeat", "3"]), [agent, judge], judge)).toContain("self-judged");
   });
 });
 

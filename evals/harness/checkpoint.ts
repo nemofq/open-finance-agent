@@ -25,6 +25,7 @@ export function resumeCheckpoint(file: string, expectedCheckpoint: CheckpointIde
   if (checkpoint.judge !== expectedCheckpoint.judge) throw new Error("Checkpoint judge does not match the requested run.");
   if (checkpoint.thinking !== expectedCheckpoint.thinking) throw new Error("Checkpoint thinking setting does not match the requested run.");
   if (checkpoint.judgeThinking !== expectedCheckpoint.judgeThinking) throw new Error("Checkpoint judge thinking setting does not match the requested run.");
+  if (checkpoint.judgeRepeat !== expectedCheckpoint.judgeRepeat) throw new Error("Checkpoint judge repeat count does not match the requested run.");
   if (JSON.stringify(checkpoint.taskIds) !== JSON.stringify(expectedCheckpoint.taskIds)) throw new Error("Checkpoint task set does not match the requested run.");
   if (checkpoint.repeat !== expectedCheckpoint.repeat) throw new Error("Checkpoint repeat count does not match the requested run.");
   if (JSON.stringify(checkpoint.taskDatasetHashes) !== JSON.stringify(expectedCheckpoint.taskDatasetHashes)) throw new Error("Checkpoint task dataset hashes do not match the current dataset.");

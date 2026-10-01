@@ -27,6 +27,8 @@ vi.mock("../scoring/judge", async (importOriginal) => ({
 }));
 
 const verdict: JudgeEvaluationResult = {
+  rubricItems: [],
+  dimensionScores: { intent: 10, financial: 10, grounding: 10, clarity: 5 },
   intentScore: 10,
   intentFeedback: "",
   financialScore: 10,
@@ -36,7 +38,9 @@ const verdict: JudgeEvaluationResult = {
   retailClarityScore: 5,
   retailClarityFeedback: "",
   totalJudgeScore: 35,
-  maxJudgeScore: 60,
+  maxJudgeScore: 80,
+  criticalMisses: [],
+  criticalContradictions: [],
   overallVerdict: "ok",
   judgeModel: "offline/test",
   promptVersion: "test",
@@ -158,9 +162,11 @@ describe("budget enforcement", () => {
     expect(budgetExhausted("deadline")).toBe(false);
     expect(budgetExhausted(undefined)).toBe(false);
 
-    vi.mocked(runTurn).mockResolvedValue(empty({ error: "The turn reached its execution deadline", stop: "deadline" }));
+    vi.mocked(runTurn).mockResolvedValue(empty({ finalText: "An incomplete answer before timeout.", error: "The turn reached its execution deadline", stop: "deadline" }));
     const result = await runTask(options());
     expect(result.status).toBe("agent_timeout");
+    expect(result.totalScore).toBe(0);
+    expect(evaluateWithJudge).not.toHaveBeenCalled();
   });
 
   it("classifies by the stop reason, never by the wording of the error", async () => {

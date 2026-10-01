@@ -20,6 +20,22 @@ describe("versioned dataset evidence contracts", () => {
     expect(validateEvidenceContract(db, RETAIL_EVAL_TASKS)).toEqual([]);
   });
 
+  it("maps every critical rubric item to corpus records covered before the task cutoff", () => {
+    for (const task of RETAIL_EVAL_TASKS) {
+      const contract = EVIDENCE_CONTRACT.tasks[task.id];
+      const labels = new Set((contract.requiredEvidence ?? []).map((requirement) => requirement.label));
+      for (const item of task.rubricItems.filter((candidate) => candidate.critical)) {
+        expect(item.coverage, `${task.id}/${item.id}`).toBeDefined();
+        for (const label of item.coverage?.requiredEvidenceLabels ?? []) {
+          expect(labels.has(label), `${task.id}/${item.id}: ${label}`).toBe(true);
+        }
+        for (const ticker of item.coverage?.alphaEarningsTickers ?? []) {
+          expect(contract.alpha?.earnings.includes(ticker), `${task.id}/${item.id}: Alpha earnings ${ticker}`).toBe(true);
+        }
+      }
+    }
+  });
+
   it("fails a single-task preflight when the contract's task set is stale", () => {
     const db = loadDataset();
     const task = RETAIL_EVAL_TASKS[0];

@@ -101,10 +101,19 @@ describe("the task cohort", () => {
     expect(RETAIL_EVAL_TASKS.every((task) => task.asOfDate.startsWith("2024-"))).toBe(true);
   });
 
-  it("scores evidence outcomes, with weights totalling the 15 evidence points", () => {
+  it("keeps evidence-contract raw weights at 15 before v2 normalizes them onto 6 points", () => {
     for (const task of RETAIL_EVAL_TASKS) {
       expect(task.requiredEvidence.length, task.id).toBeGreaterThan(0);
       expect(task.requiredEvidence.reduce((total, requirement) => total + requirement.points, 0), task.id).toBe(15);
+    }
+  });
+
+  it("defines an 80-point semantic rubric, critical gates and 8 contract points for every task", () => {
+    for (const task of RETAIL_EVAL_TASKS) {
+      expect(task.rubricItems.reduce((total, item) => total + item.weight, 0), task.id).toBe(80);
+      expect(task.rubricItems.some((item) => item.critical), task.id).toBe(true);
+      expect(new Set(task.rubricItems.map((item) => item.id)).size, task.id).toBe(task.rubricItems.length);
+      expect(task.contracts.reduce((total, contract) => total + contract.points, 0), task.id).toBe(8);
     }
   });
 

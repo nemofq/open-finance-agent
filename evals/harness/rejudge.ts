@@ -32,12 +32,17 @@ export function applyJudgement(result: TaskEvalResult, judgeResult: JudgeEvaluat
     result.status = "judge_error";
     result.valid = false;
     result.invalidReason = `Judge failed: ${judgeResult.error}`;
+    delete result.qualityScore;
+    delete result.integrityScore;
     delete result.totalScore;
   } else {
     result.status = budgetExhausted(result.stop) ? "agent_budget" : "completed";
     result.valid = true;
     delete result.invalidReason;
-    result.totalScore = result.deterministicCheck.score + judgeResult.totalJudgeScore;
+    result.qualityScore = judgeResult.totalJudgeScore;
+    result.integrityScore = result.deterministicCheck.score;
+    const uncapped = result.integrityScore + result.qualityScore;
+    result.totalScore = Math.min(uncapped, judgeResult.scoreCap ?? 100);
   }
 }
 
@@ -56,7 +61,9 @@ export async function judgeRun(
     return agent;
   });
   for (const result of summary.results) {
-    if (awaitsJudgement(result)) applyJudgement(result, await evaluateWithJudge(result, config, judge, summary.judgeThinking));
+    if (awaitsJudgement(result)) {
+      applyJudgement(result, await evaluateWithJudge(result, config, judge, summary.judgeThinking, summary.judgeRepeat ?? 1));
+    }
   }
   return {
     ...summary,

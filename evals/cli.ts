@@ -33,6 +33,7 @@ export interface CliOptions {
   judge?: string;
   taskIds: string[];
   repeat: number;
+  judgeRepeat: number;
   fixtures: FixtureMode;
   /** `config.json` to copy into the run's temporary home; defaults to the developer's. */
   configPath?: string;
@@ -43,6 +44,8 @@ export interface CliOptions {
   checkpointPath?: string;
   resumePath?: string;
   judgeOnly?: string;
+  rescore?: string;
+  compare?: string;
   thinking?: ThinkingLevel;
   /** The judge's reasoning level; unset sends the judge none, as every run before the flag did. */
   judgeThinking?: ThinkingLevel;
@@ -63,6 +66,7 @@ Required for a run:
 Options:
   --task <id>              Run one task; repeatable, or a comma-separated list
   --repeat <n>             Repeat each task n times to measure noise (default 1)
+  --judge-repeat <n>       Independent item-level judge votes per answer (default 1; baseline 3)
   --fixtures <mode>        offline | live | record (default offline). live runs against the
                            real providers and is not comparable; record is the maintainer's
                            capture step and adds provider responses to evals/fixtures/<task>.json
@@ -74,12 +78,15 @@ Options:
                            beside it in place (default: your data folder)
   --out <dir>              Where results go (default evals/results/)
   --baseline <name>        Also write the run's summary to evals/baselines/<name>.json; refused
-                           for a self-judged run, fewer than 2 repeats, or an invalid run
+                           unless repeat=3+, judge-repeat=3+, calibration passes, and the run is valid
   --checkpoint <path>      Checkpoint written after every task cell (default for an offline run:
                            offline-eval-checkpoint.json in the --out folder)
   --resume <path>          Resume completed cells from a checkpoint JSON
   --judge-only <path>      Finish a saved run JSON: judge the results whose judgement is missing
                            or failed, with the run's own judge (no --judge); takes --baseline
+  --rescore <run.json>     Recompute v2 integrity and judge scores from a saved run's traces;
+                           writes a new run and never overwrites the source
+  --compare <baseline>     Compare the resulting run with a baseline using paired bootstrap
   --observe                Run the enforcement rules in observe mode
   --keep                   Keep the temporary data folder for inspection
   --list                   List the benchmark tasks
@@ -111,6 +118,7 @@ export function parseArgs(argv: string[]): ParseResult {
     agents: [],
     taskIds: [],
     repeat: 1,
+    judgeRepeat: 1,
     // The committed offline dataset is the only scored mode, and the only one that needs no
     // provider keys besides the two models.
     fixtures: "offline",
@@ -170,6 +178,13 @@ export function parseArgs(argv: string[]): ParseResult {
         options.repeat = repeat;
         break;
       }
+      case "--judge-repeat": {
+        const value = needsValue();
+        const repeat = Number(value);
+        if (!value || !Number.isInteger(repeat) || repeat < 1) return { ok: false, error: "--judge-repeat needs a positive integer." };
+        options.judgeRepeat = repeat;
+        break;
+      }
       case "--fixtures": {
         const value = needsValue();
         if (!value || !FIXTURE_MODES.includes(value as FixtureMode)) {
@@ -214,6 +229,18 @@ export function parseArgs(argv: string[]): ParseResult {
         options.judgeOnly = value;
         break;
       }
+      case "--rescore": {
+        const value = needsValue();
+        if (!value) return { ok: false, error: "--rescore needs a run JSON path." };
+        options.rescore = value;
+        break;
+      }
+      case "--compare": {
+        const value = needsValue();
+        if (!value) return { ok: false, error: "--compare needs a baseline JSON path." };
+        options.compare = value;
+        break;
+      }
       case "--thinking":
       case "--judge-thinking": {
         const value = needsValue();
@@ -233,6 +260,11 @@ export function parseArgs(argv: string[]): ParseResult {
   if (options.judgeOnly && options.judgeThinking) {
     return { ok: false, error: "--judge-only grades at the judge thinking the run recorded; leave out --judge-thinking." };
   }
+  if (options.rescore && options.judge) return { ok: false, error: "--rescore grades with the judge recorded in the run; leave out --judge." };
+  if (options.judgeOnly && options.rescore) return { ok: false, error: "Use only one of --judge-only and --rescore." };
+  if ((options.judgeOnly || options.rescore) && options.agents.length > 0) {
+    return { ok: false, error: "Saved-run modes use the agents recorded in the file; leave out --agent." };
+  }
   return { ok: true, options };
 }
 
@@ -244,7 +276,7 @@ export function parseArgs(argv: string[]): ParseResult {
 export function baselinePreflight(options: CliOptions, agents: ModelRef[], judge: ModelRef): string | undefined {
   if (!options.baseline) return undefined;
   if (options.fixtures !== "offline") return `--baseline refuses this run: fixture mode ${options.fixtures} is not the offline dataset.`;
-  return baselineRefusal({ repeat: options.repeat, selfJudged: agents.some((agent) => sameModelRef(agent, judge)) });
+  return baselineRefusal({ repeat: options.repeat, judgeRepeat: options.judgeRepeat, selfJudged: agents.some((agent) => sameModelRef(agent, judge)) });
 }
 
 export type JudgeOnlyOutcome =
@@ -269,10 +301,14 @@ export async function judgeOnly(input: {
   }
   const judge = resolveModelSpec(input.config, saved.judge);
   if (!judge.ok) return { ok: false, error: judge.error };
-  const refusal = input.baseline ? baselineRefusal({ repeat: saved.repeat, selfJudged: saved.agentSummaries.some((agent) => agent.selfJudged) }) : undefined;
+  const refusal = input.baseline ? baselineRefusal({ repeat: saved.repeat, judgeRepeat: saved.judgeRepeat, selfJudged: saved.agentSummaries.some((agent) => agent.selfJudged) }) : undefined;
   if (refusal) return { ok: false, error: refusal };
   const { judgeRun } = await import("./harness/rejudge");
   const summary = await judgeRun(saved, input.config, judge.ref);
+  if (input.baseline) {
+    const { calibrateJudge } = await import("./calibration/run");
+    summary.calibration = await calibrateJudge(input.config, judge.ref, summary.judgeThinking, 3);
+  }
   const files = writeRunFiles(summary, input.outDir);
   if (!input.baseline) return { ok: true, summary, files };
   const issues = benchmarkValidityIssues(summary, { baseline: true });
@@ -304,12 +340,12 @@ function pad(value: string, width: number): string {
 }
 
 function printFinalTable(results: TaskEvalResult[]): void {
-  console.log(`\n${pad("Task", 34)} ${pad("Agent", 26)} ${pad("Checks", 7)} ${pad("Judge", 7)} ${pad("Total", 6)}`);
+  console.log(`\n${pad("Task", 34)} ${pad("Agent", 26)} ${pad("Integrity", 10)} ${pad("Semantic", 9)} ${pad("Total", 6)}`);
   console.log("-".repeat(84));
   for (const result of results) {
     console.log(
-      `${pad(result.task.title, 34)} ${pad(result.agent, 26)} ${pad(`${result.deterministicCheck.score}/40`, 7)} ` +
-        `${pad(result.judgeResult ? `${result.judgeResult.totalJudgeScore}/60` : "—", 7)} ${pad(result.totalScore === undefined ? "INVALID" : `${result.totalScore}`, 6)}`,
+      `${pad(result.task.title, 34)} ${pad(result.agent, 26)} ${pad(`${result.deterministicCheck.score}/20`, 10)} ` +
+        `${pad(result.judgeResult ? `${result.judgeResult.totalJudgeScore}/80` : "N/A", 9)} ${pad(result.totalScore === undefined ? "INVALID" : `${result.totalScore}`, 6)}`,
     );
   }
 }
@@ -327,7 +363,7 @@ function progress(event: ProgressEvent): void {
   const audit = result.offlineAudit;
   const score = result.totalScore === undefined
     ? "unscored"
-    : `checks ${result.deterministicCheck.score}/40 · judge ${result.judgeResult?.totalJudgeScore ?? 0}/60 · total ${result.totalScore}/100`;
+    : `integrity ${result.deterministicCheck.score}/20 · semantic ${result.judgeResult ? `${result.judgeResult.totalJudgeScore}/80` : "N/A"} · expected ${result.totalScore}/100`;
   const { diagnostics } = result;
   console.log(
     `  ${score} · ${result.status} · ${result.metrics.modelCalls} model calls · ${result.metrics.tokens.output} output tokens · ` +
@@ -391,7 +427,38 @@ async function main(): Promise<number> {
       }
       console.log(`Rejudged run: ${outcome.files.jsonPath}\nSummary: ${outcome.files.mdPath}`);
       if (outcome.baselinePath) console.log(`Baseline: ${outcome.baselinePath}`);
+      if (options.compare) {
+        const baseline = JSON.parse(readFileSync(path.resolve(process.cwd(), options.compare), "utf8")) as EvalRunSummary;
+        const { compareRuns, renderComparison } = await import("./reporting/compare");
+        console.log(`\n${renderComparison(compareRuns(outcome.summary, baseline))}`);
+      }
       return benchmarkValidityIssues(outcome.summary).length > 0 ? 1 : 0;
+    }
+
+    if (options.rescore) {
+      const sourcePath = path.resolve(process.cwd(), options.rescore);
+      const saved = JSON.parse(readFileSync(sourcePath, "utf8")) as EvalRunSummary;
+      const judge = resolveModelSpec(config, saved.judge);
+      if (!judge.ok) {
+        console.error(`${judge.error}\n`);
+        return 1;
+      }
+      const { rescoreRun } = await import("./harness/rescore");
+      const summary = await rescoreRun(saved, config, judge.ref, options.judgeRepeat);
+      if (options.baseline) {
+        const { calibrateJudge } = await import("./calibration/run");
+        summary.calibration = await calibrateJudge(config, judge.ref, summary.judgeThinking, 3);
+      }
+      const files = writeRunFiles(summary, outDir);
+      printFinalTable(summary.results);
+      console.log(`\nRescored v${summary.benchmarkVersion} run: ${files.jsonPath}\nSummary: ${files.mdPath}`);
+      if (options.baseline) console.log(`Baseline: ${writeBaseline(summary, options.baseline, baselineDir)}`);
+      if (options.compare) {
+        const baseline = JSON.parse(readFileSync(path.resolve(process.cwd(), options.compare), "utf8")) as EvalRunSummary;
+        const { compareRuns, renderComparison } = await import("./reporting/compare");
+        console.log(`\n${renderComparison(compareRuns(summary, baseline))}`);
+      }
+      return benchmarkValidityIssues(summary).length > 0 ? 1 : 0;
     }
 
     if (!options.judge || options.agents.length === 0) {
@@ -448,6 +515,7 @@ async function main(): Promise<number> {
       agents,
       judge: judge.ref,
       judgeThinking: options.judgeThinking,
+      judgeRepeat: options.judgeRepeat,
       tasks: selected.tasks,
       repeat: options.repeat,
       fixtureMode: options.fixtures,
@@ -456,6 +524,11 @@ async function main(): Promise<number> {
       resumePath: options.resumePath ? path.resolve(process.cwd(), options.resumePath) : undefined,
       onProgress: progress,
     });
+    if (options.baseline) {
+      console.log("\nCalibrating the judge on 36 anchors × 3 repeats before baseline promotion…");
+      const { calibrateJudge } = await import("./calibration/run");
+      summary.calibration = await calibrateJudge(config, judge.ref, options.judgeThinking, 3);
+    }
 
     const files = writeRunFiles(summary, outDir);
     printFinalTable(summary.results);
@@ -469,11 +542,17 @@ async function main(): Promise<number> {
     console.log(`\nRun:     ${files.jsonPath}`);
     console.log(`Summary: ${files.mdPath}`);
 
+    if (options.compare) {
+      const baseline = JSON.parse(readFileSync(path.resolve(process.cwd(), options.compare), "utf8")) as EvalRunSummary;
+      const { compareRuns, renderComparison } = await import("./reporting/compare");
+      console.log(`\n${renderComparison(compareRuns(summary, baseline))}`);
+    }
+
     const validityIssues = benchmarkValidityIssues(summary);
     if (options.baseline) {
       console.log(`Baseline: ${writeBaseline(summary, options.baseline, baselineDir)}`);
     } else if (validityIssues.length === 0) {
-      const refusal = baselineRefusal({ repeat: summary.repeat, selfJudged: summary.agentSummaries.some((agent) => agent.selfJudged) });
+      const refusal = baselineRefusal({ repeat: summary.repeat, judgeRepeat: summary.judgeRepeat, selfJudged: summary.agentSummaries.some((agent) => agent.selfJudged) });
       console.log(refusal ? `Not baseline-eligible: ${refusal.replace(/^--baseline refuses this run: /, "")}` : `Promote this run with --baseline ${suggestBaselineName(summary)}`);
     }
     if (options.keep) console.log(`Kept the run's data folder at ${home.dir}`);

@@ -43,4 +43,10 @@ describe("fact period identity", () => {
     const unknown = { ...known, id: "E2", facts: [{ metric: "revenue", period: end, value: 51_217e6, unit: "USD" }] };
     expect(crossCheck(known, [unknown]).conflicts).toEqual([]);
   });
+
+  it("treats binary floating-point tails as the same reported XBRL value", () => {
+    const rounded = entry("E1", [{ metric: "earningsPerShare", period: end, periodType: "quarterly", value: 1.46, unit: "USD/shares" }]);
+    const binaryTail = entry("E2", [{ metric: "earningsPerShare", period: end, periodType: "quarterly", value: 1.4699999999999998, unit: "USD/shares" }]);
+    expect(crossCheck(binaryTail, [rounded]).conflicts[0]?.agree).toBe(true);
+  });
 });

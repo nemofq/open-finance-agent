@@ -17,11 +17,15 @@ vi.mock("../scoring/judge", async (original) => ({
     judged.push(input);
     judgedAt.push(thinking);
     return {
+      rubricItems: [], dimensionScores: { intent: 1, financial: 1, grounding: 1, clarity: 1 },
       intentScore: 1, intentFeedback: "x", financialScore: 1, financialFeedback: "x", groundingScore: 1, groundingFeedback: "x",
-      retailClarityScore: 1, retailClarityFeedback: "x", totalJudgeScore: 4, maxJudgeScore: 60, overallVerdict: "x",
-      judgeModel: "p/judge", promptVersion: "7",
+      retailClarityScore: 1, retailClarityFeedback: "x", totalJudgeScore: 4, maxJudgeScore: 80,
+      criticalMisses: [], criticalContradictions: [], overallVerdict: "x", judgeModel: "p/judge", promptVersion: "8",
     };
   }),
+}));
+vi.mock("../calibration/run", () => ({
+  calibrateJudge: vi.fn(async () => ({ anchors: 36, repeats: 3, orderingAccuracy: 1, weightedKappa: 1, scoreMae: 0, maxScoreStdDev: 0, passed: true })),
 }));
 
 const { judgeRun } = await import("./rejudge");
@@ -82,8 +86,8 @@ function savedRun(): EvalRunSummary {
   const agents = ["p/agent", "local/Qwen/Qwen3-32B"];
   const results = agents.flatMap((agent) => [0, 1].flatMap((task) => [1, 2].map((repeat) => unjudged(agent, task, repeat))));
   return {
-    timestamp: "2026-09-20T10:02:03.456Z", benchmarkVersion: BENCHMARK_VERSION, judgePromptVersion: "7", agents, judge: "p/judge",
-    fixtureMode: "offline", policyMode: "enforce", configHash: "abc", repeat: 2,
+    timestamp: "2026-09-20T10:02:03.456Z", benchmarkVersion: BENCHMARK_VERSION, judgePromptVersion: "8", agents, judge: "p/judge", judgeRepeat: 3,
+    fixtureMode: "offline", policyMode: "enforce", configHash: "abc", repeat: 3,
     taskIds: [RETAIL_EVAL_TASKS[0].id, RETAIL_EVAL_TASKS[1].id],
     agentSummaries: agents.map((agent) => ({ agent, selfJudged: false })), results,
   } as unknown as EvalRunSummary;
@@ -154,7 +158,7 @@ describe("--judge-only", () => {
     const before = judged.length;
     const single = { ...savedRun(), repeat: 1 };
     const outcome = await judgeOnly({ saved: single, config: config(), baseline: "single", outDir: dir, baselineDir: dir });
-    expect(outcome).toMatchObject({ ok: false, error: expect.stringContaining("needs --repeat 2 or more") });
+    expect(outcome).toMatchObject({ ok: false, error: expect.stringContaining("needs --repeat 3 or more") });
     expect(judged.length).toBe(before);
   });
 });

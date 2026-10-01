@@ -130,10 +130,11 @@ hand-crafted twelve, covering real 2024 retail-investor situations from earnings
 value traps to leveraged proxies, auditor red flags and portfolio fit, with a pinned offline
 dataset of the filings, prices and web pages that were public at each task's cutoff.
 
-Every task runs through the same loop as a chat. Forty points come from deterministic checks on
-the transcript and the evidence ledger (entities, required evidence, calculator use, citations),
-each noting what was missed; sixty come from an LLM judge that scores intent, financial reasoning,
-grounding and clarity, with written feedback.
+The table below is the benchmark v1 historical baseline from main. Eval v2 keeps these files
+readable but does not compare them directly with v2 scores; trace-bearing v1 runs can be migrated
+with `--rescore`. The current scheme gives 80 points to item-level semantic quality and 20 to
+deterministic integrity, with critical-error caps and separate completion, conditional-quality and
+expected-user-score metrics.
 
 | Model | Thinking effort | Judge model | Checks (/40) | Judged (/60) | Total (/100) | Avg. run time | Avg. output tokens per run | Avg. tool calls per run |
 | :--- | :--- | :--- | ---: | ---: | ---: | ---: | ---: | ---: |

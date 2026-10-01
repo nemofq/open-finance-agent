@@ -85,7 +85,7 @@ describe("runTask", () => {
     expect(outcome.task.id).toBe("retail-01-nvda-beat-and-drop");
     expect(outcome.agent).toBe("test-provider/test-model");
     expect(outcome.error).toBeDefined();
-    expect(outcome.deterministicCheck.maxScore).toBe(40);
+    expect(outcome.deterministicCheck.maxScore).toBe(20);
     expect(outcome.metrics.latencyMs).toBeGreaterThanOrEqual(0);
     // A provider connection outage is retried, then retained as an unscored
     // infrastructure failure rather than being attributed to the model.

@@ -16,12 +16,12 @@ const MAX_NAMED_AGREEMENTS = 3;
 /** Conflicts are always recorded; agreements stop here so a statement does not carry 56 of them. */
 const MAX_RECORDED_AGREEMENTS = 10;
 
-/** Half a unit in the last place of the shortest decimal form; useless in exponent form. */
+/** One unit in the last reported decimal place; absorbs binary tails and source rounding. */
 function precisionTolerance(value: number): number {
   const text = Math.abs(value).toString();
   if (text.includes("e")) return 0;
   const dot = text.indexOf(".");
-  return 0.5 * 10 ** -(dot === -1 ? 0 : text.length - dot - 1);
+  return 10 ** -(dot === -1 ? 0 : text.length - dot - 1);
 }
 
 function factsAgree(a: number, b: number): boolean {

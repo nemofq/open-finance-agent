@@ -3,6 +3,7 @@ import path from "node:path";
 import { LIMITS } from "@/lib/agent/execution";
 import { writeFileAtomicSync } from "@/lib/atomic-write";
 import {
+  BENCHMARK_VERSION,
   type AgentSummary,
   type BaselineRecord,
   type EvalRunSummary,
@@ -90,7 +91,8 @@ export function meanTaskSpread(summary: AgentSummary): number | undefined {
 export function scoreLine(summary: AgentSummary, repeat: number): string {
   const spread = repeat > 1 ? meanTaskSpread(summary) : undefined;
   return (
-    `checks ${summary.averageDeterministicScore}/40 · judge ${summary.averageJudgeScore}/60 · total ${summary.averageTotalScore}/100` +
+    `completion ${(summary.completionRate * 100).toFixed(1)}% · completed quality ${summary.qualityOnCompleted}/100 · expected ${summary.expectedUserScore}/100` +
+    ` · integrity ${summary.averageIntegrityScore}/20 · semantic ${summary.averageSemanticScore}/80` +
     (summary.selfJudged ? ` (${SELF_JUDGED_LABEL})` : "") +
     (spread === undefined ? "" : ` · mean per-task σ ${spread}`)
   );
@@ -100,10 +102,11 @@ export function scoreLine(summary: AgentSummary, repeat: number): string {
  * Why a run may not become a baseline, before or after it runs: a model grading itself, or a
  * single repeat, which measures no noise and so gives no tolerance to compare against.
  */
-export function baselineRefusal(options: { repeat: number; selfJudged: boolean }): string | undefined {
+export function baselineRefusal(options: { repeat: number; selfJudged: boolean; judgeRepeat?: number }): string | undefined {
   const reasons: string[] = [];
   if (options.selfJudged) reasons.push("the judge is the same model as an agent (self-judged)");
-  if (options.repeat < 2) reasons.push(`it has ${options.repeat} repeat; a baseline needs --repeat 2 or more to measure its spread`);
+  if (options.repeat < 3) reasons.push(`it has ${options.repeat} repeat; a v2 baseline needs --repeat 3 or more`);
+  if ((options.judgeRepeat ?? 1) < 3) reasons.push(`it has ${options.judgeRepeat ?? 1} judge repeat; a v2 baseline needs --judge-repeat 3 or more`);
   return reasons.length === 0 ? undefined : `--baseline refuses this run: ${reasons.join("; and ")}.`;
 }
 
@@ -112,21 +115,22 @@ function agentSection(summary: AgentSummary, repeat: number): string[] {
   const lines = [
     `## ${summary.agent}${summary.selfJudged ? " — self-judged" : ""}`,
     ``,
-    `- Checks: **${summary.averageDeterministicScore} / 40** · Judge: **${summary.averageJudgeScore} / 60** · Total: **${summary.averageTotalScore} / 100**${summary.selfJudged ? ` — ${SELF_JUDGED_LABEL}` : ""}`,
+    `- Completion: **${(summary.completionRate * 100).toFixed(1)}%** · Completed quality: **${summary.qualityOnCompleted} / 100** · Expected user score: **${summary.expectedUserScore} / 100**${summary.selfJudged ? ` — ${SELF_JUDGED_LABEL}` : ""}`,
+    `- Integrity: **${summary.averageIntegrityScore} / 20** · Semantic: **${summary.averageSemanticScore} / 80** · Critical miss / contradiction: **${(summary.criticalMissRate * 100).toFixed(1)}% / ${(summary.criticalContradictionRate * 100).toFixed(1)}%**`,
     ...(spread === undefined ? [] : [`- Spread: mean per-task σ **${spread}** over ${summary.perTask.filter((task) => task.runs > 1).length} repeated task(s); per-task σ and 2σ tolerance below`]),
     `- Completed tasks: ${summary.completedTasks} · agent failures scored zero: ${summary.agentFailures} · infrastructure errors excluded: ${summary.infrastructureErrors} · harness/judge errors: ${summary.invalidRuns}`,
     `- Diagnostics: ${diagnosticsLine(summary.diagnostics)}`,
     ``,
-    repeat > 1 ? `| Task | Checks | Judge | Total | σ | Tolerance (2σ) |` : `| Task | Checks | Judge | Total |`,
-    repeat > 1 ? `| :--- | ---: | ---: | ---: | ---: | ---: |` : `| :--- | ---: | ---: | ---: |`,
+    repeat > 1 ? `| Task | Integrity | Semantic | Expected | σ |` : `| Task | Integrity | Semantic | Expected |`,
+    repeat > 1 ? `| :--- | ---: | ---: | ---: | ---: |` : `| :--- | ---: | ---: | ---: |`,
   ];
 
   for (const task of summary.perTask) {
     const unavailable = task.runs === 0;
     lines.push(
       repeat > 1
-        ? `| ${task.title} | ${unavailable ? "—" : task.meanDeterministic} | ${unavailable ? "—" : task.meanJudge} | **${unavailable ? "unscored" : task.meanTotal}** | ${unavailable ? "—" : task.sdTotal} | ${unavailable ? "—" : `±${task.tolerance}`} |`
-        : `| ${task.title} | ${unavailable ? "—" : task.meanDeterministic} | ${unavailable ? "—" : task.meanJudge} | **${unavailable ? "unscored" : task.meanTotal}** |`,
+        ? `| ${task.title} | ${unavailable ? "—" : task.meanIntegrity} | ${unavailable ? "—" : task.meanQuality} | **${unavailable ? "unscored" : task.meanTotal}** | ${unavailable ? "—" : task.sdTotal} |`
+        : `| ${task.title} | ${unavailable ? "—" : task.meanIntegrity} | ${unavailable ? "—" : task.meanQuality} | **${unavailable ? "unscored" : task.meanTotal}** |`,
     );
   }
 
@@ -140,13 +144,14 @@ function resultSection(result: TaskEvalResult): string[] {
     `- Prompt: *"${result.task.prompt}"*`,
     `- As-of: ${result.task.asOfDate} · Duration: ${(result.durationMs / 1000).toFixed(1)}s · Budget: ${LIMITS.calls} calls and ${LIMITS.turnMs / 60_000}m per turn`,
     `- Status: **${result.status}**`,
-    `- Checks: ${result.deterministicCheck.score} / 40${result.status === "agent_timeout" || result.status === "agent_error" || (result.status === "agent_budget" && !result.judgeResult) ? " (partial progress; completion score remains zero without a judgeable answer)" : result.deterministicCheck.evidenceAvailable ? "" : " (no-ledger fallback rules)"}`,
+    `- Integrity: ${result.deterministicCheck.score} / 20${result.status === "agent_timeout" || result.status === "agent_error" || (result.status === "agent_budget" && !result.judgeResult) ? " (partial progress; expected user score remains zero without a judgeable answer)" : result.deterministicCheck.evidenceAvailable ? "" : " (no ledger)"}`,
   ];
 
   if (result.judgeResult) {
     const judge = result.judgeResult;
     lines.push(
-      `- Judge: ${judge.totalJudgeScore} / 60 (intent ${judge.intentScore}/15, financial ${judge.financialScore}/20, grounding ${judge.groundingScore}/15, clarity ${judge.retailClarityScore}/10)`,
+      `- Semantic: ${judge.totalJudgeScore} / 80 (intent ${judge.intentScore}/20, financial ${judge.financialScore}/30, grounding ${judge.groundingScore}/20, clarity ${judge.retailClarityScore}/10)` +
+        (judge.scoreCap ? ` · total capped at ${judge.scoreCap} by critical rubric` : ""),
       result.totalScore === undefined ? `- Total: **unscored**` : `- Total: **${result.totalScore} / 100**`,
       `- Verdict: ${judge.overallVerdict}`,
     );
@@ -211,6 +216,7 @@ export function renderSummaryMarkdown(summary: EvalRunSummary): string {
     `- **Fixtures:** ${summary.fixtureMode} · **Policy:** ${summary.policyMode}`,
     ...(summary.dataset ? [`- **Offline dataset:** format ${summary.dataset.version} · ${Object.keys(summary.dataset.taskHashes).length} task dataset hashes · ${summary.dataset.integrityErrors} integrity errors · ${summary.dataset.corpusNotCaptured} corpus-not-captured · ${summary.dataset.emptyProviderResults} empty results · ${summary.dataset.notAvailableAsOf} future-blocked · ${summary.dataset.outOfScopeQueries} out-of-scope`] : []),
     `- **Tasks:** ${summary.taskIds.length} × ${summary.repeat} repeat(s)`,
+    ...(summary.calibration ? [`- **Judge calibration:** ${summary.calibration.passed ? "passed" : "FAILED"} · ordering ${(summary.calibration.orderingAccuracy * 100).toFixed(1)}% · weighted κ ${summary.calibration.weightedKappa} · MAE ${summary.calibration.scoreMae} · max σ ${summary.calibration.maxScoreStdDev}`] : []),
     `- **Diagnostics:** ${diagnosticsLine(summary.diagnostics)}`,
     `- **Config hash:** \`${summary.configHash}\`${summary.commit ? ` · **Commit:** \`${summary.commit.slice(0, 12)}\`` : ""}`,
     `- **Status:** ${issues.length === 0 ? "valid" : `**INVALID / UNSCORED** — ${issues.join("; ")}`}`,
@@ -276,8 +282,10 @@ export function benchmarkValidityIssues(
   const judgeFailures = summary.results.filter((result) => result.judgeResult?.error);
   if (judgeFailures.length > 0) issues.push(`${judgeFailures.length} judge failure(s)`);
   if (options.baseline) {
-    const refusal = baselineRefusal({ repeat: summary.repeat, selfJudged: summary.agentSummaries.some((agent) => agent.selfJudged) });
+    if (summary.benchmarkVersion !== BENCHMARK_VERSION) issues.push(`baseline promotion requires benchmark v${BENCHMARK_VERSION}, not v${summary.benchmarkVersion}; rescore the full run first`);
+    const refusal = baselineRefusal({ repeat: summary.repeat, judgeRepeat: summary.judgeRepeat, selfJudged: summary.agentSummaries.some((agent) => agent.selfJudged) });
     if (refusal) issues.push(refusal);
+    if (!summary.calibration?.passed) issues.push("v2 baseline requires a passing 36-anchor judge calibration");
   }
   return issues;
 }
