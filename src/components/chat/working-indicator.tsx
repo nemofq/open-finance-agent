@@ -39,12 +39,13 @@ function phaseLabel(phase: WorkPhase): string {
  * Three dots sit 120° apart on a ring we watch almost edge-on, so they slide along one line and
  * keep overtaking each other. The ring is projected with a real camera distance rather than
  * flattened, which is what makes the near dot both wider and further out than the far one.
+ * Lengths are in em, so the dots and their sweep scale with the label's font size.
  */
-const RADIUS = 12;
+const RADIUS = 0.55;
 const DEPTH = 3.4 * RADIUS;
-const DOT = 5;
+const DOT = 0.26;
 /** How far the ring's plane tips out of edge-on at the top of a wobble, as a share of its radius. */
-const TILT = 0.5 * RADIUS;
+const TILT = 0.3 * RADIUS;
 /** Seconds between wobbles. The tilt alternates direction, so the whole thing repeats in twice that. */
 const CYCLE = 1.83;
 const WOBBLE = Math.PI / CYCLE;
@@ -100,7 +101,7 @@ export function WorkingIndicator({ phase }: { phase: WorkPhase }) {
       dots.current.forEach((dot, index) => {
         if (!dot) return;
         const { x, y, scale, opacity } = place(t, index);
-        dot.style.transform = `translate(${x.toFixed(2)}px, ${y.toFixed(2)}px) scale(${scale.toFixed(3)})`;
+        dot.style.transform = `translate(${x.toFixed(3)}em, ${y.toFixed(3)}em) scale(${scale.toFixed(3)})`;
         dot.style.opacity = opacity.toFixed(3);
       });
     };
@@ -135,9 +136,9 @@ export function WorkingIndicator({ phase }: { phase: WorkPhase }) {
   }, []);
 
   return (
-    <div role="status" className="flex items-center gap-2 text-muted-foreground">
+    <div role="status" className="flex items-center gap-[0.5em] text-[13px] text-muted-foreground">
       {/* Fixed box so the orbit, which overflows it while the plane is tilted, never moves the row. */}
-      <span aria-hidden className="relative block h-4 w-[34px]">
+      <span aria-hidden className="relative block h-[1em] w-[1.6em]">
         {REST.map((rest, index) => (
           <span
             key={index}
@@ -146,17 +147,17 @@ export function WorkingIndicator({ phase }: { phase: WorkPhase }) {
             }}
             className="absolute top-1/2 left-1/2 rounded-full bg-muted-foreground"
             style={{
-              width: DOT,
-              height: DOT,
-              marginLeft: -DOT / 2,
-              marginTop: -DOT / 2,
-              transform: `translate(${rest.x.toFixed(2)}px, ${rest.y.toFixed(2)}px) scale(${rest.scale.toFixed(3)})`,
+              width: `${DOT}em`,
+              height: `${DOT}em`,
+              marginLeft: `${-DOT / 2}em`,
+              marginTop: `${-DOT / 2}em`,
+              transform: `translate(${rest.x.toFixed(3)}em, ${rest.y.toFixed(3)}em) scale(${rest.scale.toFixed(3)})`,
               opacity: rest.opacity.toFixed(3),
             }}
           />
         ))}
       </span>
-      <span className={silent ? "sr-only" : "text-[13px]"}>{label}</span>
+      <span className={silent ? "sr-only" : undefined}>{label}</span>
     </div>
   );
 }
