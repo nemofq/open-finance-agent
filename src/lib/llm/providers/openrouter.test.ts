@@ -4,8 +4,9 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { createModels } from "@earendil-works/pi-ai";
-import { defaultConfig, type OpenRouterProviderConfig } from "@/lib/config/schema";
+import { defaultConfig, type OpenRouterProviderConfig, type ThinkingLevel } from "@/lib/config/schema";
 import { streamModel } from "@/lib/llm/stream";
+import type { LlmModelInfo } from "@/lib/llm/types";
 import { cacheDir, ensureDataDirs } from "@/lib/paths";
 import { openrouter } from "./openrouter";
 
@@ -83,6 +84,31 @@ describe("openrouter catalog", () => {
     expect(plain.thinkingLevels).toEqual(["off"]);
   });
 
+  it("reads which reasoning models can turn thinking off, and the efforts each takes", async () => {
+    stubFetch([
+      model("acme/optional", { supported_parameters: ["tools", "reasoning"], reasoning: { mandatory: false, default_enabled: true, supported_efforts: ["xhigh", "medium", "low"], default_effort: "xhigh" } }),
+      model("acme/mandatory", { supported_parameters: ["tools", "reasoning"], reasoning: { mandatory: true } }),
+      model("acme/unstated", { supported_parameters: ["tools", "reasoning"] }),
+    ]);
+    const levels = Object.fromEntries((await openrouter.listModels(provider(), piModels)).map((info) => [info.id, info.thinkingLevels]));
+    expect(levels).toEqual({
+      "acme/optional": ["off", "low", "medium", "xhigh"],
+      "acme/mandatory": ["minimal", "low", "medium", "high"],
+      "acme/unstated": ["minimal", "low", "medium", "high"],
+    });
+  });
+
+  it("ignores a catalog cached before reasoning control was recorded", async () => {
+    const fetchMock = stubFetch([model("acme/optional", { supported_parameters: ["tools", "reasoning"], reasoning: { mandatory: false } })]);
+    seedCache("llm-models:openrouter:v2", [
+      { id: "acme/optional", name: "acme/optional", contextLength: 0, pricing: { input: 0, output: 0 }, supportsReasoning: true, supportsImages: false },
+    ]);
+
+    const [info] = await openrouter.listModels(provider(), piModels);
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    expect(info.thinkingLevels).toContain("off");
+  });
+
   it("ignores a catalog cached before image support was recorded", async () => {
     const fetchMock = stubFetch([model("acme/vision", { architecture: { input_modalities: ["text", "image"] } })]);
     seedCache("llm-models:openrouter", [
@@ -141,6 +167,33 @@ describe("openrouter agent requests", () => {
     const [input, init] = fetchMock.mock.calls[0];
     return new Headers(input instanceof Request ? input.headers : init?.headers);
   }
+
+  /** The `reasoning` field of the one request a turn at `level` sent; Off reaches pi as no level, as in a turn. */
+  async function sentReasoning(control: Partial<LlmModelInfo>, level?: Exclude<ThinkingLevel, "off">): Promise<unknown> {
+    const fetchMock = vi.fn<typeof fetch>(async () => reply());
+    vi.stubGlobal("fetch", fetchMock);
+    const config = defaultConfig();
+    config.llm.providers = [provider()];
+    const model = openrouter.toPiModel(provider(), { id: "acme/fast", name: "Acme Fast", contextLength: 128000, pricing: { input: 1, output: 2 }, supportsReasoning: true, supportsImages: false, ...control });
+    const stream = streamModel(config, model, { messages: [{ role: "user", content: "Hi", timestamp: 0 }] }, level ? { reasoning: level } : {});
+    for await (const event of stream) if (event.type === "error") throw new Error(event.error.errorMessage);
+    const [input, init] = fetchMock.mock.calls[0];
+    const body = input instanceof Request ? await input.text() : String(init?.body);
+    return (JSON.parse(body) as { reasoning?: unknown }).reasoning;
+  }
+
+  it("turns thinking off with effort none where the catalog says it is optional", async () => {
+    expect(await sentReasoning({ reasoningControl: { mandatory: false } })).toEqual({ effort: "none" });
+  });
+
+  it("sends no reasoning at Off where thinking is mandatory or the catalog does not say", async () => {
+    expect(await sentReasoning({ reasoningControl: { mandatory: true } })).toBeUndefined();
+    expect(await sentReasoning({})).toBeUndefined();
+  });
+
+  it("sends a level the model does not list as the nearest effort it does", async () => {
+    expect(await sentReasoning({ reasoningControl: { mandatory: false, efforts: ["xhigh", "medium", "low"] } }, "high")).toEqual({ effort: "xhigh" });
+  });
 
   // pi turns session affinity on for OpenRouter, so a chat keeps to one backend and its prompt cache.
   it("carries the chat's id as x-session-id", async () => {
