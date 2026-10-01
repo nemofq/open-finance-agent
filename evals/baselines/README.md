@@ -6,7 +6,8 @@ each row down by task; how a run is made and promoted is in
 [evals/README.md › Comparing runs](../README.md#comparing-runs). Add a section here when a baseline
 is added, in the same order as the README's table.
 
-Every value is the mean of the task's three runs, from the baseline's `results`:
+Every value is the mean of the task's three runs, from the baseline's `results`. A run that ended in
+an agent error or timeout scores 0 in every score column, as the benchmark scores it:
 
 - **Checks** (/40): the deterministic checks, `deterministicCheck.score`.
 - **Intent** (/15), **Financial** (/20), **Grounding** (/15), **Clarity** (/10): the judge's four
@@ -14,10 +15,10 @@ Every value is the mean of the task's three runs, from the baseline's `results`:
   `retailClarityScore`.
 - **Total** (/100): `totalScore`, with the population standard deviation (σ) of the three runs.
 - **Run time**: the task's turn, `metrics.latencyMs`, judging excluded.
-- **Output tokens**: `metrics.tokens.output`, as the provider reports it. DeepSeek counts its
-  thinking in it, so its figures are not comparable with the OpenAI models'.
+- **Output tokens**: `metrics.tokens.output`, as the provider reports it. DeepSeek and Qwen count
+  their thinking in it, so their figures are not comparable with the OpenAI models'.
 
-All three runs: benchmark version 1, policy enforced, offline dataset, twelve tasks × 3 repeats.
+All runs: benchmark version 1, policy enforced, offline dataset, twelve tasks × 3 repeats.
 
 ## GPT-6.1 Sol avg@3
 
@@ -97,3 +98,64 @@ revenue and gross-margin entries (7/15).
 | `retail-12-concentration-profile-fit` | 35.3 | 11.7 | 17.0 | 10.3 | 8.0 | 82.3 (2.9) | 36 s | 1,549 |
 | `retail-13-semis-figure-survival` | 33.7 | 11.7 | 9.0 | 9.3 | 9.3 | 73.0 (7.3) | 36 s | 1,292 |
 | `retail-14-apple-pre-open-timing` | 39.3 | 8.7 | 9.7 | 10.0 | 7.7 | 75.3 (9.0) | 27 s | 935 |
+
+## Qwen 3.8 27B avg@3, medium
+
+[`2026-10-01-openrouter-qwen-qwen3-8-27b-medium-openai-codex-gpt-6-astra.json`](2026-10-01-openrouter-qwen-qwen3-8-27b-medium-openai-codex-gpt-6-astra.json)
+
+- **Agent:** `openrouter/qwen/qwen3.8-27b`, thinking medium, every request served by DekaLLM through
+  OpenRouter
+- **Judge:** `openai-codex/gpt-6-astra`, thinking medium
+- **Commit:** `809619e`
+- **Scores:** checks 35.2 · judge 30.2 · total 65.4 · mean per-task σ 3.87
+- **Diagnostics:** tool argument errors 9 · unverified report figures 300 · repaired 18
+
+| Task | Checks | Intent | Financial | Grounding | Clarity | Total (σ) | Run time | Output tokens |
+| :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| `retail-01-nvda-beat-and-drop` | 31.3 | 10.0 | 10.7 | 10.7 | 6.0 | 68.7 (2.9) | 171 s | 24,436 |
+| `retail-02-nike-moat-erosion` | 39.0 | 10.3 | 6.7 | 5.7 | 5.7 | 67.3 (2.6) | 212 s | 27,926 |
+| `retail-03-nuclear-thematic-purity` | 33.0 | 9.0 | 7.0 | 4.3 | 4.0 | 57.3 (4.5) | 126 s | 14,254 |
+| `retail-04-dividend-yield-trap` | 40.0 | 9.3 | 3.7 | 3.0 | 3.7 | 59.7 (3.1) | 117 s | 15,824 |
+| `retail-05-intel-value-trap` | 32.3 | 12.7 | 9.3 | 5.0 | 7.7 | 67.0 (1.6) | 139 s | 17,097 |
+| `retail-06-mstr-proxy-leverage` | 34.7 | 11.3 | 6.3 | 6.7 | 4.3 | 63.3 (5.2) | 157 s | 24,283 |
+| `retail-09-narrative-factcheck-apple` | 34.0 | 5.7 | 7.0 | 4.7 | 4.0 | 55.3 (7.7) | 138 s | 23,174 |
+| `retail-10-smci-accounting-red-flag` | 24.7 | 11.0 | 8.3 | 5.3 | 4.7 | 54.0 (4.5) | 152 s | 21,882 |
+| `retail-11-nike-earnings-review-report` | 39.3 | 11.0 | 7.3 | 7.0 | 6.0 | 70.7 (4.9) | 139 s | 19,335 |
+| `retail-12-concentration-profile-fit` | 36.7 | 12.0 | 14.0 | 8.7 | 7.3 | 78.7 (2.6) | 64 s | 9,445 |
+| `retail-13-semis-figure-survival` | 37.7 | 13.0 | 11.0 | 8.7 | 8.3 | 78.7 (2.4) | 137 s | 22,808 |
+| `retail-14-apple-pre-open-timing` | 39.3 | 8.7 | 6.0 | 5.7 | 4.3 | 64.0 (4.3) | 133 s | 18,562 |
+
+Every run completed. Its points go mostly in the judge's financial, grounding and clarity
+dimensions; the yield-trap task keeps full checks but scores 3.0–3.7 on each of those three.
+
+## Qwen 3.8 27B avg@3, off
+
+[`2026-10-01-openrouter-qwen-qwen3-8-27b-off-openai-codex-gpt-6-astra.json`](2026-10-01-openrouter-qwen-qwen3-8-27b-off-openai-codex-gpt-6-astra.json)
+
+- **Agent:** `openrouter/qwen/qwen3.8-27b`, thinking off, every request served by DekaLLM through
+  OpenRouter
+- **Judge:** `openai-codex/gpt-6-astra`, thinking medium
+- **Commit:** `809619e`
+- **Scores:** checks 33.6 · judge 26.8 · total 59.4 · mean per-task σ 8.89
+- **Diagnostics:** tool argument errors 6 · fallback reports 3 · unverified report figures 273 ·
+  repaired 21
+
+| Task | Checks | Intent | Financial | Grounding | Clarity | Total (σ) | Run time | Output tokens |
+| :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| `retail-01-nvda-beat-and-drop` | 31.3 | 5.3 | 4.3 | 7.0 | 4.3 | 41.0 (29.1) | 46 s | 4,699 |
+| `retail-02-nike-moat-erosion` | 30.0 | 8.0 | 7.0 | 6.0 | 5.3 | 56.3 (5.9) | 131 s | 12,380 |
+| `retail-03-nuclear-thematic-purity` | 35.0 | 10.0 | 8.3 | 8.3 | 5.0 | 66.7 (6.5) | 64 s | 6,108 |
+| `retail-04-dividend-yield-trap` | 36.3 | 9.3 | 4.3 | 3.3 | 3.7 | 57.0 (5.4) | 69 s | 7,962 |
+| `retail-05-intel-value-trap` | 27.0 | 12.3 | 8.3 | 5.0 | 7.7 | 60.3 (6.3) | 107 s | 15,182 |
+| `retail-06-mstr-proxy-leverage` | 34.7 | 9.0 | 5.7 | 6.3 | 4.3 | 60.0 (4.1) | 80 s | 11,284 |
+| `retail-09-narrative-factcheck-apple` | 38.0 | 6.3 | 7.0 | 5.3 | 4.7 | 61.3 (4.8) | 63 s | 8,601 |
+| `retail-10-smci-accounting-red-flag` | 30.7 | 11.0 | 9.7 | 7.3 | 5.7 | 64.3 (4.5) | 40 s | 4,110 |
+| `retail-11-nike-earnings-review-report` | 25.7 | 5.7 | 2.7 | 4.0 | 3.3 | 41.3 (29.3) | 78 s | 7,042 |
+| `retail-12-concentration-profile-fit` | 39.0 | 10.0 | 13.0 | 7.0 | 4.3 | 73.3 (4.2) | 39 s | 5,004 |
+| `retail-13-semis-figure-survival` | 35.3 | 13.7 | 11.3 | 8.7 | 9.3 | 78.3 (5.4) | 64 s | 11,750 |
+| `retail-14-apple-pre-open-timing` | 39.7 | 4.0 | 3.3 | 3.7 | 2.0 | 52.7 (1.2) | 55 s | 6,592 |
+
+Two runs, one each of NVIDIA and the Nike report, ended in an agent error: the final answer was
+tool-call markup, and the recovery request did not replace it with prose. Each scores 0, which is
+what widens those two tasks' σ to about 29. On the Apple pre-open task every run meets the checks
+but scores 12–14 from the judge.

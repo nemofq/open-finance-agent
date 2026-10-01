@@ -140,6 +140,8 @@ grounding and clarity, with written feedback.
 | GPT-6.1 Sol avg@3 | Medium | GPT-6 Astra, medium | 35.8 | 49.0 | 84.8 | 1,696 s | 37,347 | 224 |
 | DeepSeek V4.1 Flash avg@3 | High | GPT-6 Astra, medium | 39.1 | 38.1 | 77.3 | 2,119 s | 453,144 | 452 |
 | GPT-6 Luna avg@3 | Medium | GPT-6 Astra, medium | 29.8 | 37.8 | 67.6 | 516 s | 19,198 | 134 |
+| Qwen 3.8 27B avg@3 | Medium | GPT-6 Astra, medium | 35.2 | 30.2 | 65.4 | 1,685 s | 239,026 | 202 |
+| Qwen 3.8 27B avg@3 | Off | GPT-6 Astra, medium | 33.6 | 26.8 | 59.4 | 835 s | 100,714 | 216 |
 
 Benchmark version 1, policy enforced. `avg@3` is the mean of three runs of the twelve tasks. Run
 time counts the model's turns, not judging. Each row is a committed baseline, with its per-task
