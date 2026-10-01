@@ -79,8 +79,9 @@ pnpm test:browser
 benchmark. Anything that touches a real network sits behind a guard and is skipped by default.
 `pnpm test:browser` starts the production build on a scratch data folder with a scripted model
 (`e2e/stub-llm.ts`) and drives one chat in headless Chromium over an uploaded document, through to
-its report; a second test checks that the sidebar reports a failed chat delete on `/portfolio`. It
-needs no key and no network.
+its report; a second test checks that the sidebar reports a failed chat delete on `/portfolio`, and
+`e2e/report-layout.spec.ts` checks that a deliberately wide report never scrolls the page sideways
+at 360, 600 and 800 pixels. It needs no key and no network.
 
 Some changes need more:
 

@@ -8,7 +8,8 @@ import { defineConfig } from "@playwright/test";
  * The browser smoke test, run by `pnpm test:browser` after `pnpm build`; `pnpm test` never runs
  * it. It starts the production server (`next start`) on a scratch data directory whose only model
  * is `stub-llm.ts`, a scripted OpenAI-compatible endpoint, so it needs no LLM, no key and no
- * network beyond localhost.
+ * network beyond localhost. `report-layout.spec.ts` rides along without the server: it lays a
+ * rendered report out with `page.setContent`.
  */
 const here = path.dirname(fileURLToPath(import.meta.url));
 const root = path.dirname(here);
