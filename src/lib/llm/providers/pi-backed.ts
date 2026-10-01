@@ -51,6 +51,7 @@ import {
 } from "@/lib/llm/catalog";
 import { CACHE_RETENTION } from "@/lib/llm/ambient-env";
 import { providerErrorText } from "@/lib/llm/error-text";
+import { openCodeOptions } from "@/lib/llm/opencode";
 import { probeContext } from "@/lib/llm/probe";
 import type { HostedLlmProviderType } from "@/lib/llm/provider-types";
 import type { LlmModelInfo, LlmProviderDefinition, ProviderValidation } from "@/lib/llm/types";
@@ -241,12 +242,12 @@ async function validateKey(config: PiBackedConfig, models: Models): Promise<Prov
     };
   }
   // The key goes as a chat turn sends it, so a stale sign-in in auth.json cannot answer in its place.
-  const message = await models.completeSimple(probe, probeContext(), {
+  const message = await models.completeSimple(probe, probeContext(), openCodeOptions(config.type, {
     ...(takesKey(config) && config.apiKey ? { apiKey: config.apiKey } : {}),
     cacheRetention: CACHE_RETENTION,
     maxTokens: 32,
     timeoutMs: 30_000,
-  });
+  }));
   if (message.stopReason === "error" || message.stopReason === "aborted") {
     const reason = message.errorMessage ? providerErrorText(message.errorMessage) : `request ${message.stopReason}`;
     return { ok: false, error: `${probe.name}: ${reason}` };

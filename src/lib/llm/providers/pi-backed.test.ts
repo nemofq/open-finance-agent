@@ -297,10 +297,23 @@ describe("opencode agent requests", () => {
     return new Headers(input instanceof Request ? input.headers : init?.headers);
   }
 
-  // pi says OpenCode requires the header to route a conversation.
-  it("carries the chat's id as x-opencode-session, and none for a call without a chat", async () => {
+  // OpenCode refuses a request without the header: "Request is missing x-opencode-session".
+  it("carries the chat's id as x-opencode-session, and a fresh one for a call without a chat", async () => {
     expect((await sentHeaders("0b7c9a52-chat")).get("x-opencode-session")).toBe("0b7c9a52-chat");
-    expect((await sentHeaders()).get("x-opencode-session")).toBeNull();
+    expect((await sentHeaders()).get("x-opencode-session")).toMatch(/^[0-9a-f-]{36}$/);
+  });
+
+  it("validates an OpenCode Go key with a session, which Go will not route a request without", async () => {
+    const go: LlmProviderConfig = { id: "opencode-go", type: "opencode-go", name: "OpenCode Go", apiKey: "sk-go", auth: "api_key" };
+    const fetchMock = vi.fn<typeof fetch>(async () => reply());
+    vi.stubGlobal("fetch", fetchMock);
+    const result = await piBackedDefinitions["opencode-go"].validate(go, draftModels(go));
+
+    expect(result).toMatchObject({ ok: true, message: expect.stringContaining("Key accepted") });
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    const [input, init] = fetchMock.mock.calls[0];
+    const headers = new Headers(input instanceof Request ? input.headers : init?.headers);
+    expect(headers.get("x-opencode-session")).toMatch(/^[0-9a-f-]{36}$/);
   });
 });
 

@@ -196,3 +196,30 @@ describe("the wire", () => {
       .toMatchFileSnapshot(`./__snapshots__/wire-${wire.name}.json`);
   });
 });
+
+describe("the wire to OpenCode Go", () => {
+  const go: WireCase = {
+    name: "opencode-go",
+    provider: { id: "opencode-go", type: "opencode-go", name: "OpenCode Go", auth: "api_key", apiKey: "sk-go" },
+    model: { provider: "opencode-go", model: "glm-5.3" },
+    thinkingLevel: "off",
+    api: openAICompletions,
+  };
+
+  // Go refuses a request without the header, and routes and caches a conversation by it.
+  it("sends the chat's id as x-opencode-session, on the turn and on its title alike", async () => {
+    const requests = stubProvider([go.api.text("Nothing to report."), go.api.text("Market check-in")]);
+    const { id } = await createSession({ model: go.model });
+    const session = await getSession(id);
+    if (!session) throw new Error("the chat was not saved");
+    const result = await runTurn({ config: configFor(go), session, text: "Anything to watch today?",
+      time: fixedTimeContext({ asOf: "2024-08-29" }), store: { update: updateSession } });
+
+    expect(result.status).toBe("complete");
+    await vi.waitFor(() => expect(requests).toHaveLength(2));
+    for (const request of requests) {
+      expect(request.url).toMatch(/^https:\/\/opencode\.ai\/zen\/go\//);
+      expect(request.headers["x-opencode-session"]).toBe(id);
+    }
+  });
+});

@@ -82,7 +82,7 @@ export async function buildAgent(options: CreateAgentOptions): Promise<BuiltAgen
     { name: "execution", beforeTool: run.beforeTool, toolResult: run.toolResult, wrapTool: run.guard },
     timeConcern, capabilities(calculatorAvailable), user(rules), attachments(session.id, resolved.model, options.documents),
     conduct, evidence, delivery, policy(rules),
-    compaction({ budget, summarize: summarizer((context) => run.stream(resolved.model, context)), onCompaction: (message, messages) => { agent.state.messages = messages; listeners.onCompaction?.(message); }, onUsage: listeners.onUsage }),
+    compaction({ budget, summarize: summarizer((context) => run.stream(resolved.model, context, { conversationId: session.id })), onCompaction: (message, messages) => { agent.state.messages = messages; listeners.onCompaction?.(message); }, onUsage: listeners.onUsage }),
     view(budget, listeners.onUsage), ...(options.wrapTool ? [{ name: "telemetry", wrapTool: options.wrapTool }] : []),
   ], { tools, skillsIndex, memory, profileBlock: options.profileBlock ?? (profile ? formatProfileForPrompt(profile) : undefined) }, turn);
   // pi puts a system message with the prompt and the tools ahead of the saved chat, which never

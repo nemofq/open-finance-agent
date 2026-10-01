@@ -12,11 +12,14 @@ import { withModulesOff } from "@/lib/tools/testing";
 
 /** What the chat's model is asked, and what it answers: a checkpoint of "OK", or a failure. */
 const calls: Context[] = [];
+/** The chat each call said it belonged to. */
+const conversations: (string | undefined)[] = [];
 let reply: Pick<AssistantMessage, "content" | "stopReason" | "errorMessage"> = { content: [{ type: "text", text: "OK" }], stopReason: "stop" };
 
 vi.mock("@/lib/llm/stream", () => ({
-  streamModel: (_config: unknown, _model: unknown, context: Context) => {
+  streamModel: (_config: unknown, _model: unknown, context: Context, options?: { conversationId?: string }) => {
     calls.push(context);
+    conversations.push(options?.conversationId);
     return { result: async () => reply };
   },
 }));
@@ -38,6 +41,7 @@ afterAll(() => {
 
 beforeEach(() => {
   calls.length = 0;
+  conversations.length = 0;
   reply = { content: [{ type: "text", text: "OK" }], stopReason: "stop" };
   const config = defaultConfig();
   withModulesOff(config);
@@ -66,6 +70,8 @@ describe("compactChat", () => {
 
     expect(result).toMatchObject({ ok: true, compaction: { role: "compaction", summary: "OK", focus: "margins only" } });
     expect(calls).toHaveLength(1);
+    // The summary is asked in the chat's own name, which OpenCode routes the request by.
+    expect(conversations).toEqual([id]);
     const saved = await getSession(id);
     expect(saved?.messages.map((entry) => entry.role)).toEqual(["user", "assistant", "compaction", "user", "assistant"]);
   });
