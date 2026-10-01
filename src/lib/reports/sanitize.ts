@@ -193,14 +193,17 @@ export function sanitizeHtml(html: string): string {
   return out;
 }
 
-/** The words a sanitized block shows, with the markup taken out, for figure checking. */
+/**
+ * The words a sanitized block shows, with the markup taken out, for figure checking. `&amp;` is
+ * decoded last, or the `&amp;lt;` a block shows as the text `&lt;` would decode twice into `<`.
+ */
 export function textContent(html: string): string {
   return html
     .replace(/<[^>]*>/g, " ")
     .replace(/&nbsp;/g, " ")
-    .replace(/&amp;/g, "&")
     .replace(/&lt;/g, "<")
     .replace(/&gt;/g, ">")
+    .replace(/&amp;/g, "&")
     .replace(/\s+/g, " ")
     .trim();
 }

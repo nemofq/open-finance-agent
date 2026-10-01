@@ -81,4 +81,9 @@ describe("textContent", () => {
   it("returns the words a block shows, without its markup", () => {
     expect(textContent("<p>Revenue <strong>4.32B</strong></p>")).toBe("Revenue 4.32B");
   });
+
+  it("decodes each entity once, so an escaped entity stays text", () => {
+    expect(textContent("<p>&amp;lt;b&amp;gt;</p>")).toBe("&lt;b&gt;");
+    expect(textContent("<p>R&amp;D &lt; 5%</p>")).toBe("R&D < 5%");
+  });
 });
