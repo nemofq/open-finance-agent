@@ -390,9 +390,10 @@ function contracts(task: Omit<EvalTask, "requiredEvidence" | "contracts">): Eval
         target: { kind: "fact_sum", ticker: "INTC", metric: "freeCashFlow", periodType: "quarterly", periods: ["2024-03-30", "2024-06-29"] }, tolerance: 5_000_000 }];
     case "retail-06-mstr-proxy-leverage":
       return [
-        { id: "btc-holdings-filing", kind: "required_evidence_cited", label: "Cite the November 25 MSTR holdings 8-K", points: 8, requirementLabels: ["MSTR bitcoin holdings as of Nov 2024 (Nov 25 8-K)"], match: "all" },
+        { id: "btc-holdings-filing", kind: "required_evidence_cited", label: "Cite the November 25 MSTR filing for the Bitcoin holdings figure", points: 8,
+          requirementLabels: ["MSTR bitcoin holdings as of Nov 2024 (Nov 25 8-K)"], match: "all", claim: "btc_holdings" },
         { id: "convertible-filing", kind: "required_evidence_cited", label: "Cite an official MSTR filing with the announced or final convertible-note terms", points: 8,
-          requirementLabels: ["MSTR $2.6B 0% 2029 convertible notes (Nov 20 8-K)", "MSTR bitcoin holdings as of Nov 2024 (Nov 25 8-K)"], match: "any" },
+          requirementLabels: ["MSTR $2.6B 0% 2029 convertible notes (Nov 20 8-K)", "MSTR bitcoin holdings as of Nov 2024 (Nov 25 8-K)"], match: "any", claim: "convertible_terms" },
       ];
     case "retail-09-narrative-factcheck-apple":
       return [{ id: "apple-revenue-growth", kind: "verified_calculation", label: "Calculate Apple's Q3 FY24 revenue growth against the year-earlier quarter", points: 16,

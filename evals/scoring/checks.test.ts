@@ -153,11 +153,26 @@ describe("v2 deterministic integrity", () => {
     const used = runDeterministicChecks({ task, toolCalls: calls, finalText: "The filings show 331,200 BTC [E1] and $2.6B notes [E2].",
       sessionTickers: [], evidence, figureMatches: [match("331,200", 331200, ["E1"]), match("$2.6B", 2_600_000_000, ["E2"])], evidenceAvailable: true });
     expect(used.contractScore).toBe(16);
-    const finalTerms = runDeterministicChecks({ task, toolCalls: [calls[0]],
-      finalText: "The November 25 filing reports the holdings and final $3.0B note terms [E1].",
+    const holdingsOnly = runDeterministicChecks({ task, toolCalls: [calls[0]],
+      finalText: "The November 25 filing reports 331,200 BTC [E1].",
       sessionTickers: [], evidence: [evidence[0]],
-      figureMatches: [match("$3.0B", 3_000_000_000, ["E1"])], evidenceAvailable: true });
+      figureMatches: [match("331,200", 331200, ["E1"])], evidenceAvailable: true });
+    expect(holdingsOnly.contractResults.map((contract) => contract.met)).toEqual([true, false]);
+    expect(holdingsOnly.contractScore).toBe(8);
+    const finalTerms = runDeterministicChecks({ task, toolCalls: [calls[0]],
+      finalText: "The November 25 filing reports 331,200 BTC and final $3.0B convertible note terms [E1].",
+      sessionTickers: [], evidence: [evidence[0]],
+      figureMatches: [match("331,200", 331200, ["E1"]), match("$3.0B", 3_000_000_000, ["E1"])], evidenceAvailable: true });
     expect(finalTerms.contractScore).toBe(16);
+    const termsOnly = runDeterministicChecks({ task, toolCalls: [calls[1]],
+      finalText: "The November 20 filing describes $2.6B convertible notes [E2].",
+      sessionTickers: [], evidence: [evidence[1]],
+      figureMatches: [match("$2.6B", 2_600_000_000, ["E2"])], evidenceAvailable: true });
+    expect(termsOnly.contractResults.map((contract) => contract.met)).toEqual([false, true]);
+    const unrelatedClaim = runDeterministicChecks({ task, toolCalls: [calls[0]],
+      finalText: "The November 25 filing reports 331,200 BTC [E1].\n\nConvertible debt deserves further study.",
+      sessionTickers: [], evidence: [evidence[0]], figureMatches: [match("331,200", 331200, ["E1"])], evidenceAvailable: true });
+    expect(unrelatedClaim.contractScore).toBe(8);
     expect(runDeterministicChecks({ task, toolCalls: calls, finalText: "Both figures came from filings.",
       sessionTickers: [], evidence, figureMatches: [match("331,200", 331200, ["E1"]), match("$2.6B", 2_600_000_000, ["E2"])], evidenceAvailable: true }).contractScore).toBe(0);
   });

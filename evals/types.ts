@@ -65,6 +65,8 @@ export type EvalTaskContract =
       requirementLabels: string[];
       /** Whether every named source or any equivalent named source must be cited. */
       match: "all" | "any";
+      /** A claim that must accompany the citation in delivered prose, when a filing covers multiple topics. */
+      claim?: "btc_holdings" | "convertible_terms";
     }
   | {
       id: string;

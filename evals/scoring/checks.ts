@@ -316,13 +316,19 @@ function namedRequirements(labels: string[], task: EvalTask): EvalEvidenceRequir
 }
 
 /** Traceability only: the named source was read and explicitly linked from delivered prose. */
-function citedSource(requirement: EvalEvidenceRequirement, input: ChecksInput): boolean {
+function citedSource(requirement: EvalEvidenceRequirement, input: ChecksInput, claim?: "btc_holdings" | "convertible_terms"): boolean {
   if (requirement.kind !== "source") throw new Error(`Task ${input.task.id} citation contract requires source evidence: ${requirement.label}`);
   const eligible = new Set(normalizedUrls(requirement.urls));
   const delivered = `${input.finalText}\n${deliveredReportProse(input.toolCalls)}`;
   return input.toolCalls.some((call) => served(call) && acquiredUrls(call).some((url) => eligible.has(url)) &&
-    (entriesOf(call, input.evidence).some((entry) => delivered.includes(`[${entry.id}]`)) ||
-      [...eligible].some((url) => delivered.includes(url))));
+    delivered.split(/\n\s*\n/).some((paragraph) => {
+      const cites = entriesOf(call, input.evidence).some((entry) => paragraph.includes(`[${entry.id}]`)) ||
+        [...eligible].some((url) => paragraph.includes(url));
+      if (!cites || !claim) return cites;
+      if (claim === "btc_holdings") return /(?:bitcoin|\bBTC\b)/i.test(paragraph) && /331[,\s]?200|331\.2\s*(?:thousand|k)/i.test(paragraph);
+      return /(?:convertib|\bnotes?\b|borrow|\bdebt\b)/i.test(paragraph) &&
+        /(?:zero[ -]?coupon|0\s*%|2029|\$\s*(?:2\.6|3(?:\.0)?)\s*(?:billion|bn|b)\b)/i.test(paragraph);
+    }));
 }
 
 /**
@@ -375,7 +381,7 @@ function contractResults(input: ChecksInput, use: EvidenceUse): DeterministicChe
         .every((requirement) => requirementState(requirement, input, use) === "used");
     } else if (contract.kind === "required_evidence_cited") {
       const citations = namedRequirements(contract.requirementLabels, input.task)
-        .map((requirement) => citedSource(requirement, input));
+        .map((requirement) => citedSource(requirement, input, contract.claim));
       met = contract.match === "all" ? citations.every(Boolean) : citations.some(Boolean);
     } else if (contract.kind === "dated_quote") {
       met = input.toolCalls.some((call) => QUOTE_TOOLS.has(call.toolName) && served(call) &&
