@@ -117,7 +117,7 @@ describe("budget enforcement", () => {
     expect(result.status).toBe("agent_budget");
     expect(result.valid).toBe(true);
     expect(result.judgeResult?.totalJudgeScore).toBe(35);
-    expect(result.totalScore).toBe(Math.round((result.deterministicCheck.score * 2 + 35) * 100) / 100);
+    expect(result.totalScore).toBe(Math.round((result.deterministicCheck.score + 35) * 100) / 100);
     expect(result.error).toBe("The turn reached its model-call limit");
     expect(result.stop).toBe("calls");
   });

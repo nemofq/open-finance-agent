@@ -164,13 +164,13 @@ export interface EvalTask {
   latentIntent: string;
   /** Entity clusters (each with acceptable aliases/tickers) that must be inferred */
   expectedEntities: EntityCluster[];
-  /** Evidence outcomes whose raw weights total 15 and are normalized onto v2's 6 integrity points. */
+  /** Evidence outcomes whose requirement weights total 15 and are normalized onto v2's 12 integrity points. */
   requiredEvidence: EvalEvidenceRequirement[];
   /** Whether quantitative formulas / math calculations are required */
   requiresMathCalculation?: boolean;
   /** Rubric for grading */
   rubric: EvalTaskRubric;
-  /** The v2 deterministic task contract. Points total 8. */
+  /** The v2 deterministic task contract. Points total 16. */
   contracts: EvalTaskContract[];
 
   /* ---- optional harness inputs; every field below is seeded before the first turn ---- */
@@ -305,15 +305,15 @@ export interface DeterministicCheckResult {
   /** True when the ledger was available, so the evidence-based rules applied rather than the no-ledger fallbacks. */
   evidenceAvailable: boolean;
 
-  /** v2 source/fact acquisition and use score, out of 6. */
+  /** v2 source/fact acquisition and use score, out of 12. */
   evidenceScore: number;
-  /** v2 exact figure-support score, out of 6. */
+  /** v2 exact figure-support score, out of 12. */
   figureSupportScore: number;
-  /** v2 task-specific contract score, out of 8. */
+  /** v2 task-specific contract score, out of 16. */
   contractScore: number;
   contractResults: Array<{ id: string; label: string; met: boolean; points: number }>;
 
-  /** Total deterministic integrity score (out of 20 points). */
+  /** Total deterministic integrity score (out of 40 points). */
   score: number;
   maxScore: number;
   details: string[];
@@ -404,9 +404,9 @@ export interface TaskEvalResult {
   judgeResult?: JudgeEvaluationResult;
   /** Existing judge quality out of 60, present only for a judgeable completed/budget answer. */
   qualityScore?: number;
-  /** Deterministic integrity contribution out of 40; the underlying check remains out of 20. */
+  /** Deterministic integrity score out of 40. */
   integrityScore?: number;
-  /** Combined score out of 100: the v2 integrity check scaled to 40 plus the existing judge /60. */
+  /** Combined score out of 100: the v2 integrity check /40 plus the existing judge /60. */
   totalScore?: number;
   /** False means infrastructure, harness/data, or judge failure made this result non-comparable. */
   valid?: boolean;

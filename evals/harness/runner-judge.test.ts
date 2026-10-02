@@ -45,7 +45,7 @@ describe("threading the offline audit to the judge", () => {
     const result = {
       task: RETAIL_EVAL_TASKS[0], agent: "p/agent", repeat: 1, status: "judge_error", startedAt: "", endedAt: "", durationMs: 0,
       toolCalls: [], evidence: [], checks: [], figureMatches: [], finalAssistantText: "Answer.", sessionTickers: [], transcript: [],
-      deterministicCheck: { version: BENCHMARK_VERSION, score: 10, maxScore: 20, details: [] },
+      deterministicCheck: { version: BENCHMARK_VERSION, score: 20, maxScore: 40, details: [] },
       metrics: {
         unsourcedFigureRate: -1, unsourcedFigures: [], sourceTierMix: {}, conflictsDetected: 0, conflictsAddressed: 0, lookAheadEvidence: 0,
         evidenceEntries: 0, followUps: 0, blocks: 0, flags: 0,
@@ -67,7 +67,7 @@ function unjudged(agent: string, taskIndex: number, repeat: number): TaskEvalRes
   return {
     task: RETAIL_EVAL_TASKS[taskIndex], agent, repeat, status: "judge_error", valid: false, startedAt: "", endedAt: "", durationMs: 0,
     toolCalls: [], evidence: [], checks: [], figureMatches: [], finalAssistantText: "Answer.", sessionTickers: [], transcript: [],
-    deterministicCheck: { version: BENCHMARK_VERSION, score: 10, maxScore: 20, details: [] },
+    deterministicCheck: { version: BENCHMARK_VERSION, score: 20, maxScore: 40, details: [] },
     metrics: {
       unsourcedFigureRate: -1, unsourcedFigures: [], sourceTierMix: {}, conflictsDetected: 0, conflictsAddressed: 0, lookAheadEvidence: 0,
       evidenceEntries: 0, followUps: 0, blocks: 0, flags: 0,

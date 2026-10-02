@@ -114,7 +114,7 @@ function agentSection(summary: AgentSummary, repeat: number): string[] {
     `## ${summary.agent}${summary.selfJudged ? " — self-judged" : ""}`,
     ``,
     `- Completion: **${(summary.completionRate * 100).toFixed(1)}%** · Completed quality: **${summary.qualityOnCompleted} / 100** · Expected user score: **${summary.expectedUserScore} / 100**${summary.selfJudged ? ` — ${SELF_JUDGED_LABEL}` : ""}`,
-    `- Integrity: **${summary.averageIntegrityScore} / 40** (v2 raw integrity × 2) · Semantic: **${summary.averageSemanticScore} / 60** (existing judge rubric)`,
+    `- Integrity: **${summary.averageIntegrityScore} / 40** · Semantic: **${summary.averageSemanticScore} / 60** (existing judge rubric)`,
     ...(spread === undefined ? [] : [`- Spread: mean per-task σ **${spread}** over ${summary.perTask.filter((task) => task.runs > 1).length} repeated task(s)`]),
     `- Completed tasks: ${summary.completedTasks} · agent failures scored zero: ${summary.agentFailures} · infrastructure errors excluded: ${summary.infrastructureErrors} · harness/judge errors: ${summary.invalidRuns}`,
     `- Diagnostics: ${diagnosticsLine(summary.diagnostics)}`,
@@ -142,7 +142,7 @@ function resultSection(result: TaskEvalResult): string[] {
     `- Prompt: *"${result.task.prompt}"*`,
     `- As-of: ${result.task.asOfDate} · Duration: ${(result.durationMs / 1000).toFixed(1)}s · Budget: ${LIMITS.calls} calls and ${LIMITS.turnMs / 60_000}m per turn`,
     `- Status: **${result.status}**`,
-    `- Integrity: ${result.integrityScore ?? result.deterministicCheck.score * 2} / 40 (raw ${result.deterministicCheck.score} / 20 × 2)${result.status === "agent_timeout" || result.status === "agent_error" || (result.status === "agent_budget" && !result.judgeResult) ? " (partial progress; expected score remains zero without a judgeable answer)" : result.deterministicCheck.evidenceAvailable ? "" : " (no ledger)"}`,
+    `- Integrity: ${result.integrityScore ?? result.deterministicCheck.score} / 40${result.status === "agent_timeout" || result.status === "agent_error" || (result.status === "agent_budget" && !result.judgeResult) ? " (partial progress; expected score remains zero without a judgeable answer)" : result.deterministicCheck.evidenceAvailable ? "" : " (no ledger)"}`,
   ];
 
   if (result.judgeResult) {

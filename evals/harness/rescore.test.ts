@@ -22,13 +22,13 @@ describe("saved-run rescoring", () => {
 
     const rescored = rescoreRun(saved);
     expect(rescored.benchmarkVersion).toBe("2");
-    expect(rescored.results[0].deterministicCheck.maxScore).toBe(20);
+    expect(rescored.results[0].deterministicCheck.maxScore).toBe(40);
     expect(rescored.results[0].totalScore).toBe(0);
     expect(rescored.results[0].judgeResult).toBeUndefined();
     expect(saved.benchmarkVersion).toBe("1");
   });
 
-  it("reuses the recorded 13/60 judge verdict and scales raw integrity to 40", () => {
+  it("reuses the recorded 13/60 judge verdict and computes integrity directly out of 40", () => {
     const task = RETAIL_EVAL_TASKS[0];
     const result = {
       task, agent: "p/model", repeat: 1, status: "completed", valid: true,

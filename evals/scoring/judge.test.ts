@@ -175,12 +175,12 @@ describe("what the judge sees", () => {
       figuresChecked: 5,
       figuresBacked: 5,
       evidenceAvailable: true,
-      evidenceScore: 6,
-      figureSupportScore: 6,
-      contractScore: 8,
+      evidenceScore: 12,
+      figureSupportScore: 12,
+      contractScore: 16,
       contractResults: [],
-      score: 20,
-      maxScore: 20,
+      score: 40,
+      maxScore: 40,
       details: ["[Entities: diagnostic] found [NVIDIA]"],
     };
 
@@ -235,7 +235,7 @@ describe("what the judge sees", () => {
         contractScore: 0,
         contractResults: [],
         score: 0,
-        maxScore: 20,
+        maxScore: 40,
         details: [],
       },
     });
@@ -288,7 +288,7 @@ describe("the offline data boundary", () => {
         version: BENCHMARK_VERSION, identifiedAllEntities: true, matchedEntities: [], missingEntities: [],
         derivedFigures: 0, mathExpectationSatisfied: true, citationCount: 0, figuresChecked: 0, figuresBacked: 0, evidenceAvailable: true,
         evidenceScore: 0, figureSupportScore: 0, contractScore: 0, contractResults: [],
-        score: 0, maxScore: 20, details: [],
+        score: 0, maxScore: 40, details: [],
       },
     };
     const withBoundary = buildJudgePrompt({ ...base, offlineAudit: audit([event("not_available_as_of", "edgar_read_filing", { url: future }, [future])]) });

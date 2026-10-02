@@ -372,53 +372,53 @@ const TASKS: Omit<EvalTask, "requiredEvidence" | "contracts">[] = [
 function contracts(task: Omit<EvalTask, "requiredEvidence" | "contracts">): EvalTaskContract[] {
   switch (task.id) {
     case "retail-01-nvda-beat-and-drop":
-      return [{ id: "guided-growth", kind: "verified_calculation", label: "Calculate NVIDIA's guided sequential revenue growth from its Q2 FY25 release", points: 8,
+      return [{ id: "guided-growth", kind: "verified_calculation", label: "Calculate NVIDIA's guided sequential revenue growth from its Q2 FY25 release", points: 16,
         target: { kind: "filing_guidance_growth", url: "https://www.sec.gov/Archives/edgar/data/1045810/000104581024000262/q2fy25pr.htm", currentRevenue: 30_040_000_000, guidedRevenue: 32_500_000_000 }, tolerance: 0.3 }];
     case "retail-02-nike-moat-erosion":
-      return [{ id: "deck-growth", kind: "verified_calculation", label: "Calculate Deckers FY2024 revenue growth from the correct fiscal years", points: 8,
+      return [{ id: "deck-growth", kind: "verified_calculation", label: "Calculate Deckers FY2024 revenue growth from the correct fiscal years", points: 16,
         target: { kind: "fact_growth", ticker: "DECK", metric: "revenue", periodType: "annual", currentPeriod: "2024-03-31", priorPeriod: "2023-03-31" }, tolerance: 0.2 }];
     case "retail-03-nuclear-thematic-purity":
       return [
-        { id: "ceg-ppa", kind: "required_evidence_cited", label: "Cite the Constellation-Microsoft PPA announcement", points: 4, requirementLabels: ["Constellation-Microsoft Crane PPA announcement"], match: "all" },
-        { id: "tln-ppa", kind: "required_evidence_cited", label: "Cite the Talen-AWS PPA filing", points: 4, requirementLabels: ["Talen-AWS data-center PPA (Q2 2024 10-Q)"], match: "all" },
+        { id: "ceg-ppa", kind: "required_evidence_cited", label: "Cite the Constellation-Microsoft PPA announcement", points: 8, requirementLabels: ["Constellation-Microsoft Crane PPA announcement"], match: "all" },
+        { id: "tln-ppa", kind: "required_evidence_cited", label: "Cite the Talen-AWS PPA filing", points: 8, requirementLabels: ["Talen-AWS data-center PPA (Q2 2024 10-Q)"], match: "all" },
       ];
     case "retail-04-dividend-yield-trap":
-      return [{ id: "income-rate", kind: "verified_calculation", label: "Annualize the investor's $20,000 monthly target against $500,000 principal", points: 8,
+      return [{ id: "income-rate", kind: "verified_calculation", label: "Annualize the investor's $20,000 monthly target against $500,000 principal", points: 16,
         target: { kind: "annual_income_rate", principal: 500_000, monthlyIncome: 20_000 }, tolerance: 0.1 }];
     case "retail-05-intel-value-trap":
-      return [{ id: "intel-h1-fcf", kind: "verified_calculation", label: "Sum Intel's first-half 2024 free cash flow from its two quarterly facts", points: 8,
+      return [{ id: "intel-h1-fcf", kind: "verified_calculation", label: "Sum Intel's first-half 2024 free cash flow from its two quarterly facts", points: 16,
         target: { kind: "fact_sum", ticker: "INTC", metric: "freeCashFlow", periodType: "quarterly", periods: ["2024-03-30", "2024-06-29"] }, tolerance: 5_000_000 }];
     case "retail-06-mstr-proxy-leverage":
       return [
-        { id: "btc-holdings-filing", kind: "required_evidence_cited", label: "Cite the November 25 MSTR holdings 8-K", points: 4, requirementLabels: ["MSTR bitcoin holdings as of Nov 2024 (Nov 25 8-K)"], match: "all" },
-        { id: "convertible-filing", kind: "required_evidence_cited", label: "Cite an official MSTR filing with the announced or final convertible-note terms", points: 4,
+        { id: "btc-holdings-filing", kind: "required_evidence_cited", label: "Cite the November 25 MSTR holdings 8-K", points: 8, requirementLabels: ["MSTR bitcoin holdings as of Nov 2024 (Nov 25 8-K)"], match: "all" },
+        { id: "convertible-filing", kind: "required_evidence_cited", label: "Cite an official MSTR filing with the announced or final convertible-note terms", points: 8,
           requirementLabels: ["MSTR $2.6B 0% 2029 convertible notes (Nov 20 8-K)", "MSTR bitcoin holdings as of Nov 2024 (Nov 25 8-K)"], match: "any" },
       ];
     case "retail-09-narrative-factcheck-apple":
-      return [{ id: "apple-revenue-growth", kind: "verified_calculation", label: "Calculate Apple's Q3 FY24 revenue growth against the year-earlier quarter", points: 8,
+      return [{ id: "apple-revenue-growth", kind: "verified_calculation", label: "Calculate Apple's Q3 FY24 revenue growth against the year-earlier quarter", points: 16,
         target: { kind: "fact_growth", ticker: "AAPL", metric: "revenue", periodType: "quarterly", currentPeriod: "2024-06-29", priorPeriod: "2023-07-01" }, tolerance: 0.2 }];
     case "retail-10-smci-accounting-red-flag":
       return [
-        { id: "ey-resignation", kind: "required_evidence_cited", label: "Cite SMCI's EY resignation 8-K", points: 4, requirementLabels: ["SMCI 8-K Item 4.01: EY resignation"], match: "all" },
-        { id: "delayed-filing", kind: "required_evidence_cited", label: "Cite SMCI's overdue 10-K disclosure", points: 4, requirementLabels: ["SMCI delayed 10-K / Nasdaq non-compliance"], match: "all" },
+        { id: "ey-resignation", kind: "required_evidence_cited", label: "Cite SMCI's EY resignation 8-K", points: 8, requirementLabels: ["SMCI 8-K Item 4.01: EY resignation"], match: "all" },
+        { id: "delayed-filing", kind: "required_evidence_cited", label: "Cite SMCI's overdue 10-K disclosure", points: 8, requirementLabels: ["SMCI delayed 10-K / Nasdaq non-compliance"], match: "all" },
       ];
     case "retail-11-nike-earnings-review-report":
-      return [{ id: "earnings-report", kind: "report", label: "Agent-created earnings review with all required sections", points: 8,
+      return [{ id: "earnings-report", kind: "report", label: "Agent-created earnings review with all required sections", points: 16,
         template: "earnings-review", sections: ["Results vs expectations", "Guidance", "Drivers", "Reaction", "Stance"], requireAgentDelivery: true }];
     case "retail-12-concentration-profile-fit":
       return [
-        { id: "portfolio-read", kind: "required_evidence_used", label: "Read and use the seeded holdings", points: 4, requirementLabels: ["Declared holdings read and cited"] },
-        { id: "top-weight", kind: "verified_calculation", label: "Calculate the largest position weight from all four dated quotes and declared quantities", points: 4,
+        { id: "portfolio-read", kind: "required_evidence_used", label: "Read and use the seeded holdings", points: 8, requirementLabels: ["Declared holdings read and cited"] },
+        { id: "top-weight", kind: "verified_calculation", label: "Calculate the largest position weight from all four dated quotes and declared quantities", points: 8,
           target: { kind: "portfolio_top_weight", quoteDate: "2024-09-20" }, tolerance: 0.2 },
       ];
     case "retail-13-semis-figure-survival": {
       const labels = ["AMD revenue, latest quarter (2024-09-28)", "Intel gross margin, same quarter (2024-09-28)"];
-      return [{ id: "exact-figures", kind: "required_evidence_used", label: "Use both requested period-specific figures and their original evidence", points: 8, requirementLabels: labels }];
+      return [{ id: "exact-figures", kind: "required_evidence_used", label: "Use both requested period-specific figures and their original evidence", points: 16, requirementLabels: labels }];
     }
     case "retail-14-apple-pre-open-timing":
       return [
-        { id: "dated-quote", kind: "dated_quote", label: "Use Apple's October 30 prior close, not a later quote", points: 4, ticker: "AAPL", date: "2024-10-30" },
-        { id: "no-lookahead", kind: "no_lookahead", label: "Use no post-cutoff evidence", points: 4 },
+        { id: "dated-quote", kind: "dated_quote", label: "Use Apple's October 30 prior close, not a later quote", points: 8, ticker: "AAPL", date: "2024-10-30" },
+        { id: "no-lookahead", kind: "no_lookahead", label: "Use no post-cutoff evidence", points: 8 },
       ];
     default:
       throw new Error(`No deterministic task contracts defined for ${task.id}.`);

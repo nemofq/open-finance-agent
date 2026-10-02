@@ -40,14 +40,14 @@ export function applyJudgement(result: TaskEvalResult, judgeResult: JudgeEvaluat
     if (judgeResult.maxJudgeScore !== 60 || judgeResult.totalJudgeScore < 0 || judgeResult.totalJudgeScore > 60) {
       throw new Error(`Expected a valid 60-point judge result, got ${judgeResult.totalJudgeScore}/${judgeResult.maxJudgeScore}.`);
     }
-    if (result.deterministicCheck.maxScore !== 20 || result.deterministicCheck.version !== "2") {
+    if (result.deterministicCheck.maxScore !== 40 || result.deterministicCheck.version !== "2") {
       throw new Error(`Cannot combine a v${result.deterministicCheck.version ?? "unknown"} integrity score with v2 quality; use --rescore on a trace-bearing run.`);
     }
     result.status = budgetExhausted(result.stop) ? "agent_budget" : "completed";
     result.valid = true;
     delete result.invalidReason;
     result.qualityScore = round(judgeResult.totalJudgeScore, 2);
-    result.integrityScore = round(result.deterministicCheck.score * 2, 2);
+    result.integrityScore = round(result.deterministicCheck.score, 2);
     result.totalScore = round(result.integrityScore + result.qualityScore, 2);
   }
 }

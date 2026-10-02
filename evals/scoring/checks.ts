@@ -16,8 +16,8 @@ import {
 } from "../types";
 
 /**
- * The v2 20-point integrity score: required evidence 6, exact figure support 6 and task contracts
- * 8. Entity discovery and raw calculator use remain diagnostics, not quality points.
+ * The v2 40-point integrity score: required evidence 12, exact figure support 12 and task
+ * contracts 16. Entity discovery and raw calculator use remain diagnostics, not quality points.
  */
 
 /**
@@ -414,8 +414,8 @@ export function runDeterministicChecks(input: ChecksInput): DeterministicCheckRe
       contractScore: 0,
       contractResults: task.contracts.map((contract) => ({ id: contract.id, label: contract.label, met: false, points: 0 })),
       score: 0,
-      maxScore: 20,
-      details: ["[Answer: 0/20] The agent produced no final answer."],
+      maxScore: 40,
+      details: ["[Answer: 0/40] The agent produced no final answer."],
     };
   }
   const details: string[] = [];
@@ -429,11 +429,11 @@ export function runDeterministicChecks(input: ChecksInput): DeterministicCheckRe
           (entities.missing.length > 0 ? `, missing [${entities.missing.join(", ")}]` : ""),
   );
 
-  /* 1. Required evidence — 6. Acquisition earns half; visible use earns full. */
+  /* 1. Required evidence — 12. Acquisition earns half; visible use earns full. */
   const evidence = scoreEvidence(task.requiredEvidence, input);
-  const evidenceScore = rounded((evidence.points / 15) * 6);
+  const evidenceScore = rounded((evidence.points / 15) * 12);
   details.push(
-    `[Evidence: ${evidenceScore}/6] used [${evidence.used.join(", ") || "none"}]; acquired only [${evidence.acquired.join(", ") || "none"}]; missing [${evidence.missing.join(", ") || "none"}]`,
+    `[Evidence: ${evidenceScore}/12] used [${evidence.used.join(", ") || "none"}]; acquired only [${evidence.acquired.join(", ") || "none"}]; missing [${evidence.missing.join(", ") || "none"}]`,
   );
 
   /* Raw calculator use remains diagnostic. The task-specific arithmetic contract is decisive. */
@@ -445,7 +445,7 @@ export function runDeterministicChecks(input: ChecksInput): DeterministicCheckRe
     : !task.requiresMathCalculation || input.evidence.some((entry) => entry.kind === "C" && use.backed.has(entry.id));
   details.push(`[Calculator: diagnostic] ${derivedFigures} derived figure(s); ${mathExpectationSatisfied ? "calculation expectation met or none required" : "calculation expectation not met"}.`);
 
-  /* 2. Figure support — 6 points. Counts figures the ledger backs, combining the delivered report's
+  /* 2. Figure support — 12 points. Counts figures the ledger backs, combining the delivered report's
      figures, per the report validator's own per-figure summary, with the answer's. */
   const citationCount = countCitationMarkers(input.finalText);
   // One ratio over everything the reader sees: the chat answer and any delivered report,
@@ -467,9 +467,9 @@ export function runDeterministicChecks(input: ChecksInput): DeterministicCheckRe
     : ` (${fromReport.checked} from the delivered report)`;
   let figureSupportScore: number;
   if (input.evidenceAvailable && coverage.checked > 0) {
-    figureSupportScore = rounded((coverage.backed / coverage.checked) * 6);
+    figureSupportScore = rounded((coverage.backed / coverage.checked) * 12);
     details.push(
-      `[Figure support: ${figureSupportScore}/6] ${coverage.backed}/${coverage.checked} non-exempt figures backed by evidence` +
+      `[Figure support: ${figureSupportScore}/12] ${coverage.backed}/${coverage.checked} non-exempt figures backed by evidence` +
         reportNote +
         (coverage.unsourced.length > 0 ? `; unsourced: ${coverage.unsourced.slice(0, 8).join(", ")}` : ""),
     );
@@ -477,15 +477,15 @@ export function runDeterministicChecks(input: ChecksInput): DeterministicCheckRe
     figureSupportScore = 0;
     details.push(
       citationCount > 0
-        ? `[Figure support: 0/6] ${citationCount} source marker(s), but no figures could be verified.`
-        : "[Figure support: 0/6] No verifiable non-exempt figures.",
+        ? `[Figure support: 0/12] ${citationCount} source marker(s), but no figures could be verified.`
+        : "[Figure support: 0/12] No verifiable non-exempt figures.",
     );
   }
 
-  /* 3. Task-specific contracts — 8. */
+  /* 3. Task-specific contracts — 16. */
   const contracts = contractResults(input, use);
   const contractScore = rounded(contracts.reduce((total, contract) => total + contract.points, 0));
-  details.push(`[Contracts: ${contractScore}/8] ${contracts.map((contract) => `${contract.met ? "met" : "missed"} ${contract.label}`).join("; ")}`);
+  details.push(`[Contracts: ${contractScore}/16] ${contracts.map((contract) => `${contract.met ? "met" : "missed"} ${contract.label}`).join("; ")}`);
 
   const score = rounded(evidenceScore + figureSupportScore + contractScore);
 
@@ -505,7 +505,7 @@ export function runDeterministicChecks(input: ChecksInput): DeterministicCheckRe
     contractScore,
     contractResults: contracts,
     score,
-    maxScore: 20,
+    maxScore: 40,
     details,
   };
 }

@@ -155,17 +155,17 @@ Known gaps in the captured corpus:
 
 ## Scoring
 
-Every completed task is scored out of 100: the new 20-point deterministic integrity check is
-scaled to a 40-point contribution, and the existing 60-point judge verdict is kept unchanged.
+Every completed task is scored out of 100: the new deterministic integrity check is scored
+directly out of 40, and the existing 60-point judge verdict is kept unchanged.
 This first v2 phase does not call a new judge or change the semantic rubric. The checks below
 count only non-exempt figures: prices, amounts, margins, growth rates and the like. Years, dates,
 fiscal labels, tickers, SEC item numbers, ordinals and small counts are exempt
 ([architecture › Evidence](../docs/architecture.md#evidence)).
 
-### Deterministic integrity (20 raw points, scaled to 40)
+### Deterministic integrity (40 points)
 
-1. **Required evidence (6)**: each task's evidence requirements total 15 raw points, rescaled to
-   6. Acquisition alone earns half credit; a full point requires the answer or delivered report
+1. **Required evidence (12)**: each task's evidence requirements total 15 requirement weights,
+   normalized to 12 points. Acquisition alone earns half credit; full credit requires the answer or delivered report
    to rely on what was served:
    - shows a non-exempt figure matched to that ledger entry;
    - quotes at least 8 consecutive words of a source document's body (source requirements only);
@@ -173,10 +173,10 @@ fiscal labels, tickers, SEC item numbers, ordinals and small counts are exempt
 
    An evidence tag or URL alone earns nothing. This is an acquisition/use check, not a verdict on
    whether the conclusion drawn from that source is correct.
-2. **Figure support (6)**: the exact proportion of visible non-exempt figures backed by the
-   ledger, rounded to one decimal point. Harness-repaired citations do not earn model credit.
+2. **Figure support (12)**: the exact proportion of visible non-exempt figures backed by the
+   ledger, rounded to one decimal place. Harness-repaired citations do not earn model credit.
    Source markers without verifiable figures earn zero.
-3. **Task contracts (8)**: each task declares exact obligations. Calculation contracts require a
+3. **Task contracts (16)**: each task declares exact obligations. Calculation contracts require a
    visible calculator result that matches an independently recomputed target within a stated
    tolerance, with the specified source periods, subjects and input IDs in its lineage. Other
    contracts require reading and explicitly citing named primary sources, preserving exact
@@ -279,7 +279,7 @@ The existing README table is v1 history. Its columns come from the historical su
 | Avg. tool calls per run | not in the agent section | the length of each `results[].toolCalls`, summed, ÷ repeats |
 
 In v2, invalid results are excluded, while agent timeouts and errors count as zero in expected
-user score. New summaries use `averageIntegrityScore` (/40 contribution), `averageSemanticScore` (/60),
+user score. New summaries use `averageIntegrityScore` (/40), `averageSemanticScore` (/60),
 `qualityOnCompleted` and `completionRate` alongside `expectedUserScore` (/100). Runtime, output
 tokens and tool calls are totals for one run
 of the task set, averaged over the repeats. `Mean latency` is the mean wall-clock time of one
@@ -409,7 +409,7 @@ harness tests in every subfolder; `pnpm eval` runs the benchmark.
 | `evals/harness/runner.ts` | One run: every agent × task × repeat through `runTurn`, and each result's status. |
 | `evals/harness/turn-bounds.ts` | The hung-turn backstop and the transient-retry allowance. |
 | `evals/harness/tool-seam.ts` | Serves the offline dataset to the agent's tools (or leaves them live, or captures). |
-| `evals/scoring/checks.ts` | The 20 raw deterministic integrity points, scaled to 40 when combined with the judge. |
+| `evals/scoring/checks.ts` | The 40 deterministic integrity points. |
 | `evals/scoring/judge.ts` | The judge prompt and parsing its grades. |
 | `evals/tasks.ts` | The tasks, their rubrics and their dataset scope. |
 | `evals/reporting/summary.ts`, `evals/reporting/report.ts` | Per-task and per-agent statistics; run files and baselines. |
