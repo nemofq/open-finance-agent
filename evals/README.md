@@ -176,9 +176,16 @@ fiscal labels, tickers, SEC item numbers, ordinals and small counts are exempt
 2. **Figure support (6)**: the exact proportion of visible non-exempt figures backed by the
    ledger, rounded to one decimal point. Harness-repaired citations do not earn model credit.
    Source markers without verifiable figures earn zero.
-3. **Task contracts (8)**: task-defined tool, visible-calculation, no-lookahead or report-delivery
-   requirements. An unrelated calculator call or a fallback report does not satisfy a contract.
-   Entity discovery and raw calculator use are diagnostic only.
+3. **Task contracts (8)**: each task declares exact obligations. Calculation contracts require a
+   visible calculator result that matches an independently recomputed target within a stated
+   tolerance, with the specified source periods, subjects and input IDs in its lineage. Other
+   contracts require reading and explicitly citing named primary sources, re-reading the exact
+   cross-turn evidence IDs, a quote from the required date, no look-ahead, or agent-created
+   report delivery. Citation is traceability, not a claim that the source was interpreted
+   correctly; the semantic judge handles that. A generic tool call,
+   unrelated calculation, or fallback report earns no contract points. Where the offline corpus
+   cannot pin a trustworthy numeric target, the contract tests a specific evidence or delivery
+   obligation instead. Entity discovery and raw calculator use remain diagnostic only.
 
 ### Semantic quality (80 points, existing judge)
 
