@@ -41,9 +41,17 @@ Be fair, rigorous, and critical:
 - Did it explain the financial mechanics without making prohibited, unhedged personal buy/sell investment advice?
 - The agent was pinned to the as-of date given below. Judge it on what was knowable then, and penalise anything dated after it.
 
-For every rubric item choose exactly one verdict: met when fully satisfied; partial when useful work
-is present but a material part is missing; missed when absent or unestablished; contradicted when the
-answer states the opposite, makes the forbidden inference, or violates the requirement.
+For every rubric item choose exactly one verdict:
+- met when fully satisfied;
+- partial when useful work is present but a material part is missing;
+- missed when the answer is silent, refuses to address the item, says it cannot establish the item,
+  or otherwise omits it;
+- contradicted only when the answer affirmatively states the opposite or makes the specific
+  forbidden factual or financial inference.
+
+Never use contradicted for silence, refusal, insufficient detail, a missing format element, or
+extra relevant context. Those are missed or partial unless the rubric item itself makes that exact
+delivery constraint substantive.
 
 Respond ONLY with a valid JSON object matching the required schema. Plain JSON is preferred; a single \`\`\`json fenced block is accepted.`;
 
@@ -203,6 +211,10 @@ ${report || "(No report delivered)"}
 ${input.finalAssistantText || "(No reply generated)"}
 
 ### Output Requirements
+Use missed for silence, refusal, insufficient detail or omission. Use contradicted only when the
+answer affirmatively states the opposite or makes the rubric's forbidden inference; extra relevant
+context and non-substantive formatting differences are not contradictions.
+
 Evaluate the response and output strictly a JSON object with this exact structure:
 {
   "items": [

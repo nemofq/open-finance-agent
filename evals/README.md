@@ -181,10 +181,10 @@ like. Years, dates, fiscal labels, tickers, SEC item numbers, ordinals and small
 3. **Task-specific contracts (8)**: each task declares exact obligations. Calculation contracts require a
    visible calculator result that matches an independently recomputed target within a stated
    tolerance, with the specified source periods, subjects and input IDs in its lineage. Other
-   contracts require reading and explicitly citing named primary sources, re-reading the exact
-   cross-turn evidence IDs, a quote from the required date, no look-ahead, or agent-created
-   report delivery. Citation is traceability, not a claim that the source was interpreted
-   correctly; the semantic judge handles that. A generic tool call,
+   contracts require reading and explicitly citing named primary sources, preserving exact
+   cross-turn facts and evidence, a quote from the required date, no look-ahead, or agent-created
+   report delivery. Citation is traceability, not a claim that the source was interpreted correctly;
+   the semantic judge handles that. A generic tool call,
    unrelated calculation, or fallback report earns no contract points. Where the offline corpus
    cannot pin a trustworthy numeric target, the contract tests a specific evidence or delivery
    obligation instead. Entity discovery and raw calculator use remain diagnostic only.

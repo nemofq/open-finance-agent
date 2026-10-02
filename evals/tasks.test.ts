@@ -46,6 +46,12 @@ describe("the report-delivery task", () => {
     expect(task.requiredEvidence.some((requirement) =>
       requirement.kind === "source" && requirement.urls.some((url) => url.endsWith("/q4fy24exhibit991er.htm")))).toBe(true);
   });
+
+  it("keeps formatting preferences out of the critical delivery gate", () => {
+    const critical = task.rubricItems.find((item) => item.id === "report-delivery");
+    expect(critical?.requirement).not.toMatch(/exactly one|short chat summary/i);
+    expect(critical?.requirement).toMatch(/five required sections/i);
+  });
 });
 
 describe("the profile-aware task", () => {
@@ -92,6 +98,12 @@ describe("the figure-survival task", () => {
     // The graded turn must still carry the exact latest-quarter facts pulled in the first turn.
     const pinned = task.requiredEvidence.filter((requirement) => requirement.kind === "fact" && requirement.period === "2024-09-28");
     expect(pinned?.map((requirement) => requirement.kind === "fact" && requirement.ticker)).toEqual(["AMD", "INTC"]);
+  });
+
+  it("does not make extra relevant context a critical contradiction", () => {
+    const critical = task.rubricItems.find((item) => item.id === "exact-cross-turn-figures");
+    expect(critical?.requirement).not.toMatch(/answer only/i);
+    expect(critical?.requirement).toMatch(/not a contradiction/i);
   });
 });
 

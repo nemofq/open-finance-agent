@@ -142,6 +142,12 @@ describe("what the judge sees", () => {
     expect(prompt).toContain("### Rubric Items");
     expect(prompt).not.toMatch(/Deterministic|Integrity:|\/20/);
   });
+
+  it("defines omission and refusal as missed rather than contradicted", () => {
+    const prompt = buildJudgePrompt({ task: TASK, toolCalls: [], evidence: [], checks: [], finalAssistantText: "I cannot establish that." });
+    expect(prompt).toContain("silence, refusal, insufficient detail");
+    expect(prompt).toContain("Use contradicted only when the");
+  });
 });
 
 describe("the offline data boundary", () => {

@@ -84,13 +84,8 @@ export type EvalTaskContract =
       label: string;
       points: number;
       requirementLabels: string[];
-    }
-  | {
-      id: string;
-      kind: "reread_required_evidence";
-      label: string;
-      points: number;
-      requirementLabels: string[];
+      /** Whether every named source or any equivalent named source must be cited. */
+      match: "all" | "any";
     }
   | {
       id: string;
@@ -450,7 +445,7 @@ export interface TaskEvalResult {
   transcript: AgentMessage[];
   deterministicCheck: DeterministicCheckResult;
   judgeResult?: JudgeEvaluationResult;
-  /** Semantic quality out of 80, present only for a judgeable completed/budget answer. */
+  /** Item-level semantic quality out of 80, present only for a judgeable completed/budget answer. */
   qualityScore?: number;
   /** Deterministic integrity out of 20. */
   integrityScore?: number;
