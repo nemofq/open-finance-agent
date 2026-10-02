@@ -91,7 +91,7 @@ export function scoreLine(summary: AgentSummary, repeat: number): string {
   const spread = repeat > 1 ? meanTaskSpread(summary) : undefined;
   return (
     `completion ${(summary.completionRate * 100).toFixed(1)}% · completed quality ${summary.qualityOnCompleted}/100 · expected ${summary.expectedUserScore}/100` +
-    ` · integrity ${summary.averageIntegrityScore}/20 · semantic ${summary.averageSemanticScore}/80` +
+    ` · integrity ${summary.averageIntegrityScore}/40 · semantic ${summary.averageSemanticScore}/60` +
     (summary.selfJudged ? ` (${SELF_JUDGED_LABEL})` : "") +
     (spread === undefined ? "" : ` · mean per-task σ ${spread}`)
   );
@@ -114,7 +114,7 @@ function agentSection(summary: AgentSummary, repeat: number): string[] {
     `## ${summary.agent}${summary.selfJudged ? " — self-judged" : ""}`,
     ``,
     `- Completion: **${(summary.completionRate * 100).toFixed(1)}%** · Completed quality: **${summary.qualityOnCompleted} / 100** · Expected user score: **${summary.expectedUserScore} / 100**${summary.selfJudged ? ` — ${SELF_JUDGED_LABEL}` : ""}`,
-    `- Integrity: **${summary.averageIntegrityScore} / 20** · Semantic: **${summary.averageSemanticScore} / 80** (existing judge rubric scaled from 60)`,
+    `- Integrity: **${summary.averageIntegrityScore} / 40** (v2 raw integrity × 2) · Semantic: **${summary.averageSemanticScore} / 60** (existing judge rubric)`,
     ...(spread === undefined ? [] : [`- Spread: mean per-task σ **${spread}** over ${summary.perTask.filter((task) => task.runs > 1).length} repeated task(s)`]),
     `- Completed tasks: ${summary.completedTasks} · agent failures scored zero: ${summary.agentFailures} · infrastructure errors excluded: ${summary.infrastructureErrors} · harness/judge errors: ${summary.invalidRuns}`,
     `- Diagnostics: ${diagnosticsLine(summary.diagnostics)}`,
@@ -142,13 +142,13 @@ function resultSection(result: TaskEvalResult): string[] {
     `- Prompt: *"${result.task.prompt}"*`,
     `- As-of: ${result.task.asOfDate} · Duration: ${(result.durationMs / 1000).toFixed(1)}s · Budget: ${LIMITS.calls} calls and ${LIMITS.turnMs / 60_000}m per turn`,
     `- Status: **${result.status}**`,
-    `- Integrity: ${result.deterministicCheck.score} / 20${result.status === "agent_timeout" || result.status === "agent_error" || (result.status === "agent_budget" && !result.judgeResult) ? " (partial progress; expected score remains zero without a judgeable answer)" : result.deterministicCheck.evidenceAvailable ? "" : " (no ledger)"}`,
+    `- Integrity: ${result.integrityScore ?? result.deterministicCheck.score * 2} / 40 (raw ${result.deterministicCheck.score} / 20 × 2)${result.status === "agent_timeout" || result.status === "agent_error" || (result.status === "agent_budget" && !result.judgeResult) ? " (partial progress; expected score remains zero without a judgeable answer)" : result.deterministicCheck.evidenceAvailable ? "" : " (no ledger)"}`,
   ];
 
   if (result.judgeResult) {
     const judge = result.judgeResult;
     lines.push(
-      `- Judge: ${judge.totalJudgeScore} / 60 (intent ${judge.intentScore}/15, financial ${judge.financialScore}/20, grounding ${judge.groundingScore}/15, clarity ${judge.retailClarityScore}/10); semantic contribution: ${result.qualityScore ?? "N/A"} / 80`,
+      `- Judge: ${judge.totalJudgeScore} / 60 (intent ${judge.intentScore}/15, financial ${judge.financialScore}/20, grounding ${judge.groundingScore}/15, clarity ${judge.retailClarityScore}/10); semantic contribution: ${result.qualityScore ?? "N/A"} / 60`,
       result.totalScore === undefined ? `- Total: **unscored**` : `- Total: **${result.totalScore} / 100**`,
       `- Verdict: ${judge.overallVerdict}`,
     );

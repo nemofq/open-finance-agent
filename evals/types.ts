@@ -63,6 +63,8 @@ export type EvalTaskContract =
       label: string;
       points: number;
       requirementLabels: string[];
+      /** Whether every named source or any equivalent named source must be cited. */
+      match: "all" | "any";
     }
   | {
       id: string;
@@ -407,11 +409,11 @@ export interface TaskEvalResult {
   transcript: AgentMessage[];
   deterministicCheck: DeterministicCheckResult;
   judgeResult?: JudgeEvaluationResult;
-  /** Semantic quality out of 80, present only for a judgeable completed/budget answer. */
+  /** Existing judge quality out of 60, present only for a judgeable completed/budget answer. */
   qualityScore?: number;
-  /** Deterministic integrity out of 20. */
+  /** Deterministic integrity contribution out of 40; the underlying check remains out of 20. */
   integrityScore?: number;
-  /** Combined v2 score out of 100, using the existing 60-point judge scaled to 80. */
+  /** Combined score out of 100: the v2 integrity check scaled to 40 plus the existing judge /60. */
   totalScore?: number;
   /** False means infrastructure, harness/data, or judge failure made this result non-comparable. */
   valid?: boolean;

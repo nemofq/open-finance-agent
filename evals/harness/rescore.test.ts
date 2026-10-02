@@ -28,7 +28,7 @@ describe("saved-run rescoring", () => {
     expect(saved.benchmarkVersion).toBe("1");
   });
 
-  it("reuses the recorded judge verdict and scales 13/60 to 17.33/80", () => {
+  it("reuses the recorded 13/60 judge verdict and scales raw integrity to 40", () => {
     const task = RETAIL_EVAL_TASKS[0];
     const result = {
       task, agent: "p/model", repeat: 1, status: "completed", valid: true,
@@ -52,8 +52,8 @@ describe("saved-run rescoring", () => {
     } as unknown as EvalRunSummary;
 
     const rescored = rescoreRun(saved);
-    expect(rescored.results[0]).toMatchObject({ integrityScore: 0, qualityScore: 17.33, totalScore: 17.33 });
-    expect(rescored.agentSummaries[0]).toMatchObject({ completionRate: 1, qualityOnCompleted: 17.3, expectedUserScore: 17.3 });
+    expect(rescored.results[0]).toMatchObject({ integrityScore: 0, qualityScore: 13, totalScore: 13 });
+    expect(rescored.agentSummaries[0]).toMatchObject({ completionRate: 1, qualityOnCompleted: 13, expectedUserScore: 13 });
     expect(saved.results[0].judgeResult?.totalJudgeScore).toBe(13);
     expect(saved.results[0].totalScore).toBe(53);
   });

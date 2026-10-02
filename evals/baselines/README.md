@@ -1,7 +1,8 @@
 # Baselines
 
 The committed baselines below are historical **benchmark v1** results. They remain readable,
-but their 40/60 scores cannot be compared directly with v2's 20/80 scores. No v2 baseline has
+but their checks cannot be compared directly with v2's rewritten integrity checks. The first v2
+phase keeps the 40/60 contribution split. No v2 baseline has
 been promoted yet; the first v2 PR reports local rescoring separately without committing rollouts.
 
 Each JSON file here is one committed run, promoted with `--baseline`, and one row of the

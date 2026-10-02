@@ -153,11 +153,16 @@ describe("v2 deterministic integrity", () => {
     const used = runDeterministicChecks({ task, toolCalls: calls, finalText: "The filings show 331,200 BTC [E1] and $2.6B notes [E2].",
       sessionTickers: [], evidence, figureMatches: [match("331,200", 331200, ["E1"]), match("$2.6B", 2_600_000_000, ["E2"])], evidenceAvailable: true });
     expect(used.contractScore).toBe(8);
+    const finalTerms = runDeterministicChecks({ task, toolCalls: [calls[0]],
+      finalText: "The November 25 filing reports the holdings and final $3.0B note terms [E1].",
+      sessionTickers: [], evidence: [evidence[0]],
+      figureMatches: [match("$3.0B", 3_000_000_000, ["E1"])], evidenceAvailable: true });
+    expect(finalTerms.contractScore).toBe(8);
     expect(runDeterministicChecks({ task, toolCalls: calls, finalText: "Both figures came from filings.",
       sessionTickers: [], evidence, figureMatches: [match("331,200", 331200, ["E1"]), match("$2.6B", 2_600_000_000, ["E2"])], evidenceAvailable: true }).contractScore).toBe(0);
   });
 
-  it("requires an exact cross-turn evidence_get and a dated Apple quote", () => {
+  it("accepts exact cross-turn recovery by evidence id or equivalent re-fetch, and requires a dated Apple quote", () => {
     const cross = RETAIL_EVAL_TASKS.find((item) => item.id === "retail-13-semis-figure-survival");
     const apple = RETAIL_EVAL_TASKS.find((item) => item.id === "retail-14-apple-pre-open-timing");
     if (!cross || !apple) throw new Error("missing cross-turn or Apple task");
@@ -177,6 +182,23 @@ describe("v2 deterministic integrity", () => {
     expect(runDeterministicChecks({ ...crossBase, toolCalls: [...crossBase.toolCalls, wrongRead] }).contractScore).toBe(4);
     const reads = ["E1", "E2"].map((id) => call("evidence_get", { id }, { id, from: "facts" }));
     expect(runDeterministicChecks({ ...crossBase, toolCalls: [...crossBase.toolCalls, ...reads] }).contractScore).toBe(8);
+
+    const refetchCalls = [
+      call("edgar_financials", { ticker: "AMD" }, { statement: "key_metrics", evidence: { id: "E3" } }),
+      call("edgar_financials", { ticker: "INTC" }, { statement: "key_metrics", evidence: { id: "E4" } }),
+    ];
+    refetchCalls[0].toolCallId = "refetch-amd";
+    refetchCalls[1].toolCallId = "refetch-intc";
+    const refetched = [
+      entry("E3", "E", { toolCallId: "refetch-amd", tool: "edgar_financials", entity: { ticker: "AMD" },
+        source: { id: "edgar", name: "SEC EDGAR", tier: 1 },
+        facts: [{ metric: "revenue", period: "2024-09-28", value: 6819, unit: "USD" }] }),
+      entry("E4", "E", { toolCallId: "refetch-intc", tool: "edgar_financials", entity: { ticker: "INTC" },
+        source: { id: "edgar", name: "SEC EDGAR", tier: 1 },
+        facts: [{ metric: "grossMargin", period: "2024-09-28", value: 15, unit: "%" }] }),
+    ];
+    expect(runDeterministicChecks({ ...crossBase, toolCalls: [...crossBase.toolCalls, ...refetchCalls],
+      evidence: [...facts, ...refetched] }).contractScore).toBe(8);
 
     const quote = (period: string) => entry("E1", "E", { tool: "market_quotes", entity: { ticker: "AAPL" },
       facts: [{ metric: "close", period, value: 230, unit: "USD" }] });

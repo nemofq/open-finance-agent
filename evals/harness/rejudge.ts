@@ -46,8 +46,8 @@ export function applyJudgement(result: TaskEvalResult, judgeResult: JudgeEvaluat
     result.status = budgetExhausted(result.stop) ? "agent_budget" : "completed";
     result.valid = true;
     delete result.invalidReason;
-    result.qualityScore = round((judgeResult.totalJudgeScore / judgeResult.maxJudgeScore) * 80, 2);
-    result.integrityScore = result.deterministicCheck.score;
+    result.qualityScore = round(judgeResult.totalJudgeScore, 2);
+    result.integrityScore = round(result.deterministicCheck.score * 2, 2);
     result.totalScore = round(result.integrityScore + result.qualityScore, 2);
   }
 }

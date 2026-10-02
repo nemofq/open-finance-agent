@@ -12,10 +12,10 @@ const METRICS = {
 function cell(status: "completed" | "agent_timeout", total: number): TaskEvalResult {
   return {
     task: RETAIL_EVAL_TASKS[0], agent: "p/model", repeat: status === "completed" ? 1 : 2, status, valid: true, totalScore: total,
-    finalAssistantText: status === "completed" ? "answer" : "", integrityScore: status === "completed" ? 15 : undefined,
-    qualityScore: status === "completed" ? 65 : undefined,
+    finalAssistantText: status === "completed" ? "answer" : "", integrityScore: status === "completed" ? 30 : undefined,
+    qualityScore: status === "completed" ? 50 : undefined,
     deterministicCheck: { score: 15 },
-    ...(status === "completed" ? { judgeResult: { totalJudgeScore: 65, criticalMisses: [], criticalContradictions: [] } } : {}),
+    ...(status === "completed" ? { judgeResult: { totalJudgeScore: 50, criticalMisses: [], criticalContradictions: [] } } : {}),
     metrics: METRICS, diagnostics: { toolArgumentErrors: 0, fallbackReports: 0, unverifiedFigures: 0, repairedFigures: 0 },
   } as unknown as TaskEvalResult;
 }

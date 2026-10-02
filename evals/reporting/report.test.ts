@@ -88,9 +88,9 @@ function result(): TaskEvalResult {
       judgeModel: "openrouter/openai/gpt-5",
       promptVersion: "2",
     },
-    integrityScore: 18,
-    qualityScore: 69.33,
-    totalScore: 87.33,
+    integrityScore: 36,
+    qualityScore: 52,
+    totalScore: 88,
     metrics: METRICS,
     diagnostics: { toolArgumentErrors: 2, fallbackReports: 1, unverifiedFigures: 3, repairedFigures: 1 },
   };
@@ -119,21 +119,21 @@ function summary(): EvalRunSummary {
         infrastructureErrors: 0,
         invalidRuns: 0,
         completionRate: 1,
-        qualityOnCompleted: 87.33,
-        expectedUserScore: 87.33,
-        averageIntegrityScore: 18,
-        averageSemanticScore: 69.33,
-        averageTotalScore: 87.33,
+        qualityOnCompleted: 88,
+        expectedUserScore: 88,
+        averageIntegrityScore: 36,
+        averageSemanticScore: 52,
+        averageTotalScore: 88,
         maxPossibleScore: 100,
         perTask: [
           {
             taskId: "retail-01-nvda-beat-and-drop",
             title: "Earnings Beat & Drop Paradox (NVIDIA)",
             runs: 1,
-            scores: [87.33],
-            meanIntegrity: 18,
-            meanQuality: 69.33,
-            meanTotal: 87.33,
+            scores: [88],
+            meanIntegrity: 36,
+            meanQuality: 52,
+            meanTotal: 88,
             sdTotal: 0,
             tolerance: 0,
           },
@@ -220,8 +220,8 @@ describe("run files", () => {
     const selfJudged = summary();
     selfJudged.agentSummaries[0].selfJudged = true;
     const markdown = renderSummaryMarkdown(selfJudged);
-    expect(markdown).toContain(`Expected user score: **87.33 / 100** — ${SELF_JUDGED_LABEL}`);
-    expect(scoreLine(selfJudged.agentSummaries[0], 1)).toBe(`completion 100.0% · completed quality 87.33/100 · expected 87.33/100 · integrity 18/20 · semantic 69.33/80 (${SELF_JUDGED_LABEL})`);
+    expect(markdown).toContain(`Expected user score: **88 / 100** — ${SELF_JUDGED_LABEL}`);
+    expect(scoreLine(selfJudged.agentSummaries[0], 1)).toBe(`completion 100.0% · completed quality 88/100 · expected 88/100 · integrity 36/40 · semantic 52/60 (${SELF_JUDGED_LABEL})`);
     expect(renderSummaryMarkdown(summary())).not.toContain(SELF_JUDGED_LABEL);
   });
 
@@ -239,7 +239,7 @@ describe("run files", () => {
     expect(markdown).toContain("- Spread: mean per-task σ **5.5** over 2 repeated task(s)");
     expect(markdown).toContain("| Task | Integrity | Semantic | Expected | σ |");
     expect(markdown).toContain("| 8.16 |");
-    expect(scoreLine(agent, 3)).toBe("completion 100.0% · completed quality 87.33/100 · expected 87.33/100 · integrity 18/20 · semantic 69.33/80 · mean per-task σ 5.5");
+    expect(scoreLine(agent, 3)).toBe("completion 100.0% · completed quality 88/100 · expected 88/100 · integrity 36/40 · semantic 52/60 · mean per-task σ 5.5");
 
     const single = renderSummaryMarkdown(summary());
     expect(single).not.toContain("Spread:");

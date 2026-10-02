@@ -130,11 +130,11 @@ hand-crafted twelve, covering real 2024 retail-investor situations from earnings
 value traps to leveraged proxies, auditor red flags and portfolio fit, with a pinned offline
 dataset of the filings, prices and web pages that were public at each task's cutoff.
 
-Every task runs through the same loop as a chat. Eval v2 gives 20 points to deterministic
-integrity (required evidence, figure support, task contracts) and 80 to answer quality. The
-quality component currently scales the existing 60-point judge verdict to 80; an item-level
-semantic rubric is being developed separately. Completion rate, quality on completed answers,
-and expected user score are reported independently.
+Every task runs through the same loop as a chat. Eval v2 computes deterministic integrity from a
+20-point check (required evidence, figure support and task contracts), then scales it to a
+40-point contribution. Answer quality keeps the existing 60-point judge verdict unchanged; an
+item-level semantic rubric is being developed separately. Completion rate, quality on completed
+answers, and expected user score are reported independently.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/images/benchmark-quality-cost-dark.svg" />

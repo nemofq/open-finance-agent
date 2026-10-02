@@ -369,18 +369,25 @@ function contractResults(input: ChecksInput, use: EvidenceUse): DeterministicChe
       met = namedRequirements(contract.requirementLabels, input.task)
         .every((requirement) => requirementState(requirement, input, use) === "used");
     } else if (contract.kind === "required_evidence_cited") {
-      met = namedRequirements(contract.requirementLabels, input.task)
-        .every((requirement) => citedSource(requirement, input));
+      const citations = namedRequirements(contract.requirementLabels, input.task)
+        .map((requirement) => citedSource(requirement, input));
+      met = contract.match === "all" ? citations.every(Boolean) : citations.some(Boolean);
     } else if (contract.kind === "reread_required_evidence") {
       met = namedRequirements(contract.requirementLabels, input.task).every((requirement) => {
         if (requirement.kind !== "fact") throw new Error(`Task ${input.task.id} re-read contract requires fact evidence: ${requirement.label}`);
-        const eligibleIds = new Set(eligibleFactEntries(requirement, input).map((entry) => entry.id));
-        return input.toolCalls.some((call) => {
+        const eligible = eligibleFactEntries(requirement, input);
+        const eligibleIds = new Set(eligible.map((entry) => entry.id));
+        const exactEvidenceRead = input.toolCalls.some((call) => {
           const details = asRecord(call.details);
           return call.toolName === "evidence_get" && !call.isError &&
             (details?.from === "facts" || details?.from === "table") &&
             typeof call.args.id === "string" && call.args.id === details.id && eligibleIds.has(call.args.id);
         });
+        // Re-fetching the same ticker, metric and period is an equivalent recovery path. Distinct
+        // eligible ledger entries prove the exact fact was acquired more than once without
+        // awarding a generic or unrelated tool call.
+        const acquisitions = new Set(eligible.map((entry) => entry.toolCallId ?? entry.id));
+        return exactEvidenceRead || acquisitions.size >= 2;
       });
     } else if (contract.kind === "dated_quote") {
       met = input.toolCalls.some((call) => QUOTE_TOOLS.has(call.toolName) && served(call) &&

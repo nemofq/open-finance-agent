@@ -155,14 +155,14 @@ Known gaps in the captured corpus:
 
 ## Scoring
 
-Every completed task is scored out of 100: 20 deterministic integrity points and 80 quality
-points. This first v2 phase **reuses the existing 60-point judge verdict**, scaling it by 4/3;
-it does not call a new judge or change the semantic rubric. The checks below
+Every completed task is scored out of 100: the new 20-point deterministic integrity check is
+scaled to a 40-point contribution, and the existing 60-point judge verdict is kept unchanged.
+This first v2 phase does not call a new judge or change the semantic rubric. The checks below
 count only non-exempt figures: prices, amounts, margins, growth rates and the like. Years, dates,
 fiscal labels, tickers, SEC item numbers, ordinals and small counts are exempt
 ([architecture › Evidence](../docs/architecture.md#evidence)).
 
-### Deterministic integrity (20 points)
+### Deterministic integrity (20 raw points, scaled to 40)
 
 1. **Required evidence (6)**: each task's evidence requirements total 15 raw points, rescaled to
    6. Acquisition alone earns half credit; a full point requires the answer or delivered report
@@ -179,15 +179,15 @@ fiscal labels, tickers, SEC item numbers, ordinals and small counts are exempt
 3. **Task contracts (8)**: each task declares exact obligations. Calculation contracts require a
    visible calculator result that matches an independently recomputed target within a stated
    tolerance, with the specified source periods, subjects and input IDs in its lineage. Other
-   contracts require reading and explicitly citing named primary sources, re-reading the exact
-   cross-turn evidence IDs, a quote from the required date, no look-ahead, or agent-created
-   report delivery. Citation is traceability, not a claim that the source was interpreted
-   correctly; the semantic judge handles that. A generic tool call,
+   contracts require reading and explicitly citing named primary sources, recovering the exact
+   cross-turn facts through their evidence IDs or an exact re-fetch, a quote from the required
+   date, no look-ahead, or agent-created report delivery. Citation is traceability, not a claim
+   that the source was interpreted correctly; the semantic judge handles that. A generic tool call,
    unrelated calculation, or fallback report earns no contract points. Where the offline corpus
    cannot pin a trustworthy numeric target, the contract tests a specific evidence or delivery
    obligation instead. Entity discovery and raw calculator use remain diagnostic only.
 
-### Semantic quality (80 points, existing judge)
+### Semantic quality (60 points, existing judge)
 
 An LLM judge grades the final answer against the task's rubric:
 
@@ -197,7 +197,7 @@ An LLM judge grades the final answer against the task's rubric:
   penalised.
 - **Clarity and guardrails (10)**: structure, disclaimers and no unhedged personal advice.
 
-The judge returns a 60-point verdict; code scales its total to 80 points. The judge sees the
+The judge's 60-point verdict is used directly. The judge sees the
 task's prompts, latent intent and rubric; every tool call's arguments and its
 output **truncated to 4,000 characters** (evidence-tag lines past the cut are kept); the evidence
 index; the policy check records; the deterministic score and its notes; and up to 15 lines of the
@@ -279,7 +279,7 @@ The existing README table is v1 history. Its columns come from the historical su
 | Avg. tool calls per run | not in the agent section | the length of each `results[].toolCalls`, summed, ÷ repeats |
 
 In v2, invalid results are excluded, while agent timeouts and errors count as zero in expected
-user score. New summaries use `averageIntegrityScore` (/20), `averageSemanticScore` (/80),
+user score. New summaries use `averageIntegrityScore` (/40 contribution), `averageSemanticScore` (/60),
 `qualityOnCompleted` and `completionRate` alongside `expectedUserScore` (/100). Runtime, output
 tokens and tool calls are totals for one run
 of the task set, averaged over the repeats. `Mean latency` is the mean wall-clock time of one
@@ -409,7 +409,7 @@ harness tests in every subfolder; `pnpm eval` runs the benchmark.
 | `evals/harness/runner.ts` | One run: every agent × task × repeat through `runTurn`, and each result's status. |
 | `evals/harness/turn-bounds.ts` | The hung-turn backstop and the transient-retry allowance. |
 | `evals/harness/tool-seam.ts` | Serves the offline dataset to the agent's tools (or leaves them live, or captures). |
-| `evals/scoring/checks.ts` | The 20 deterministic integrity points. |
+| `evals/scoring/checks.ts` | The 20 raw deterministic integrity points, scaled to 40 when combined with the judge. |
 | `evals/scoring/judge.ts` | The judge prompt and parsing its grades. |
 | `evals/tasks.ts` | The tasks, their rubrics and their dataset scope. |
 | `evals/reporting/summary.ts`, `evals/reporting/report.ts` | Per-task and per-agent statistics; run files and baselines. |
