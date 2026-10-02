@@ -11,22 +11,30 @@ import type { AgentSummary, EvalRunSummary, EvalTask, RunDiagnostics, TaskEvalRe
 /** The run-level figures derived from its results: per-agent and per-task statistics and the run's identity. */
 
 type Scored = TaskEvalResult & { totalScore: number };
+type Completed = Scored & { judgeResult: NonNullable<TaskEvalResult["judgeResult"]> };
 
 /** The results that count toward the scores: not invalidated, and given a total. */
 function scoredResults(results: TaskEvalResult[]): Scored[] {
   return results.filter((result): result is Scored => result.valid !== false && result.totalScore !== undefined);
 }
 
+function completedResults(results: TaskEvalResult[]): Completed[] {
+  return scoredResults(results).filter((result): result is Completed =>
+    (result.status === "completed" || result.status === "agent_budget") && result.judgeResult !== undefined,
+  );
+}
+
 function taskStats(task: EvalTask, results: TaskEvalResult[]): TaskStat {
   const valid = scoredResults(results);
+  const completed = completedResults(results);
   const scores = valid.map((result) => result.totalScore);
   return {
     taskId: task.id,
     title: task.title,
     runs: valid.length,
     scores,
-    meanDeterministic: round(mean(valid.map((result) => result.deterministicCheck.score))),
-    meanJudge: round(mean(valid.map((result) => result.judgeResult?.totalJudgeScore ?? 0))),
+    meanIntegrity: round(mean(completed.map((result) => result.integrityScore ?? result.deterministicCheck.score))),
+    meanQuality: round(mean(completed.map((result) => result.qualityScore ?? (result.judgeResult.totalJudgeScore / 60) * 80))),
     meanTotal: round(mean(scores)),
     sdTotal: round(standardDeviation(scores), 2),
     tolerance: round(noiseTolerance(scores), 2),
@@ -49,6 +57,10 @@ export function sumDiagnostics(results: TaskEvalResult[]): RunDiagnostics {
 export function summariseAgent(agent: ModelRef, judge: ModelRef, tasks: EvalTask[], results: TaskEvalResult[]): AgentSummary {
   const mine = results.filter((result) => result.agent === modelRefKey(agent));
   const valid = scoredResults(mine);
+  const completed = completedResults(mine);
+  const perTask = tasks.map((task) => taskStats(task, mine.filter((result) => result.task.id === task.id)));
+  const expectedUserScore = round(mean(perTask.filter((task) => task.runs > 0).map((task) => task.meanTotal)));
+  const completionRate = valid.length === 0 ? 0 : round(completed.length / valid.length, 3);
   return {
     agent: modelRefKey(agent),
     selfJudged: sameModelRef(agent, judge),
@@ -57,11 +69,14 @@ export function summariseAgent(agent: ModelRef, judge: ModelRef, tasks: EvalTask
     agentFailures: mine.filter((result) => isAgentFailure(result)).length,
     infrastructureErrors: mine.filter((result) => result.status === "infra_error").length,
     invalidRuns: mine.filter((result) => result.status === "harness_error" || result.status === "judge_error").length,
-    averageDeterministicScore: round(mean(valid.map((result) => result.deterministicCheck.score))),
-    averageJudgeScore: round(mean(valid.map((result) => result.judgeResult?.totalJudgeScore ?? 0))),
-    averageTotalScore: round(mean(valid.map((result) => result.totalScore))),
+    completionRate,
+    qualityOnCompleted: round(mean(completed.map((result) => result.totalScore))),
+    expectedUserScore,
+    averageIntegrityScore: round(mean(completed.map((result) => result.integrityScore ?? result.deterministicCheck.score))),
+    averageSemanticScore: round(mean(completed.map((result) => result.qualityScore ?? (result.judgeResult.totalJudgeScore / 60) * 80))),
+    averageTotalScore: expectedUserScore,
     maxPossibleScore: 100,
-    perTask: tasks.map((task) => taskStats(task, mine.filter((result) => result.task.id === task.id))),
+    perTask,
     metrics: aggregateMetrics(mine.map((result) => result.metrics)),
     diagnostics: sumDiagnostics(mine),
   };

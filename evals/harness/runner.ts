@@ -246,6 +246,7 @@ export async function runTask(options: RunTaskOptions): Promise<TaskEvalResult> 
     finalText: trace.finalText,
     toolCalls,
   });
+  const diagnostics = countDiagnostics(toolCalls, trace.transcript);
 
   const deterministicCheck = runDeterministicChecks({
     task,
@@ -256,6 +257,7 @@ export async function runTask(options: RunTaskOptions): Promise<TaskEvalResult> 
     figureMatches: analysis.figureMatches,
     reportFigureMatches: analysis.reportFigureMatches,
     evidenceAvailable: analysis.available,
+    fallbackReports: diagnostics.fallbackReports,
   });
 
   const metrics = computeMetrics({
@@ -297,6 +299,7 @@ export async function runTask(options: RunTaskOptions): Promise<TaskEvalResult> 
             ? "agent_error"
             : "completed";
   const valid = status !== "harness_error" && status !== "infra_error";
+  const zeroScoreModelFailure = status === "agent_timeout" || status === "agent_error" || (status === "agent_budget" && !answered);
   const executionError = invalidReason ?? turnError;
 
   const result: TaskEvalResult = {
@@ -316,11 +319,11 @@ export async function runTask(options: RunTaskOptions): Promise<TaskEvalResult> 
     sessionTickers: trace.tickers,
     transcript: trace.transcript,
     deterministicCheck,
-    ...(valid && agentFailure ? { totalScore: 0 } : {}),
+    ...(valid && zeroScoreModelFailure ? { totalScore: 0 } : {}),
     valid,
     ...(invalidReason ? { invalidReason } : {}),
     metrics,
-    diagnostics: countDiagnostics(toolCalls, trace.transcript),
+    diagnostics,
     ...(offlineAudit ? { offlineAudit } : {}),
     ...(providerRetries > 0 ? { providerRetries } : {}),
     ...(providerRetryErrors.length > 0 ? { providerRetryErrors } : {}),

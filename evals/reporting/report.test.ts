@@ -65,9 +65,13 @@ function result(): TaskEvalResult {
       figuresChecked: 4,
       figuresBacked: 3,
       evidenceAvailable: true,
-      score: 38,
-      maxScore: 40,
-      details: ["[Entities: 15/15] found [NVIDIA]"],
+      evidenceScore: 5,
+      figureSupportScore: 5,
+      contractScore: 8,
+      contractResults: [],
+      score: 18,
+      maxScore: 20,
+      details: ["[Entities: diagnostic] found [NVIDIA]"],
     },
     judgeResult: {
       intentScore: 14,
@@ -84,7 +88,9 @@ function result(): TaskEvalResult {
       judgeModel: "openrouter/openai/gpt-5",
       promptVersion: "2",
     },
-    totalScore: 90,
+    integrityScore: 18,
+    qualityScore: 69.33,
+    totalScore: 87.33,
     metrics: METRICS,
     diagnostics: { toolArgumentErrors: 2, fallbackReports: 1, unverifiedFigures: 3, repairedFigures: 1 },
   };
@@ -112,19 +118,22 @@ function summary(): EvalRunSummary {
         agentFailures: 0,
         infrastructureErrors: 0,
         invalidRuns: 0,
-        averageDeterministicScore: 38,
-        averageJudgeScore: 52,
-        averageTotalScore: 90,
+        completionRate: 1,
+        qualityOnCompleted: 87.33,
+        expectedUserScore: 87.33,
+        averageIntegrityScore: 18,
+        averageSemanticScore: 69.33,
+        averageTotalScore: 87.33,
         maxPossibleScore: 100,
         perTask: [
           {
             taskId: "retail-01-nvda-beat-and-drop",
             title: "Earnings Beat & Drop Paradox (NVIDIA)",
             runs: 1,
-            scores: [90],
-            meanDeterministic: 38,
-            meanJudge: 52,
-            meanTotal: 90,
+            scores: [87.33],
+            meanIntegrity: 18,
+            meanQuality: 69.33,
+            meanTotal: 87.33,
             sdTotal: 0,
             tolerance: 0,
           },
@@ -211,8 +220,8 @@ describe("run files", () => {
     const selfJudged = summary();
     selfJudged.agentSummaries[0].selfJudged = true;
     const markdown = renderSummaryMarkdown(selfJudged);
-    expect(markdown).toContain(`Total: **90 / 100** — ${SELF_JUDGED_LABEL}`);
-    expect(scoreLine(selfJudged.agentSummaries[0], 1)).toBe(`checks 38/40 · judge 52/60 · total 90/100 (${SELF_JUDGED_LABEL})`);
+    expect(markdown).toContain(`Expected user score: **87.33 / 100** — ${SELF_JUDGED_LABEL}`);
+    expect(scoreLine(selfJudged.agentSummaries[0], 1)).toBe(`completion 100.0% · completed quality 87.33/100 · expected 87.33/100 · integrity 18/20 · semantic 69.33/80 (${SELF_JUDGED_LABEL})`);
     expect(renderSummaryMarkdown(summary())).not.toContain(SELF_JUDGED_LABEL);
   });
 
@@ -228,9 +237,9 @@ describe("run files", () => {
     expect(meanTaskSpread(agent)).toBe(5.5);
     const markdown = renderSummaryMarkdown(repeated);
     expect(markdown).toContain("- Spread: mean per-task σ **5.5** over 2 repeated task(s)");
-    expect(markdown).toContain("| Task | Checks | Judge | Total | σ | Tolerance (2σ) |");
-    expect(markdown).toContain("| 8.16 | ±16.33 |");
-    expect(scoreLine(agent, 3)).toBe("checks 38/40 · judge 52/60 · total 90/100 · mean per-task σ 5.5");
+    expect(markdown).toContain("| Task | Integrity | Semantic | Expected | σ |");
+    expect(markdown).toContain("| 8.16 |");
+    expect(scoreLine(agent, 3)).toBe("completion 100.0% · completed quality 87.33/100 · expected 87.33/100 · integrity 18/20 · semantic 69.33/80 · mean per-task σ 5.5");
 
     const single = renderSummaryMarkdown(summary());
     expect(single).not.toContain("Spread:");
@@ -242,8 +251,10 @@ describe("run files", () => {
     const report = summary();
     const timeout = result();
     timeout.status = "agent_timeout";
-    timeout.deterministicCheck.score = 40;
+    timeout.deterministicCheck.score = 20;
     timeout.totalScore = 0;
+    timeout.judgeResult = undefined;
+    timeout.qualityScore = undefined;
     timeout.finalAssistantText = "partial extraction";
     timeout.error = "Agent turn exceeded the eval timeout";
     const infra = result();
@@ -260,7 +271,7 @@ describe("run files", () => {
 
     const markdown = renderSummaryMarkdown(report);
 
-    expect(markdown).toContain("partial progress; completion score remains zero");
+    expect(markdown).toContain("partial progress; expected score remains zero");
     expect(markdown).toContain("Provider retries: 2");
     expect(markdown).toContain("Total: **unscored**");
     expect(markdown).toContain("infrastructure errors excluded: 1");
@@ -272,13 +283,14 @@ describe("run files", () => {
     spent.status = "agent_budget";
     spent.totalScore = 0;
     spent.judgeResult = undefined;
+    spent.qualityScore = undefined;
     spent.error = "The turn reached its model-call limit";
     report.results = [spent];
 
     const markdown = renderSummaryMarkdown(report);
 
     expect(markdown).toContain("Status: **agent_budget**");
-    expect(markdown).toContain("partial progress; completion score remains zero");
+    expect(markdown).toContain("partial progress; expected score remains zero");
     expect(markdown).toContain("Budget: 32 calls and 12m per turn");
     expect(markdown).not.toContain("Turn timeout");
   });

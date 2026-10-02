@@ -90,7 +90,8 @@ export function meanTaskSpread(summary: AgentSummary): number | undefined {
 export function scoreLine(summary: AgentSummary, repeat: number): string {
   const spread = repeat > 1 ? meanTaskSpread(summary) : undefined;
   return (
-    `checks ${summary.averageDeterministicScore}/40 · judge ${summary.averageJudgeScore}/60 · total ${summary.averageTotalScore}/100` +
+    `completion ${(summary.completionRate * 100).toFixed(1)}% · completed quality ${summary.qualityOnCompleted}/100 · expected ${summary.expectedUserScore}/100` +
+    ` · integrity ${summary.averageIntegrityScore}/20 · semantic ${summary.averageSemanticScore}/80` +
     (summary.selfJudged ? ` (${SELF_JUDGED_LABEL})` : "") +
     (spread === undefined ? "" : ` · mean per-task σ ${spread}`)
   );
@@ -112,21 +113,22 @@ function agentSection(summary: AgentSummary, repeat: number): string[] {
   const lines = [
     `## ${summary.agent}${summary.selfJudged ? " — self-judged" : ""}`,
     ``,
-    `- Checks: **${summary.averageDeterministicScore} / 40** · Judge: **${summary.averageJudgeScore} / 60** · Total: **${summary.averageTotalScore} / 100**${summary.selfJudged ? ` — ${SELF_JUDGED_LABEL}` : ""}`,
-    ...(spread === undefined ? [] : [`- Spread: mean per-task σ **${spread}** over ${summary.perTask.filter((task) => task.runs > 1).length} repeated task(s); per-task σ and 2σ tolerance below`]),
+    `- Completion: **${(summary.completionRate * 100).toFixed(1)}%** · Completed quality: **${summary.qualityOnCompleted} / 100** · Expected user score: **${summary.expectedUserScore} / 100**${summary.selfJudged ? ` — ${SELF_JUDGED_LABEL}` : ""}`,
+    `- Integrity: **${summary.averageIntegrityScore} / 20** · Semantic: **${summary.averageSemanticScore} / 80** (existing judge rubric scaled from 60)`,
+    ...(spread === undefined ? [] : [`- Spread: mean per-task σ **${spread}** over ${summary.perTask.filter((task) => task.runs > 1).length} repeated task(s)`]),
     `- Completed tasks: ${summary.completedTasks} · agent failures scored zero: ${summary.agentFailures} · infrastructure errors excluded: ${summary.infrastructureErrors} · harness/judge errors: ${summary.invalidRuns}`,
     `- Diagnostics: ${diagnosticsLine(summary.diagnostics)}`,
     ``,
-    repeat > 1 ? `| Task | Checks | Judge | Total | σ | Tolerance (2σ) |` : `| Task | Checks | Judge | Total |`,
-    repeat > 1 ? `| :--- | ---: | ---: | ---: | ---: | ---: |` : `| :--- | ---: | ---: | ---: |`,
+    repeat > 1 ? `| Task | Integrity | Semantic | Expected | σ |` : `| Task | Integrity | Semantic | Expected |`,
+    repeat > 1 ? `| :--- | ---: | ---: | ---: | ---: |` : `| :--- | ---: | ---: | ---: |`,
   ];
 
   for (const task of summary.perTask) {
     const unavailable = task.runs === 0;
     lines.push(
       repeat > 1
-        ? `| ${task.title} | ${unavailable ? "—" : task.meanDeterministic} | ${unavailable ? "—" : task.meanJudge} | **${unavailable ? "unscored" : task.meanTotal}** | ${unavailable ? "—" : task.sdTotal} | ${unavailable ? "—" : `±${task.tolerance}`} |`
-        : `| ${task.title} | ${unavailable ? "—" : task.meanDeterministic} | ${unavailable ? "—" : task.meanJudge} | **${unavailable ? "unscored" : task.meanTotal}** |`,
+        ? `| ${task.title} | ${unavailable ? "—" : task.meanIntegrity} | ${unavailable ? "—" : task.meanQuality} | **${unavailable ? "unscored" : task.meanTotal}** | ${unavailable ? "—" : task.sdTotal} |`
+        : `| ${task.title} | ${unavailable ? "—" : task.meanIntegrity} | ${unavailable ? "—" : task.meanQuality} | **${unavailable ? "unscored" : task.meanTotal}** |`,
     );
   }
 
@@ -140,13 +142,13 @@ function resultSection(result: TaskEvalResult): string[] {
     `- Prompt: *"${result.task.prompt}"*`,
     `- As-of: ${result.task.asOfDate} · Duration: ${(result.durationMs / 1000).toFixed(1)}s · Budget: ${LIMITS.calls} calls and ${LIMITS.turnMs / 60_000}m per turn`,
     `- Status: **${result.status}**`,
-    `- Checks: ${result.deterministicCheck.score} / 40${result.status === "agent_timeout" || result.status === "agent_error" || (result.status === "agent_budget" && !result.judgeResult) ? " (partial progress; completion score remains zero without a judgeable answer)" : result.deterministicCheck.evidenceAvailable ? "" : " (no-ledger fallback rules)"}`,
+    `- Integrity: ${result.deterministicCheck.score} / 20${result.status === "agent_timeout" || result.status === "agent_error" || (result.status === "agent_budget" && !result.judgeResult) ? " (partial progress; expected score remains zero without a judgeable answer)" : result.deterministicCheck.evidenceAvailable ? "" : " (no ledger)"}`,
   ];
 
   if (result.judgeResult) {
     const judge = result.judgeResult;
     lines.push(
-      `- Judge: ${judge.totalJudgeScore} / 60 (intent ${judge.intentScore}/15, financial ${judge.financialScore}/20, grounding ${judge.groundingScore}/15, clarity ${judge.retailClarityScore}/10)`,
+      `- Judge: ${judge.totalJudgeScore} / 60 (intent ${judge.intentScore}/15, financial ${judge.financialScore}/20, grounding ${judge.groundingScore}/15, clarity ${judge.retailClarityScore}/10); semantic contribution: ${result.qualityScore ?? "N/A"} / 80`,
       result.totalScore === undefined ? `- Total: **unscored**` : `- Total: **${result.totalScore} / 100**`,
       `- Verdict: ${judge.overallVerdict}`,
     );

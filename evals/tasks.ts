@@ -1,8 +1,8 @@
-import type { EvalTask } from "./types";
+import type { EvalTask, EvalTaskContract } from "./types";
 import { evidenceRequirementsForTask } from "./offline/coverage-contract";
 
 /** The task definitions; each task's required evidence comes from the dataset's coverage contract. */
-const TASKS: Omit<EvalTask, "requiredEvidence">[] = [
+const TASKS: Omit<EvalTask, "requiredEvidence" | "contracts">[] = [
   {
     id: "retail-01-nvda-beat-and-drop",
     category: "earnings_paradox",
@@ -369,4 +369,49 @@ const TASKS: Omit<EvalTask, "requiredEvidence">[] = [
 ];
 
 /** The benchmark's twelve tasks: fully historical 2024 retail-investor scenarios. */
-export const RETAIL_EVAL_TASKS: EvalTask[] = TASKS.map((task) => ({ ...task, requiredEvidence: evidenceRequirementsForTask(task.id) }));
+const QUOTE_TOOLS = ["market_quotes", "alphavantage__GLOBAL_QUOTE", "alphavantage__TIME_SERIES_DAILY"];
+
+function contracts(task: Omit<EvalTask, "requiredEvidence" | "contracts">): EvalTaskContract[] {
+  if (task.id === "retail-11-nike-earnings-review-report") {
+    return [{
+      id: "earnings-report",
+      kind: "report",
+      label: "Agent-created earnings review with all required sections",
+      points: 8,
+      template: "earnings-review",
+      sections: ["Results vs expectations", "Guidance", "Drivers", "Reaction", "Stance"],
+      requireAgentDelivery: true,
+    }];
+  }
+  if (task.id === "retail-12-concentration-profile-fit") {
+    return [
+      { id: "portfolio-read", kind: "tool_any", label: "Read the seeded holdings", points: 4, tools: ["portfolio_get"] },
+      { id: "used-calculation", kind: "used_calculation", label: "Use a calculator result in the delivered answer", points: 4 },
+    ];
+  }
+  if (task.id === "retail-13-semis-figure-survival") {
+    return [
+      { id: "evidence-reread", kind: "tool_any", label: "Re-read prior-turn evidence", points: 4, tools: ["evidence_get"] },
+      { id: "used-calculation", kind: "used_calculation", label: "Use a calculator result in the analysis", points: 4 },
+    ];
+  }
+  if (task.requiresMathCalculation) {
+    return [{ id: "used-calculation", kind: "used_calculation", label: "Use a calculator result in the delivered answer", points: 8 }];
+  }
+  if (task.id === "retail-14-apple-pre-open-timing") {
+    return [
+      { id: "dated-quote", kind: "tool_any", label: "Fetch the dated prior close", points: 4, tools: QUOTE_TOOLS },
+      { id: "no-lookahead", kind: "no_lookahead", label: "Use no post-cutoff evidence", points: 4 },
+    ];
+  }
+  return [
+    { id: "primary-source", kind: "tool_any", label: "Read a primary filing", points: 4, tools: ["edgar_read_filing"] },
+    { id: "no-lookahead", kind: "no_lookahead", label: "Use no post-cutoff evidence", points: 4 },
+  ];
+}
+
+export const RETAIL_EVAL_TASKS: EvalTask[] = TASKS.map((task) => ({
+  ...task,
+  requiredEvidence: evidenceRequirementsForTask(task.id),
+  contracts: contracts(task),
+}));

@@ -112,6 +112,16 @@ describe("parseArgs", () => {
     expect(parseArgs(["--judge-only", "run.json", "--judge-thinking", "high"])).toMatchObject({ ok: false });
   });
 
+  it("accepts local rescoring without models and refuses incompatible scoring flags", () => {
+    expect(options(["--rescore", "old-run.json", "--out", "/tmp/rescored"])).toMatchObject({
+      rescore: "old-run.json", outDir: "/tmp/rescored",
+    });
+    expect(parseArgs(["--rescore"])).toMatchObject({ ok: false });
+    for (const flags of [["--agent", "p/a"], ["--judge", "p/j"], ["--judge-only", "run.json"], ["--baseline", "b"]]) {
+      expect(parseArgs(["--rescore", "old-run.json", ...flags])).toMatchObject({ ok: false });
+    }
+  });
+
   it("recognises --list, --list-models and --help without any model", () => {
     expect(options(["--list"]).list).toBe(true);
     expect(options(["--list-models"]).listModels).toBe(true);

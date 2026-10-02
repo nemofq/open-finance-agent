@@ -43,6 +43,7 @@ export interface CliOptions {
   checkpointPath?: string;
   resumePath?: string;
   judgeOnly?: string;
+  rescore?: string;
   thinking?: ThinkingLevel;
   /** The judge's reasoning level; unset sends the judge none, as every run before the flag did. */
   judgeThinking?: ThinkingLevel;
@@ -80,6 +81,8 @@ Options:
   --resume <path>          Resume completed cells from a checkpoint JSON
   --judge-only <path>      Finish a saved run JSON: judge the results whose judgement is missing
                            or failed, with the run's own judge (no --judge); takes --baseline
+  --rescore <run.json>     Recompute v2 integrity from saved traces, reuse the recorded judge
+                           verdict, and write a new run without changing the source
   --observe                Run the enforcement rules in observe mode
   --keep                   Keep the temporary data folder for inspection
   --list                   List the benchmark tasks
@@ -214,6 +217,12 @@ export function parseArgs(argv: string[]): ParseResult {
         options.judgeOnly = value;
         break;
       }
+      case "--rescore": {
+        const value = needsValue();
+        if (!value) return { ok: false, error: "--rescore needs a run JSON path." };
+        options.rescore = value;
+        break;
+      }
       case "--thinking":
       case "--judge-thinking": {
         const value = needsValue();
@@ -232,6 +241,9 @@ export function parseArgs(argv: string[]): ParseResult {
   if (options.judgeOnly && options.judge) return { ok: false, error: "--judge-only grades with the judge the run was graded by; leave out --judge." };
   if (options.judgeOnly && options.judgeThinking) {
     return { ok: false, error: "--judge-only grades at the judge thinking the run recorded; leave out --judge-thinking." };
+  }
+  if (options.rescore && (options.judgeOnly || options.judge || options.agents.length > 0 || options.baseline || options.judgeThinking)) {
+    return { ok: false, error: "--rescore reuses the saved judge verdict; leave out --agent, --judge, --judge-only, --judge-thinking and --baseline." };
   }
   return { ok: true, options };
 }
@@ -304,12 +316,12 @@ function pad(value: string, width: number): string {
 }
 
 function printFinalTable(results: TaskEvalResult[]): void {
-  console.log(`\n${pad("Task", 34)} ${pad("Agent", 26)} ${pad("Checks", 7)} ${pad("Judge", 7)} ${pad("Total", 6)}`);
+  console.log(`\n${pad("Task", 34)} ${pad("Agent", 26)} ${pad("Integrity", 10)} ${pad("Semantic", 9)} ${pad("Total", 6)}`);
   console.log("-".repeat(84));
   for (const result of results) {
     console.log(
-      `${pad(result.task.title, 34)} ${pad(result.agent, 26)} ${pad(`${result.deterministicCheck.score}/40`, 7)} ` +
-        `${pad(result.judgeResult ? `${result.judgeResult.totalJudgeScore}/60` : "—", 7)} ${pad(result.totalScore === undefined ? "INVALID" : `${result.totalScore}`, 6)}`,
+      `${pad(result.task.title, 34)} ${pad(result.agent, 26)} ${pad(`${result.deterministicCheck.score}/20`, 10)} ` +
+        `${pad(result.qualityScore === undefined ? "N/A" : `${result.qualityScore}/80`, 9)} ${pad(result.totalScore === undefined ? "INVALID" : `${result.totalScore}`, 6)}`,
     );
   }
 }
@@ -327,7 +339,7 @@ function progress(event: ProgressEvent): void {
   const audit = result.offlineAudit;
   const score = result.totalScore === undefined
     ? "unscored"
-    : `checks ${result.deterministicCheck.score}/40 · judge ${result.judgeResult?.totalJudgeScore ?? 0}/60 · total ${result.totalScore}/100`;
+    : `integrity ${result.deterministicCheck.score}/20 · semantic ${result.qualityScore === undefined ? "N/A" : `${result.qualityScore}/80`} · expected ${result.totalScore}/100`;
   const { diagnostics } = result;
   console.log(
     `  ${score} · ${result.status} · ${result.metrics.modelCalls} model calls · ${result.metrics.tokens.output} output tokens · ` +
@@ -356,14 +368,24 @@ async function main(): Promise<number> {
     return 0;
   }
 
-  const { readConfig } = await import("@/lib/config/store");
-  const { configPath: defaultConfigPath } = await import("@/lib/paths");
-
-  const source = options.configPath ? path.resolve(process.cwd(), options.configPath) : defaultConfigPath();
   const outDir = options.outDir
     ? path.resolve(process.cwd(), options.outDir)
     : fileURLToPath(new URL("results/", import.meta.url));
   const baselineDir = fileURLToPath(new URL("baselines/", import.meta.url));
+
+  if (options.rescore) {
+    const saved = JSON.parse(readFileSync(path.resolve(process.cwd(), options.rescore), "utf8")) as EvalRunSummary;
+    const { rescoreRun } = await import("./harness/rescore");
+    const summary = rescoreRun(saved);
+    const files = writeRunFiles(summary, outDir);
+    printFinalTable(summary.results);
+    console.log(`\nRescored v${summary.benchmarkVersion} run: ${files.jsonPath}\nSummary: ${files.mdPath}`);
+    return benchmarkValidityIssues(summary).length > 0 ? 1 : 0;
+  }
+
+  const { readConfig } = await import("@/lib/config/store");
+  const { configPath: defaultConfigPath } = await import("@/lib/paths");
+  const source = options.configPath ? path.resolve(process.cwd(), options.configPath) : defaultConfigPath();
 
   // Everything below runs against the temporary home: `dataDir()` reads OFA_HOME on every call.
   const home = createTempHome(source);

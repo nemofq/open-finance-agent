@@ -44,8 +44,8 @@ export function deliveredReportSpecs(toolCalls: ToolCallTrace[]): ReportSpec[] {
 /**
  * The report validator's own per-figure outcome, which `create_report` returns in
  * `details.verification`: `checked` counts prose figures, numeric cells and references; `supported`
- * those with no issue; `repaired` citations the validator corrected (the value is held, so they are
- * backed); `unverified` the rest.
+ * those with no issue; `repaired` citations the harness corrected (reported separately and not
+ * credited to the model by v2 scoring); `unverified` the rest.
  */
 export function reportVerification(details: unknown): ReportVerification | undefined {
   return asRecord(details)?.verification as ReportVerification | undefined;

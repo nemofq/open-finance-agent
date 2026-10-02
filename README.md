@@ -130,10 +130,11 @@ hand-crafted twelve, covering real 2024 retail-investor situations from earnings
 value traps to leveraged proxies, auditor red flags and portfolio fit, with a pinned offline
 dataset of the filings, prices and web pages that were public at each task's cutoff.
 
-Every task runs through the same loop as a chat. Forty points come from deterministic checks on
-the transcript and the evidence ledger (entities, required evidence, calculator use, citations),
-each noting what was missed; sixty come from an LLM judge that scores intent, financial reasoning,
-grounding and clarity, with written feedback.
+Every task runs through the same loop as a chat. Eval v2 gives 20 points to deterministic
+integrity (required evidence, figure support, task contracts) and 80 to answer quality. The
+quality component currently scales the existing 60-point judge verdict to 80; an item-level
+semantic rubric is being developed separately. Completion rate, quality on completed answers,
+and expected user score are reported independently.
 
 | Model | Thinking effort | Judge model | Checks (/40) | Judged (/60) | Total (/100) | Avg. run time | Avg. output tokens per run | Avg. tool calls per run |
 | :--- | :--- | :--- | ---: | ---: | ---: | ---: | ---: | ---: |
@@ -143,7 +144,8 @@ grounding and clarity, with written feedback.
 | Qwen 3.8 27B avg@3 | Medium | GPT-6 Astra, medium | 35.2 | 30.2 | 65.4 | 1,685 s | 239,026 | 202 |
 | Qwen 3.8 27B avg@3 | Off | GPT-6 Astra, medium | 33.6 | 26.8 | 59.4 | 835 s | 100,714 | 216 |
 
-Benchmark version 1, policy enforced. `avg@3` is the mean of three runs of the twelve tasks. Run
+The historical table above is benchmark **version 1** and must not be compared directly with v2.
+Policy was enforced. `avg@3` is the mean of three runs of the twelve tasks. Run
 time counts the model's turns, not judging. Each row is a committed baseline, with its per-task
 scores in [evals/baselines/README.md](evals/baselines/README.md), and the tasks, the scoring and
 how to reproduce a run are in [evals/README.md](evals/README.md).

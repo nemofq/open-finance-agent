@@ -12,7 +12,7 @@ import type { ThinkingLevel } from "@/lib/config/schema";
  */
 
 /** Covers the tasks, the deterministic checks, the judge prompt and the scoring. */
-export const BENCHMARK_VERSION = "1";
+export const BENCHMARK_VERSION = "2";
 
 /**
  * Where a run's data comes from: the committed offline dataset (the only scored mode), the live
@@ -32,6 +32,37 @@ export interface EvalTaskRubric {
   /** Clarity for retail investors, avoiding unhedged buy/sell recommendations */
   retailClarityCriteria: string;
 }
+
+export type EvalTaskContract =
+  | {
+      id: string;
+      kind: "used_calculation";
+      label: string;
+      points: number;
+    }
+  | {
+      id: string;
+      kind: "tool_any";
+      label: string;
+      points: number;
+      tools: string[];
+    }
+  | {
+      id: string;
+      kind: "no_lookahead";
+      label: string;
+      points: number;
+    }
+  | {
+      id: string;
+      kind: "report";
+      label: string;
+      points: number;
+      template: string;
+      sections: string[];
+      /** A report rendered by the harness from prose is recovery, not agent delivery. */
+      requireAgentDelivery: boolean;
+    };
 
 export interface EntityCluster {
   label: string;
@@ -106,12 +137,14 @@ export interface EvalTask {
   latentIntent: string;
   /** Entity clusters (each with acceptable aliases/tickers) that must be inferred */
   expectedEntities: EntityCluster[];
-  /** Evidence outcomes that decide 15 of the deterministic points; their points total 15. */
+  /** Evidence outcomes whose raw weights total 15 and are normalized onto v2's 6 integrity points. */
   requiredEvidence: EvalEvidenceRequirement[];
   /** Whether quantitative formulas / math calculations are required */
   requiresMathCalculation?: boolean;
   /** Rubric for grading */
   rubric: EvalTaskRubric;
+  /** The v2 deterministic task contract. Points total 8. */
+  contracts: EvalTaskContract[];
 
   /* ---- optional harness inputs; every field below is seeded before the first turn ---- */
 
@@ -245,7 +278,15 @@ export interface DeterministicCheckResult {
   /** True when the ledger was available, so the evidence-based rules applied rather than the no-ledger fallbacks. */
   evidenceAvailable: boolean;
 
-  /** Total deterministic score (out of 40 points) */
+  /** v2 source/fact acquisition and use score, out of 6. */
+  evidenceScore: number;
+  /** v2 exact figure-support score, out of 6. */
+  figureSupportScore: number;
+  /** v2 task-specific contract score, out of 8. */
+  contractScore: number;
+  contractResults: Array<{ id: string; label: string; met: boolean; points: number }>;
+
+  /** Total deterministic integrity score (out of 20 points). */
   score: number;
   maxScore: number;
   details: string[];
@@ -334,7 +375,11 @@ export interface TaskEvalResult {
   transcript: AgentMessage[];
   deterministicCheck: DeterministicCheckResult;
   judgeResult?: JudgeEvaluationResult;
-  /** Combined score out of 100 (deterministic 40 + judge 60). */
+  /** Semantic quality out of 80, present only for a judgeable completed/budget answer. */
+  qualityScore?: number;
+  /** Deterministic integrity out of 20. */
+  integrityScore?: number;
+  /** Combined v2 score out of 100, using the existing 60-point judge scaled to 80. */
   totalScore?: number;
   /** False means infrastructure, harness/data, or judge failure made this result non-comparable. */
   valid?: boolean;
@@ -351,18 +396,18 @@ export interface TaskEvalResult {
   stop?: TurnStop;
 }
 
-/** Per-task spread across `--repeat`, used to set the noise tolerance. */
+/** Per-task descriptive spread across `--repeat`. */
 export interface TaskStat {
   taskId: string;
   title: string;
   runs: number;
   scores: number[];
-  meanDeterministic: number;
-  meanJudge: number;
+  meanIntegrity: number;
+  meanQuality: number;
   meanTotal: number;
   /** Population standard deviation of the total score. */
   sdTotal: number;
-  /** Suggested noise tolerance: twice the standard deviation. */
+  /** Historical descriptive 2σ value. */
   tolerance: number;
 }
 
@@ -375,8 +420,15 @@ export interface AgentSummary {
   agentFailures: number;
   infrastructureErrors: number;
   invalidRuns: number;
-  averageDeterministicScore: number;
-  averageJudgeScore: number;
+  /** Share of valid cells that reached a judgeable completed/budget answer. */
+  completionRate: number;
+  /** Mean 0-100 combined score among completed answers only. */
+  qualityOnCompleted: number;
+  /** Task-macro expected user score; model failures are zero. */
+  expectedUserScore: number;
+  averageIntegrityScore: number;
+  averageSemanticScore: number;
+  /** Compatibility alias for expectedUserScore in v2 summaries. */
   averageTotalScore: number;
   maxPossibleScore: number;
   perTask: TaskStat[];
@@ -447,4 +499,3 @@ export interface RunCheckpoint {
   taskDatasetHashes: Record<string, string>;
   results: TaskEvalResult[];
 }
-

@@ -175,9 +175,13 @@ describe("what the judge sees", () => {
       figuresChecked: 5,
       figuresBacked: 5,
       evidenceAvailable: true,
-      score: 40,
-      maxScore: 40,
-      details: ["[Entities: 15/15] found [NVIDIA]"],
+      evidenceScore: 6,
+      figureSupportScore: 6,
+      contractScore: 8,
+      contractResults: [],
+      score: 20,
+      maxScore: 20,
+      details: ["[Entities: diagnostic] found [NVIDIA]"],
     };
 
     const prompt = buildJudgePrompt({
@@ -226,8 +230,12 @@ describe("what the judge sees", () => {
         figuresChecked: 0,
         figuresBacked: 0,
         evidenceAvailable: true,
+        evidenceScore: 0,
+        figureSupportScore: 0,
+        contractScore: 0,
+        contractResults: [],
         score: 0,
-        maxScore: 40,
+        maxScore: 20,
         details: [],
       },
     });
@@ -279,7 +287,8 @@ describe("the offline data boundary", () => {
       deterministicCheck: {
         version: BENCHMARK_VERSION, identifiedAllEntities: true, matchedEntities: [], missingEntities: [],
         derivedFigures: 0, mathExpectationSatisfied: true, citationCount: 0, figuresChecked: 0, figuresBacked: 0, evidenceAvailable: true,
-        score: 0, maxScore: 40, details: [],
+        evidenceScore: 0, figureSupportScore: 0, contractScore: 0, contractResults: [],
+        score: 0, maxScore: 20, details: [],
       },
     };
     const withBoundary = buildJudgePrompt({ ...base, offlineAudit: audit([event("not_available_as_of", "edgar_read_filing", { url: future }, [future])]) });
