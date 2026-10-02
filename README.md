@@ -135,18 +135,20 @@ the transcript and the evidence ledger (entities, required evidence, calculator 
 each noting what was missed; sixty come from an LLM judge that scores intent, financial reasoning,
 grounding and clarity, with written feedback.
 
-| Model | Thinking effort | Judge model | Checks (/40) | Judged (/60) | Total (/100) | Avg. run time | Avg. output tokens per run | Avg. tool calls per run |
-| :--- | :--- | :--- | ---: | ---: | ---: | ---: | ---: | ---: |
-| GPT-6.1 Sol avg@3 | Medium | GPT-6 Astra, medium | 35.8 | 49.0 | 84.8 | 1,696 s | 37,347 | 224 |
-| DeepSeek V4.1 Flash avg@3 | High | GPT-6 Astra, medium | 39.1 | 38.1 | 77.3 | 2,119 s | 453,144 | 452 |
-| GPT-6 Luna avg@3 | Medium | GPT-6 Astra, medium | 29.8 | 37.8 | 67.6 | 516 s | 19,198 | 134 |
-| Qwen 3.8 27B avg@3 | Medium | GPT-6 Astra, medium | 35.2 | 30.2 | 65.4 | 1,685 s | 239,026 | 202 |
-| Qwen 3.8 27B avg@3 | Off | GPT-6 Astra, medium | 33.6 | 26.8 | 59.4 | 835 s | 100,714 | 216 |
+| Model | Thinking effort | Judge model | Total (/100) ↑ | Checks (/40) ↑ | Judged (/60) ↑ | Avg. cost per run ↓ | Avg. run time | Avg. output tokens per run | Avg. tool calls per run |
+| :--- | :--- | :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| GPT-6.1 Sol avg@3 | Medium | GPT-6 Astra, medium | 84.8 | 35.8 | 49.0 | $2.13 | 1,696 s | 37,347 | 224 |
+| DeepSeek V4.1 Flash avg@3 | High | GPT-6 Astra, medium | 77.3 | 39.1 | 38.1 | $1.05 | 2,119 s | 453,144 | 452 |
+| GPT-6 Luna avg@3 | Medium | GPT-6 Astra, medium | 67.6 | 29.8 | 37.8 | $0.07 | 516 s | 19,198 | 134 |
+| Qwen 3.8 27B avg@3 | Medium | GPT-6 Astra, medium | 65.4 | 35.2 | 30.2 | $0.84 | 1,685 s | 239,026 | 202 |
+| Qwen 3.8 27B avg@3 | Off | GPT-6 Astra, medium | 59.4 | 33.6 | 26.8 | $0.44 | 835 s | 100,714 | 216 |
 
-Benchmark version 1, policy enforced. `avg@3` is the mean of three runs of the twelve tasks. Run
-time counts the model's turns, not judging. Each row is a committed baseline, with its per-task
-scores in [evals/baselines/README.md](evals/baselines/README.md), and the tasks, the scoring and
-how to reproduce a run are in [evals/README.md](evals/README.md).
+↑ higher is better, ↓ lower is better. Benchmark version 1, policy enforced. `avg@3` is the mean of
+three runs of the twelve tasks. Run time counts the model's turns, not judging. Cost is the agent's,
+not the judge's, at the provider's list prices on 2026-10-01, from the tokens the provider reported.
+Each row is a committed baseline, with its per-task scores and the prices used in
+[evals/baselines/README.md](evals/baselines/README.md), and the tasks, the scoring, how cost is
+calculated and how to reproduce a run are in [evals/README.md](evals/README.md).
 
 ## Features
 
