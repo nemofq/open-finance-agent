@@ -144,7 +144,8 @@ expected-user-score metrics.
 | Qwen 3.8 27B avg@3 | Medium | GPT-6 Astra, medium | 35.2 | 30.2 | 65.4 | 1,685 s | 239,026 | 202 |
 | Qwen 3.8 27B avg@3 | Off | GPT-6 Astra, medium | 33.6 | 26.8 | 59.4 | 835 s | 100,714 | 216 |
 
-Benchmark version 1, policy enforced. `avg@3` is the mean of three runs of the twelve tasks. Run
+The historical table above is benchmark **version 1** and must not be compared directly with v2.
+Policy was enforced. `avg@3` is the mean of three runs of the twelve tasks. Run
 time counts the model's turns, not judging. Each row is a committed baseline, with its per-task
 scores in [evals/baselines/README.md](evals/baselines/README.md), and the tasks, the scoring and
 how to reproduce a run are in [evals/README.md](evals/README.md).

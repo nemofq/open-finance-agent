@@ -49,7 +49,7 @@ describe("threading the offline audit to the judge", () => {
     const result = {
       task: RETAIL_EVAL_TASKS[0], agent: "p/agent", repeat: 1, status: "judge_error", startedAt: "", endedAt: "", durationMs: 0,
       toolCalls: [], evidence: [], checks: [], figureMatches: [], finalAssistantText: "Answer.", sessionTickers: [], transcript: [],
-      deterministicCheck: { version: BENCHMARK_VERSION, score: 10, maxScore: 40, details: [] },
+      deterministicCheck: { version: BENCHMARK_VERSION, score: 10, maxScore: 20, details: [] },
       metrics: {
         unsourcedFigureRate: -1, unsourcedFigures: [], sourceTierMix: {}, conflictsDetected: 0, conflictsAddressed: 0, lookAheadEvidence: 0,
         evidenceEntries: 0, followUps: 0, blocks: 0, flags: 0,
@@ -71,7 +71,7 @@ function unjudged(agent: string, taskIndex: number, repeat: number): TaskEvalRes
   return {
     task: RETAIL_EVAL_TASKS[taskIndex], agent, repeat, status: "judge_error", valid: false, startedAt: "", endedAt: "", durationMs: 0,
     toolCalls: [], evidence: [], checks: [], figureMatches: [], finalAssistantText: "Answer.", sessionTickers: [], transcript: [],
-    deterministicCheck: { version: BENCHMARK_VERSION, score: 10, maxScore: 40, details: [] },
+    deterministicCheck: { version: BENCHMARK_VERSION, score: 10, maxScore: 20, details: [] },
     metrics: {
       unsourcedFigureRate: -1, unsourcedFigures: [], sourceTierMix: {}, conflictsDetected: 0, conflictsAddressed: 0, lookAheadEvidence: 0,
       evidenceEntries: 0, followUps: 0, blocks: 0, flags: 0,
@@ -105,7 +105,7 @@ describe("--judge-only", () => {
       expect(agent.perTask.map((task) => task.taskId)).toEqual([RETAIL_EVAL_TASKS[0].id, RETAIL_EVAL_TASKS[1].id]);
       expect(agent.perTask.map((task) => task.runs)).toEqual([2, 2]);
     }
-    expect(rejudged.results.every((result) => result.totalScore === 14)).toBe(true);
+    expect(rejudged.results.every((result) => result.totalScore === 15.33)).toBe(true);
   });
 
   it("grades at the judge thinking the run recorded", async () => {

@@ -392,14 +392,24 @@ async function main(): Promise<number> {
     return 0;
   }
 
-  const { readConfig } = await import("@/lib/config/store");
-  const { configPath: defaultConfigPath } = await import("@/lib/paths");
-
-  const source = options.configPath ? path.resolve(process.cwd(), options.configPath) : defaultConfigPath();
   const outDir = options.outDir
     ? path.resolve(process.cwd(), options.outDir)
     : fileURLToPath(new URL("results/", import.meta.url));
   const baselineDir = fileURLToPath(new URL("baselines/", import.meta.url));
+
+  if (options.rescore) {
+    const saved = JSON.parse(readFileSync(path.resolve(process.cwd(), options.rescore), "utf8")) as EvalRunSummary;
+    const { rescoreRun } = await import("./harness/rescore");
+    const summary = rescoreRun(saved);
+    const files = writeRunFiles(summary, outDir);
+    printFinalTable(summary.results);
+    console.log(`\nRescored v${summary.benchmarkVersion} run: ${files.jsonPath}\nSummary: ${files.mdPath}`);
+    return benchmarkValidityIssues(summary).length > 0 ? 1 : 0;
+  }
+
+  const { readConfig } = await import("@/lib/config/store");
+  const { configPath: defaultConfigPath } = await import("@/lib/paths");
+  const source = options.configPath ? path.resolve(process.cwd(), options.configPath) : defaultConfigPath();
 
   // Everything below runs against the temporary home: `dataDir()` reads OFA_HOME on every call.
   const home = createTempHome(source);

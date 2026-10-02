@@ -212,7 +212,9 @@ severity ordering accuracy, weighted κ ≥ 0.75, score MAE ≤ 5 and maximum fi
 `completed` results, and `agent_budget` results that still answered, are judged and scored. An
 `agent_timeout`, an `agent_error`, or a budget stop without an answer scores 0. Infrastructure,
 harness and judge errors are marked invalid and left unscored, never zeroed; `--judge-only` can
-finish a run whose judge failed.
+finish a run whose judge failed. The summary reports completion rate, quality on completed
+answers, and expected user score (task-macro average with agent failures counted as zero)
+separately; latency, cost and tool/model calls remain diagnostics.
 
 Every model summary reports three separate outcomes: `completionRate`, `qualityOnCompleted` and
 `expectedUserScore`. The last is the task-macro average with model failures scored as zero and is
@@ -269,8 +271,9 @@ pnpm eval --agent <provider/model> --judge <provider/model> --thinking <level> \
   --judge-thinking <level> --repeat 3 --judge-repeat 3
 ```
 
-Each column comes from the agent's section of `summary-<timestamp>.md`, or the matching entry of
-`agentSummaries` in `run-<timestamp>.json`:
+The existing README table is v1 history: its checks and judge columns are `/40` and `/60`.
+For a new v2 table, each column comes from the agent's section of
+`summary-<timestamp>.md`, or the matching entry of `agentSummaries` in `run-<timestamp>.json`:
 
 | README column | Summary | Run JSON |
 | :--- | :--- | :--- |
