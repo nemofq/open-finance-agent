@@ -162,7 +162,7 @@ describe("v2 deterministic integrity", () => {
       sessionTickers: [], evidence, figureMatches: [match("331,200", 331200, ["E1"]), match("$2.6B", 2_600_000_000, ["E2"])], evidenceAvailable: true }).contractScore).toBe(0);
   });
 
-  it("accepts exact cross-turn recovery by evidence id or equivalent re-fetch, and requires a dated Apple quote", () => {
+  it("scores the cross-turn evidence outcome rather than a particular recovery tool, and requires a dated Apple quote", () => {
     const cross = RETAIL_EVAL_TASKS.find((item) => item.id === "retail-13-semis-figure-survival");
     const apple = RETAIL_EVAL_TASKS.find((item) => item.id === "retail-14-apple-pre-open-timing");
     if (!cross || !apple) throw new Error("missing cross-turn or Apple task");
@@ -177,28 +177,21 @@ describe("v2 deterministic integrity", () => {
         call("edgar_financials", { ticker: "INTC" }, { statement: "key_metrics", evidence: { id: "E2" } })],
       finalText: "AMD revenue was 6819 and Intel margin was 15%.", sessionTickers: [], evidence: facts,
       figureMatches: [match("6819", 6819, ["E1"]), match("15%", 15, ["E2"])], evidenceAvailable: true };
-    expect(runDeterministicChecks(crossBase).contractScore).toBe(4);
+    expect(runDeterministicChecks(crossBase).contractScore).toBe(8);
     const wrongRead = call("evidence_get", { id: "E99" }, { id: "E99", from: "facts" });
-    expect(runDeterministicChecks({ ...crossBase, toolCalls: [...crossBase.toolCalls, wrongRead] }).contractScore).toBe(4);
+    expect(runDeterministicChecks({ ...crossBase, toolCalls: [...crossBase.toolCalls, wrongRead] }).contractScore).toBe(8);
     const reads = ["E1", "E2"].map((id) => call("evidence_get", { id }, { id, from: "facts" }));
     expect(runDeterministicChecks({ ...crossBase, toolCalls: [...crossBase.toolCalls, ...reads] }).contractScore).toBe(8);
-
-    const refetchCalls = [
-      call("edgar_financials", { ticker: "AMD" }, { statement: "key_metrics", evidence: { id: "E3" } }),
-      call("edgar_financials", { ticker: "INTC" }, { statement: "key_metrics", evidence: { id: "E4" } }),
-    ];
-    refetchCalls[0].toolCallId = "refetch-amd";
-    refetchCalls[1].toolCallId = "refetch-intc";
-    const refetched = [
-      entry("E3", "E", { toolCallId: "refetch-amd", tool: "edgar_financials", entity: { ticker: "AMD" },
-        source: { id: "edgar", name: "SEC EDGAR", tier: 1 },
-        facts: [{ metric: "revenue", period: "2024-09-28", value: 6819, unit: "USD" }] }),
-      entry("E4", "E", { toolCallId: "refetch-intc", tool: "edgar_financials", entity: { ticker: "INTC" },
-        source: { id: "edgar", name: "SEC EDGAR", tier: 1 },
-        facts: [{ metric: "grossMargin", period: "2024-09-28", value: 15, unit: "%" }] }),
-    ];
-    expect(runDeterministicChecks({ ...crossBase, toolCalls: [...crossBase.toolCalls, ...refetchCalls],
-      evidence: [...facts, ...refetched] }).contractScore).toBe(8);
+    expect(runDeterministicChecks({ ...crossBase, figureMatches: [match("6819", 6819, ["E1"])] }).contractScore).toBe(0);
+    const marginInputs = entry("E2", "E", { tool: "edgar_financials", entity: { ticker: "INTC" },
+      source: { id: "edgar", name: "SEC EDGAR", tier: 1 },
+      facts: [
+        { metric: "grossProfit", period: "2024-09-28", value: 1_997, unit: "USD" },
+        { metric: "revenue", period: "2024-09-28", value: 13_284, unit: "USD" },
+      ] });
+    const margin = entry("C1", "C", { unit: "%", inputs: ["E2"], table: { columns: ["label", "value"], rows: [["2024-09-28", 15.0331]] } });
+    expect(runDeterministicChecks({ ...crossBase, evidence: [facts[0], marginInputs, margin],
+      figureMatches: [match("6819", 6819, ["E1"]), match("15.0331%", 15.0331, ["C1"])] }).contractScore).toBe(8);
 
     const quote = (period: string) => entry("E1", "E", { tool: "market_quotes", entity: { ticker: "AAPL" },
       facts: [{ metric: "close", period, value: 230, unit: "USD" }] });
@@ -213,7 +206,7 @@ describe("v2 deterministic integrity", () => {
     for (const task of RETAIL_EVAL_TASKS) {
       expect(task.contracts.reduce((sum, contract) => sum + contract.points, 0), task.id).toBe(8);
       for (const contract of task.contracts) {
-        if (contract.kind !== "required_evidence_used" && contract.kind !== "required_evidence_cited" && contract.kind !== "reread_required_evidence") continue;
+        if (contract.kind !== "required_evidence_used" && contract.kind !== "required_evidence_cited") continue;
         for (const label of contract.requirementLabels) {
           expect(task.requiredEvidence.some((item) => item.label === label), `${task.id}: ${label}`).toBe(true);
         }

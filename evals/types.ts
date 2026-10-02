@@ -68,13 +68,6 @@ export type EvalTaskContract =
     }
   | {
       id: string;
-      kind: "reread_required_evidence";
-      label: string;
-      points: number;
-      requirementLabels: string[];
-    }
-  | {
-      id: string;
       kind: "dated_quote";
       label: string;
       points: number;

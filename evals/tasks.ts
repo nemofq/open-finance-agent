@@ -413,10 +413,7 @@ function contracts(task: Omit<EvalTask, "requiredEvidence" | "contracts">): Eval
       ];
     case "retail-13-semis-figure-survival": {
       const labels = ["AMD revenue, latest quarter (2024-09-28)", "Intel gross margin, same quarter (2024-09-28)"];
-      return [
-        { id: "evidence-reread", kind: "reread_required_evidence", label: "Recover the exact AMD and Intel facts from their evidence ids or an exact re-fetch", points: 4, requirementLabels: labels },
-        { id: "exact-figures", kind: "required_evidence_used", label: "Use both requested period-specific figures", points: 4, requirementLabels: labels },
-      ];
+      return [{ id: "exact-figures", kind: "required_evidence_used", label: "Use both requested period-specific figures and their original evidence", points: 8, requirementLabels: labels }];
     }
     case "retail-14-apple-pre-open-timing":
       return [

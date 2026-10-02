@@ -260,12 +260,17 @@ function eligibleFactEntries(requirement: EvalFactEvidence, input: ChecksInput):
     if (!sameStatement(requirement.statement, statement)) continue;
     entries.push(...entriesOf(call, input.evidence).filter((entry) =>
       entry.source?.tier === 1 && !entry.lookAhead && tickerOf(entry, call) === ticker &&
-      (entry.facts ?? []).some((fact) => {
-        if (fact.metric !== requirement.metric || !Number.isFinite(fact.value)) return false;
-        const end = (fact.end ?? fact.period).slice(0, 10);
-        if (/^\d{4}-\d{2}-\d{2}$/.test(end) && end > input.task.asOfDate) return false;
-        return period === undefined || normalizePeriod(fact.period) === period || normalizePeriod(fact.end ?? "") === period;
-      })));
+      (() => {
+        const facts = (entry.facts ?? []).filter((fact) => {
+          if (!Number.isFinite(fact.value)) return false;
+          const end = (fact.end ?? fact.period).slice(0, 10);
+          if (/^\d{4}-\d{2}-\d{2}$/.test(end) && end > input.task.asOfDate) return false;
+          return period === undefined || normalizePeriod(fact.period) === period || normalizePeriod(fact.end ?? "") === period;
+        });
+        if (facts.some((fact) => fact.metric === requirement.metric)) return true;
+        return requirement.metric === "grossMargin" && facts.some((fact) => fact.metric === "grossProfit") &&
+          facts.some((fact) => fact.metric === "revenue" && fact.value !== 0);
+      })()));
   }
   return entries;
 }
@@ -372,23 +377,6 @@ function contractResults(input: ChecksInput, use: EvidenceUse): DeterministicChe
       const citations = namedRequirements(contract.requirementLabels, input.task)
         .map((requirement) => citedSource(requirement, input));
       met = contract.match === "all" ? citations.every(Boolean) : citations.some(Boolean);
-    } else if (contract.kind === "reread_required_evidence") {
-      met = namedRequirements(contract.requirementLabels, input.task).every((requirement) => {
-        if (requirement.kind !== "fact") throw new Error(`Task ${input.task.id} re-read contract requires fact evidence: ${requirement.label}`);
-        const eligible = eligibleFactEntries(requirement, input);
-        const eligibleIds = new Set(eligible.map((entry) => entry.id));
-        const exactEvidenceRead = input.toolCalls.some((call) => {
-          const details = asRecord(call.details);
-          return call.toolName === "evidence_get" && !call.isError &&
-            (details?.from === "facts" || details?.from === "table") &&
-            typeof call.args.id === "string" && call.args.id === details.id && eligibleIds.has(call.args.id);
-        });
-        // Re-fetching the same ticker, metric and period is an equivalent recovery path. Distinct
-        // eligible ledger entries prove the exact fact was acquired more than once without
-        // awarding a generic or unrelated tool call.
-        const acquisitions = new Set(eligible.map((entry) => entry.toolCallId ?? entry.id));
-        return exactEvidenceRead || acquisitions.size >= 2;
-      });
     } else if (contract.kind === "dated_quote") {
       met = input.toolCalls.some((call) => QUOTE_TOOLS.has(call.toolName) && served(call) &&
         entriesOf(call, input.evidence).some((entry) => !entry.lookAhead && use.backed.has(entry.id) &&
