@@ -344,8 +344,8 @@ function printFinalTable(results: TaskEvalResult[]): void {
   console.log("-".repeat(84));
   for (const result of results) {
     console.log(
-      `${pad(result.task.title, 34)} ${pad(result.agent, 26)} ${pad(`${result.deterministicCheck.score}/20`, 10)} ` +
-        `${pad(result.judgeResult ? `${result.judgeResult.totalJudgeScore}/80` : "N/A", 9)} ${pad(result.totalScore === undefined ? "INVALID" : `${result.totalScore}`, 6)}`,
+      `${pad(result.task.title, 34)} ${pad(result.agent, 26)} ${pad(`${result.deterministicCheck.score}/40`, 10)} ` +
+        `${pad(result.judgeResult ? `${result.judgeResult.totalJudgeScore}/60` : "N/A", 9)} ${pad(result.totalScore === undefined ? "INVALID" : `${result.totalScore}`, 6)}`,
     );
   }
 }
@@ -363,7 +363,7 @@ function progress(event: ProgressEvent): void {
   const audit = result.offlineAudit;
   const score = result.totalScore === undefined
     ? "unscored"
-    : `integrity ${result.deterministicCheck.score}/20 · semantic ${result.judgeResult ? `${result.judgeResult.totalJudgeScore}/80` : "N/A"} · expected ${result.totalScore}/100`;
+    : `integrity ${result.deterministicCheck.score}/40 · semantic ${result.judgeResult ? `${result.judgeResult.totalJudgeScore}/60` : "N/A"} · expected ${result.totalScore}/100`;
   const { diagnostics } = result;
   console.log(
     `  ${score} · ${result.status} · ${result.metrics.modelCalls} model calls · ${result.metrics.tokens.output} output tokens · ` +

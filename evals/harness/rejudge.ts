@@ -36,10 +36,10 @@ export function applyJudgement(result: TaskEvalResult, judgeResult: JudgeEvaluat
     delete result.integrityScore;
     delete result.totalScore;
   } else {
-    if (judgeResult.maxJudgeScore !== 80 || judgeResult.totalJudgeScore < 0 || judgeResult.totalJudgeScore > 80 || judgeResult.promptVersion !== JUDGE_PROMPT_VERSION) {
-      throw new Error(`Expected a valid 80-point judge v${JUDGE_PROMPT_VERSION} result, got ${judgeResult.totalJudgeScore}/${judgeResult.maxJudgeScore} from v${judgeResult.promptVersion}.`);
+    if (judgeResult.maxJudgeScore !== 60 || judgeResult.totalJudgeScore < 0 || judgeResult.totalJudgeScore > 60 || judgeResult.promptVersion !== JUDGE_PROMPT_VERSION) {
+      throw new Error(`Expected a valid 60-point judge v${JUDGE_PROMPT_VERSION} result, got ${judgeResult.totalJudgeScore}/${judgeResult.maxJudgeScore} from v${judgeResult.promptVersion}.`);
     }
-    if (result.deterministicCheck.maxScore !== 20 || result.deterministicCheck.version !== BENCHMARK_VERSION) {
+    if (result.deterministicCheck.maxScore !== 40 || result.deterministicCheck.version !== BENCHMARK_VERSION) {
       throw new Error(`Cannot combine a v${result.deterministicCheck.version ?? "unknown"} integrity score with v2 quality; use --rescore on a trace-bearing run.`);
     }
     result.status = budgetExhausted(result.stop) ? "agent_budget" : "completed";

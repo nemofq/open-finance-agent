@@ -33,11 +33,11 @@ function reply(task: EvalTask, verdict: RubricVerdict | ((id: string) => RubricV
 describe("the v2 item judge", () => {
   it("computes all numbers from item verdicts", () => {
     const result = parseJudgeJson(reply(TASK, (id) => id === "financial" ? "partial" : "met"), "prov/judge", TASK);
-    expect(result.intentScore).toBe(20);
-    expect(result.financialScore).toBe(15);
-    expect(result.groundingScore).toBe(20);
+    expect(result.intentScore).toBe(15);
+    expect(result.financialScore).toBe(10);
+    expect(result.groundingScore).toBe(15);
     expect(result.retailClarityScore).toBe(10);
-    expect(result.totalJudgeScore).toBe(65);
+    expect(result.totalJudgeScore).toBe(50);
     expect(result.promptVersion).toBe(JUDGE_PROMPT_VERSION);
   });
 
@@ -46,7 +46,7 @@ describe("the v2 item judge", () => {
     expect(critical).toBeDefined();
     const missed = parseJudgeJson(reply(TASK, (id) => id === critical ? "missed" : "met"), "prov/judge", TASK);
     const contradicted = parseJudgeJson(reply(TASK, (id) => id === critical ? "contradicted" : "met"), "prov/judge", TASK);
-    expect(missed.totalJudgeScore).toBe(80);
+    expect(missed.totalJudgeScore).toBe(60);
     expect(missed.scoreCap).toBe(69);
     expect(missed.criticalMisses).toEqual([critical]);
     expect(contradicted.scoreCap).toBe(49);
@@ -63,7 +63,7 @@ describe("the v2 item judge", () => {
 
   it("accepts fenced output and ignores reasoning blocks", () => {
     const raw = `<think>{"draft":true}</think>\n\`\`\`json\n${reply(TASK)}\n\`\`\``;
-    expect(parseJudgeJson(raw, "prov/judge", TASK).totalJudgeScore).toBe(80);
+    expect(parseJudgeJson(raw, "prov/judge", TASK).totalJudgeScore).toBe(60);
   });
 
   it("reports malformed output without manufacturing a valid grade", () => {
@@ -81,12 +81,12 @@ describe("the v2 item judge", () => {
     const grades = (["met", "partial", "partial"] as RubricVerdict[]).map((verdict) => parseJudgeJson(reply(TASK, verdict), "prov/judge", TASK));
     const result = aggregateJudgeEvaluations(grades, TASK, "prov/judge");
     expect(result.rubricItems.every((item) => item.verdict === "partial")).toBe(true);
-    expect(result.totalJudgeScore).toBe(40);
+    expect(result.totalJudgeScore).toBe(30);
   });
 
   it("resolves an even repeated-judge tie conservatively", () => {
     const grades = (["met", "partial"] as RubricVerdict[]).map((verdict) => parseJudgeJson(reply(TASK, verdict), "prov/judge", TASK));
-    expect(aggregateJudgeEvaluations(grades, TASK, "prov/judge").totalJudgeScore).toBe(40);
+    expect(aggregateJudgeEvaluations(grades, TASK, "prov/judge").totalJudgeScore).toBe(30);
   });
 
   it("keeps the known Apple and YieldMax core errors below 50 even with perfect integrity", () => {
@@ -97,7 +97,7 @@ describe("the v2 item judge", () => {
       const task = RETAIL_EVAL_TASKS.find((item) => item.id === taskId);
       if (!task) throw new Error(`missing ${taskId}`);
       const judged = parseJudgeJson(reply(task, (id) => id === criticalId ? "contradicted" : "met"), "prov/judge", task);
-      expect(Math.min(20 + judged.totalJudgeScore, judged.scoreCap ?? 100), taskId).toBe(49);
+      expect(Math.min(40 + judged.totalJudgeScore, judged.scoreCap ?? 100), taskId).toBe(49);
     }
   });
 
@@ -105,9 +105,9 @@ describe("the v2 item judge", () => {
     const task = RETAIL_EVAL_TASKS.find((item) => item.id === "retail-10-smci-accounting-red-flag");
     if (!task) throw new Error("missing SMCI task");
     const judged = parseJudgeJson(reply(task, (id) => id === "grounding" ? "partial" : "met"), "prov/judge", task);
-    expect(judged.groundingScore).toBe(10);
+    expect(judged.groundingScore).toBe(7.5);
     expect(judged.criticalMisses).toEqual([]);
-    expect(judged.totalJudgeScore).toBe(70);
+    expect(judged.totalJudgeScore).toBe(52.5);
   });
 });
 
@@ -140,7 +140,7 @@ describe("what the judge sees", () => {
     expect(prompt).toContain("Revenue $30,040M");
     expect(prompt).toContain("NVIDIA beat but forward margins disappointed.");
     expect(prompt).toContain("### Rubric Items");
-    expect(prompt).not.toMatch(/Deterministic|Integrity:|\/20/);
+    expect(prompt).not.toMatch(/Deterministic|Integrity:|\/40/);
   });
 
   it("defines omission and refusal as missed rather than contradicted", () => {

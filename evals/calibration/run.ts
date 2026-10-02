@@ -20,7 +20,7 @@ function round(value: number): number {
 }
 
 function totalScore(result: JudgeEvaluationResult): number {
-  return Math.min(20 + result.totalJudgeScore, result.scoreCap ?? 100);
+  return Math.min(40 + result.totalJudgeScore, result.scoreCap ?? 100);
 }
 
 function severity(score: number): AnchorSeverity {

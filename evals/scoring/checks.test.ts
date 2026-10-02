@@ -39,12 +39,12 @@ describe("v2 deterministic integrity", () => {
   it("keeps entities diagnostic-only and gives acquisition half of evidence credit", () => {
     const acquired = quoteRun("The stock moved.", []);
     expect(acquired.identifiedAllEntities).toBe(true);
-    expect(acquired.evidenceScore).toBe(3);
+    expect(acquired.evidenceScore).toBe(6);
     expect(acquired.details.join("\n")).toContain("acquired only [NVDA quote]");
 
     const used = quoteRun("The prior close was $120.", [match("$120", 120, ["E1"])]);
-    expect(used.evidenceScore).toBe(6);
-    expect(used.figureSupportScore).toBe(6);
+    expect(used.evidenceScore).toBe(12);
+    expect(used.figureSupportScore).toBe(12);
   });
 
   it("does not award a calculation contract merely because calculator was called", () => {
@@ -82,7 +82,7 @@ describe("v2 deterministic integrity", () => {
       finalText: "Guided sequential growth is 8.19%.", sessionTickers: [], evidence: [e, c],
       figureMatches: [match("8.19%", 8.19, ["C1"])], evidenceAvailable: true,
     };
-    expect(runDeterministicChecks(base).contractScore).toBe(8);
+    expect(runDeterministicChecks(base).contractScore).toBe(16);
     expect(runDeterministicChecks({ ...base, evidence: [e, { ...c, value: 15 }] }).contractScore).toBe(0);
     expect(runDeterministicChecks({ ...base, evidence: [{ ...e, args: { url: "https://sec.gov/wrong" } }, c] }).contractScore).toBe(0);
     expect(runDeterministicChecks({ ...base, evidence: [e, { ...c, inputs: ["E99"] }] }).contractScore).toBe(0);
@@ -100,7 +100,7 @@ describe("v2 deterministic integrity", () => {
     const c = entry("C1", "C", { value: 20, unit: "%", inputs: ["E1"] });
     const base = { task, toolCalls: [], finalText: "Growth was 20%.", sessionTickers: [],
       evidence: [fiscalFacts("DECK", "2023-03-31"), c], figureMatches: [match("20%", 20, ["C1"])], evidenceAvailable: true };
-    expect(runDeterministicChecks(base).contractScore).toBe(8);
+    expect(runDeterministicChecks(base).contractScore).toBe(16);
     expect(runDeterministicChecks({ ...base, evidence: [fiscalFacts("NKE", "2023-03-31"), c] }).contractScore).toBe(0);
     expect(runDeterministicChecks({ ...base, evidence: [fiscalFacts("DECK", "2022-03-31"), c] }).contractScore).toBe(0);
     expect(runDeterministicChecks({ ...base, evidence: [{ ...fiscalFacts("DECK", "2023-03-31"),
@@ -118,9 +118,9 @@ describe("v2 deterministic integrity", () => {
     const result = runDeterministicChecks({ task, toolCalls: calls,
       finalText: "EY's resignation raises an audit-confidence risk [E1], while Nasdaq flagged the late 10-K [E2]. That does not prove fraud.",
       sessionTickers: [], evidence, figureMatches: [], evidenceAvailable: true });
-    expect(result.contractScore).toBe(8);
-    // The separate six-point evidence-use check stays conservative for non-numeric paraphrases.
-    expect(result.evidenceScore).toBe(3);
+    expect(result.contractScore).toBe(16);
+    // The separate 12-point evidence-use check stays conservative for non-numeric paraphrases.
+    expect(result.evidenceScore).toBe(6);
   });
 
   it("requires calculation lineage, a non-empty tool result and acquired evidence for contracts", () => {
@@ -152,12 +152,27 @@ describe("v2 deterministic integrity", () => {
     const evidence = urls.map((url, index) => entry(`E${index + 1}`, "E", { tool: "edgar_read_filing", args: { url } }));
     const used = runDeterministicChecks({ task, toolCalls: calls, finalText: "The filings show 331,200 BTC [E1] and $2.6B notes [E2].",
       sessionTickers: [], evidence, figureMatches: [match("331,200", 331200, ["E1"]), match("$2.6B", 2_600_000_000, ["E2"])], evidenceAvailable: true });
-    expect(used.contractScore).toBe(8);
-    const finalTerms = runDeterministicChecks({ task, toolCalls: [calls[0]],
-      finalText: "The November 25 filing reports the holdings and final $3.0B note terms [E1].",
+    expect(used.contractScore).toBe(16);
+    const holdingsOnly = runDeterministicChecks({ task, toolCalls: [calls[0]],
+      finalText: "The November 25 filing reports 331,200 BTC [E1].",
       sessionTickers: [], evidence: [evidence[0]],
-      figureMatches: [match("$3.0B", 3_000_000_000, ["E1"])], evidenceAvailable: true });
-    expect(finalTerms.contractScore).toBe(8);
+      figureMatches: [match("331,200", 331200, ["E1"])], evidenceAvailable: true });
+    expect(holdingsOnly.contractResults.map((contract) => contract.met)).toEqual([true, false]);
+    expect(holdingsOnly.contractScore).toBe(8);
+    const finalTerms = runDeterministicChecks({ task, toolCalls: [calls[0]],
+      finalText: "The November 25 filing reports 331,200 BTC and final $3.0B convertible note terms [E1].",
+      sessionTickers: [], evidence: [evidence[0]],
+      figureMatches: [match("331,200", 331200, ["E1"]), match("$3.0B", 3_000_000_000, ["E1"])], evidenceAvailable: true });
+    expect(finalTerms.contractScore).toBe(16);
+    const termsOnly = runDeterministicChecks({ task, toolCalls: [calls[1]],
+      finalText: "The November 20 filing describes $2.6B convertible notes [E2].",
+      sessionTickers: [], evidence: [evidence[1]],
+      figureMatches: [match("$2.6B", 2_600_000_000, ["E2"])], evidenceAvailable: true });
+    expect(termsOnly.contractResults.map((contract) => contract.met)).toEqual([false, true]);
+    const unrelatedClaim = runDeterministicChecks({ task, toolCalls: [calls[0]],
+      finalText: "The November 25 filing reports 331,200 BTC [E1].\n\nConvertible debt deserves further study.",
+      sessionTickers: [], evidence: [evidence[0]], figureMatches: [match("331,200", 331200, ["E1"])], evidenceAvailable: true });
+    expect(unrelatedClaim.contractScore).toBe(8);
     expect(runDeterministicChecks({ task, toolCalls: calls, finalText: "Both figures came from filings.",
       sessionTickers: [], evidence, figureMatches: [match("331,200", 331200, ["E1"]), match("$2.6B", 2_600_000_000, ["E2"])], evidenceAvailable: true }).contractScore).toBe(0);
   });
@@ -177,11 +192,11 @@ describe("v2 deterministic integrity", () => {
         call("edgar_financials", { ticker: "INTC" }, { statement: "key_metrics", evidence: { id: "E2" } })],
       finalText: "AMD revenue was 6819 and Intel margin was 15%.", sessionTickers: [], evidence: facts,
       figureMatches: [match("6819", 6819, ["E1"]), match("15%", 15, ["E2"])], evidenceAvailable: true };
-    expect(runDeterministicChecks(crossBase).contractScore).toBe(8);
+    expect(runDeterministicChecks(crossBase).contractScore).toBe(16);
     const wrongRead = call("evidence_get", { id: "E99" }, { id: "E99", from: "facts" });
-    expect(runDeterministicChecks({ ...crossBase, toolCalls: [...crossBase.toolCalls, wrongRead] }).contractScore).toBe(8);
+    expect(runDeterministicChecks({ ...crossBase, toolCalls: [...crossBase.toolCalls, wrongRead] }).contractScore).toBe(16);
     const reads = ["E1", "E2"].map((id) => call("evidence_get", { id }, { id, from: "facts" }));
-    expect(runDeterministicChecks({ ...crossBase, toolCalls: [...crossBase.toolCalls, ...reads] }).contractScore).toBe(8);
+    expect(runDeterministicChecks({ ...crossBase, toolCalls: [...crossBase.toolCalls, ...reads] }).contractScore).toBe(16);
     expect(runDeterministicChecks({ ...crossBase, figureMatches: [match("6819", 6819, ["E1"])] }).contractScore).toBe(0);
     const marginInputs = entry("E2", "E", { tool: "edgar_financials", entity: { ticker: "INTC" },
       source: { id: "edgar", name: "SEC EDGAR", tier: 1 },
@@ -191,20 +206,20 @@ describe("v2 deterministic integrity", () => {
       ] });
     const margin = entry("C1", "C", { unit: "%", inputs: ["E2"], table: { columns: ["label", "value"], rows: [["2024-09-28", 15.0331]] } });
     expect(runDeterministicChecks({ ...crossBase, evidence: [facts[0], marginInputs, margin],
-      figureMatches: [match("6819", 6819, ["E1"]), match("15.0331%", 15.0331, ["C1"])] }).contractScore).toBe(8);
+      figureMatches: [match("6819", 6819, ["E1"]), match("15.0331%", 15.0331, ["C1"])] }).contractScore).toBe(16);
 
     const quote = (period: string) => entry("E1", "E", { tool: "market_quotes", entity: { ticker: "AAPL" },
       facts: [{ metric: "close", period, value: 230, unit: "USD" }] });
     const appleBase = { task: apple, toolCalls: [call("market_quotes", { symbols: ["AAPL"] }, { evidence: { id: "E1" } })],
       finalText: "The previous close was $230.", sessionTickers: [], evidence: [quote("2024-10-30")],
       figureMatches: [match("$230", 230, ["E1"])], evidenceAvailable: true };
-    expect(runDeterministicChecks(appleBase).contractScore).toBe(8);
-    expect(runDeterministicChecks({ ...appleBase, evidence: [quote("2024-10-31")] }).contractScore).toBe(4);
+    expect(runDeterministicChecks(appleBase).contractScore).toBe(16);
+    expect(runDeterministicChecks({ ...appleBase, evidence: [quote("2024-10-31")] }).contractScore).toBe(8);
   });
 
-  it("keeps task contracts valid and within the eight-point budget", () => {
+  it("keeps task contracts valid and within the 16-point budget", () => {
     for (const task of RETAIL_EVAL_TASKS) {
-      expect(task.contracts.reduce((sum, contract) => sum + contract.points, 0), task.id).toBe(8);
+      expect(task.contracts.reduce((sum, contract) => sum + contract.points, 0), task.id).toBe(16);
       for (const contract of task.contracts) {
         if (contract.kind !== "required_evidence_used" && contract.kind !== "required_evidence_cited") continue;
         for (const label of contract.requirementLabels) {
@@ -219,7 +234,7 @@ describe("v2 deterministic integrity", () => {
     const result = quoteRun("Figures are in the attached analysis.", matches);
     expect(result.figuresBacked).toBe(127);
     expect(result.figuresChecked).toBe(139);
-    expect(result.figureSupportScore).toBe(5.5);
+    expect(result.figureSupportScore).toBe(11);
   });
 
   it("does not count repaired report citations as model-supported figures", () => {
@@ -233,7 +248,7 @@ describe("v2 deterministic integrity", () => {
     });
     expect(result.figuresChecked).toBe(10);
     expect(result.figuresBacked).toBe(3);
-    expect(result.figureSupportScore).toBe(1.8);
+    expect(result.figureSupportScore).toBe(3.6);
     expect(result.details.join("\n")).toContain("5 citation(s) repaired");
   });
 
@@ -247,7 +262,7 @@ describe("v2 deterministic integrity", () => {
     const report = call("create_report", { spec });
     report.offlineOutcome = undefined;
     const base = { task, toolCalls: [report], finalText: "I created the report.", sessionTickers: [], evidence: [], figureMatches: [], evidenceAvailable: true };
-    expect(runDeterministicChecks({ ...base, fallbackReports: 0 }).contractScore).toBe(8);
+    expect(runDeterministicChecks({ ...base, fallbackReports: 0 }).contractScore).toBe(16);
     expect(runDeterministicChecks({ ...base, fallbackReports: 1 }).contractScore).toBe(0);
     const missingSection = { ...report, args: { spec: { ...spec, sections: spec.sections.slice(0, 4) } } };
     expect(runDeterministicChecks({ ...base, toolCalls: [missingSection], fallbackReports: 0 }).contractScore).toBe(0);
@@ -259,7 +274,7 @@ describe("v2 deterministic integrity", () => {
   it("returns zero with an explicit contract record for an empty answer", () => {
     const result = runDeterministicChecks({ task: NVDA, toolCalls: [], finalText: "", sessionTickers: [], evidence: [], figureMatches: [], evidenceAvailable: false });
     expect(result.score).toBe(0);
-    expect(result.maxScore).toBe(20);
+    expect(result.maxScore).toBe(40);
     expect(result.contractResults).toHaveLength(NVDA.contracts.length);
   });
 });

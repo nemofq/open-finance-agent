@@ -38,12 +38,12 @@ const verdict: JudgeEvaluationResult = {
   retailClarityScore: 5,
   retailClarityFeedback: "",
   totalJudgeScore: 35,
-  maxJudgeScore: 80,
+  maxJudgeScore: 60,
   criticalMisses: [],
   criticalContradictions: [],
   overallVerdict: "ok",
   judgeModel: "offline/test",
-  promptVersion: "8",
+  promptVersion: "9",
 };
 
 let home: string;

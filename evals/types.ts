@@ -37,7 +37,7 @@ export type RubricDimension = "intent" | "financial" | "grounding" | "clarity";
 export type RubricVerdict = "met" | "partial" | "missed" | "contradicted";
 
 /**
- * One independently judged requirement. Weights across the non-gating items of a task total 80.
+ * One independently judged requirement. Weights across the non-gating items of a task total 60.
  * A zero-weight critical item is a gate: it can cap a superficially polished but materially wrong
  * answer without double-counting the broader dimension that already scores the same behaviour.
  */
@@ -86,6 +86,8 @@ export type EvalTaskContract =
       requirementLabels: string[];
       /** Whether every named source or any equivalent named source must be cited. */
       match: "all" | "any";
+      /** A claim that must accompany the citation in delivered prose, when a filing covers multiple topics. */
+      claim?: "btc_holdings" | "convertible_terms";
     }
   | {
       id: string;
@@ -185,15 +187,15 @@ export interface EvalTask {
   latentIntent: string;
   /** Entity clusters (each with acceptable aliases/tickers) that must be inferred */
   expectedEntities: EntityCluster[];
-  /** Evidence outcomes whose raw weights total 15 and are normalized onto v2's 6 integrity points. */
+  /** Evidence outcomes whose requirement weights total 15 and are normalized onto v2's 12 integrity points. */
   requiredEvidence: EvalEvidenceRequirement[];
   /** Whether quantitative formulas / math calculations are required */
   requiresMathCalculation?: boolean;
   /** Rubric for grading */
   rubric: EvalTaskRubric;
-  /** The v2 semantic scorecard. Non-gating item weights total 80. */
+  /** The v2 semantic scorecard. Non-gating item weights total 60. */
   rubricItems: EvalRubricItem[];
-  /** The v2 deterministic task contract. Points total 8. */
+  /** The v2 deterministic task contract. Points total 16. */
   contracts: EvalTaskContract[];
 
   /* ---- optional harness inputs; every field below is seeded before the first turn ---- */
@@ -328,15 +330,15 @@ export interface DeterministicCheckResult {
   /** True when the ledger was available, so the evidence-based rules applied rather than the no-ledger fallbacks. */
   evidenceAvailable: boolean;
 
-  /** v2 source/fact acquisition and use score, out of 6. */
+  /** v2 source/fact acquisition and use score, out of 12. */
   evidenceScore: number;
-  /** v2 exact figure-support score, out of 6. */
+  /** v2 exact figure-support score, out of 12. */
   figureSupportScore: number;
-  /** v2 task-specific contract score, out of 8. */
+  /** v2 task-specific contract score, out of 16. */
   contractScore: number;
   contractResults: Array<{ id: string; label: string; met: boolean; points: number }>;
 
-  /** Total deterministic integrity score (out of 20 points). */
+  /** Total deterministic integrity score (out of 40 points). */
   score: number;
   maxScore: number;
   details: string[];
@@ -395,16 +397,16 @@ export interface JudgeEvaluationResult {
   rubricItems: RubricItemEvaluation[];
   dimensionScores: Record<RubricDimension, number>;
   /** Kept as named fields so old summary consumers have a simple migration path. */
-  intentScore: number; // 0-20
+  intentScore: number; // 0-15
   intentFeedback: string;
-  financialScore: number; // 0-30
+  financialScore: number; // 0-20
   financialFeedback: string;
-  groundingScore: number; // 0-20
+  groundingScore: number; // 0-15
   groundingFeedback: string;
   retailClarityScore: number; // 0-10
   retailClarityFeedback: string;
-  totalJudgeScore: number; // 0-80
-  maxJudgeScore: number; // 80
+  totalJudgeScore: number; // 0-60
+  maxJudgeScore: number; // 60
   criticalMisses: string[];
   criticalContradictions: string[];
   /** 69 for a missed critical item, 49 for a contradiction, otherwise absent. */
@@ -445,9 +447,9 @@ export interface TaskEvalResult {
   transcript: AgentMessage[];
   deterministicCheck: DeterministicCheckResult;
   judgeResult?: JudgeEvaluationResult;
-  /** Item-level semantic quality out of 80, present only for a judgeable completed/budget answer. */
+  /** Item-level semantic quality out of 60, present only for a judgeable completed/budget answer. */
   qualityScore?: number;
-  /** Deterministic integrity out of 20. */
+  /** Deterministic integrity out of 40. */
   integrityScore?: number;
   /** Combined v2 score out of 100 after any critical-item cap. */
   totalScore?: number;

@@ -33,30 +33,30 @@ function result(): TaskEvalResult {
     deterministicCheck: {
       version: BENCHMARK_VERSION, identifiedAllEntities: true, matchedEntities: ["NVIDIA"], missingEntities: [], derivedFigures: 1,
       mathExpectationSatisfied: true, citationCount: 2, figuresChecked: 4, figuresBacked: 3, evidenceAvailable: true,
-      evidenceScore: 5, figureSupportScore: 5, contractScore: 8, contractResults: [], score: 18, maxScore: 20, details: ["ok"],
+      evidenceScore: 10, figureSupportScore: 10, contractScore: 16, contractResults: [], score: 36, maxScore: 40, details: ["ok"],
     },
     judgeResult: {
-      rubricItems: [], dimensionScores: { intent: 18, financial: 25, grounding: 17, clarity: 10 },
-      intentScore: 18, intentFeedback: "Good", financialScore: 25, financialFeedback: "Good",
-      groundingScore: 17, groundingFeedback: "Good", retailClarityScore: 10, retailClarityFeedback: "Good",
-      totalJudgeScore: 70, maxJudgeScore: 80, criticalMisses: [], criticalContradictions: [],
-      overallVerdict: "Strong", judgeModel: "p/judge", promptVersion: "8",
+      rubricItems: [], dimensionScores: { intent: 14, financial: 17, grounding: 12, clarity: 9 },
+      intentScore: 14, intentFeedback: "Good", financialScore: 17, financialFeedback: "Good",
+      groundingScore: 12, groundingFeedback: "Good", retailClarityScore: 9, retailClarityFeedback: "Good",
+      totalJudgeScore: 52, maxJudgeScore: 60, criticalMisses: [], criticalContradictions: [],
+      overallVerdict: "Strong", judgeModel: "p/judge", promptVersion: "9",
     },
-    qualityScore: 70, integrityScore: 18, totalScore: 88, valid: true, metrics: METRICS, diagnostics: DIAGNOSTICS,
+    qualityScore: 52, integrityScore: 36, totalScore: 88, valid: true, metrics: METRICS, diagnostics: DIAGNOSTICS,
   };
 }
 
 function summary(): EvalRunSummary {
   return {
-    timestamp: "2026-09-20T10:02:03.456Z", benchmarkVersion: BENCHMARK_VERSION, judgePromptVersion: "8",
+    timestamp: "2026-09-20T10:02:03.456Z", benchmarkVersion: BENCHMARK_VERSION, judgePromptVersion: "9",
     agents: ["local/model"], judge: "p/judge", judgeRepeat: 3, fixtureMode: "offline", policyMode: "enforce",
     calibration: { anchors: 36, repeats: 3, orderingAccuracy: 1, weightedKappa: 0.9, scoreMae: 3, maxScoreStdDev: 2, passed: true },
     configHash: "abc", repeat: 3, taskIds: [RETAIL_EVAL_TASKS[0].id],
     agentSummaries: [{
       agent: "local/model", selfJudged: false, completedTasks: 3, erroredTasks: 0, agentFailures: 0, infrastructureErrors: 0, invalidRuns: 0,
-      completionRate: 1, qualityOnCompleted: 88, expectedUserScore: 88, averageIntegrityScore: 18, averageSemanticScore: 70,
+      completionRate: 1, qualityOnCompleted: 88, expectedUserScore: 88, averageIntegrityScore: 36, averageSemanticScore: 52,
       averageTotalScore: 88, criticalMissRate: 0, criticalContradictionRate: 0, maxPossibleScore: 100,
-      perTask: [{ taskId: RETAIL_EVAL_TASKS[0].id, title: RETAIL_EVAL_TASKS[0].title, runs: 3, scores: [88, 88, 88], meanIntegrity: 18, meanQuality: 70, meanTotal: 88, sdTotal: 0, tolerance: 0 }],
+      perTask: [{ taskId: RETAIL_EVAL_TASKS[0].id, title: RETAIL_EVAL_TASKS[0].title, runs: 3, scores: [88, 88, 88], meanIntegrity: 36, meanQuality: 52, meanTotal: 88, sdTotal: 0, tolerance: 0 }],
       metrics: METRICS, diagnostics: DIAGNOSTICS,
     }],
     diagnostics: DIAGNOSTICS, results: [result()],
@@ -72,8 +72,8 @@ describe("v2 reports", () => {
     const report = summary();
     expect(scoreLine(report.agentSummaries[0], 3)).toContain("completion 100.0% · completed quality 88/100 · expected 88/100");
     const markdown = renderSummaryMarkdown(report);
-    expect(markdown).toContain("Integrity: 18 / 20");
-    expect(markdown).toContain("Semantic: 70 / 80");
+    expect(markdown).toContain("Integrity: 36 / 40");
+    expect(markdown).toContain("Semantic: 52 / 60");
   });
 
   it("shows timeout quality as N/A-like partial progress while expected score is zero", () => {
@@ -141,7 +141,7 @@ describe("v2 reports", () => {
     selfJudged.agentSummaries[0].selfJudged = true;
     const markdown = renderSummaryMarkdown(selfJudged);
     expect(markdown).toContain(`Expected user score: **88 / 100** — ${SELF_JUDGED_LABEL}`);
-    expect(scoreLine(selfJudged.agentSummaries[0], 1)).toBe(`completion 100.0% · completed quality 88/100 · expected 88/100 · integrity 18/20 · semantic 70/80 (${SELF_JUDGED_LABEL})`);
+    expect(scoreLine(selfJudged.agentSummaries[0], 1)).toBe(`completion 100.0% · completed quality 88/100 · expected 88/100 · integrity 36/40 · semantic 52/60 (${SELF_JUDGED_LABEL})`);
     expect(renderSummaryMarkdown(summary())).not.toContain(SELF_JUDGED_LABEL);
   });
 
@@ -159,7 +159,7 @@ describe("v2 reports", () => {
     expect(markdown).toContain("- Spread: mean per-task σ **5.5** over 2 repeated task(s)");
     expect(markdown).toContain("| Task | Integrity | Semantic | Expected | σ |");
     expect(markdown).toContain("| 8.16 |");
-    expect(scoreLine(agent, 3)).toBe("completion 100.0% · completed quality 88/100 · expected 88/100 · integrity 18/20 · semantic 70/80 · mean per-task σ 5.5");
+    expect(scoreLine(agent, 3)).toBe("completion 100.0% · completed quality 88/100 · expected 88/100 · integrity 36/40 · semantic 52/60 · mean per-task σ 5.5");
 
     const singleRun = summary();
     singleRun.repeat = 1;

@@ -23,7 +23,7 @@ describe("saved-run rescoring", () => {
 
     const rescored = await rescoreRun(saved, defaultConfig(), { provider: "q", model: "judge" }, 1);
     expect(rescored.benchmarkVersion).toBe("2");
-    expect(rescored.results[0].deterministicCheck.maxScore).toBe(20);
+    expect(rescored.results[0].deterministicCheck.maxScore).toBe(40);
     expect(rescored.results[0].totalScore).toBe(0);
     expect(rescored.results[0].judgeResult).toBeUndefined();
     expect(saved.benchmarkVersion).toBe("1");

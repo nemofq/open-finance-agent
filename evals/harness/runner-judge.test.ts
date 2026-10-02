@@ -19,8 +19,8 @@ vi.mock("../scoring/judge", async (original) => ({
     return {
       rubricItems: [], dimensionScores: { intent: 1, financial: 1, grounding: 1, clarity: 1 },
       intentScore: 1, intentFeedback: "x", financialScore: 1, financialFeedback: "x", groundingScore: 1, groundingFeedback: "x",
-      retailClarityScore: 1, retailClarityFeedback: "x", totalJudgeScore: 4, maxJudgeScore: 80,
-      criticalMisses: [], criticalContradictions: [], overallVerdict: "x", judgeModel: "p/judge", promptVersion: "8",
+      retailClarityScore: 1, retailClarityFeedback: "x", totalJudgeScore: 4, maxJudgeScore: 60,
+      criticalMisses: [], criticalContradictions: [], overallVerdict: "x", judgeModel: "p/judge", promptVersion: "9",
     };
   }),
 }));
@@ -49,7 +49,7 @@ describe("threading the offline audit to the judge", () => {
     const result = {
       task: RETAIL_EVAL_TASKS[0], agent: "p/agent", repeat: 1, status: "judge_error", startedAt: "", endedAt: "", durationMs: 0,
       toolCalls: [], evidence: [], checks: [], figureMatches: [], finalAssistantText: "Answer.", sessionTickers: [], transcript: [],
-      deterministicCheck: { version: BENCHMARK_VERSION, score: 10, maxScore: 20, details: [] },
+      deterministicCheck: { version: BENCHMARK_VERSION, score: 10, maxScore: 40, details: [] },
       metrics: {
         unsourcedFigureRate: -1, unsourcedFigures: [], sourceTierMix: {}, conflictsDetected: 0, conflictsAddressed: 0, lookAheadEvidence: 0,
         evidenceEntries: 0, followUps: 0, blocks: 0, flags: 0,
@@ -58,7 +58,7 @@ describe("threading the offline audit to the judge", () => {
       diagnostics: emptyDiagnostics(),
       offlineAudit: audit,
     } as unknown as TaskEvalResult;
-    const summary = { benchmarkVersion: BENCHMARK_VERSION, judgePromptVersion: "8", agents: ["p/agent"], judge: "p/judge", taskIds: [result.task.id], results: [result] } as unknown as EvalRunSummary;
+    const summary = { benchmarkVersion: BENCHMARK_VERSION, judgePromptVersion: "9", agents: ["p/agent"], judge: "p/judge", taskIds: [result.task.id], results: [result] } as unknown as EvalRunSummary;
 
     await judgeRun(summary, defaultConfig(), JUDGE);
 
@@ -71,7 +71,7 @@ function unjudged(agent: string, taskIndex: number, repeat: number): TaskEvalRes
   return {
     task: RETAIL_EVAL_TASKS[taskIndex], agent, repeat, status: "judge_error", valid: false, startedAt: "", endedAt: "", durationMs: 0,
     toolCalls: [], evidence: [], checks: [], figureMatches: [], finalAssistantText: "Answer.", sessionTickers: [], transcript: [],
-    deterministicCheck: { version: BENCHMARK_VERSION, score: 10, maxScore: 20, details: [] },
+    deterministicCheck: { version: BENCHMARK_VERSION, score: 10, maxScore: 40, details: [] },
     metrics: {
       unsourcedFigureRate: -1, unsourcedFigures: [], sourceTierMix: {}, conflictsDetected: 0, conflictsAddressed: 0, lookAheadEvidence: 0,
       evidenceEntries: 0, followUps: 0, blocks: 0, flags: 0,
@@ -86,7 +86,7 @@ function savedRun(): EvalRunSummary {
   const agents = ["p/agent", "local/Qwen/Qwen3-32B"];
   const results = agents.flatMap((agent) => [0, 1].flatMap((task) => [1, 2].map((repeat) => unjudged(agent, task, repeat))));
   return {
-    timestamp: "2026-09-20T10:02:03.456Z", benchmarkVersion: BENCHMARK_VERSION, judgePromptVersion: "8", agents, judge: "p/judge", judgeRepeat: 3,
+    timestamp: "2026-09-20T10:02:03.456Z", benchmarkVersion: BENCHMARK_VERSION, judgePromptVersion: "9", agents, judge: "p/judge", judgeRepeat: 3,
     fixtureMode: "offline", policyMode: "enforce", configHash: "abc", repeat: 3,
     taskIds: [RETAIL_EVAL_TASKS[0].id, RETAIL_EVAL_TASKS[1].id],
     agentSummaries: agents.map((agent) => ({ agent, selfJudged: false })), results,

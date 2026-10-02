@@ -132,7 +132,7 @@ dataset of the filings, prices and web pages that were public at each task's cut
 
 The table below is the benchmark v1 historical baseline from main. Eval v2 keeps these files
 readable but does not compare them directly with v2 scores; trace-bearing v1 runs can be migrated
-with `--rescore`. The current scheme gives 80 points to item-level semantic quality and 20 to
+with `--rescore`. The current scheme gives 60 points to item-level semantic quality and 40 to
 deterministic integrity, with critical-error caps and separate completion, conditional-quality and
 expected-user-score metrics.
 

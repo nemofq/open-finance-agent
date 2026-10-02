@@ -21,7 +21,7 @@ import type {
 import { deliveredReportProse } from "./report-content";
 
 /** Versioned judge prompt configuration for evaluation runs. */
-export const JUDGE_PROMPT_VERSION = "8";
+export const JUDGE_PROMPT_VERSION = "9";
 
 /** Boundary lines the judge sees; the rest are counted, not listed. */
 const BOUNDARY_LINES = 15;
@@ -245,7 +245,7 @@ function failed(judgeModel: string, message: string, verdict = message): JudgeEv
     retailClarityScore: 0,
     retailClarityFeedback: message,
     totalJudgeScore: 0,
-    maxJudgeScore: 80,
+    maxJudgeScore: 60,
     criticalMisses: [],
     criticalContradictions: [],
     overallVerdict: verdict,
@@ -456,7 +456,7 @@ function resultFromItems(input: {
     retailClarityScore: dimensions.clarity,
     retailClarityFeedback: feedbackFor(rubricItems, "clarity"),
     totalJudgeScore: rounded(Object.values(dimensions).reduce((total, value) => total + value, 0)),
-    maxJudgeScore: 80,
+    maxJudgeScore: 60,
     criticalMisses,
     criticalContradictions,
     ...(scoreCap === undefined ? {} : { scoreCap }),

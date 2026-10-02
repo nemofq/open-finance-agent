@@ -164,21 +164,21 @@ Known gaps in the captured corpus (the v2 scoring issue records the required rec
 
 ## Scoring
 
-Every successfully completed task is scored out of 100: 20 deterministic integrity points and 80
+Every successfully completed task is scored out of 100: 40 deterministic integrity points and 60
 semantic points. Figure checks count only non-exempt prices, amounts, margins, growth rates and the
 like. Years, dates, fiscal labels, tickers, SEC item numbers, ordinals and small counts are exempt
 ([architecture › Evidence](../docs/architecture.md#evidence)).
 
-### Deterministic integrity (20 points)
+### Deterministic integrity (40 points)
 
-1. **Required source/fact acquisition and use (6)**: a requirement earns half credit when the
+1. **Required source/fact acquisition and use (12)**: a requirement earns half credit when the
    source or fact is acquired and full credit only when the answer or delivered report uses it via
    a supported figure, a source excerpt, or a calculation whose inputs lead back to the entry. A
    bare evidence tag or URL earns nothing. Acquisition is an integrity signal, not a proxy for a
    correct conclusion; the semantic rubric grades the interpretation.
-2. **Figure support precision (6)**: the exact supported-figure ratio, with no rounding to full
+2. **Figure support precision (12)**: the exact supported-figure ratio, with no rounding to full
    credit. A harness-repaired citation remains a repair diagnostic and receives no model credit.
-3. **Task-specific contracts (8)**: each task declares exact obligations. Calculation contracts require a
+3. **Task-specific contracts (16)**: each task declares exact obligations. Calculation contracts require a
    visible calculator result that matches an independently recomputed target within a stated
    tolerance, with the specified source periods, subjects and input IDs in its lineage. Other
    contracts require reading and explicitly citing named primary sources, preserving exact
@@ -189,15 +189,15 @@ like. Years, dates, fiscal labels, tickers, SEC item numbers, ordinals and small
    cannot pin a trustworthy numeric target, the contract tests a specific evidence or delivery
    obligation instead. Entity discovery and raw calculator use remain diagnostic only.
 
-### Semantic quality (80 points)
+### Semantic quality (60 points)
 
 The judge returns `met`, `partial`, `missed` or `contradicted` for every weighted rubric item, with
 answer excerpts, evidence ids and a reason. Code—not the judge—maps those verdicts to
 `1 / 0.5 / 0 / 0` and calculates the score:
 
-- **Intent / critical outcome (20)**: whether the answer addresses the investor's real question.
-- **Financial reasoning (30)**: accounting correctness, context and balance.
-- **Grounding and evidence interpretation (20)**: fidelity to the retrieved evidence; unsupported
+- **Intent / critical outcome (15)**: whether the answer addresses the investor's real question.
+- **Financial reasoning (20)**: accounting correctness, context and balance.
+- **Grounding and evidence interpretation (15)**: fidelity to the retrieved evidence; unsupported
   or post-cutoff claims are penalised.
 - **Clarity and guardrails (10)**: structure, disclaimers and no unhedged personal advice.
 
@@ -286,7 +286,7 @@ The existing README table is v1 history. Its columns come from the historical su
 | Avg. tool calls per run | not in the agent section | the length of each `results[].toolCalls`, summed, ÷ repeats |
 
 In v2, summaries instead report `completionRate`, `qualityOnCompleted` (/100),
-`expectedUserScore` (/100), `averageIntegrityScore` (/20) and `averageSemanticScore` (/80).
+`expectedUserScore` (/100), `averageIntegrityScore` (/40) and `averageSemanticScore` (/60).
 Expected user score includes valid model failures as zero, while quality on completed excludes
 them; invalid infrastructure, harness and judge results are left out. Runtime, output tokens
 and tool calls are totals for one run
