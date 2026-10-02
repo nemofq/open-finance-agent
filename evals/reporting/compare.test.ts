@@ -16,7 +16,7 @@ function cell(agent: string, taskIndex: number, repeat: number, totalScore: numb
 function run(version: string, agent: string, scores: number[], options: { completed?: boolean[]; contradictions?: boolean[] } = {}): EvalRunSummary {
   const taskIds = [RETAIL_EVAL_TASKS[0].id, RETAIL_EVAL_TASKS[1].id];
   return {
-    benchmarkVersion: version, agents: [agent], repeat: 3, taskIds,
+    benchmarkVersion: version, judgePromptVersion: "8", agents: [agent], repeat: 3, taskIds,
     results: scores.map((score, index) => cell(agent, Math.floor(index / 3), index % 3 + 1, score, {
       completed: options.completed?.[index], contradiction: options.contradictions?.[index],
     })),
@@ -52,5 +52,11 @@ describe("paired v2 comparison", () => {
   it("refuses to compare v1 and v2", () => {
     expect(() => compareRuns(run("2", "new/model", [1, 1, 1, 1, 1, 1]), run("1", "old/model", [1, 1, 1, 1, 1, 1])))
       .toThrow("Cannot compare benchmark v2 with v1");
+  });
+
+  it("refuses to compare interim v2 scores made with the old judge rubric", () => {
+    const current = run("2", "new/model", [80, 80, 80, 70, 70, 70]);
+    const interim = { ...run("2", "old/model", [80, 80, 80, 70, 70, 70]), judgePromptVersion: "7" };
+    expect(() => compareRuns(current, interim)).toThrow("Cannot compare judge prompt v8 with v7");
   });
 });

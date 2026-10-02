@@ -1,3 +1,4 @@
+import { JUDGE_PROMPT_VERSION } from "../scoring/judge";
 import type { EvalRunSummary, TaskEvalResult } from "../types";
 
 export interface TaskDelta {
@@ -131,6 +132,9 @@ function comparisonFor(candidateAgent: string, baselineAgent: string, candidate:
 export function compareRuns(candidate: EvalRunSummary, baseline: EvalRunSummary): RunComparison {
   if (candidate.benchmarkVersion !== baseline.benchmarkVersion) {
     throw new Error(`Cannot compare benchmark v${candidate.benchmarkVersion} with v${baseline.benchmarkVersion}; rescore the old run first.`);
+  }
+  if (candidate.judgePromptVersion !== baseline.judgePromptVersion || candidate.judgePromptVersion !== JUDGE_PROMPT_VERSION) {
+    throw new Error(`Cannot compare judge prompt v${candidate.judgePromptVersion} with v${baseline.judgePromptVersion}; rescore with the current v${JUDGE_PROMPT_VERSION} rubric first.`);
   }
   if (candidate.taskIds.join("\0") !== baseline.taskIds.join("\0") || candidate.repeat !== baseline.repeat) {
     throw new Error("Candidate and baseline must contain the same tasks in the same order and the same repeat count.");

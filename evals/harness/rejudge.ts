@@ -2,10 +2,9 @@ import type { AppConfig, ModelRef } from "@/lib/config/schema";
 import { modelRefKey } from "@/lib/llm/catalog";
 import { evaluateWithJudge, JUDGE_PROMPT_VERSION } from "../scoring/judge";
 import { parseModelSpec } from "../models";
-import { round } from "../reporting/stats";
 import { sumDiagnostics, summariseAgent } from "../reporting/summary";
 import { budgetExhausted } from "./turn-bounds";
-import type { EvalRunSummary, EvalTask, JudgeEvaluationResult, TaskEvalResult } from "../types";
+import { BENCHMARK_VERSION, type EvalRunSummary, type EvalTask, type JudgeEvaluationResult, type TaskEvalResult } from "../types";
 
 /** Each task once, in the run's order, from the results that ran it. */
 function runTasks(summary: EvalRunSummary): EvalTask[] {
@@ -37,10 +36,10 @@ export function applyJudgement(result: TaskEvalResult, judgeResult: JudgeEvaluat
     delete result.integrityScore;
     delete result.totalScore;
   } else {
-    if (judgeResult.maxJudgeScore !== 60 || judgeResult.totalJudgeScore < 0 || judgeResult.totalJudgeScore > 60) {
-      throw new Error(`Expected a valid 60-point judge result, got ${judgeResult.totalJudgeScore}/${judgeResult.maxJudgeScore}.`);
+    if (judgeResult.maxJudgeScore !== 80 || judgeResult.totalJudgeScore < 0 || judgeResult.totalJudgeScore > 80 || judgeResult.promptVersion !== JUDGE_PROMPT_VERSION) {
+      throw new Error(`Expected a valid 80-point judge v${JUDGE_PROMPT_VERSION} result, got ${judgeResult.totalJudgeScore}/${judgeResult.maxJudgeScore} from v${judgeResult.promptVersion}.`);
     }
-    if (result.deterministicCheck.maxScore !== 20 || result.deterministicCheck.version !== "2") {
+    if (result.deterministicCheck.maxScore !== 20 || result.deterministicCheck.version !== BENCHMARK_VERSION) {
       throw new Error(`Cannot combine a v${result.deterministicCheck.version ?? "unknown"} integrity score with v2 quality; use --rescore on a trace-bearing run.`);
     }
     result.status = budgetExhausted(result.stop) ? "agent_budget" : "completed";
@@ -62,6 +61,9 @@ export async function judgeRun(
   config: AppConfig,
   judge: ModelRef,
 ): Promise<EvalRunSummary> {
+  if (summary.benchmarkVersion !== BENCHMARK_VERSION || summary.judgePromptVersion !== JUDGE_PROMPT_VERSION) {
+    throw new Error(`Cannot judge benchmark v${summary.benchmarkVersion} / prompt v${summary.judgePromptVersion} with prompt v${JUDGE_PROMPT_VERSION}; use --rescore on a trace-bearing run.`);
+  }
   const agents = summary.agents.map((spec) => {
     const agent = parseModelSpec(spec);
     if (!agent) throw new Error(`The saved run names an agent "${spec}" that is not a provider/model spec.`);

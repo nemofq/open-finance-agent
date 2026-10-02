@@ -58,7 +58,7 @@ describe("threading the offline audit to the judge", () => {
       diagnostics: emptyDiagnostics(),
       offlineAudit: audit,
     } as unknown as TaskEvalResult;
-    const summary = { agents: ["p/agent"], judge: "p/judge", taskIds: [result.task.id], results: [result] } as unknown as EvalRunSummary;
+    const summary = { benchmarkVersion: BENCHMARK_VERSION, judgePromptVersion: "8", agents: ["p/agent"], judge: "p/judge", taskIds: [result.task.id], results: [result] } as unknown as EvalRunSummary;
 
     await judgeRun(summary, defaultConfig(), JUDGE);
 
@@ -105,7 +105,7 @@ describe("--judge-only", () => {
       expect(agent.perTask.map((task) => task.taskId)).toEqual([RETAIL_EVAL_TASKS[0].id, RETAIL_EVAL_TASKS[1].id]);
       expect(agent.perTask.map((task) => task.runs)).toEqual([2, 2]);
     }
-    expect(rejudged.results.every((result) => result.totalScore === 15.33)).toBe(true);
+    expect(rejudged.results.every((result) => result.totalScore === 14)).toBe(true);
   });
 
   it("grades at the judge thinking the run recorded", async () => {

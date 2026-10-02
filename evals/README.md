@@ -212,9 +212,7 @@ severity ordering accuracy, weighted κ ≥ 0.75, score MAE ≤ 5 and maximum fi
 `completed` results, and `agent_budget` results that still answered, are judged and scored. An
 `agent_timeout`, an `agent_error`, or a budget stop without an answer scores 0. Infrastructure,
 harness and judge errors are marked invalid and left unscored, never zeroed; `--judge-only` can
-finish a run whose judge failed. The summary reports completion rate, quality on completed
-answers, and expected user score (task-macro average with agent failures counted as zero)
-separately; latency, cost and tool/model calls remain diagnostics.
+finish a run whose judge failed. Latency, cost and tool/model calls remain diagnostics.
 
 Every model summary reports three separate outcomes: `completionRate`, `qualityOnCompleted` and
 `expectedUserScore`. The last is the task-macro average with model failures scored as zero and is
@@ -224,8 +222,8 @@ the primary ranking metric; timeout/error cells are excluded from conditional qu
 
 The baselines currently committed from main are benchmark v1 history. They remain readable, but v2
 refuses to compare them directly. Rescore a trace-bearing v1 run first; committed baselines omit
-traces and therefore cannot be rescored. `--compare` requires the same benchmark version, task order
-and repeat count, then reports paired expected-score delta, a one-sided 95% bootstrap lower bound,
+traces and therefore cannot be rescored. `--compare` requires the same benchmark and judge-prompt
+versions, task order and repeat count, then reports paired expected-score delta, a one-sided 95% bootstrap lower bound,
 win/tie/loss, completion delta, critical-contradiction delta and per-task regressions.
 
 Default regression gates are: completion no worse than -5 percentage points; expected-score lower

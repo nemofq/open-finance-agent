@@ -43,7 +43,7 @@ const verdict: JudgeEvaluationResult = {
   criticalContradictions: [],
   overallVerdict: "ok",
   judgeModel: "offline/test",
-  promptVersion: "test",
+  promptVersion: "8",
 };
 
 let home: string;
@@ -121,7 +121,7 @@ describe("budget enforcement", () => {
     expect(result.status).toBe("agent_budget");
     expect(result.valid).toBe(true);
     expect(result.judgeResult?.totalJudgeScore).toBe(35);
-    expect(result.totalScore).toBe(Math.round((result.deterministicCheck.score + 35 * 4 / 3) * 100) / 100);
+    expect(result.totalScore).toBe(result.deterministicCheck.score + 35);
     expect(result.error).toBe("The turn reached its model-call limit");
     expect(result.stop).toBe("calls");
   });
