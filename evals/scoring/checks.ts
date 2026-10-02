@@ -325,7 +325,7 @@ function citedSource(requirement: EvalEvidenceRequirement, input: ChecksInput, c
       const cites = entriesOf(call, input.evidence).some((entry) => paragraph.includes(`[${entry.id}]`)) ||
         [...eligible].some((url) => paragraph.includes(url));
       if (!cites || !claim) return cites;
-      if (claim === "btc_holdings") return /(?:bitcoin|\bBTC\b)/i.test(paragraph) && /331[,\s]?200|331\.2\s*(?:thousand|k)/i.test(paragraph);
+      if (claim === "btc_holdings") return /(?:bitcoin|\bBTC\b)/i.test(paragraph) && /386[,\s]?700|386\.7\s*(?:thousand|k)/i.test(paragraph);
       return /(?:convertib|\bnotes?\b|borrow|\bdebt\b)/i.test(paragraph) &&
         /(?:zero[ -]?coupon|0\s*%|2029|\$\s*(?:2\.6|3(?:\.0)?)\s*(?:billion|bn|b)\b)/i.test(paragraph);
     }));
@@ -380,9 +380,11 @@ function contractResults(input: ChecksInput, use: EvidenceUse): DeterministicChe
       met = namedRequirements(contract.requirementLabels, input.task)
         .every((requirement) => requirementState(requirement, input, use) === "used");
     } else if (contract.kind === "required_evidence_cited") {
-      const citations = namedRequirements(contract.requirementLabels, input.task)
-        .map((requirement) => citedSource(requirement, input, contract.claim));
-      met = contract.match === "all" ? citations.every(Boolean) : citations.some(Boolean);
+      met = contract.citations.every((check) => {
+        const citations = namedRequirements(check.requirementLabels, input.task)
+          .map((requirement) => citedSource(requirement, input, check.claim));
+        return check.match === "all" ? citations.every(Boolean) : citations.some(Boolean);
+      });
     } else if (contract.kind === "dated_quote") {
       met = input.toolCalls.some((call) => QUOTE_TOOLS.has(call.toolName) && served(call) &&
         entriesOf(call, input.evidence).some((entry) => !entry.lookAhead && use.backed.has(entry.id) &&

@@ -150,31 +150,35 @@ describe("v2 deterministic integrity", () => {
     const urls = required.slice(0, 2).map((item) => item.urls[0]);
     const calls = urls.map((url, index) => call("edgar_read_filing", { url }, { url, evidence: { id: `E${index + 1}` } }));
     const evidence = urls.map((url, index) => entry(`E${index + 1}`, "E", { tool: "edgar_read_filing", args: { url } }));
-    const used = runDeterministicChecks({ task, toolCalls: calls, finalText: "The filings show 331,200 BTC [E1] and $2.6B notes [E2].",
-      sessionTickers: [], evidence, figureMatches: [match("331,200", 331200, ["E1"]), match("$2.6B", 2_600_000_000, ["E2"])], evidenceAvailable: true });
+    const used = runDeterministicChecks({ task, toolCalls: calls, finalText: "The filings show 386,700 BTC [E1] and $2.6B notes [E2].",
+      sessionTickers: [], evidence, figureMatches: [match("386,700", 386700, ["E1"]), match("$2.6B", 2_600_000_000, ["E2"])], evidenceAvailable: true });
     expect(used.contractScore).toBe(16);
     const holdingsOnly = runDeterministicChecks({ task, toolCalls: [calls[0]],
-      finalText: "The November 25 filing reports 331,200 BTC [E1].",
+      finalText: "The November 25 filing reports 386,700 BTC [E1].",
       sessionTickers: [], evidence: [evidence[0]],
-      figureMatches: [match("331,200", 331200, ["E1"])], evidenceAvailable: true });
-    expect(holdingsOnly.contractResults.map((contract) => contract.met)).toEqual([true, false]);
-    expect(holdingsOnly.contractScore).toBe(8);
+      figureMatches: [match("386,700", 386700, ["E1"])], evidenceAvailable: true });
+    expect(holdingsOnly.contractResults.map((contract) => contract.met)).toEqual([false]);
+    expect(holdingsOnly.contractScore).toBe(0);
     const finalTerms = runDeterministicChecks({ task, toolCalls: [calls[0]],
-      finalText: "The November 25 filing reports 331,200 BTC and final $3.0B convertible note terms [E1].",
+      finalText: "The November 25 filing reports 386,700 BTC and final $3.0B convertible note terms [E1].",
       sessionTickers: [], evidence: [evidence[0]],
-      figureMatches: [match("331,200", 331200, ["E1"]), match("$3.0B", 3_000_000_000, ["E1"])], evidenceAvailable: true });
+      figureMatches: [match("386,700", 386700, ["E1"]), match("$3.0B", 3_000_000_000, ["E1"])], evidenceAvailable: true });
     expect(finalTerms.contractScore).toBe(16);
     const termsOnly = runDeterministicChecks({ task, toolCalls: [calls[1]],
       finalText: "The November 20 filing describes $2.6B convertible notes [E2].",
       sessionTickers: [], evidence: [evidence[1]],
       figureMatches: [match("$2.6B", 2_600_000_000, ["E2"])], evidenceAvailable: true });
-    expect(termsOnly.contractResults.map((contract) => contract.met)).toEqual([false, true]);
+    expect(termsOnly.contractResults.map((contract) => contract.met)).toEqual([false]);
     const unrelatedClaim = runDeterministicChecks({ task, toolCalls: [calls[0]],
-      finalText: "The November 25 filing reports 331,200 BTC [E1].\n\nConvertible debt deserves further study.",
-      sessionTickers: [], evidence: [evidence[0]], figureMatches: [match("331,200", 331200, ["E1"])], evidenceAvailable: true });
-    expect(unrelatedClaim.contractScore).toBe(8);
+      finalText: "The November 25 filing reports 386,700 BTC [E1].\n\nConvertible debt deserves further study.",
+      sessionTickers: [], evidence: [evidence[0]], figureMatches: [match("386,700", 386700, ["E1"])], evidenceAvailable: true });
+    expect(unrelatedClaim.contractScore).toBe(0);
     expect(runDeterministicChecks({ task, toolCalls: calls, finalText: "Both figures came from filings.",
-      sessionTickers: [], evidence, figureMatches: [match("331,200", 331200, ["E1"]), match("$2.6B", 2_600_000_000, ["E2"])], evidenceAvailable: true }).contractScore).toBe(0);
+      sessionTickers: [], evidence, figureMatches: [match("386,700", 386700, ["E1"]), match("$2.6B", 2_600_000_000, ["E2"])], evidenceAvailable: true }).contractScore).toBe(0);
+    const staleHoldings = runDeterministicChecks({ task, toolCalls: [calls[0]],
+      finalText: "The November 25 filing reports 331,200 BTC [E1].", sessionTickers: [], evidence: [evidence[0]],
+      figureMatches: [match("331,200", 331200, ["E1"])], evidenceAvailable: true });
+    expect(staleHoldings.contractScore).toBe(0);
   });
 
   it("scores the cross-turn evidence outcome rather than a particular recovery tool, and requires a dated Apple quote", () => {
@@ -222,7 +226,10 @@ describe("v2 deterministic integrity", () => {
       expect(task.contracts.reduce((sum, contract) => sum + contract.points, 0), task.id).toBe(16);
       for (const contract of task.contracts) {
         if (contract.kind !== "required_evidence_used" && contract.kind !== "required_evidence_cited") continue;
-        for (const label of contract.requirementLabels) {
+        const labels = contract.kind === "required_evidence_used"
+          ? contract.requirementLabels
+          : contract.citations.flatMap((citation) => citation.requirementLabels);
+        for (const label of labels) {
           expect(task.requiredEvidence.some((item) => item.label === label), `${task.id}: ${label}`).toBe(true);
         }
       }
