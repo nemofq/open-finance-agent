@@ -178,12 +178,16 @@ like. Years, dates, fiscal labels, tickers, SEC item numbers, ordinals and small
    correct conclusion; the semantic rubric grades the interpretation.
 2. **Figure support precision (6)**: the exact supported-figure ratio, with no rounding to full
    credit. A harness-repaired citation remains a repair diagnostic and receives no model credit.
-3. **Task-specific contracts (8)**: only contracts declared by the task score—the specified
-   calculation and input lineage, required source/period workflow, no-lookahead constraint, or
-   report template and sections. An unrelated calculator call earns nothing, and a fallback report
-   rendered by the harness does not satisfy agent delivery.
-
-Entity coverage and arbitrary tool/calculator use remain diagnostics, not score components.
+3. **Task-specific contracts (8)**: each task declares exact obligations. Calculation contracts require a
+   visible calculator result that matches an independently recomputed target within a stated
+   tolerance, with the specified source periods, subjects and input IDs in its lineage. Other
+   contracts require reading and explicitly citing named primary sources, re-reading the exact
+   cross-turn evidence IDs, a quote from the required date, no look-ahead, or agent-created
+   report delivery. Citation is traceability, not a claim that the source was interpreted
+   correctly; the semantic judge handles that. A generic tool call,
+   unrelated calculation, or fallback report earns no contract points. Where the offline corpus
+   cannot pin a trustworthy numeric target, the contract tests a specific evidence or delivery
+   obligation instead. Entity discovery and raw calculator use remain diagnostic only.
 
 ### Semantic quality (80 points)
 

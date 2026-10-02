@@ -61,10 +61,66 @@ describe("v2 deterministic integrity", () => {
       task: NVDA,
       toolCalls: [call("financial_calculator", { expression: "1+1" })],
       finalText: "The computed change is 2%.",
-      sessionTickers: [], evidence: [entry("E1"), entry("C1", "C", { value: 2, inputs: ["E1"] })], figureMatches: [match("2%", 2, ["C1"])], evidenceAvailable: true,
+      sessionTickers: [], evidence: [entry("E1"), entry("C1", "C", { value: 2, unit: "%", inputs: ["E1"] })], figureMatches: [match("2%", 2, ["C1"])], evidenceAvailable: true,
     });
-    expect(visible.mathExpectationSatisfied).toBe(true);
-    expect(visible.contractScore).toBe(8);
+    expect(visible.mathExpectationSatisfied).toBe(false);
+    expect(visible.contractScore).toBe(0);
+  });
+
+  it("verifies the target arithmetic, exact filing, lineage and final display", () => {
+    const source = NVDA.contracts[0];
+    if (source.kind !== "verified_calculation" || source.target.kind !== "filing_guidance_growth") throw new Error("missing NVDA calculation contract");
+    const e = entry("E1", "E", {
+      tool: "edgar_read_filing", source: { id: "edgar", name: "SEC EDGAR", tier: 1 },
+      args: { url: source.target.url },
+      numbers: [{ value: 30_000_000_000, unit: "USD", context: "Revenue $30.0 billion" },
+        { value: 32_500_000_000, unit: "USD", context: "Guidance $32.5 billion" }],
+    });
+    const c = entry("C1", "C", { value: 8.189081, unit: "%", inputs: ["E1"] });
+    const base = {
+      task: NVDA, toolCalls: [call("edgar_read_filing", { url: source.target.url }, { url: source.target.url, evidence: { id: "E1" } })],
+      finalText: "Guided sequential growth is 8.19%.", sessionTickers: [], evidence: [e, c],
+      figureMatches: [match("8.19%", 8.19, ["C1"])], evidenceAvailable: true,
+    };
+    expect(runDeterministicChecks(base).contractScore).toBe(8);
+    expect(runDeterministicChecks({ ...base, evidence: [e, { ...c, value: 15 }] }).contractScore).toBe(0);
+    expect(runDeterministicChecks({ ...base, evidence: [{ ...e, args: { url: "https://sec.gov/wrong" } }, c] }).contractScore).toBe(0);
+    expect(runDeterministicChecks({ ...base, evidence: [e, { ...c, inputs: ["E99"] }] }).contractScore).toBe(0);
+    expect(runDeterministicChecks({ ...base, figureMatches: [] }).contractScore).toBe(0);
+  });
+
+  it("does not credit a correct number from the wrong subject or fiscal period", () => {
+    const task = RETAIL_EVAL_TASKS.find((item) => item.id === "retail-02-nike-moat-erosion");
+    if (!task) throw new Error("missing Nike moat task");
+    const fiscalFacts = (ticker: string, priorPeriod: string): EvidenceEntry => entry("E1", "E", {
+      tool: "edgar_financials", entity: { ticker }, source: { id: "edgar", name: "SEC EDGAR", tier: 1 },
+      facts: [{ metric: "revenue", period: "2024-03-31", periodType: "annual", value: 120, unit: "USD" },
+        { metric: "revenue", period: priorPeriod, periodType: "annual", value: 100, unit: "USD" }],
+    });
+    const c = entry("C1", "C", { value: 20, unit: "%", inputs: ["E1"] });
+    const base = { task, toolCalls: [], finalText: "Growth was 20%.", sessionTickers: [],
+      evidence: [fiscalFacts("DECK", "2023-03-31"), c], figureMatches: [match("20%", 20, ["C1"])], evidenceAvailable: true };
+    expect(runDeterministicChecks(base).contractScore).toBe(8);
+    expect(runDeterministicChecks({ ...base, evidence: [fiscalFacts("NKE", "2023-03-31"), c] }).contractScore).toBe(0);
+    expect(runDeterministicChecks({ ...base, evidence: [fiscalFacts("DECK", "2022-03-31"), c] }).contractScore).toBe(0);
+    expect(runDeterministicChecks({ ...base, evidence: [{ ...fiscalFacts("DECK", "2023-03-31"),
+      facts: fiscalFacts("DECK", "2023-03-31").facts?.map((fact) => ({ ...fact, periodType: "quarterly" as const })) }, c] }).contractScore).toBe(0);
+  });
+
+  it("credits cited qualitative SMCI filings without demanding an eight-word quotation", () => {
+    const task = RETAIL_EVAL_TASKS.find((item) => item.id === "retail-10-smci-accounting-red-flag");
+    if (!task) throw new Error("missing SMCI task");
+    const requirements = task.requiredEvidence.filter((item) => item.kind === "source");
+    if (requirements.length !== 2) throw new Error("missing SMCI sources");
+    const urls = requirements.map((item) => item.urls[0]);
+    const calls = urls.map((url, index) => call("edgar_read_filing", { url }, { url, evidence: { id: `E${index + 1}` } }));
+    const evidence = urls.map((url, index) => entry(`E${index + 1}`, "E", { tool: "edgar_read_filing", args: { url } }));
+    const result = runDeterministicChecks({ task, toolCalls: calls,
+      finalText: "EY's resignation raises an audit-confidence risk [E1], while Nasdaq flagged the late 10-K [E2]. That does not prove fraud.",
+      sessionTickers: [], evidence, figureMatches: [], evidenceAvailable: true });
+    expect(result.contractScore).toBe(8);
+    // The separate six-point evidence-use check stays conservative for non-numeric paraphrases.
+    expect(result.evidenceScore).toBe(3);
   });
 
   it("requires calculation lineage, a non-empty tool result and acquired evidence for contracts", () => {
@@ -80,6 +136,67 @@ describe("v2 deterministic integrity", () => {
     emptyQuote.offlineOutcome = "empty";
     const empty = runDeterministicChecks({ task: apple, toolCalls: [emptyQuote], finalText: "Apple reports later.", sessionTickers: [], evidence: [], figureMatches: [], evidenceAvailable: true });
     expect(empty.contractScore).toBe(0);
+  });
+
+  it("requires the named filings, not an arbitrary successful tool call", () => {
+    const task = RETAIL_EVAL_TASKS.find((item) => item.id === "retail-06-mstr-proxy-leverage");
+    if (!task) throw new Error("missing MSTR task");
+    const unrelated = runDeterministicChecks({ task, toolCalls: [call("financial_calculator", { expression: "1+1" })],
+      finalText: "The result is 2.", sessionTickers: [], evidence: [entry("C1", "C", { value: 2, unit: "USD" })],
+      figureMatches: [match("2", 2, ["C1"])], evidenceAvailable: true });
+    expect(unrelated.contractScore).toBe(0);
+    const required = task.requiredEvidence.filter((item) => item.kind === "source");
+    if (required.length < 2) throw new Error("missing MSTR source requirements");
+    const urls = required.slice(0, 2).map((item) => item.urls[0]);
+    const calls = urls.map((url, index) => call("edgar_read_filing", { url }, { url, evidence: { id: `E${index + 1}` } }));
+    const evidence = urls.map((url, index) => entry(`E${index + 1}`, "E", { tool: "edgar_read_filing", args: { url } }));
+    const used = runDeterministicChecks({ task, toolCalls: calls, finalText: "The filings show 331,200 BTC [E1] and $2.6B notes [E2].",
+      sessionTickers: [], evidence, figureMatches: [match("331,200", 331200, ["E1"]), match("$2.6B", 2_600_000_000, ["E2"])], evidenceAvailable: true });
+    expect(used.contractScore).toBe(8);
+    expect(runDeterministicChecks({ task, toolCalls: calls, finalText: "Both figures came from filings.",
+      sessionTickers: [], evidence, figureMatches: [match("331,200", 331200, ["E1"]), match("$2.6B", 2_600_000_000, ["E2"])], evidenceAvailable: true }).contractScore).toBe(0);
+  });
+
+  it("requires an exact cross-turn evidence_get and a dated Apple quote", () => {
+    const cross = RETAIL_EVAL_TASKS.find((item) => item.id === "retail-13-semis-figure-survival");
+    const apple = RETAIL_EVAL_TASKS.find((item) => item.id === "retail-14-apple-pre-open-timing");
+    if (!cross || !apple) throw new Error("missing cross-turn or Apple task");
+    const facts = [
+      entry("E1", "E", { tool: "edgar_financials", entity: { ticker: "AMD" }, source: { id: "edgar", name: "SEC EDGAR", tier: 1 },
+        facts: [{ metric: "revenue", period: "2024-09-28", value: 6819, unit: "USD" }] }),
+      entry("E2", "E", { tool: "edgar_financials", entity: { ticker: "INTC" }, source: { id: "edgar", name: "SEC EDGAR", tier: 1 },
+        facts: [{ metric: "grossMargin", period: "2024-09-28", value: 15, unit: "%" }] }),
+    ];
+    const crossBase = { task: cross,
+      toolCalls: [call("edgar_financials", { ticker: "AMD" }, { statement: "key_metrics", evidence: { id: "E1" } }),
+        call("edgar_financials", { ticker: "INTC" }, { statement: "key_metrics", evidence: { id: "E2" } })],
+      finalText: "AMD revenue was 6819 and Intel margin was 15%.", sessionTickers: [], evidence: facts,
+      figureMatches: [match("6819", 6819, ["E1"]), match("15%", 15, ["E2"])], evidenceAvailable: true };
+    expect(runDeterministicChecks(crossBase).contractScore).toBe(4);
+    const wrongRead = call("evidence_get", { id: "E99" }, { id: "E99", from: "facts" });
+    expect(runDeterministicChecks({ ...crossBase, toolCalls: [...crossBase.toolCalls, wrongRead] }).contractScore).toBe(4);
+    const reads = ["E1", "E2"].map((id) => call("evidence_get", { id }, { id, from: "facts" }));
+    expect(runDeterministicChecks({ ...crossBase, toolCalls: [...crossBase.toolCalls, ...reads] }).contractScore).toBe(8);
+
+    const quote = (period: string) => entry("E1", "E", { tool: "market_quotes", entity: { ticker: "AAPL" },
+      facts: [{ metric: "close", period, value: 230, unit: "USD" }] });
+    const appleBase = { task: apple, toolCalls: [call("market_quotes", { symbols: ["AAPL"] }, { evidence: { id: "E1" } })],
+      finalText: "The previous close was $230.", sessionTickers: [], evidence: [quote("2024-10-30")],
+      figureMatches: [match("$230", 230, ["E1"])], evidenceAvailable: true };
+    expect(runDeterministicChecks(appleBase).contractScore).toBe(8);
+    expect(runDeterministicChecks({ ...appleBase, evidence: [quote("2024-10-31")] }).contractScore).toBe(4);
+  });
+
+  it("keeps task contracts valid and within the eight-point budget", () => {
+    for (const task of RETAIL_EVAL_TASKS) {
+      expect(task.contracts.reduce((sum, contract) => sum + contract.points, 0), task.id).toBe(8);
+      for (const contract of task.contracts) {
+        if (contract.kind !== "required_evidence_used" && contract.kind !== "required_evidence_cited" && contract.kind !== "reread_required_evidence") continue;
+        for (const label of contract.requirementLabels) {
+          expect(task.requiredEvidence.some((item) => item.label === label), `${task.id}: ${label}`).toBe(true);
+        }
+      }
+    }
   });
 
   it("scores figure precision as the exact ratio instead of rounding to full", () => {

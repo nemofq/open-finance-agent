@@ -54,20 +54,51 @@ export interface EvalRubricItem {
     alphaEarningsTickers?: string[];
   };
 }
+export type EvalCalculationTarget =
+  | { kind: "fact_growth"; ticker: string; metric: string; periodType: "quarterly" | "annual"; currentPeriod: string; priorPeriod: string }
+  | { kind: "fact_sum"; ticker: string; metric: string; periodType: "quarterly" | "annual"; periods: string[] }
+  | { kind: "annual_income_rate"; principal: number; monthlyIncome: number }
+  | { kind: "portfolio_top_weight"; quoteDate: string }
+  | { kind: "filing_guidance_growth"; url: string; currentRevenue: number; guidedRevenue: number };
 
 export type EvalTaskContract =
   | {
       id: string;
-      kind: "used_calculation";
+      kind: "verified_calculation";
       label: string;
       points: number;
+      target: EvalCalculationTarget;
+      /** Absolute tolerance in the target's output unit, not a percentage of its value. */
+      tolerance: number;
     }
   | {
       id: string;
-      kind: "tool_any";
+      kind: "required_evidence_used";
       label: string;
       points: number;
-      tools: string[];
+      requirementLabels: string[];
+    }
+  | {
+      id: string;
+      kind: "required_evidence_cited";
+      label: string;
+      points: number;
+      requirementLabels: string[];
+    }
+  | {
+      id: string;
+      kind: "reread_required_evidence";
+      label: string;
+      points: number;
+      requirementLabels: string[];
+    }
+  | {
+      id: string;
+      kind: "dated_quote";
+      label: string;
+      points: number;
+      ticker: string;
+      date: string;
     }
   | {
       id: string;
