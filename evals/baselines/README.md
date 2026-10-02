@@ -22,6 +22,9 @@ an agent error or timeout scores 0 in every score column, as the benchmark score
 - **Output tokens**: `metrics.tokens.output`, as the provider reports it. DeepSeek and Qwen count
   their thinking in it, so their figures are not comparable with the OpenAI models'.
 
+Each section's **Cost** is the agent's average cost per run at the list prices it gives, worked
+out as in [evals/README.md › Reproducing the README table](../README.md#reproducing-the-readme-table).
+
 All runs: benchmark version 1, policy enforced, offline dataset, twelve tasks × 3 repeats.
 
 ## GPT-6.1 Sol avg@3
@@ -33,6 +36,8 @@ All runs: benchmark version 1, policy enforced, offline dataset, twelve tasks ×
 - **Commit:** `a8ec63f`
 - **Scores:** checks 35.8 · judge 49.0 · total 84.8 · mean per-task σ 2.73
 - **Diagnostics:** tool argument errors 0 · unverified report figures 20 · repaired 0
+- **Cost:** $2.13 per run · per million tokens: input $2.00, cache read $0.10, cache write
+  $2.50, output $10.00 · OpenAI API standard tier, 2026-10-01
 
 | Task | Checks | Intent | Financial | Grounding | Clarity | Total (σ) | Run time | Output tokens |
 | :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
@@ -62,6 +67,8 @@ revenue and gross-margin entries (7/15).
 - **Commit:** `a8ec63f`
 - **Scores:** checks 39.1 · judge 38.1 · total 77.3 · mean per-task σ 2.69
 - **Diagnostics:** tool argument errors 17 · unverified report figures 420 · repaired 19
+- **Cost:** $1.05 per run · per million tokens: input (cache miss) $0.30, cache hit $0.006,
+  output $1.20 · DeepSeek API peak pricing, 2026-10-01
 
 | Task | Checks | Intent | Financial | Grounding | Clarity | Total (σ) | Run time | Output tokens |
 | :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
@@ -87,6 +94,8 @@ revenue and gross-margin entries (7/15).
 - **Commit:** `345e380`
 - **Scores:** checks 29.8 · judge 37.8 · total 67.6 · mean per-task σ 6.13
 - **Diagnostics:** tool argument errors 0 · unverified report figures 68 · repaired 5
+- **Cost:** $0.07 per run · per million tokens: input $0.10, cache read $0.01, cache write
+  $0.125, output $0.50 · OpenAI API standard tier, 2026-10-01
 
 | Task | Checks | Intent | Financial | Grounding | Clarity | Total (σ) | Run time | Output tokens |
 | :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
@@ -113,6 +122,8 @@ revenue and gross-margin entries (7/15).
 - **Commit:** `809619e`
 - **Scores:** checks 35.2 · judge 30.2 · total 65.4 · mean per-task σ 3.87
 - **Diagnostics:** tool argument errors 9 · unverified report figures 300 · repaired 18
+- **Cost:** $0.84 per run · per million tokens: input $0.049, cache read $0.020, output $3.00 ·
+  DekaLLM on OpenRouter, 2026-10-01
 
 | Task | Checks | Intent | Financial | Grounding | Clarity | Total (σ) | Run time | Output tokens |
 | :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
@@ -143,6 +154,8 @@ dimensions; the yield-trap task keeps full checks but scores 3.0–3.7 on each o
 - **Scores:** checks 33.6 · judge 26.8 · total 59.4 · mean per-task σ 8.89
 - **Diagnostics:** tool argument errors 6 · fallback reports 3 · unverified report figures 273 ·
   repaired 21
+- **Cost:** $0.44 per run · per million tokens: input $0.049, cache read $0.020, output $3.00 ·
+  DekaLLM on OpenRouter, 2026-10-01
 
 | Task | Checks | Intent | Financial | Grounding | Clarity | Total (σ) | Run time | Output tokens |
 | :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
