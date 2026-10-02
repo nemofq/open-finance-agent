@@ -29,7 +29,9 @@ sentence that carries it.
 
 ## Inputs
 
-- **Required:** one ticker. If the user did not give one, ask for it and stop.
+- **Required:** one company, by ticker or by name. A name is enough: resolve it in step 1 and
+  carry on. Ask for the ticker and stop only when no company is named, or the name fits more than
+  one listed company.
 - **Infer rather than ask:** which pair to compare. Default to the two most recent filings of the
   same form: this year's 10-K against last year's, or this quarter's 10-Q against the previous one.
   If the user names a form or a period, use theirs.

@@ -29,7 +29,9 @@ read-through: who is growing, who is earning it, and what the market pays for ea
 
 ## Inputs
 
-- **Required:** one subject ticker. If the user did not give one, ask for it and stop.
+- **Required:** one subject company, by ticker or by name. A name is enough: resolve it in step 1
+  and carry on. Ask for the ticker and stop only when no company is named, or the name fits more
+  than one listed company.
 - **Peers:** use the ones the user named. If they named none, infer three to five and say in the
   chat summary which set you used and why, so they can correct it. Do not stop to ask.
 - **Infer rather than ask:** reporting currency, the fiscal alignment problem, which metrics lead

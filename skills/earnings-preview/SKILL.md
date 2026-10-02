@@ -29,7 +29,9 @@ how the stock is set up going in. Analysis of expectations and scenarios, not a 
 
 ## Inputs
 
-- **Required:** one ticker. If the user did not give one, ask for it and stop. Ask nothing else.
+- **Required:** one company, by ticker or by name. A name is enough: resolve it in step 1 and
+  carry on. Ask for the ticker and stop only when no company is named, or the name fits more than
+  one listed company. Ask nothing else.
 - **Infer rather than ask:** the quarter (the next scheduled report), the user's stated view or
   position, focus areas (the KPIs that drive this company's revenue), reporting currency.
 - If the ticker resolves to several listings, take the primary US listing and name the entity.

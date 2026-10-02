@@ -30,7 +30,9 @@ surface, not a target price.
 
 ## Inputs
 
-- **Required:** one ticker. If the user did not give one, ask for it and stop.
+- **Required:** one company, by ticker or by name. A name is enough: resolve it in step 1 and
+  carry on. Ask for the ticker and stop only when no company is named, or the name fits more than
+  one listed company.
 - **Ask only when the user has a view:** if they name a forecast, a discount rate or a terminal
   growth rate, use theirs and say so. Otherwise derive everything and declare it.
 - **Infer rather than ask:** reporting currency, the forecast horizon (five years unless the
