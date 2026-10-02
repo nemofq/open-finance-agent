@@ -62,11 +62,13 @@ export type EvalTaskContract =
       kind: "required_evidence_cited";
       label: string;
       points: number;
-      requirementLabels: string[];
-      /** Whether every named source or any equivalent named source must be cited. */
-      match: "all" | "any";
-      /** A claim that must accompany the citation in delivered prose, when a filing covers multiple topics. */
-      claim?: "btc_holdings" | "convertible_terms";
+      /** Every citation check must pass; each may accept equivalent source filings. */
+      citations: Array<{
+        requirementLabels: string[];
+        match: "all" | "any";
+        /** Claim that must accompany the filing citation in delivered prose. */
+        claim?: "btc_holdings" | "convertible_terms";
+      }>;
     }
   | {
       id: string;

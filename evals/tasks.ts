@@ -170,7 +170,7 @@ const TASKS: Omit<EvalTask, "requiredEvidence" | "contracts">[] = [
       intentScoreCriteria:
         "Analyze MSTR as an operating company running a debt-financed Bitcoin treasury reserve; address both the valuation premium and liquidation/bankruptcy concerns.",
       dataGroundingCriteria:
-        "Extract MSTR's total Bitcoin holdings (~331k BTC as of Nov 2024), calculate implied mNAV per share, and reference debt maturities from SEC filings.",
+        "Extract MSTR's approximately 386,700 BTC held as of November 24, 2024 from the November 25 filing, calculate implied mNAV per share, and reference debt maturities from SEC filings.",
       financialReasoningCriteria:
         "Demonstrate how reflexivity expands premiums in bull markets and compresses them in bear markets; explain that unsecured zero/low-coupon convertible notes prevent immediate margin calls but carry long-term share dilution risk.",
       retailClarityCriteria:
@@ -379,8 +379,10 @@ function contracts(task: Omit<EvalTask, "requiredEvidence" | "contracts">): Eval
         target: { kind: "fact_growth", ticker: "DECK", metric: "revenue", periodType: "annual", currentPeriod: "2024-03-31", priorPeriod: "2023-03-31" }, tolerance: 0.2 }];
     case "retail-03-nuclear-thematic-purity":
       return [
-        { id: "ceg-ppa", kind: "required_evidence_cited", label: "Cite the Constellation-Microsoft PPA announcement", points: 8, requirementLabels: ["Constellation-Microsoft Crane PPA announcement"], match: "all" },
-        { id: "tln-ppa", kind: "required_evidence_cited", label: "Cite the Talen-AWS PPA filing", points: 8, requirementLabels: ["Talen-AWS data-center PPA (Q2 2024 10-Q)"], match: "all" },
+        { id: "ceg-ppa", kind: "required_evidence_cited", label: "Cite the Constellation-Microsoft PPA announcement", points: 8,
+          citations: [{ requirementLabels: ["Constellation-Microsoft Crane PPA announcement"], match: "all" }] },
+        { id: "tln-ppa", kind: "required_evidence_cited", label: "Cite the Talen-AWS PPA filing", points: 8,
+          citations: [{ requirementLabels: ["Talen-AWS data-center PPA (Q2 2024 10-Q)"], match: "all" }] },
       ];
     case "retail-04-dividend-yield-trap":
       return [{ id: "income-rate", kind: "verified_calculation", label: "Annualize the investor's $20,000 monthly target against $500,000 principal", points: 16,
@@ -389,19 +391,21 @@ function contracts(task: Omit<EvalTask, "requiredEvidence" | "contracts">): Eval
       return [{ id: "intel-h1-fcf", kind: "verified_calculation", label: "Sum Intel's first-half 2024 free cash flow from its two quarterly facts", points: 16,
         target: { kind: "fact_sum", ticker: "INTC", metric: "freeCashFlow", periodType: "quarterly", periods: ["2024-03-30", "2024-06-29"] }, tolerance: 5_000_000 }];
     case "retail-06-mstr-proxy-leverage":
-      return [
-        { id: "btc-holdings-filing", kind: "required_evidence_cited", label: "Cite the November 25 MSTR filing for the Bitcoin holdings figure", points: 8,
-          requirementLabels: ["MSTR bitcoin holdings as of Nov 2024 (Nov 25 8-K)"], match: "all", claim: "btc_holdings" },
-        { id: "convertible-filing", kind: "required_evidence_cited", label: "Cite an official MSTR filing with the announced or final convertible-note terms", points: 8,
-          requirementLabels: ["MSTR $2.6B 0% 2029 convertible notes (Nov 20 8-K)", "MSTR bitcoin holdings as of Nov 2024 (Nov 25 8-K)"], match: "any", claim: "convertible_terms" },
-      ];
+      return [{ id: "holdings-and-note-terms", kind: "required_evidence_cited",
+        label: "Cite the November 25 Bitcoin holdings and an official filing's convertible-note terms", points: 16,
+        citations: [
+          { requirementLabels: ["MSTR bitcoin holdings as of Nov 2024 (Nov 25 8-K)"], match: "all", claim: "btc_holdings" },
+          { requirementLabels: ["MSTR $2.6B 0% 2029 convertible notes (Nov 20 8-K)", "MSTR bitcoin holdings as of Nov 2024 (Nov 25 8-K)"], match: "any", claim: "convertible_terms" },
+        ] }];
     case "retail-09-narrative-factcheck-apple":
       return [{ id: "apple-revenue-growth", kind: "verified_calculation", label: "Calculate Apple's Q3 FY24 revenue growth against the year-earlier quarter", points: 16,
         target: { kind: "fact_growth", ticker: "AAPL", metric: "revenue", periodType: "quarterly", currentPeriod: "2024-06-29", priorPeriod: "2023-07-01" }, tolerance: 0.2 }];
     case "retail-10-smci-accounting-red-flag":
       return [
-        { id: "ey-resignation", kind: "required_evidence_cited", label: "Cite SMCI's EY resignation 8-K", points: 8, requirementLabels: ["SMCI 8-K Item 4.01: EY resignation"], match: "all" },
-        { id: "delayed-filing", kind: "required_evidence_cited", label: "Cite SMCI's overdue 10-K disclosure", points: 8, requirementLabels: ["SMCI delayed 10-K / Nasdaq non-compliance"], match: "all" },
+        { id: "ey-resignation", kind: "required_evidence_cited", label: "Cite SMCI's EY resignation 8-K", points: 8,
+          citations: [{ requirementLabels: ["SMCI 8-K Item 4.01: EY resignation"], match: "all" }] },
+        { id: "delayed-filing", kind: "required_evidence_cited", label: "Cite SMCI's overdue 10-K disclosure", points: 8,
+          citations: [{ requirementLabels: ["SMCI delayed 10-K / Nasdaq non-compliance"], match: "all" }] },
       ];
     case "retail-11-nike-earnings-review-report":
       return [{ id: "earnings-report", kind: "report", label: "Agent-created earnings review with all required sections", points: 16,
