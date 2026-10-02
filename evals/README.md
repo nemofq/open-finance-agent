@@ -287,6 +287,10 @@ every token at the one rate the app's model catalog holds, which is not what a p
 one host, or a provider with peak and off-peak rates, charges. Output tokens are what the provider
 reports, so a provider that reports little of its reasoning also shows a low cost.
 
+The quality-against-cost chart above the table (`docs/images/benchmark-quality-cost-light.svg` and
+`-dark.svg`) plots each row's Total against its average cost per run, with a bar spanning its runs'
+totals, so it is redrawn with every row added.
+
 ### Calibrating a policy rule
 
 1. Measure noise: run with `--repeat 3`.

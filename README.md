@@ -135,6 +135,11 @@ the transcript and the evidence ledger (entities, required evidence, calculator 
 each noting what was missed; sixty come from an LLM judge that scores intent, financial reasoning,
 grounding and clarity, with written feedback.
 
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/images/benchmark-quality-cost-dark.svg" />
+  <img src="docs/images/benchmark-quality-cost-light.svg" alt="Scatter of total benchmark score against the agent's average cost per run, log scale: GPT-6.1 Sol medium 84.8 at $2.13, DeepSeek V4.1 Flash high 77.3 at $1.05, GPT-6 Luna medium 67.6 at $0.07, Qwen 3.8 27B medium 65.4 at $0.84, Qwen 3.8 27B off 59.4 at $0.44" width="100%" />
+</picture>
+
 | Model | Thinking effort | Judge model | Total (/100) ↑ | Checks (/40) ↑ | Judged (/60) ↑ | Avg. cost per run ↓ | Avg. run time | Avg. output tokens per run | Avg. tool calls per run |
 | :--- | :--- | :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
 | GPT-6.1 Sol avg@3 | Medium | GPT-6 Astra, medium | 84.8 | 35.8 | 49.0 | $2.13 | 1,696 s | 37,347 | 224 |

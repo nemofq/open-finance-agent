@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="460" viewBox="0 0 800 460" role="img" aria-labelledby="t d">
+<title id="t">Benchmark quality against cost</title>
+<desc id="d">Total score out of 100 against the agent's average cost per run in US dollars on a log scale. GPT-6.1 Sol medium: 84.8 at $2.13; DeepSeek V4.1 Flash high: 77.3 at $1.05; GPT-6 Luna medium: 67.6 at $0.07; Qwen 3.8 27B medium: 65.4 at $0.84; Qwen 3.8 27B off: 59.4 at $0.44.</desc>
+<rect width="800" height="460" fill="#0d1117"/>
+<g font-family="system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+<text x="64" y="30" font-size="17" font-weight="600" fill="#ffffff">Quality against cost</text>
+<text x="64" y="52" font-size="13" fill="#c3c2b7">Total score (avg@3; bar spans the three runs) against the agent's average cost per run, log scale</text>
+<line x1="64" x2="760" y1="396" y2="396" stroke="#4a4a46" stroke-width="1"/>
+<text x="54" y="400" font-size="12" text-anchor="end" fill="#9a988f" style="font-variant-numeric: tabular-nums">50</text>
+<line x1="64" x2="760" y1="315.5" y2="315.5" stroke="#2c2c2a" stroke-width="1"/>
+<text x="54" y="319.5" font-size="12" text-anchor="end" fill="#9a988f" style="font-variant-numeric: tabular-nums">60</text>
+<line x1="64" x2="760" y1="235" y2="235" stroke="#2c2c2a" stroke-width="1"/>
+<text x="54" y="239" font-size="12" text-anchor="end" fill="#9a988f" style="font-variant-numeric: tabular-nums">70</text>
+<line x1="64" x2="760" y1="154.5" y2="154.5" stroke="#2c2c2a" stroke-width="1"/>
+<text x="54" y="158.5" font-size="12" text-anchor="end" fill="#9a988f" style="font-variant-numeric: tabular-nums">80</text>
+<line x1="64" x2="760" y1="74" y2="74" stroke="#2c2c2a" stroke-width="1"/>
+<text x="54" y="78" font-size="12" text-anchor="end" fill="#9a988f" style="font-variant-numeric: tabular-nums">90</text>
+<line x1="64" x2="64" y1="74" y2="396" stroke="#2c2c2a" stroke-width="1"/>
+<text x="64" y="416" font-size="12" text-anchor="middle" fill="#9a988f" style="font-variant-numeric: tabular-nums">$0.05</text>
+<line x1="181.8284900887519" x2="181.8284900887519" y1="74" y2="396" stroke="#2c2c2a" stroke-width="1"/>
+<text x="181.8284900887519" y="416" font-size="12" text-anchor="middle" fill="#9a988f" style="font-variant-numeric: tabular-nums">$0.10</text>
+<line x1="337.58928151523014" x2="337.58928151523014" y1="74" y2="396" stroke="#2c2c2a" stroke-width="1"/>
+<text x="337.58928151523014" y="416" font-size="12" text-anchor="middle" fill="#9a988f" style="font-variant-numeric: tabular-nums">$0.25</text>
+<line x1="455.41777160398203" x2="455.41777160398203" y1="74" y2="396" stroke="#2c2c2a" stroke-width="1"/>
+<text x="455.41777160398203" y="416" font-size="12" text-anchor="middle" fill="#9a988f" style="font-variant-numeric: tabular-nums">$0.5</text>
+<line x1="573.2462616927339" x2="573.2462616927339" y1="74" y2="396" stroke="#2c2c2a" stroke-width="1"/>
+<text x="573.2462616927339" y="416" font-size="12" text-anchor="middle" fill="#9a988f" style="font-variant-numeric: tabular-nums">$1</text>
+<line x1="691.0747517814858" x2="691.0747517814858" y1="74" y2="396" stroke="#2c2c2a" stroke-width="1"/>
+<text x="691.0747517814858" y="416" font-size="12" text-anchor="middle" fill="#9a988f" style="font-variant-numeric: tabular-nums">$2</text>
+<text x="412" y="442" font-size="12.5" text-anchor="middle" fill="#c3c2b7">Avg. cost per run (USD, log scale) · lower is better</text>
+<text transform="translate(18 235) rotate(-90)" font-size="12.5" text-anchor="middle" fill="#c3c2b7">Total (/100) · higher is better</text>
+<text x="74" y="92" font-size="12" fill="#9a988f">↖ better</text>
+<line x1="701.3803663048855" x2="701.3803663048855" y1="128.33749999999998" y2="105.5291666666667" stroke="#3987e5" stroke-width="2" stroke-linecap="round" opacity="0.7"/>
+<line x1="581.5401299165393" x2="581.5401299165393" y1="194.75" y2="157.18333333333328" stroke="#3987e5" stroke-width="2" stroke-linecap="round" opacity="0.7"/>
+<line x1="113.75107693612648" x2="113.75107693612648" y1="263.175" y2="241.0375" stroke="#3987e5" stroke-width="2" stroke-linecap="round" opacity="0.7"/>
+<line x1="544.0120869817646" x2="544.0120869817646" y1="278.60416666666674" y2="265.8583333333333" stroke="#3987e5" stroke-width="2" stroke-linecap="round" opacity="0.7"/>
+<line x1="434.0732067138667" x2="434.0732067138667" y1="381.2416666666667" y2="276.5916666666667" stroke="#3987e5" stroke-width="2" stroke-linecap="round" opacity="0.7"/>
+<circle cx="701.3803663048855" cy="115.86000000000001" r="6" fill="#3987e5" stroke="#0d1117" stroke-width="2"/>
+<circle cx="581.5401299165393" cy="176.23500000000004" r="6" fill="#3987e5" stroke="#0d1117" stroke-width="2"/>
+<circle cx="113.75107693612648" cy="254.32000000000005" r="6" fill="#3987e5" stroke="#0d1117" stroke-width="2"/>
+<circle cx="544.0120869817646" cy="272.03" r="6" fill="#3987e5" stroke="#0d1117" stroke-width="2"/>
+<circle cx="434.0732067138667" cy="320.33000000000004" r="6" fill="#3987e5" stroke="#0d1117" stroke-width="2"/>
+<text x="689.3803663048855" y="113.86000000000001" font-size="13" font-weight="600" text-anchor="end" fill="#ffffff">GPT-6.1 Sol · medium</text>
+<text x="689.3803663048855" y="129.86" font-size="12" text-anchor="end" fill="#c3c2b7" style="font-variant-numeric: tabular-nums">84.8 · $2.13</text>
+<text x="569.5401299165393" y="174.23500000000004" font-size="13" font-weight="600" text-anchor="end" fill="#ffffff">DeepSeek V4.1 Flash · high</text>
+<text x="569.5401299165393" y="190.23500000000004" font-size="12" text-anchor="end" fill="#c3c2b7" style="font-variant-numeric: tabular-nums">77.3 · $1.05</text>
+<text x="125.75107693612648" y="252.32000000000005" font-size="13" font-weight="600" text-anchor="start" fill="#ffffff">GPT-6 Luna · medium</text>
+<text x="125.75107693612648" y="268.32000000000005" font-size="12" text-anchor="start" fill="#c3c2b7" style="font-variant-numeric: tabular-nums">67.6 · $0.07</text>
+<text x="556.0120869817646" y="270.03" font-size="13" font-weight="600" text-anchor="start" fill="#ffffff">Qwen 3.8 27B · medium</text>
+<text x="556.0120869817646" y="286.03" font-size="12" text-anchor="start" fill="#c3c2b7" style="font-variant-numeric: tabular-nums">65.4 · $0.84</text>
+<text x="446.0732067138667" y="318.33000000000004" font-size="13" font-weight="600" text-anchor="start" fill="#ffffff">Qwen 3.8 27B · off</text>
+<text x="446.0732067138667" y="334.33000000000004" font-size="12" text-anchor="start" fill="#c3c2b7" style="font-variant-numeric: tabular-nums">59.4 · $0.44</text>
+</g></svg>
