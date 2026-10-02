@@ -259,22 +259,22 @@ pnpm eval --agent <provider/model> --judge <provider/model> --thinking <level> \
   --judge-thinking <level> --repeat 3
 ```
 
-The existing README table is v1 history: its checks and judge columns are `/40` and `/60`.
-For a new v2 table, each column comes from the agent's section of
-`summary-<timestamp>.md`, or the matching entry of `agentSummaries` in `run-<timestamp>.json`:
+The existing README table is v1 history. Its columns come from the historical summary or run JSON:
 
 | README column | Summary | Run JSON |
 | :--- | :--- | :--- |
-| Integrity (/20) | `Integrity: <n> / 20` | `averageIntegrityScore` |
-| Semantic (/80) | `Semantic: <n> / 80` | `averageSemanticScore` |
-| Expected user score (/100) | `Expected user score` | `expectedUserScore` |
+| Total (/100) | `Total: <n> / 100` | `averageTotalScore` |
+| Checks (/40) | `Checks: <n> / 40` | `averageDeterministicScore` |
+| Judged (/60) | `Judge: <n> / 60` | `averageJudgeScore` |
+| Avg. cost per run | not used; see below | each of `results[].metrics.tokens` at the provider's list prices, summed, ÷ repeats |
 | Avg. run time | `Mean latency` row × tasks | `metrics.latencyMs` × tasks |
 | Avg. output tokens per run | `Tokens (in / out / total)` row, the middle value, ÷ repeats | `metrics.tokens.output` ÷ repeats |
 | Avg. tool calls per run | not in the agent section | the length of each `results[].toolCalls`, summed, ÷ repeats |
 
 In v2, invalid results are excluded, while agent timeouts and errors count as zero in expected
-user score. Quality on completed answers
-and completion rate are separate summary fields. Runtime, output tokens and tool calls are totals for one run
+user score. New summaries use `averageIntegrityScore` (/20), `averageSemanticScore` (/80),
+`qualityOnCompleted` and `completionRate` alongside `expectedUserScore` (/100). Runtime, output
+tokens and tool calls are totals for one run
 of the task set, averaged over the repeats. `Mean latency` is the mean wall-clock time of one
 task's turn, measured before the judge runs, so judging is not included; times the number of tasks,
 it is the run time. Output tokens are summed over every task and repeat, so divide by the repeats.
@@ -283,6 +283,22 @@ Tool calls have no total in the summary: each result's line in the detailed resu
 `Tools (<n>)`, and the CLI's progress line prints `<n> tool calls` per result. Count them from the
 run JSON, not a baseline, which drops `toolCalls` with the other traces. The `Model calls` row
 counts model requests, not tool calls.
+
+Cost is the agent's alone: every row shares a judge, so its cost would only add the same amount to
+each. For each result, uncached input (`tokens.input`), cache reads (`tokens.cacheRead`), cache
+writes (`tokens.cacheWrite`) and output (`tokens.output`) are each priced at the provider's list
+price per million tokens; the results are summed and divided by the repeats. A baseline keeps
+`metrics.tokens` for every result, so its cost can be worked out from the baseline alone. Use the
+provider's published list price on the day the row is added, even when the run went through a
+subscription, and record the four prices, their source and the date in the row's section of
+[evals/baselines/README.md](baselines/README.md). The summary's `Cost` row is not used: it prices
+every token at the one rate the app's model catalog holds, which is not what a provider pinned to
+one host, or a provider with peak and off-peak rates, charges. Output tokens are what the provider
+reports, so a provider that reports little of its reasoning also shows a low cost.
+
+The quality-against-cost chart above the table (`docs/images/benchmark-quality-cost-light.svg` and
+`-dark.svg`) plots each row's Total against its average cost per run, with a bar spanning its runs'
+totals, so it is redrawn with every row added.
 
 ### Calibrating a policy rule
 
