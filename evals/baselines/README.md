@@ -54,6 +54,37 @@ Its lost checks are almost all required evidence: in every SMCI run the ledger h
 Item 4.01 8-K nor the delayed 10-K notice (evidence 0/15), and every NVIDIA run misses the Q2 FY25
 revenue and gross-margin entries (7/15).
 
+## GPT-5.6 Sol avg@3
+
+[`2026-10-01-openai-codex-gpt-5-6-sol-openai-codex-gpt-6-astra.json`](2026-10-01-openai-codex-gpt-5-6-sol-openai-codex-gpt-6-astra.json)
+
+- **Agent:** `openai-codex/gpt-5.6-sol`, thinking medium
+- **Judge:** `openai-codex/gpt-6-astra`, thinking medium
+- **Commit:** `196afb7`
+- **Scores:** checks 36.1 · judge 46.8 · total 82.8 · mean per-task σ 2.69
+- **Diagnostics:** tool argument errors 0 · unverified report figures 33 · repaired 8
+- **Cost:** $4.46 per run · per million tokens: input $2.00, cache read $0.20, cache write
+  $2.50, output $12.00 · OpenAI API standard tier, 2026-10-01; a promotional price, offered
+  through at least 2026-11-21
+
+| Task | Checks | Intent | Financial | Grounding | Clarity | Total (σ) | Run time | Output tokens |
+| :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| `retail-01-nvda-beat-and-drop` | 34.0 | 12.0 | 14.3 | 13.0 | 8.0 | 81.3 (0.9) | 150 s | 6,029 |
+| `retail-02-nike-moat-erosion` | 37.0 | 12.0 | 13.3 | 10.3 | 7.7 | 80.3 (6.8) | 216 s | 7,798 |
+| `retail-03-nuclear-thematic-purity` | 40.0 | 13.0 | 13.7 | 14.0 | 8.0 | 88.7 (0.5) | 123 s | 5,473 |
+| `retail-04-dividend-yield-trap` | 35.0 | 14.0 | 9.7 | 9.7 | 6.7 | 75.0 (5.7) | 139 s | 5,795 |
+| `retail-05-intel-value-trap` | 37.7 | 13.0 | 13.7 | 12.0 | 8.7 | 85.0 (4.3) | 171 s | 7,537 |
+| `retail-06-mstr-proxy-leverage` | 37.7 | 14.0 | 14.3 | 11.0 | 8.0 | 85.0 (2.2) | 181 s | 7,633 |
+| `retail-09-narrative-factcheck-apple` | 29.0 | 12.0 | 14.3 | 10.0 | 8.7 | 74.0 (3.3) | 123 s | 5,439 |
+| `retail-10-smci-accounting-red-flag` | 25.0 | 12.7 | 16.3 | 10.3 | 8.7 | 73.0 (0.8) | 172 s | 7,506 |
+| `retail-11-nike-earnings-review-report` | 40.0 | 14.3 | 16.7 | 12.7 | 9.0 | 92.7 (1.2) | 158 s | 6,279 |
+| `retail-12-concentration-profile-fit` | 37.7 | 11.7 | 18.3 | 10.3 | 8.3 | 86.3 (3.3) | 91 s | 3,922 |
+| `retail-13-semis-figure-survival` | 40.0 | 13.7 | 19.0 | 9.7 | 10.0 | 92.3 (0.5) | 154 s | 7,052 |
+| `retail-14-apple-pre-open-timing` | 40.0 | 8.0 | 14.3 | 10.3 | 7.7 | 80.3 (2.9) | 157 s | 6,913 |
+
+Every run completed. Like GPT-6.1 Sol, it misses required evidence on SMCI in every run (checks
+25/40) while the judge scores those answers 47–49/60.
+
 ## DeepSeek V4.1 Flash avg@3
 
 [`2026-09-30-deepseek-deepseek-flash-openai-codex-gpt-6-astra.json`](2026-09-30-deepseek-deepseek-flash-openai-codex-gpt-6-astra.json)
@@ -81,32 +112,98 @@ revenue and gross-margin entries (7/15).
 | `retail-13-semis-figure-survival` | 37.7 | 12.3 | 15.3 | 9.3 | 7.3 | 82.0 (1.4) | 197 s | 44,973 |
 | `retail-14-apple-pre-open-timing` | 39.7 | 8.3 | 9.0 | 7.0 | 5.7 | 69.7 (2.9) | 161 s | 33,790 |
 
+## GPT-5.6 Terra avg@3
+
+[`2026-10-01-openai-codex-gpt-5-6-terra-openai-codex-gpt-6-astra.json`](2026-10-01-openai-codex-gpt-5-6-terra-openai-codex-gpt-6-astra.json)
+
+- **Agent:** `openai-codex/gpt-5.6-terra`, thinking medium
+- **Judge:** `openai-codex/gpt-6-astra`, thinking medium
+- **Commit:** `196afb7`
+- **Scores:** checks 34.9 · judge 42.2 · total 77.1 · mean per-task σ 6.08
+- **Diagnostics:** tool argument errors 0 · unverified report figures 61 · repaired 3
+- **Cost:** $2.15 per run · per million tokens: input $2.00, cache read $0.20, cache write
+  $2.50, output $12.00 · OpenAI API standard tier, 2026-10-01
+
+| Task | Checks | Intent | Financial | Grounding | Clarity | Total (σ) | Run time | Output tokens |
+| :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| `retail-01-nvda-beat-and-drop` | 36.7 | 12.0 | 13.3 | 13.0 | 8.3 | 83.3 (4.0) | 91 s | 3,952 |
+| `retail-02-nike-moat-erosion` | 28.3 | 9.3 | 7.0 | 6.7 | 5.0 | 56.3 (34.2) | 67 s | 2,934 |
+| `retail-03-nuclear-thematic-purity` | 40.0 | 11.3 | 11.0 | 12.7 | 6.0 | 81.0 (0.8) | 79 s | 3,562 |
+| `retail-04-dividend-yield-trap` | 40.0 | 13.7 | 7.3 | 9.3 | 6.0 | 76.3 (0.5) | 94 s | 3,877 |
+| `retail-05-intel-value-trap` | 33.0 | 9.3 | 10.3 | 11.0 | 6.7 | 70.3 (2.9) | 89 s | 3,758 |
+| `retail-06-mstr-proxy-leverage` | 35.3 | 12.7 | 13.0 | 10.7 | 7.3 | 79.0 (2.8) | 109 s | 5,104 |
+| `retail-09-narrative-factcheck-apple` | 24.3 | 10.3 | 11.0 | 9.0 | 7.3 | 62.0 (6.2) | 86 s | 3,784 |
+| `retail-10-smci-accounting-red-flag` | 28.0 | 12.3 | 14.0 | 8.7 | 8.3 | 71.3 (9.0) | 78 s | 3,438 |
+| `retail-11-nike-earnings-review-report` | 39.7 | 14.0 | 16.3 | 12.3 | 9.7 | 92.0 (2.2) | 92 s | 3,391 |
+| `retail-12-concentration-profile-fit` | 35.3 | 12.0 | 17.7 | 10.0 | 9.0 | 84.0 (5.1) | 55 s | 2,369 |
+| `retail-13-semis-figure-survival` | 38.3 | 13.7 | 15.0 | 10.3 | 10.0 | 87.3 (2.5) | 67 s | 3,211 |
+| `retail-14-apple-pre-open-timing` | 40.0 | 9.3 | 14.3 | 11.3 | 7.3 | 82.3 (2.9) | 67 s | 2,884 |
+
+Every run completed. One Nike moat-erosion run scored 8: the model read the `stock-brief` skill,
+followed its rule to ask for a missing ticker, and replied "What ticker should I use for
+Nike—$NKE (NYSE)?" instead of answering, which widens that task's σ to 34.2. In a separate
+diagnostic of that task, not part of this baseline, it asked about the ticker in 2 of 10 runs.
+
+## GPT-5.6 Luna avg@3
+
+[`2026-10-01-openai-codex-gpt-5-6-luna-openai-codex-gpt-6-astra.json`](2026-10-01-openai-codex-gpt-5-6-luna-openai-codex-gpt-6-astra.json)
+
+- **Agent:** `openai-codex/gpt-5.6-luna`, thinking medium
+- **Judge:** `openai-codex/gpt-6-astra`, thinking medium
+- **Commit:** `196afb7`
+- **Scores:** checks 35.0 · judge 40.8 · total 75.8 · mean per-task σ 3.63
+- **Diagnostics:** tool argument errors 0 · fallback reports 1 · unverified report figures 100 ·
+  repaired 1
+- **Cost:** $0.27 per run · per million tokens: input $0.20, cache read $0.02, cache write
+  $0.25, output $1.20 · OpenAI API standard tier, 2026-10-01
+
+| Task | Checks | Intent | Financial | Grounding | Clarity | Total (σ) | Run time | Output tokens |
+| :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| `retail-01-nvda-beat-and-drop` | 32.3 | 11.7 | 11.7 | 11.7 | 7.3 | 74.7 (6.3) | 123 s | 4,859 |
+| `retail-02-nike-moat-erosion` | 34.0 | 13.0 | 10.3 | 9.7 | 7.7 | 74.7 (3.1) | 96 s | 4,451 |
+| `retail-03-nuclear-thematic-purity` | 37.3 | 11.7 | 11.0 | 12.7 | 6.7 | 79.3 (2.6) | 83 s | 3,764 |
+| `retail-04-dividend-yield-trap` | 36.3 | 13.7 | 8.3 | 8.7 | 6.0 | 73.0 (5.7) | 97 s | 3,875 |
+| `retail-05-intel-value-trap` | 35.7 | 11.3 | 10.7 | 12.0 | 8.3 | 78.0 (2.4) | 115 s | 5,103 |
+| `retail-06-mstr-proxy-leverage` | 38.0 | 12.0 | 13.0 | 9.7 | 7.0 | 79.7 (2.4) | 100 s | 4,057 |
+| `retail-09-narrative-factcheck-apple` | 30.3 | 10.3 | 11.7 | 9.0 | 7.3 | 68.7 (4.0) | 195 s | 3,203 |
+| `retail-10-smci-accounting-red-flag` | 24.7 | 11.3 | 12.7 | 7.7 | 7.3 | 63.7 (2.1) | 96 s | 4,457 |
+| `retail-11-nike-earnings-review-report` | 39.0 | 10.3 | 11.3 | 10.0 | 6.7 | 77.3 (5.4) | 232 s | 4,924 |
+| `retail-12-concentration-profile-fit` | 32.7 | 10.7 | 15.7 | 8.3 | 6.7 | 74.0 (5.7) | 68 s | 2,837 |
+| `retail-13-semis-figure-survival` | 40.0 | 13.3 | 18.0 | 9.7 | 10.0 | 91.0 (0.8) | 68 s | 3,086 |
+| `retail-14-apple-pre-open-timing` | 40.0 | 7.3 | 12.7 | 8.7 | 7.3 | 76.0 (2.9) | 94 s | 4,357 |
+
+Every run completed.
+
 ## GPT-6 Luna avg@3
 
-[`2026-09-30-openai-codex-gpt-6-luna-openai-codex-gpt-6-astra.json`](2026-09-30-openai-codex-gpt-6-luna-openai-codex-gpt-6-astra.json)
+[`2026-10-02-openai-codex-gpt-6-luna-openai-codex-gpt-6-astra.json`](2026-10-02-openai-codex-gpt-6-luna-openai-codex-gpt-6-astra.json)
 
 - **Agent:** `openai-codex/gpt-6-luna`, thinking medium
 - **Judge:** `openai-codex/gpt-6-astra`, thinking medium
-- **Commit:** `345e380`
-- **Scores:** checks 29.8 · judge 37.8 · total 67.6 · mean per-task σ 6.13
-- **Diagnostics:** tool argument errors 0 · unverified report figures 68 · repaired 5
+- **Commit:** `196afb7`
+- **Scores:** checks 30.7 · judge 39.0 · total 69.7 · mean per-task σ 3.96
+- **Diagnostics:** tool argument errors 1 · unverified report figures 36 · repaired 2
 - **Cost:** $0.07 per run · per million tokens: input $0.10, cache read $0.01, cache write
   $0.125, output $0.50 · OpenAI API standard tier, 2026-10-01
 
 | Task | Checks | Intent | Financial | Grounding | Clarity | Total (σ) | Run time | Output tokens |
 | :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| `retail-01-nvda-beat-and-drop` | 26.7 | 10.0 | 9.0 | 9.7 | 8.0 | 63.3 (4.7) | 43 s | 1,435 |
-| `retail-02-nike-moat-erosion` | 23.7 | 10.0 | 8.7 | 9.0 | 6.7 | 58.0 (3.7) | 55 s | 2,208 |
-| `retail-03-nuclear-thematic-purity` | 36.0 | 10.0 | 8.3 | 13.3 | 6.0 | 73.7 (3.9) | 48 s | 1,596 |
-| `retail-04-dividend-yield-trap` | 26.7 | 13.3 | 6.7 | 4.7 | 5.3 | 56.7 (11.4) | 44 s | 1,734 |
-| `retail-05-intel-value-trap` | 21.3 | 10.7 | 7.7 | 7.0 | 8.0 | 54.7 (5.2) | 29 s | 1,149 |
-| `retail-06-mstr-proxy-leverage` | 20.0 | 11.7 | 11.0 | 5.3 | 7.3 | 55.3 (10.3) | 39 s | 1,466 |
-| `retail-09-narrative-factcheck-apple` | 29.7 | 11.3 | 11.0 | 6.7 | 8.0 | 66.7 (4.5) | 43 s | 1,677 |
-| `retail-10-smci-accounting-red-flag` | 28.3 | 13.0 | 13.0 | 11.0 | 8.0 | 73.3 (4.5) | 38 s | 1,486 |
-| `retail-11-nike-earnings-review-report` | 36.3 | 12.3 | 12.7 | 8.3 | 8.7 | 78.3 (6.0) | 76 s | 2,671 |
-| `retail-12-concentration-profile-fit` | 35.3 | 11.7 | 17.0 | 10.3 | 8.0 | 82.3 (2.9) | 36 s | 1,549 |
-| `retail-13-semis-figure-survival` | 33.7 | 11.7 | 9.0 | 9.3 | 9.3 | 73.0 (7.3) | 36 s | 1,292 |
-| `retail-14-apple-pre-open-timing` | 39.3 | 8.7 | 9.7 | 10.0 | 7.7 | 75.3 (9.0) | 27 s | 935 |
+| `retail-01-nvda-beat-and-drop` | 26.7 | 10.3 | 10.0 | 11.3 | 7.7 | 66.0 (2.4) | 48 s | 1,473 |
+| `retail-02-nike-moat-erosion` | 32.0 | 12.0 | 8.7 | 7.0 | 6.7 | 66.3 (8.1) | 51 s | 2,132 |
+| `retail-03-nuclear-thematic-purity` | 36.0 | 10.3 | 9.0 | 12.3 | 6.0 | 73.7 (4.9) | 50 s | 1,929 |
+| `retail-04-dividend-yield-trap` | 24.7 | 13.3 | 7.3 | 8.0 | 6.0 | 59.3 (1.7) | 49 s | 1,861 |
+| `retail-05-intel-value-trap` | 22.7 | 10.0 | 7.0 | 7.3 | 7.7 | 54.7 (4.8) | 49 s | 1,324 |
+| `retail-06-mstr-proxy-leverage` | 27.0 | 11.7 | 12.0 | 9.7 | 7.0 | 67.3 (1.7) | 44 s | 1,716 |
+| `retail-09-narrative-factcheck-apple` | 28.0 | 11.7 | 11.7 | 9.3 | 8.7 | 69.3 (3.4) | 44 s | 1,707 |
+| `retail-10-smci-accounting-red-flag` | 24.7 | 13.0 | 13.3 | 8.0 | 7.7 | 66.7 (4.6) | 39 s | 1,603 |
+| `retail-11-nike-earnings-review-report` | 40.0 | 11.3 | 12.7 | 10.3 | 8.7 | 83.0 (5.0) | 81 s | 2,632 |
+| `retail-12-concentration-profile-fit` | 33.0 | 11.3 | 17.7 | 10.0 | 8.7 | 80.7 (0.9) | 36 s | 1,532 |
+| `retail-13-semis-figure-survival` | 35.0 | 12.7 | 10.0 | 10.7 | 9.3 | 77.7 (8.7) | 37 s | 1,551 |
+| `retail-14-apple-pre-open-timing` | 39.0 | 9.3 | 6.7 | 10.0 | 6.7 | 71.7 (1.2) | 25 s | 807 |
+
+Every run completed. This run replaced an earlier GPT-6 Luna baseline (total 67.6, commit
+`345e380`) whose full run file was not kept; this one was run at the same commit as the GPT-5.6
+rows.
 
 ## Qwen 3.8 27B avg@3, medium
 
@@ -171,4 +268,6 @@ dimensions; the yield-trap task keeps full checks but scores 3.0–3.7 on each o
 Two runs, one each of NVIDIA and the Nike report, ended in an agent error: the final answer was
 tool-call markup, and the recovery request did not replace it with prose. Each scores 0, which is
 what widens those two tasks' σ to about 29. On the Apple pre-open task every run meets the checks
-but scores 12–14 from the judge.
+but scores 12–14 from the judge. In a separate diagnostic of the NVIDIA and Nike-report tasks,
+five runs each and not part of this baseline, the tool-call markup failure did not recur; one NVIDIA
+run scored 15 after it skipped research and misread when the earnings were released.
