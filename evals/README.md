@@ -256,9 +256,10 @@ Each column comes from the agent's section of `summary-<timestamp>.md`, or the m
 
 | README column | Summary | Run JSON |
 | :--- | :--- | :--- |
+| Total (/100) | `Total: <n> / 100` | `averageTotalScore` |
 | Checks (/40) | `Checks: <n> / 40` | `averageDeterministicScore` |
 | Judged (/60) | `Judge: <n> / 60` | `averageJudgeScore` |
-| Total (/100) | `Total: <n> / 100` | `averageTotalScore` |
+| Avg. cost per run | not used; see below | each of `results[].metrics.tokens` at the provider's list prices, summed, ÷ repeats |
 | Avg. run time | `Mean latency` row × tasks | `metrics.latencyMs` × tasks |
 | Avg. output tokens per run | `Tokens (in / out / total)` row, the middle value, ÷ repeats | `metrics.tokens.output` ÷ repeats |
 | Avg. tool calls per run | not in the agent section | the length of each `results[].toolCalls`, summed, ÷ repeats |
@@ -273,6 +274,22 @@ Tool calls have no total in the summary: each result's line in the detailed resu
 `Tools (<n>)`, and the CLI's progress line prints `<n> tool calls` per result. Count them from the
 run JSON, not a baseline, which drops `toolCalls` with the other traces. The `Model calls` row
 counts model requests, not tool calls.
+
+Cost is the agent's alone: every row shares a judge, so its cost would only add the same amount to
+each. For each result, uncached input (`tokens.input`), cache reads (`tokens.cacheRead`), cache
+writes (`tokens.cacheWrite`) and output (`tokens.output`) are each priced at the provider's list
+price per million tokens; the results are summed and divided by the repeats. A baseline keeps
+`metrics.tokens` for every result, so its cost can be worked out from the baseline alone. Use the
+provider's published list price on the day the row is added, even when the run went through a
+subscription, and record the four prices, their source and the date in the row's section of
+[evals/baselines/README.md](baselines/README.md). The summary's `Cost` row is not used: it prices
+every token at the one rate the app's model catalog holds, which is not what a provider pinned to
+one host, or a provider with peak and off-peak rates, charges. Output tokens are what the provider
+reports, so a provider that reports little of its reasoning also shows a low cost.
+
+The quality-against-cost chart above the table (`docs/images/benchmark-quality-cost-light.svg` and
+`-dark.svg`) plots each row's Total against its average cost per run, with a bar spanning its runs'
+totals, so it is redrawn with every row added.
 
 ### Calibrating a policy rule
 
