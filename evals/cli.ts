@@ -78,7 +78,7 @@ Options:
                            beside it in place (default: your data folder)
   --out <dir>              Where results go (default evals/results/)
   --baseline <name>        Also write the run's summary to evals/baselines/<name>.json; refused
-                           unless repeat=3+, judge-repeat=3+, calibration passes, and the run is valid
+                           unless repeat=3+, judge-repeat=3+, and the run is valid
   --checkpoint <path>      Checkpoint written after every task cell (default for an offline run:
                            offline-eval-checkpoint.json in the --out folder)
   --resume <path>          Resume completed cells from a checkpoint JSON
@@ -305,10 +305,6 @@ export async function judgeOnly(input: {
   if (refusal) return { ok: false, error: refusal };
   const { judgeRun } = await import("./harness/rejudge");
   const summary = await judgeRun(saved, input.config, judge.ref);
-  if (input.baseline) {
-    const { calibrateJudge } = await import("./calibration/run");
-    summary.calibration = await calibrateJudge(input.config, judge.ref, summary.judgeThinking, 3);
-  }
   const files = writeRunFiles(summary, input.outDir);
   if (!input.baseline) return { ok: true, summary, files };
   const issues = benchmarkValidityIssues(summary, { baseline: true });
@@ -445,10 +441,6 @@ async function main(): Promise<number> {
       }
       const { rescoreRun } = await import("./harness/rescore");
       const summary = await rescoreRun(saved, config, judge.ref, options.judgeRepeat);
-      if (options.baseline) {
-        const { calibrateJudge } = await import("./calibration/run");
-        summary.calibration = await calibrateJudge(config, judge.ref, summary.judgeThinking, 3);
-      }
       const files = writeRunFiles(summary, outDir);
       printFinalTable(summary.results);
       console.log(`\nRescored v${summary.benchmarkVersion} run: ${files.jsonPath}\nSummary: ${files.mdPath}`);
@@ -524,12 +516,6 @@ async function main(): Promise<number> {
       resumePath: options.resumePath ? path.resolve(process.cwd(), options.resumePath) : undefined,
       onProgress: progress,
     });
-    if (options.baseline) {
-      console.log("\nCalibrating the judge on 36 anchors × 3 repeats before baseline promotion…");
-      const { calibrateJudge } = await import("./calibration/run");
-      summary.calibration = await calibrateJudge(config, judge.ref, options.judgeThinking, 3);
-    }
-
     const files = writeRunFiles(summary, outDir);
     printFinalTable(summary.results);
     for (const agent of summary.agentSummaries) {

@@ -64,6 +64,7 @@ export async function judgeRun(
   if (summary.benchmarkVersion !== BENCHMARK_VERSION || summary.judgePromptVersion !== JUDGE_PROMPT_VERSION) {
     throw new Error(`Cannot judge benchmark v${summary.benchmarkVersion} / prompt v${summary.judgePromptVersion} with prompt v${JUDGE_PROMPT_VERSION}; use --rescore on a trace-bearing run.`);
   }
+  delete summary.calibration;
   const agents = summary.agents.map((spec) => {
     const agent = parseModelSpec(spec);
     if (!agent) throw new Error(`The saved run names an agent "${spec}" that is not a provider/model spec.`);

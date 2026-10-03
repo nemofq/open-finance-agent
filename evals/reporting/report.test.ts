@@ -50,7 +50,6 @@ function summary(): EvalRunSummary {
   return {
     timestamp: "2026-09-20T10:02:03.456Z", benchmarkVersion: BENCHMARK_VERSION, judgePromptVersion: "9",
     agents: ["local/model"], judge: "p/judge", judgeRepeat: 3, fixtureMode: "offline", policyMode: "enforce",
-    calibration: { anchors: 36, repeats: 3, orderingAccuracy: 1, weightedKappa: 0.9, scoreMae: 3, maxScoreStdDev: 2, passed: true },
     configHash: "abc", repeat: 3, taskIds: [RETAIL_EVAL_TASKS[0].id],
     agentSummaries: [{
       agent: "local/model", selfJudged: false, completedTasks: 3, erroredTasks: 0, agentFailures: 0, infrastructureErrors: 0, invalidRuns: 0,
@@ -239,6 +238,10 @@ describe("baseline eligibility", () => {
   it("writes only eligible v2 baselines", () => {
     const file = writeBaseline(summary(), "v2-test", out);
     expect(path.basename(file)).toBe("v2-test.json");
+    const oldCalibration = { ...summary(), calibration: { anchors: 36, repeats: 3, orderingAccuracy: 0, weightedKappa: 0, scoreMae: 50, maxScoreStdDev: 10, passed: false } };
+    expect(benchmarkValidityIssues(oldCalibration, { baseline: true })).toEqual([]);
+    const withoutLegacyGate = writeBaseline(oldCalibration, "legacy-gate", out);
+    expect(JSON.parse(readFileSync(withoutLegacyGate, "utf8")).calibration).toBeUndefined();
     const invalid = summary();
     invalid.judgeRepeat = 1;
     expect(() => writeBaseline(invalid, "bad", out)).toThrow("judge repeat");

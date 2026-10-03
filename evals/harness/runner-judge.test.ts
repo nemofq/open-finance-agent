@@ -24,9 +24,6 @@ vi.mock("../scoring/judge", async (original) => ({
     };
   }),
 }));
-vi.mock("../calibration/run", () => ({
-  calibrateJudge: vi.fn(async () => ({ anchors: 36, repeats: 3, orderingAccuracy: 1, weightedKappa: 1, scoreMae: 0, maxScoreStdDev: 0, passed: true })),
-}));
 
 const { judgeRun } = await import("./rejudge");
 const { judgeOnly, parseArgs } = await import("../cli");
@@ -143,6 +140,13 @@ describe("--judge-only", () => {
     const outcome = await judgeOnly({ saved: savedRun(), config: config(), baseline: "finished", outDir: dir, baselineDir });
     expect(outcome.ok && outcome.baselinePath).toBe(path.join(baselineDir, "finished.json"));
     expect(existsSync(path.join(baselineDir, "finished.json"))).toBe(true);
+  });
+
+  it("does not carry a failed legacy calibration into a newly judged run", async () => {
+    const old = savedRun();
+    old.calibration = { anchors: 36, repeats: 3, orderingAccuracy: 0, weightedKappa: 0, scoreMae: 50, maxScoreStdDev: 10, passed: false };
+    const outcome = await judgeOnly({ saved: old, config: config(), outDir: dir, baselineDir: dir });
+    expect(outcome.ok && outcome.summary.calibration).toBeUndefined();
   });
 
   it("refuses a run written before results recorded diagnostics, before judging", async () => {

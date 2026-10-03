@@ -532,7 +532,7 @@ export interface EvalRunSummary {
   judgeThinkingTransmitted?: Record<string, string>;
   /** Independent grades requested for each answer; v2 aggregates item verdicts by majority. */
   judgeRepeat?: number;
-  /** Required judge calibration gate for v2 baseline promotion. */
+  /** Legacy judge calibration result; retained when reading older runs, never used for eligibility. */
   calibration?: {
     anchors: number;
     repeats: number;

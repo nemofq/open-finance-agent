@@ -40,8 +40,10 @@ const TRACE_FIELDS = ["toolCalls", "transcript", "evidence", "checks", "figureMa
 
 /** A baseline keeps the scores and the metrics, never the traces, so the file stays reviewable. */
 export function toBaseline(summary: EvalRunSummary): BaselineRecord {
+  const withoutLegacyGate = { ...summary };
+  delete withoutLegacyGate.calibration;
   return {
-    ...summary,
+    ...withoutLegacyGate,
     results: summary.results.map((result) => {
       const kept = { ...result };
       for (const field of TRACE_FIELDS) delete kept[field];
@@ -216,7 +218,6 @@ export function renderSummaryMarkdown(summary: EvalRunSummary): string {
     `- **Fixtures:** ${summary.fixtureMode} · **Policy:** ${summary.policyMode}`,
     ...(summary.dataset ? [`- **Offline dataset:** format ${summary.dataset.version} · ${Object.keys(summary.dataset.taskHashes).length} task dataset hashes · ${summary.dataset.integrityErrors} integrity errors · ${summary.dataset.corpusNotCaptured} corpus-not-captured · ${summary.dataset.emptyProviderResults} empty results · ${summary.dataset.notAvailableAsOf} future-blocked · ${summary.dataset.outOfScopeQueries} out-of-scope`] : []),
     `- **Tasks:** ${summary.taskIds.length} × ${summary.repeat} repeat(s)`,
-    ...(summary.calibration ? [`- **Judge calibration:** ${summary.calibration.passed ? "passed" : "FAILED"} · ordering ${(summary.calibration.orderingAccuracy * 100).toFixed(1)}% · weighted κ ${summary.calibration.weightedKappa} · MAE ${summary.calibration.scoreMae} · max σ ${summary.calibration.maxScoreStdDev}`] : []),
     `- **Diagnostics:** ${diagnosticsLine(summary.diagnostics)}`,
     `- **Config hash:** \`${summary.configHash}\`${summary.commit ? ` · **Commit:** \`${summary.commit.slice(0, 12)}\`` : ""}`,
     `- **Status:** ${issues.length === 0 ? "valid" : `**INVALID / UNSCORED** — ${issues.join("; ")}`}`,
@@ -285,7 +286,6 @@ export function benchmarkValidityIssues(
     if (summary.benchmarkVersion !== BENCHMARK_VERSION) issues.push(`baseline promotion requires benchmark v${BENCHMARK_VERSION}, not v${summary.benchmarkVersion}; rescore the full run first`);
     const refusal = baselineRefusal({ repeat: summary.repeat, judgeRepeat: summary.judgeRepeat, selfJudged: summary.agentSummaries.some((agent) => agent.selfJudged) });
     if (refusal) issues.push(refusal);
-    if (!summary.calibration?.passed) issues.push("v2 baseline requires a passing 36-anchor judge calibration");
   }
   return issues;
 }

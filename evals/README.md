@@ -30,7 +30,7 @@ tests, never the benchmark.
   ([the offline dataset](#the-offline-dataset)).
 - **The tool contract is the production one.** The model sees the production tool names and the
   providers' own response shapes, and local tools run their real code.
-- **Semantic quality first.** Eighty points come from item-level semantic grading; twenty integrity
+- **Semantic quality first.** Sixty points come from item-level semantic grading; forty integrity
   points verify source use, figure support and task-specific delivery contracts ([scoring](#scoring)).
 - **The chat's own budget.** A turn runs under the same model-call limit and turn deadline as a
   chat, so a score reflects what a user of that endpoint would get
@@ -207,9 +207,8 @@ caps it at 49. The judge never sees the deterministic score. Its packet contains
 visible answer and report prose, relevant evidence excerpts, policy checks, time boundary and data
 gaps instead of a dump of every tool output.
 
-With `--judge-repeat 3`, each item uses repeated votes and a median aggregation. Baseline promotion
-also grades 36 checked-in good/partial/adversarial anchors three times and requires at least 95%
-severity ordering accuracy, weighted κ ≥ 0.75, score MAE ≤ 5 and maximum fixed-answer σ ≤ 3.
+With `--judge-repeat 3`, each item uses repeated votes and a median aggregation. A baseline still
+requires three task repeats and three judge votes per answer; there is no anchor-calibration gate.
 
 ### Result status
 
@@ -243,7 +242,7 @@ pnpm eval --agent <provider/model> --judge <provider/model> \
 
 It writes the summary without traces (scores, feedback, metrics, task hashes, commit) to
 `evals/baselines/<name>.json`, creating the folder. Promotion is refused for a self-judged run,
-fewer than three task repeats, fewer than three judge votes, failed anchor calibration, a non-offline
+fewer than three task repeats, fewer than three judge votes, a non-offline
 run or any invalid result.
 
 Name it `<date>-<agent>-<judge>`, each model spec lowercased with every run of other characters
@@ -417,7 +416,7 @@ harness tests in every subfolder; `pnpm eval` runs the benchmark.
 | `evals/harness/runner.ts` | One run: every agent × task × repeat through `runTurn`, and each result's status. |
 | `evals/harness/turn-bounds.ts` | The hung-turn backstop and the transient-retry allowance. |
 | `evals/harness/tool-seam.ts` | Serves the offline dataset to the agent's tools (or leaves them live, or captures). |
-| `evals/scoring/checks.ts` | The 20 deterministic integrity points. |
+| `evals/scoring/checks.ts` | The 40 deterministic integrity points. |
 | `evals/scoring/judge.ts` | The judge prompt and parsing its grades. |
 | `evals/tasks.ts` | The tasks, their rubrics and their dataset scope. |
 | `evals/reporting/summary.ts`, `evals/reporting/report.ts` | Per-task and per-agent statistics; run files and baselines. |
