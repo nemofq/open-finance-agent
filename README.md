@@ -130,31 +130,36 @@ hand-crafted twelve, covering real 2024 retail-investor situations from earnings
 value traps to leveraged proxies, auditor red flags and portfolio fit, with a pinned offline
 dataset of the filings, prices and web pages that were public at each task's cutoff.
 
-The table below is the benchmark v1 historical baseline from main. Eval v2 keeps these files
-readable but does not compare them directly with v2 scores; trace-bearing v1 runs can be migrated
-with `--rescore`. The current scheme gives 60 points to item-level semantic quality and 40 to
-deterministic integrity, with critical-error caps and separate completion, conditional-quality and
-expected-user-score metrics.
+Every task runs through the same loop as a chat. Forty points come from deterministic integrity
+checks on the trace and the evidence ledger: the required evidence read and used, figures backed by
+evidence, and task-specific contracts such as an independently recomputed calculation or a cited
+primary filing. Sixty come from an LLM judge that grades each task's rubric items as met, partial,
+missed or contradicted, three times per answer, and a missed or contradicted critical item caps the
+total at 69 or 49.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/images/benchmark-quality-cost-dark.svg" />
-  <img src="docs/images/benchmark-quality-cost-light.svg" alt="Scatter of total benchmark score against the agent's average cost per run, log scale: GPT-6.1 Sol medium 84.8 at $2.13, GPT-5.6 Sol medium 82.8 at $4.46, DeepSeek V4.1 Flash high 77.3 at $1.05, GPT-5.6 Terra medium 77.1 at $2.15, GPT-5.6 Luna medium 75.8 at $0.27, GPT-6 Luna medium 69.7 at $0.07, Qwen 3.8 27B medium 65.4 at $0.84, Qwen 3.8 27B off 59.4 at $0.44" width="100%" />
+  <img src="docs/images/benchmark-quality-cost-light.svg" alt="Scatter of total benchmark score against the agent's average cost per run, log scale: GPT-6.1 Sol medium 74.1 at $2.13, GPT-5.6 Sol medium 71.5 at $4.46, DeepSeek V4.1 Flash high 67.0 at $1.05, GPT-5.6 Terra medium 63.2 at $2.15, GPT-5.6 Luna medium 62.8 at $0.27, GPT-6 Luna medium 57.7 at $0.07, Qwen 3.8 27B medium 56.6 at $0.84, Qwen 3.8 27B off 50.9 at $0.44" width="100%" />
 </picture>
 
-| Model | Thinking effort | Judge model | Total (/100) ↑ | Checks (/40) ↑ | Judged (/60) ↑ | Avg. cost per run ↓ | Avg. run time | Avg. output tokens per run | Avg. tool calls per run |
-| :--- | :--- | :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| GPT-6.1 Sol avg@3 | Medium | GPT-6 Astra, medium | 84.8 | 35.8 | 49.0 | $2.13 | 1,696 s | 37,347 | 224 |
-| GPT-5.6 Sol avg@3 | Medium | GPT-6 Astra, medium | 82.8 | 36.1 | 46.8 | $4.46 | 1,835 s | 77,376 | 411 |
-| DeepSeek V4.1 Flash avg@3 | High | GPT-6 Astra, medium | 77.3 | 39.1 | 38.1 | $1.05 | 2,119 s | 453,144 | 452 |
-| GPT-5.6 Terra avg@3 | Medium | GPT-6 Astra, medium | 77.1 | 34.9 | 42.2 | $2.15 | 974 s | 42,264 | 241 |
-| GPT-5.6 Luna avg@3 | Medium | GPT-6 Astra, medium | 75.8 | 35.0 | 40.8 | $0.27 | 1,368 s | 48,973 | 278 |
-| GPT-6 Luna avg@3 | Medium | GPT-6 Astra, medium | 69.7 | 30.7 | 39.0 | $0.07 | 554 s | 20,268 | 149 |
-| Qwen 3.8 27B avg@3 | Medium | GPT-6 Astra, medium | 65.4 | 35.2 | 30.2 | $0.84 | 1,685 s | 239,026 | 202 |
-| Qwen 3.8 27B avg@3 | Off | GPT-6 Astra, medium | 59.4 | 33.6 | 26.8 | $0.44 | 835 s | 100,714 | 216 |
+| Model | Thinking effort | Judge model | Total (/100) ↑ | Integrity (/40) ↑ | Judged (/60) ↑ | Completed ↑ | Avg. cost per run ↓ | Avg. run time | Avg. output tokens per run | Avg. tool calls per run |
+| :--- | :--- | :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| GPT-6.1 Sol avg@3 | Medium | GPT-6 Astra, medium | 74.1 | 34.5 | 39.6 | 100% | $2.13 | 1,696 s | 37,347 | 224 |
+| GPT-5.6 Sol avg@3 | Medium | GPT-6 Astra, medium | 71.5 | 32.3 | 39.4 | 100% | $4.46 | 1,835 s | 77,376 | 411 |
+| DeepSeek V4.1 Flash avg@3 | High | GPT-6 Astra, medium | 67.0 | 33.3 | 36.0 | 100% | $1.05 | 2,119 s | 453,144 | 452 |
+| GPT-5.6 Terra avg@3 | Medium | GPT-6 Astra, medium | 63.2 | 29.2 | 34.2 | 100% | $2.15 | 974 s | 42,264 | 241 |
+| GPT-5.6 Luna avg@3 | Medium | GPT-6 Astra, medium | 62.8 | 27.3 | 35.5 | 100% | $0.27 | 1,368 s | 48,973 | 278 |
+| GPT-6 Luna avg@3 | Medium | GPT-6 Astra, medium | 57.7 | 25.3 | 33.0 | 100% | $0.07 | 554 s | 20,268 | 149 |
+| Qwen 3.8 27B avg@3 | Medium | GPT-6 Astra, medium | 56.6 | 27.3 | 31.0 | 100% | $0.84 | 1,685 s | 239,026 | 202 |
+| Qwen 3.8 27B avg@3 | Off | GPT-6 Astra, medium | 50.9 | 25.6 | 28.8 | 94.4% | $0.44 | 835 s | 100,714 | 216 |
 
-↑ higher is better, ↓ lower is better. Benchmark version 1, policy enforced. `avg@3` is the mean of
-three runs of the twelve tasks. Run time counts the model's turns, not judging. Cost is the agent's,
-not the judge's, at the provider's list prices on 2026-10-01, from the tokens the provider reported;
+↑ higher is better, ↓ lower is better. Benchmark version 2, judge prompt v9 with three grades per
+answer, policy enforced. `avg@3` is three runs of the twelve tasks. Total is the expected score:
+the mean over tasks with a failed run counted as zero; Integrity and Judged average the completed
+answers, and Completed is their share. These rows were rescored from their saved runs when v2
+landed, so the agents' answers, run time, tokens and cost are those of the original runs; v1 scores
+are not comparable. Run time counts the model's turns, not judging. Cost is the agent's, not the
+judge's, at the provider's list prices on 2026-10-01, from the tokens the provider reported;
 GPT-5.6 Sol's uses OpenAI's promotional price, offered through at least 2026-11-21.
 Each row is a committed baseline, with its per-task scores and the prices used in
 [evals/baselines/README.md](evals/baselines/README.md), and the tasks, the scoring, how cost is

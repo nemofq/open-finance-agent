@@ -223,9 +223,9 @@ the primary ranking metric; timeout/error cells are excluded from conditional qu
 
 ## Comparing runs
 
-The baselines currently committed from main are benchmark v1 history. They remain readable, but v2
-refuses to compare them directly. Rescore a trace-bearing v1 run first; committed baselines omit
-traces and therefore cannot be rescored. `--compare` requires the same benchmark and judge-prompt
+The committed baselines are benchmark v2, judge prompt v9 with three grades per answer. A v1 run
+file stays readable, but v2 refuses to compare it directly: rescore a trace-bearing v1 run first.
+Committed baselines omit traces and therefore cannot be rescored. `--compare` requires the same benchmark and judge-prompt
 versions, task order and repeat count, then reports paired expected-score delta, a one-sided 95% bootstrap lower bound,
 win/tie/loss, completion delta, critical-contradiction delta and per-task regressions.
 
@@ -272,22 +272,22 @@ pnpm eval --agent <provider/model> --judge <provider/model> --thinking <level> \
   --judge-thinking <level> --repeat 3 --judge-repeat 3
 ```
 
-The existing README table is v1 history. Its columns come from the historical summary or run JSON:
+Each column comes from the agent's entry in `agentSummaries` of the run or baseline JSON:
 
-| README column | Summary | Run JSON |
-| :--- | :--- | :--- |
-| Total (/100) | `Total: <n> / 100` | `averageTotalScore` |
-| Checks (/40) | `Checks: <n> / 40` | `averageDeterministicScore` |
-| Judged (/60) | `Judge: <n> / 60` | `averageJudgeScore` |
-| Avg. cost per run | not used; see below | each of `results[].metrics.tokens` at the provider's list prices, summed, ÷ repeats |
-| Avg. run time | `Mean latency` row × tasks | `metrics.latencyMs` × tasks |
-| Avg. output tokens per run | `Tokens (in / out / total)` row, the middle value, ÷ repeats | `metrics.tokens.output` ÷ repeats |
-| Avg. tool calls per run | not in the agent section | the length of each `results[].toolCalls`, summed, ÷ repeats |
+| README column | Run JSON |
+| :--- | :--- |
+| Total (/100) | `expectedUserScore` |
+| Integrity (/40) | `averageIntegrityScore` |
+| Judged (/60) | `averageSemanticScore` |
+| Completed | `completionRate` |
+| Avg. cost per run | each of `results[].metrics.tokens` at the provider's list prices, summed, ÷ repeats; see below |
+| Avg. run time | `metrics.latencyMs` × tasks; the summary's `Mean latency` row × tasks |
+| Avg. output tokens per run | `metrics.tokens.output` ÷ repeats |
+| Avg. tool calls per run | the length of each `results[].toolCalls`, summed, ÷ repeats (run JSON only) |
 
-In v2, summaries instead report `completionRate`, `qualityOnCompleted` (/100),
-`expectedUserScore` (/100), `averageIntegrityScore` (/40) and `averageSemanticScore` (/60).
-Expected user score includes valid model failures as zero, while quality on completed excludes
-them; invalid infrastructure, harness and judge results are left out. Runtime, output tokens
+Expected user score includes valid model failures as zero, while Integrity and Judged average the
+completed answers only (`qualityOnCompleted` is their combined total); invalid infrastructure,
+harness and judge results are left out. Runtime, output tokens
 and tool calls are totals for one run
 of the task set, averaged over the repeats. `Mean latency` is the mean wall-clock time of one
 task's turn, measured before the judge runs, so judging is not included; times the number of tasks,
