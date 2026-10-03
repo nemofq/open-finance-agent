@@ -9,8 +9,9 @@ how the dataset behind it is maintained.
 **Separating better from worse** needs every run to see the same world. Twelve historical 2024 tasks
 run against a hermetic offline dataset (`evals/dataset/db.json.gz`), so no financial-data provider
 is called and the data cannot change between runs. Runs are compared only with the
-same settings, and `--repeat` measures each task's standard deviation (σ): a difference within 2σ is
-noise ([comparing runs](#comparing-runs)).
+same settings. Eval v2 compares matched task/repeat cells with paired bootstrap confidence intervals
+instead of applying one task's standard deviation as a universal noise threshold
+([comparing runs](#comparing-runs)).
 
 **Saying what to fix** needs more than a number. Every deterministic check notes what was missed,
 the judge writes feedback for each of its four dimensions, and each result carries diagnostics (tool
@@ -29,8 +30,8 @@ tests, never the benchmark.
   ([the offline dataset](#the-offline-dataset)).
 - **The tool contract is the production one.** The model sees the production tool names and the
   providers' own response shapes, and local tools run their real code.
-- **Deterministic first, judged second.** Forty points come from the transcript and the evidence
-  ledger, sixty from an LLM judge reading the answer against the evidence ([scoring](#scoring)).
+- **Semantic quality first.** Sixty points come from item-level semantic grading; forty integrity
+  points verify source use, figure support and task-specific delivery contracts ([scoring](#scoring)).
 - **The chat's own budget.** A turn runs under the same model-call limit and turn deadline as a
   chat, so a score reflects what a user of that endpoint would get
   ([turn limits](#the-offline-dataset)).
@@ -46,6 +47,11 @@ pnpm eval --agent <provider/model> --judge <provider/model>
 # One task, or three repeats of each task to measure noise
 pnpm eval --agent <provider/model> --judge <provider/model> --task retail-01-nvda-beat-and-drop
 pnpm eval --agent <provider/model> --judge <provider/model> --repeat 3
+
+# Rescore a trace-bearing v1 run, or compare a v2 candidate to a v2 baseline
+pnpm eval --rescore evals/results/run-old.json --judge-repeat 3
+pnpm eval --agent <provider/model> --judge <provider/model> --repeat 3 --judge-repeat 3 \
+  --compare evals/baselines/<v2-baseline>.json
 
 # The tasks, and the models the configured providers offer
 npx tsx evals/cli.ts --list
@@ -69,6 +75,7 @@ record run whose capture failed, never for a low score.
 | `--judge <spec>` | Judge model. |
 | `--task <id[,id…]>` | Run only these tasks; repeatable. |
 | `--repeat <n>` | Run each task n times (default 1). |
+| `--judge-repeat <n>` | Independent item-level judge votes per answer (default 1; a baseline requires 3). |
 | `--fixtures <mode>` | `offline` (default), `live` or `record`; see below. |
 | `--thinking <level>` | The agent's level, one of pi-ai's: `off`, `minimal`, `low`, `medium`, `high`, `xhigh` or `max` (default: the config's setting). pi-ai clamps it to the nearest level each model accepts; the summary's `Sent` says what went out. |
 | `--judge-thinking <level>` | The judge's level, from the same seven, sent on the grading and format-repair requests (default: none sent, as before the flag, so runs stay comparable; `off` sends none either). Recorded as `judgeThinking` and checked on `--resume`; `--judge-only` reuses the run's own. |
@@ -77,6 +84,8 @@ record run whose capture failed, never for a low score.
 | `--checkpoint <path>` | Checkpoint written after every task cell. An offline run writes `offline-eval-checkpoint.json` in the `--out` folder unless told otherwise. |
 | `--resume <path>` | Skip the cells a checkpoint of the same run already holds; a cell saved with a harness or judge error runs again. |
 | `--judge-only <path>` | Finish a saved run JSON: judge the results whose judgement is missing or failed, with the run's own judge and judge thinking, so `--judge` and `--judge-thinking` are refused beside it. A run written before results recorded their diagnostics is refused. Takes `--baseline`. |
+| `--rescore <path>` | Recompute v2 integrity and semantic scores from a saved run's full traces, write a new file and leave the original untouched. Trace-stripped baselines cannot be rescored. |
+| `--compare <baseline>` | Compare the completed or rescored run with a same-version baseline using matched task/repeat pairs and regression gates. |
 | `--out <dir>` | Where results go (default `evals/results/`). |
 | `--config <path>` | The `config.json` to copy into the run (default: your data folder's). |
 | `--keep` | Keep the run's temporary data folder for inspection. |
@@ -123,7 +132,7 @@ identify the company and its inputs rested on loosely sourced estimates; `retail
 reinvestment task, was deferred when the offline dataset's scope was set to these twelve, and its
 definition was later removed with the other deferred tasks.
 
-Known gaps in the captured corpus:
+Known gaps in the captured corpus (the v2 scoring issue records the required recapture):
 
 - `retail-09`: Berkshire's Q2 2024 10-Q (filed 3 August 2024) is not captured; the dataset provides
   the 13F filings for Q3 2023 to Q1 2024, amendments included.
@@ -155,74 +164,86 @@ Known gaps in the captured corpus:
 
 ## Scoring
 
-Every task is scored out of 100: 40 deterministic points and 60 from the judge. The checks below
-count only non-exempt figures: prices, amounts, margins, growth rates and the like. Years, dates,
-fiscal labels, tickers, SEC item numbers, ordinals and small counts are exempt
+Every successfully completed task is scored out of 100: 40 deterministic integrity points and 60
+semantic points. Figure checks count only non-exempt prices, amounts, margins, growth rates and the
+like. Years, dates, fiscal labels, tickers, SEC item numbers, ordinals and small counts are exempt
 ([architecture › Evidence](../docs/architecture.md#evidence)).
 
-### Deterministic checks (40 points)
+### Deterministic integrity (40 points)
 
-1. **Entities (15)**: the share of the task's expected entities (with their aliases) found in the
-   answer, the session's tickers or the tool arguments.
-2. **Required evidence (15)**: each requirement in the coverage contract carries points, 15 per
-   task. A requirement is met when the tool that served it succeeded and the answer or a delivered
-   report relies on what it served:
-   - shows a non-exempt figure matched to that ledger entry;
-   - quotes at least 8 consecutive words of a source document's body (source requirements only);
-   - shows a calculator result whose recorded inputs lead back to the entry.
+1. **Required source/fact acquisition and use (12)**: a requirement earns half credit when the
+   source or fact is acquired and full credit only when the answer or delivered report uses it via
+   a supported figure, a source excerpt, or a calculation whose inputs lead back to the entry. A
+   bare evidence tag or URL earns nothing. Acquisition is an integrity signal, not a proxy for a
+   correct conclusion; the semantic rubric grades the interpretation.
+2. **Figure support precision (12)**: the exact supported-figure ratio, with no rounding to full
+   credit. A harness-repaired citation remains a repair diagnostic and receives no model credit.
+3. **Task-specific contracts (16)**: each task declares exact obligations. Calculation contracts require a
+   visible calculator result that matches an independently recomputed target within a stated
+   tolerance, with the specified source periods, subjects and input IDs in its lineage. Other
+   contracts require reading and explicitly citing named primary sources, preserving exact
+   cross-turn facts and evidence, a quote from the required date, no look-ahead, or agent-created
+   report delivery. Citation is traceability, not a claim that the source was interpreted correctly;
+   the semantic judge handles that. A generic tool call,
+   unrelated calculation, or fallback report earns no contract points. Where the offline corpus
+   cannot pin a trustworthy numeric target, the contract tests a specific evidence or delivery
+   obligation instead. Entity discovery and raw calculator use remain diagnostic only.
 
-   A bare evidence tag (`[E1]`) or a URL earns nothing here, and which tool got there is not scored.
-3. **Calculator (5)**: a task that does not require a calculation (`requiresMathCalculation: false`:
-   `retail-03`, `retail-10`, `retail-14`) gets the 5 points outright. Otherwise the 5 points go to a
-   run whose ledger holds at least one calculator result (`C` entry), whether or not the answer
-   shows it. Without a ledger, any successful calculator call earns them.
-4. **Citations (5)**: when a ledger exists and the answer or a delivered report shows at least one
-   non-exempt figure, the points are the share of those figures the ledger backs, rounded onto 0–5
-   (a report's figures are counted by the report validator's own summary). With no ledger, or no
-   figure to check, any source marker in the answer earns all 5: a source named in parentheses or
-   brackets, such as `(EDGAR 10-Q, FY25 Q2)`, an SEC accession number or a sec.gov URL. An answer
-   with neither earns 0.
+### Semantic quality (60 points)
 
-### Judge (60 points)
+The judge returns `met`, `partial`, `missed` or `contradicted` for every weighted rubric item, with
+answer excerpts, evidence ids and a reason. Code—not the judge—maps those verdicts to
+`1 / 0.5 / 0 / 0` and calculates the score:
 
-An LLM judge grades the final answer against the task's rubric:
-
-- **Intent (15)**: whether the answer addresses the investor's real question and latent goal.
+- **Intent / critical outcome (15)**: whether the answer addresses the investor's real question.
 - **Financial reasoning (20)**: accounting correctness, context and balance.
-- **Grounding (15)**: fidelity to the retrieved evidence; ungrounded or post-cutoff claims are
-  penalised.
+- **Grounding and evidence interpretation (15)**: fidelity to the retrieved evidence; unsupported
+  or post-cutoff claims are penalised.
 - **Clarity and guardrails (10)**: structure, disclaimers and no unhedged personal advice.
 
-The judge sees the task's prompts, latent intent and rubric; every tool call's arguments and its
-output **truncated to 4,000 characters** (evidence-tag lines past the cut are kept); the evidence
-index; the policy check records; the deterministic score and its notes; and up to 15 lines of the
-offline boundary (requests the dataset refused).
+Critical zero-weight gates prevent a polished but materially wrong answer from hiding inside a
+dimension average: a missed critical item caps the combined score at 69; an explicit contradiction
+caps it at 49. The judge never sees the deterministic score. Its packet contains the complete
+visible answer and report prose, relevant evidence excerpts, policy checks, time boundary and data
+gaps instead of a dump of every tool output.
+
+With `--judge-repeat 3`, each item uses repeated votes and a median aggregation. A baseline still
+requires three task repeats and three judge votes per answer; there is no anchor-calibration gate.
 
 ### Result status
 
 `completed` results, and `agent_budget` results that still answered, are judged and scored. An
 `agent_timeout`, an `agent_error`, or a budget stop without an answer scores 0. Infrastructure,
 harness and judge errors are marked invalid and left unscored, never zeroed; `--judge-only` can
-finish a run whose judge failed.
+finish a run whose judge failed. Latency, cost and tool/model calls remain diagnostics.
+
+Every model summary reports three separate outcomes: `completionRate`, `qualityOnCompleted` and
+`expectedUserScore`. The last is the task-macro average with model failures scored as zero and is
+the primary ranking metric; timeout/error cells are excluded from conditional quality.
 
 ## Comparing runs
 
-The committed baselines, in `evals/baselines/`, are the rows of the README's table, and
-[evals/baselines/README.md](baselines/README.md) gives each one's per-task scores; there is no
-comparison command yet. When a change could move the scores, report the numbers before and after
-with the same settings: agent, judge, thinking level, policy mode, task set, repeats and benchmark
-version. Use `--repeat 2` or more so each task's standard deviation (σ) is printed; a difference
-within 2σ is noise.
+The baselines currently committed from main are benchmark v1 history. They remain readable, but v2
+refuses to compare them directly. Rescore a trace-bearing v1 run first; committed baselines omit
+traces and therefore cannot be rescored. `--compare` requires the same benchmark and judge-prompt
+versions, task order and repeat count, then reports paired expected-score delta, a one-sided 95% bootstrap lower bound,
+win/tie/loss, completion delta, critical-contradiction delta and per-task regressions.
+
+Default regression gates are: completion no worse than -5 percentage points; expected-score lower
+95% bound at least -2; no new critical contradiction in at least 2/3 repeats of any task; and no
+single-task mean decline greater than 8 points. Latency, cost and call counts stay separate.
 
 A run worth keeping can be promoted to a baseline:
 
 ```bash
-pnpm eval --agent <provider/model> --judge <provider/model> --repeat 3 --baseline <name>
+pnpm eval --agent <provider/model> --judge <provider/model> \
+  --repeat 3 --judge-repeat 3 --baseline <name>
 ```
 
 It writes the summary without traces (scores, feedback, metrics, task hashes, commit) to
-`evals/baselines/<name>.json`, creating the folder, and is refused for a self-judged run, one with
-fewer than 2 repeats, or one that is not offline or has an invalid result.
+`evals/baselines/<name>.json`, creating the folder. Promotion is refused for a self-judged run,
+fewer than three task repeats, fewer than three judge votes, a non-offline
+run or any invalid result.
 
 Name it `<date>-<agent>-<judge>`, each model spec lowercased with every run of other characters
 replaced by a dash; the CLI suggests the name after an eligible run. For agent
@@ -248,11 +269,10 @@ baseline's `results`:
 
 ```bash
 pnpm eval --agent <provider/model> --judge <provider/model> --thinking <level> \
-  --judge-thinking <level> --repeat 3
+  --judge-thinking <level> --repeat 3 --judge-repeat 3
 ```
 
-Each column comes from the agent's section of `summary-<timestamp>.md`, or the matching entry of
-`agentSummaries` in `run-<timestamp>.json`:
+The existing README table is v1 history. Its columns come from the historical summary or run JSON:
 
 | README column | Summary | Run JSON |
 | :--- | :--- | :--- |
@@ -264,8 +284,11 @@ Each column comes from the agent's section of `summary-<timestamp>.md`, or the m
 | Avg. output tokens per run | `Tokens (in / out / total)` row, the middle value, ÷ repeats | `metrics.tokens.output` ÷ repeats |
 | Avg. tool calls per run | not in the agent section | the length of each `results[].toolCalls`, summed, ÷ repeats |
 
-The three scores are means over the scored results only; invalid results are left out. The metrics
-cover every result of that agent. Run time, output tokens and tool calls are totals for one run
+In v2, summaries instead report `completionRate`, `qualityOnCompleted` (/100),
+`expectedUserScore` (/100), `averageIntegrityScore` (/40) and `averageSemanticScore` (/60).
+Expected user score includes valid model failures as zero, while quality on completed excludes
+them; invalid infrastructure, harness and judge results are left out. Runtime, output tokens
+and tool calls are totals for one run
 of the task set, averaged over the repeats. `Mean latency` is the mean wall-clock time of one
 task's turn, measured before the judge runs, so judging is not included; times the number of tasks,
 it is the run time. Output tokens are summed over every task and repeat, so divide by the repeats.
@@ -293,7 +316,7 @@ totals, so it is redrawn with every row added.
 
 ### Calibrating a policy rule
 
-1. Measure noise: run with `--repeat 3`.
+1. Measure noise: run with `--repeat 3 --judge-repeat 3`.
 2. Observe: run with `--observe` to record what the rules would do without letting them act. The
    runner always passes its own policy mode, so the app's `OFA_POLICY_OBSERVE` variable has no
    effect on a benchmark run.
@@ -393,7 +416,7 @@ harness tests in every subfolder; `pnpm eval` runs the benchmark.
 | `evals/harness/runner.ts` | One run: every agent × task × repeat through `runTurn`, and each result's status. |
 | `evals/harness/turn-bounds.ts` | The hung-turn backstop and the transient-retry allowance. |
 | `evals/harness/tool-seam.ts` | Serves the offline dataset to the agent's tools (or leaves them live, or captures). |
-| `evals/scoring/checks.ts` | The 40 deterministic points. |
+| `evals/scoring/checks.ts` | The 40 deterministic integrity points. |
 | `evals/scoring/judge.ts` | The judge prompt and parsing its grades. |
 | `evals/tasks.ts` | The tasks, their rubrics and their dataset scope. |
 | `evals/reporting/summary.ts`, `evals/reporting/report.ts` | Per-task and per-agent statistics; run files and baselines. |

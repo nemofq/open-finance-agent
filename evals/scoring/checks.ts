@@ -2,7 +2,8 @@ import { KIND_CLASS } from "@/lib/evidence/ids";
 import type { EvidenceEntry, FigureMatch } from "@/lib/evidence/types";
 import { figureCoverage } from "../reporting/metrics";
 import { normalizePeriod, normalizeSourceUrl, sameStatement } from "../offline/coverage-contract";
-import { asRecord, deliveredReportProse, deliveredReportVerification } from "./report-content";
+import { asRecord, deliveredReportProse, deliveredReportSpecs, deliveredReportVerification } from "./report-content";
+import { verifiedCalculation } from "./calculation-contract";
 import {
   BENCHMARK_VERSION,
   type DeterministicCheckResult,
@@ -15,11 +16,8 @@ import {
 } from "../types";
 
 /**
- * The 40 deterministic points: entities 15, required evidence 15, calculator 5, citations 5.
- *
- * The deterministic checks read the evidence ledger: the calculator part counts derived figures
- * rather than a mere tool call, and the citation part counts figures the ledger backs rather than
- * citation-shaped text. Without a ledger, fallback heuristics are used.
+ * The v2 40-point integrity score: required evidence 12, exact figure support 12 and task contracts
+ * 16. Entity discovery and raw calculator use remain diagnostics, not quality points.
  */
 
 /**
@@ -45,6 +43,8 @@ export interface ChecksInput {
   reportFigureMatches?: FigureMatch[];
   /** A ledger was rebuilt, so the evidence-aware rules apply instead of the no-ledger fallbacks. */
   evidenceAvailable: boolean;
+  /** Reports rendered by delivery recovery are visible, but do not satisfy agent delivery. */
+  fallbackReports?: number;
 }
 
 function countCitationMarkers(text: string): number {
@@ -229,35 +229,50 @@ function reliesOn(entry: EvidenceEntry, use: EvidenceUse): boolean {
  * A source is used when the answer relies on the figures its read produced (see `reliesOn`),
  * or quotes its body: a stake change computed from the 13F's holding rows uses the 13F.
  */
-function sourceMet(requirement: EvalSourceEvidence, input: ChecksInput, use: EvidenceUse): boolean {
+type RequirementState = "missing" | "acquired" | "used";
+
+function sourceState(requirement: EvalSourceEvidence, input: ChecksInput, use: EvidenceUse): RequirementState {
   const eligible = new Set(normalizedUrls(requirement.urls));
-  return input.toolCalls.some((call) => {
-    if (!served(call)) return false;
-    if (!acquiredUrls(call).some((url) => eligible.has(url))) return false;
-    return entriesOf(call, input.evidence).some((entry) => reliesOn(entry, use) || quotesBody(call, entry, use));
-  });
+  const acquired = input.toolCalls.filter((call) => served(call) && acquiredUrls(call).some((url) => eligible.has(url)));
+  if (acquired.length === 0) return "missing";
+  return acquired.some((call) => entriesOf(call, input.evidence).some((entry) => reliesOn(entry, use) || quotesBody(call, entry, use)))
+    ? "used"
+    : "acquired";
 }
 
 /**
  * A statement fact is used when the answer relies on its entry (see `reliesOn`): a growth rate
  * computed from the served revenue relies on it as much as the revenue itself.
  */
-function factMet(requirement: EvalFactEvidence, input: ChecksInput, use: EvidenceUse): boolean {
+function factState(requirement: EvalFactEvidence, input: ChecksInput, use: EvidenceUse): RequirementState {
+  const entries = eligibleFactEntries(requirement, input);
+  if (entries.length === 0) return "missing";
+  return entries.some((entry) => reliesOn(entry, use)) ? "used" : "acquired";
+}
+
+function eligibleFactEntries(requirement: EvalFactEvidence, input: ChecksInput): EvidenceEntry[] {
   const ticker = requirement.ticker.toUpperCase();
   const period = requirement.period === undefined ? undefined : normalizePeriod(requirement.period);
-  return input.toolCalls.some((call) => {
-    if (call.toolName !== "edgar_financials" || !served(call)) return false;
+  const entries: EvidenceEntry[] = [];
+  for (const call of input.toolCalls) {
+    if (call.toolName !== "edgar_financials" || !served(call)) continue;
     const statement = String(call.args.statement ?? asRecord(call.details)?.statement ?? "key_metrics");
-    if (!sameStatement(requirement.statement, statement)) return false;
-    return entriesOf(call, input.evidence).some((entry) =>
-      reliesOn(entry, use) && entry.source?.tier === 1 && !entry.lookAhead && tickerOf(entry, call) === ticker &&
-      (entry.facts ?? []).some((fact) => {
-        if (fact.metric !== requirement.metric || !Number.isFinite(fact.value)) return false;
-        const end = (fact.end ?? fact.period).slice(0, 10);
-        if (/^\d{4}-\d{2}-\d{2}$/.test(end) && end > input.task.asOfDate) return false;
-        return period === undefined || normalizePeriod(fact.period) === period || normalizePeriod(fact.end ?? "") === period;
-      }));
-  });
+    if (!sameStatement(requirement.statement, statement)) continue;
+    entries.push(...entriesOf(call, input.evidence).filter((entry) =>
+      entry.source?.tier === 1 && !entry.lookAhead && tickerOf(entry, call) === ticker &&
+      (() => {
+        const facts = (entry.facts ?? []).filter((fact) => {
+          if (!Number.isFinite(fact.value)) return false;
+          const end = (fact.end ?? fact.period).slice(0, 10);
+          if (/^\d{4}-\d{2}-\d{2}$/.test(end) && end > input.task.asOfDate) return false;
+          return period === undefined || normalizePeriod(fact.period) === period || normalizePeriod(fact.end ?? "") === period;
+        });
+        if (facts.some((fact) => fact.metric === requirement.metric)) return true;
+        return requirement.metric === "grossMargin" && facts.some((fact) => fact.metric === "grossProfit") &&
+          facts.some((fact) => fact.metric === "revenue" && fact.value !== 0);
+      })()));
+  }
+  return entries;
 }
 
 /** Tools whose served result is a dated quote for the symbol(s) they were asked about. */
@@ -267,20 +282,53 @@ const QUOTE_TOOLS = new Set(["market_quotes", "alphavantage__GLOBAL_QUOTE", "alp
  * A holdings or quote entry is used when the answer relies on it (see `reliesOn`): portfolio
  * weights computed from the quotes and the declared quantities use both.
  */
-function ledgerMet(requirement: EvalLedgerEvidence, input: ChecksInput, use: EvidenceUse): boolean {
+function ledgerState(requirement: EvalLedgerEvidence, input: ChecksInput, use: EvidenceUse): RequirementState {
   const ticker = requirement.ticker?.toUpperCase();
-  return input.toolCalls.some((call) => {
+  const entries: EvidenceEntry[] = [];
+  for (const call of input.toolCalls) {
     const eligible = requirement.source === "holdings" ? call.toolName === "portfolio_get" : QUOTE_TOOLS.has(call.toolName);
-    if (!eligible || !served(call)) return false;
+    if (!eligible || !served(call)) continue;
     // A multi-symbol quote is one entry named after its first symbol; the call's own symbols,
     // less any the mock reported missing, say which quotes that entry holds.
     const requested = (Array.isArray(call.args.symbols) ? call.args.symbols : call.args.symbol === undefined ? [] : [call.args.symbol])
       .map((symbol) => String(symbol).toUpperCase());
     const missing = asRecord(call.details)?.missing;
     const unserved = new Set((Array.isArray(missing) ? missing : []).map((item) => String(asRecord(item)?.symbol ?? "").toUpperCase()));
-    return entriesOf(call, input.evidence).some((entry) => reliesOn(entry, use) && (ticker === undefined ||
+    entries.push(...entriesOf(call, input.evidence).filter((entry) => ticker === undefined ||
       entry.entity?.ticker?.toUpperCase() === ticker || (requested.includes(ticker) && !unserved.has(ticker))));
+  }
+  if (entries.length === 0) return "missing";
+  return entries.some((entry) => reliesOn(entry, use)) ? "used" : "acquired";
+}
+
+function requirementState(requirement: EvalEvidenceRequirement, input: ChecksInput, use: EvidenceUse): RequirementState {
+  return requirement.kind === "source" ? sourceState(requirement, input, use)
+    : requirement.kind === "fact" ? factState(requirement, input, use)
+      : ledgerState(requirement, input, use);
+}
+
+function namedRequirements(labels: string[], task: EvalTask): EvalEvidenceRequirement[] {
+  return labels.map((label) => {
+    const requirement = task.requiredEvidence.find((item) => item.label === label);
+    if (!requirement) throw new Error(`Task ${task.id} contract names an unknown evidence requirement: ${label}`);
+    return requirement;
   });
+}
+
+/** Traceability only: the named source was read and explicitly linked from delivered prose. */
+function citedSource(requirement: EvalEvidenceRequirement, input: ChecksInput, claim?: "btc_holdings" | "convertible_terms"): boolean {
+  if (requirement.kind !== "source") throw new Error(`Task ${input.task.id} citation contract requires source evidence: ${requirement.label}`);
+  const eligible = new Set(normalizedUrls(requirement.urls));
+  const delivered = `${input.finalText}\n${deliveredReportProse(input.toolCalls)}`;
+  return input.toolCalls.some((call) => served(call) && acquiredUrls(call).some((url) => eligible.has(url)) &&
+    delivered.split(/\n\s*\n/).some((paragraph) => {
+      const cites = entriesOf(call, input.evidence).some((entry) => paragraph.includes(`[${entry.id}]`)) ||
+        [...eligible].some((url) => paragraph.includes(url));
+      if (!cites || !claim) return cites;
+      if (claim === "btc_holdings") return /(?:bitcoin|\bBTC\b)/i.test(paragraph) && /386[,\s]?700|386\.7\s*(?:thousand|k)/i.test(paragraph);
+      return /(?:convertib|\bnotes?\b|borrow|\bdebt\b)/i.test(paragraph) &&
+        /(?:zero[ -]?coupon|0\s*%|2029|\$\s*(?:2\.6|3(?:\.0)?)\s*(?:billion|bn|b)\b)/i.test(paragraph);
+    }));
 }
 
 /**
@@ -292,31 +340,67 @@ function ledgerMet(requirement: EvalLedgerEvidence, input: ChecksInput, use: Evi
  * a figure without a tag is not penalised, since that would score formatting. Which tool got
  * there is not scored.
  */
-function scoreEvidence(requirements: EvalEvidenceRequirement[], input: ChecksInput): { points: number; matched: string[]; missing: string[] } {
+function scoreEvidence(requirements: EvalEvidenceRequirement[], input: ChecksInput): {
+  points: number;
+  used: string[];
+  acquired: string[];
+  missing: string[];
+} {
   const use = evidenceUse(input);
-  const matched: string[] = [];
+  const used: string[] = [];
+  const acquired: string[] = [];
   const missing: string[] = [];
   let points = 0;
   for (const requirement of requirements) {
-    const met = requirement.kind === "source"
-      ? sourceMet(requirement, input, use)
-      : requirement.kind === "fact"
-        ? factMet(requirement, input, use)
-        : ledgerMet(requirement, input, use);
-    if (met) {
-      matched.push(requirement.label);
+    const state = requirementState(requirement, input, use);
+    if (state === "used") {
+      used.push(requirement.label);
       points += requirement.points;
+    } else if (state === "acquired") {
+      acquired.push(requirement.label);
+      points += requirement.points / 2;
     } else {
       missing.push(requirement.label);
     }
   }
-  return { points, matched, missing };
+  return { points, used, acquired, missing };
 }
 
-/** `ratio * max`, rounded, so a partial match scores partially. */
-function share(part: number, whole: number, max: number): number {
-  if (whole === 0) return max;
-  return Math.round((part / whole) * max);
+function rounded(value: number): number {
+  return Math.round(value * 10) / 10;
+}
+
+function contractResults(input: ChecksInput, use: EvidenceUse): DeterministicCheckResult["contractResults"] {
+  const specs = deliveredReportSpecs(input.toolCalls);
+  return input.task.contracts.map((contract) => {
+    let met = false;
+    if (contract.kind === "verified_calculation") {
+      met = verifiedCalculation(contract, input.task, input.evidence, use.backed);
+    } else if (contract.kind === "required_evidence_used") {
+      met = namedRequirements(contract.requirementLabels, input.task)
+        .every((requirement) => requirementState(requirement, input, use) === "used");
+    } else if (contract.kind === "required_evidence_cited") {
+      met = contract.citations.every((check) => {
+        const citations = namedRequirements(check.requirementLabels, input.task)
+          .map((requirement) => citedSource(requirement, input, check.claim));
+        return check.match === "all" ? citations.every(Boolean) : citations.some(Boolean);
+      });
+    } else if (contract.kind === "dated_quote") {
+      met = input.toolCalls.some((call) => QUOTE_TOOLS.has(call.toolName) && served(call) &&
+        entriesOf(call, input.evidence).some((entry) => !entry.lookAhead && use.backed.has(entry.id) &&
+          (entry.facts ?? []).some((fact) => fact.period === contract.date && fact.unit === "USD" && fact.value > 0 &&
+            (fact.metric === `${contract.ticker} price` ||
+              (entry.entity?.ticker?.toUpperCase() === contract.ticker && ["price", "close"].includes(fact.metric))))));
+    } else if (contract.kind === "no_lookahead") {
+      met = input.evidence.length > 0 && !input.evidence.some((entry) => entry.lookAhead && (use.backed.has(entry.id) || use.derived.has(entry.id)));
+    } else {
+      met = (input.fallbackReports ?? 0) === 0 && specs.some((spec) => {
+        const headings = new Set(spec.sections.map((section) => section.heading.toLowerCase()));
+        return spec.template === contract.template && contract.sections.every((section) => headings.has(section.toLowerCase()));
+      });
+    }
+    return { id: contract.id, label: contract.label, met, points: met ? contract.points : 0 };
+  });
 }
 
 export function runDeterministicChecks(input: ChecksInput): DeterministicCheckResult {
@@ -333,73 +417,52 @@ export function runDeterministicChecks(input: ChecksInput): DeterministicCheckRe
       figuresChecked: 0,
       figuresBacked: 0,
       evidenceAvailable: input.evidenceAvailable,
+      evidenceScore: 0,
+      figureSupportScore: 0,
+      contractScore: 0,
+      contractResults: task.contracts.map((contract) => ({ id: contract.id, label: contract.label, met: false, points: 0 })),
       score: 0,
       maxScore: 40,
       details: ["[Answer: 0/40] The agent produced no final answer."],
     };
   }
   const details: string[] = [];
-  let score = 0;
 
-  /* 1. Entities — 15 */
+  /* Entity discovery is diagnostic only in v2. */
   const entities = matchEntities(input);
-  const entityScore = share(entities.matched.length, task.expectedEntities.length, 15);
-  score += entityScore;
   details.push(
     task.expectedEntities.length === 0
-      ? "[Entities: 15/15] No specific entity required."
-      : `[Entities: ${entityScore}/15] found [${entities.matched.join(", ") || "none"}]` +
+      ? "[Entities: diagnostic] No specific entity required."
+      : `[Entities: diagnostic] found [${entities.matched.join(", ") || "none"}]` +
           (entities.missing.length > 0 ? `, missing [${entities.missing.join(", ")}]` : ""),
   );
 
-  /* 2. Required evidence — 15. Which tool got there is not scored. */
+  /* 1. Required evidence — 12. Acquisition earns half; visible use earns full. */
   const evidence = scoreEvidence(task.requiredEvidence, input);
-  score += evidence.points;
+  const evidenceScore = rounded((evidence.points / 15) * 12);
   details.push(
-    `[Evidence: ${evidence.points}/15] met [${evidence.matched.join(", ") || "none"}]; missing [${evidence.missing.join(", ") || "none"}]`,
+    `[Evidence: ${evidenceScore}/12] used [${evidence.used.join(", ") || "none"}]; acquired only [${evidence.acquired.join(", ") || "none"}]; missing [${evidence.missing.join(", ") || "none"}]`,
   );
 
-  /* 3. Calculator — 5 points */
-  const usedFinancialCalculator = input.toolCalls.some(
-    (call) =>
-      !call.isError &&
-      (call.toolName.toLowerCase().includes("calculator") || call.toolName.toLowerCase().includes("python")),
-  );
+  /* Raw calculator use remains diagnostic. The task-specific arithmetic contract is decisive. */
   const derivedFigures = input.evidence.filter((entry) => entry.kind === "C").length;
-  let mathExpectationSatisfied = true;
-  if (!task.requiresMathCalculation) {
-    score += 5;
-    details.push("[Math: 5/5] Quantitative calculation not required for this task.");
-  } else if (input.evidenceAvailable) {
-    mathExpectationSatisfied = derivedFigures > 0;
-    score += mathExpectationSatisfied ? 5 : 0;
-    details.push(
-      mathExpectationSatisfied
-        ? `[Math: 5/5] ${derivedFigures} derived figure(s) computed and registered as evidence.`
-        : "[Math: 0/5] The task needs derived figures; the ledger holds no computed (C) entry.",
-    );
-  } else {
-    mathExpectationSatisfied = usedFinancialCalculator;
-    score += mathExpectationSatisfied ? 5 : 0;
-    details.push(
-      mathExpectationSatisfied
-        ? "[Math: 5/5] financial_calculator was called (no ledger available; v1 rule)."
-        : "[Math: 0/5] The task needs calculation and financial_calculator was not called.",
-    );
-  }
+  const use = evidenceUse(input);
+  const calculationContracts = task.contracts.filter((contract) => contract.kind === "verified_calculation");
+  const mathExpectationSatisfied = calculationContracts.length > 0
+    ? calculationContracts.every((contract) => verifiedCalculation(contract, task, input.evidence, use.backed))
+    : !task.requiresMathCalculation || input.evidence.some((entry) => entry.kind === "C" && use.backed.has(entry.id));
+  details.push(`[Calculator: diagnostic] ${derivedFigures} derived figure(s); ${mathExpectationSatisfied ? "calculation expectation met or none required" : "calculation expectation not met"}.`);
 
-  /* 4. Citations — 5 points. Counts figures the ledger backs, combining the delivered report's
+  /* 2. Figure support — 12 points. Counts figures the ledger backs, combining the delivered report's
      figures, per the report validator's own per-figure summary, with the answer's. */
   const citationCount = countCitationMarkers(input.finalText);
   // One ratio over everything the reader sees: the chat answer and any delivered report,
   // weighted by how many figures each shows.
   const chat = figureCoverage(input.figureMatches);
   const verification = deliveredReportVerification(input.toolCalls);
-  // The validator checks every prose figure, numeric cell and reference against the turn's ledger,
-  // so its count is the report's ground truth. A repaired citation is backed: the value is held
-  // and the citation now names the entry that holds it.
+  // Repaired references are harness help, not agent credit in v2.
   const fromReport = verification
-    ? { checked: verification.checked, backed: Math.min(verification.checked, verification.supported + verification.repaired), unsourced: [] as string[] }
+    ? { checked: verification.checked, backed: Math.min(verification.checked, verification.supported), unsourced: [] as string[] }
     : { checked: 0, backed: 0, unsourced: [] as string[] };
   const coverage = {
     checked: chat.checked + fromReport.checked,
@@ -410,23 +473,29 @@ export function runDeterministicChecks(input: ChecksInput): DeterministicCheckRe
     ? ` (${verification.checked} from the delivered report, per its validator: ${verification.unverified} unsupported` +
       (verification.repaired > 0 ? `, ${verification.repaired} citation(s) repaired` : "") + ")"
     : ` (${fromReport.checked} from the delivered report)`;
-  let citationScore: number;
+  let figureSupportScore: number;
   if (input.evidenceAvailable && coverage.checked > 0) {
-    citationScore = share(coverage.backed, coverage.checked, 5);
+    figureSupportScore = rounded((coverage.backed / coverage.checked) * 12);
     details.push(
-      `[Citations: ${citationScore}/5] ${coverage.backed}/${coverage.checked} non-exempt figures backed by evidence` +
+      `[Figure support: ${figureSupportScore}/12] ${coverage.backed}/${coverage.checked} non-exempt figures backed by evidence` +
         reportNote +
         (coverage.unsourced.length > 0 ? `; unsourced: ${coverage.unsourced.slice(0, 8).join(", ")}` : ""),
     );
   } else {
-    citationScore = citationCount > 0 ? 5 : 0;
+    figureSupportScore = 0;
     details.push(
       citationCount > 0
-        ? `[Citations: 5/5] ${citationCount} source marker(s) in the answer (no figures to verify; v1 rule).`
-        : "[Citations: 0/5] No source markers and no evidence-backed figures in the answer.",
+        ? `[Figure support: 0/12] ${citationCount} source marker(s), but no figures could be verified.`
+        : "[Figure support: 0/12] No verifiable non-exempt figures.",
     );
   }
-  score += citationScore;
+
+  /* 3. Task-specific contracts — 16. */
+  const contracts = contractResults(input, use);
+  const contractScore = rounded(contracts.reduce((total, contract) => total + contract.points, 0));
+  details.push(`[Contracts: ${contractScore}/16] ${contracts.map((contract) => `${contract.met ? "met" : "missed"} ${contract.label}`).join("; ")}`);
+
+  const score = rounded(evidenceScore + figureSupportScore + contractScore);
 
   return {
     version: BENCHMARK_VERSION,
@@ -439,6 +508,10 @@ export function runDeterministicChecks(input: ChecksInput): DeterministicCheckRe
     figuresChecked: coverage.checked,
     figuresBacked: coverage.backed,
     evidenceAvailable: input.evidenceAvailable,
+    evidenceScore,
+    figureSupportScore,
+    contractScore,
+    contractResults: contracts,
     score,
     maxScore: 40,
     details,
