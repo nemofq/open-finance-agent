@@ -30,11 +30,14 @@ surface, not a target price.
 
 ## Inputs
 
-- **Required:** one ticker. If the user did not give one, ask for it and stop.
+- **Required:** one company, by ticker or by name; if several are named, the one the question is
+  about. Resolve a name in step 1. Ask for the ticker and stop only when no company is named, or
+  the lookup does not clearly match one.
 - **Ask only when the user has a view:** if they name a forecast, a discount rate or a terminal
   growth rate, use theirs and say so. Otherwise derive everything and declare it.
 - **Infer rather than ask:** reporting currency, the forecast horizon (five years unless the
   business is cyclical or early, then ten), whether to value on free cash flow to the firm.
+- If the ticker resolves to several listings, take the primary US listing and name the entity.
 
 ## Process
 

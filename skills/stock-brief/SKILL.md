@@ -29,7 +29,9 @@ pays for that today, what just happened and what could break. A description, not
 
 ## Inputs
 
-- **Required:** one ticker. If the user did not give one, ask for it and stop. Ask nothing else.
+- **Required:** one company, by ticker or by name; if several are named, the one the question is
+  about. Resolve a name in step 1. Ask for the ticker and stop only when no company is named, or
+  the lookup does not clearly match one. Ask nothing else.
 - **Infer rather than ask:** reporting currency, fiscal calendar, which segments matter.
 - If the ticker resolves to several listings, take the primary US listing and name the entity.
 

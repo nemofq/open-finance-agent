@@ -31,7 +31,9 @@ of the print, not a recommendation.
 
 ## Inputs
 
-- **Required:** one ticker. If the user did not give one, ask for it and stop. Ask nothing else.
+- **Required:** one company, by ticker or by name; if several are named, the one the question is
+  about. Resolve a name in step 1. Ask for the ticker and stop only when no company is named, or
+  the lookup does not clearly match one. Ask nothing else.
 - **Infer rather than ask:** the quarter (default to the most recently reported), the pre-earnings
   thesis (from an `earnings-preview` earlier in this chat or from memory; skip the comparison if
   none exists), focus areas, reporting currency.
