@@ -54,6 +54,8 @@ export interface RunnerOptions {
   judge: ModelRef;
   /** The judge's reasoning level (`--judge-thinking`); unset sends the judge none, as runs always have. */
   judgeThinking?: ThinkingLevel;
+  /** Independent rubric-item grades per answer; baseline runs use three. */
+  judgeRepeat?: number;
   tasks: EvalTask[];
   repeat: number;
   fixtureMode: FixtureMode;
@@ -92,6 +94,7 @@ export interface RunTaskOptions {
   agent: ModelRef;
   judge: ModelRef;
   judgeThinking?: ThinkingLevel;
+  judgeRepeat?: number;
   repeat: number;
   fixtureMode: FixtureMode;
   captureDir?: string;
@@ -246,6 +249,7 @@ export async function runTask(options: RunTaskOptions): Promise<TaskEvalResult> 
     finalText: trace.finalText,
     toolCalls,
   });
+  const diagnostics = countDiagnostics(toolCalls, trace.transcript);
 
   const deterministicCheck = runDeterministicChecks({
     task,
@@ -256,6 +260,7 @@ export async function runTask(options: RunTaskOptions): Promise<TaskEvalResult> 
     figureMatches: analysis.figureMatches,
     reportFigureMatches: analysis.reportFigureMatches,
     evidenceAvailable: analysis.available,
+    fallbackReports: diagnostics.fallbackReports,
   });
 
   const metrics = computeMetrics({
@@ -297,6 +302,7 @@ export async function runTask(options: RunTaskOptions): Promise<TaskEvalResult> 
             ? "agent_error"
             : "completed";
   const valid = status !== "harness_error" && status !== "infra_error";
+  const zeroScoreModelFailure = status === "agent_timeout" || status === "agent_error" || (status === "agent_budget" && !answered);
   const executionError = invalidReason ?? turnError;
 
   const result: TaskEvalResult = {
@@ -316,11 +322,11 @@ export async function runTask(options: RunTaskOptions): Promise<TaskEvalResult> 
     sessionTickers: trace.tickers,
     transcript: trace.transcript,
     deterministicCheck,
-    ...(valid && agentFailure ? { totalScore: 0 } : {}),
+    ...(valid && zeroScoreModelFailure ? { totalScore: 0 } : {}),
     valid,
     ...(invalidReason ? { invalidReason } : {}),
     metrics,
-    diagnostics: countDiagnostics(toolCalls, trace.transcript),
+    diagnostics,
     ...(offlineAudit ? { offlineAudit } : {}),
     ...(providerRetries > 0 ? { providerRetries } : {}),
     ...(providerRetryErrors.length > 0 ? { providerRetryErrors } : {}),
@@ -330,7 +336,7 @@ export async function runTask(options: RunTaskOptions): Promise<TaskEvalResult> 
 
   if (awaitsJudgement(result)) {
     options.onProgress?.({ type: "judge_start", agent: modelRefKey(agent), task });
-    applyJudgement(result, await evaluateWithJudge(result, config, judge, options.judgeThinking));
+    applyJudgement(result, await evaluateWithJudge(result, config, judge, options.judgeThinking, options.judgeRepeat));
   }
 
   return result;
@@ -338,7 +344,7 @@ export async function runTask(options: RunTaskOptions): Promise<TaskEvalResult> 
 
 /** Every agent × task × repeat, in order, so captures and rate limits stay predictable. */
 export async function runBenchmark(options: RunnerOptions): Promise<EvalRunSummary> {
-  const { config, agents, judge, judgeThinking, tasks, repeat, fixtureMode, policyMode } = options;
+  const { config, agents, judge, judgeThinking, judgeRepeat = 1, tasks, repeat, fixtureMode, policyMode } = options;
   if (fixtureMode === "offline") {
     const issues = validateDatasetTasks(tasks);
     if (issues.length > 0) throw new Error(`Offline dataset preflight failed:\n- ${issues.join("\n- ")}`);
@@ -358,6 +364,7 @@ export async function runBenchmark(options: RunnerOptions): Promise<EvalRunSumma
     judge: modelRefKey(judge),
     thinking: config.llm.thinkingLevel,
     judgeThinking,
+    judgeRepeat,
     taskIds: tasks.map((item) => item.id),
     repeat,
     taskDatasetHashes: currentTaskHashes,
@@ -389,6 +396,7 @@ export async function runBenchmark(options: RunnerOptions): Promise<EvalRunSumma
           agent,
           judge,
           judgeThinking,
+          judgeRepeat,
           repeat: attempt,
           fixtureMode,
           captureDir: options.captureDir,
@@ -413,6 +421,7 @@ export async function runBenchmark(options: RunnerOptions): Promise<EvalRunSumma
     thinking: config.llm.thinkingLevel,
     thinkingTransmitted: await thinkingTransmitted(config, agents, config.llm.thinkingLevel),
     ...(judgeThinking ? { judgeThinking, judgeThinkingTransmitted: await thinkingTransmitted(config, [judge], judgeThinking) } : {}),
+    judgeRepeat,
     ...(dataset ? { dataset } : {}),
     fixtureMode,
     policyMode,

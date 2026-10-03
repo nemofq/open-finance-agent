@@ -12,7 +12,7 @@ import type { ThinkingLevel } from "@/lib/config/schema";
  */
 
 /** Covers the tasks, the deterministic checks, the judge prompt and the scoring. */
-export const BENCHMARK_VERSION = "1";
+export const BENCHMARK_VERSION = "2";
 
 /**
  * Where a run's data comes from: the committed offline dataset (the only scored mode), the live
@@ -32,6 +32,89 @@ export interface EvalTaskRubric {
   /** Clarity for retail investors, avoiding unhedged buy/sell recommendations */
   retailClarityCriteria: string;
 }
+
+export type RubricDimension = "intent" | "financial" | "grounding" | "clarity";
+export type RubricVerdict = "met" | "partial" | "missed" | "contradicted";
+
+/**
+ * One independently judged requirement. Weights across the non-gating items of a task total 60.
+ * A zero-weight critical item is a gate: it can cap a superficially polished but materially wrong
+ * answer without double-counting the broader dimension that already scores the same behaviour.
+ */
+export interface EvalRubricItem {
+  id: string;
+  dimension: RubricDimension;
+  label: string;
+  requirement: string;
+  weight: number;
+  critical?: boolean;
+  /** Offline-corpus records that make a critical requirement answerable before its cutoff. */
+  coverage?: {
+    requiredEvidenceLabels?: string[];
+    alphaEarningsTickers?: string[];
+  };
+}
+export type EvalCalculationTarget =
+  | { kind: "fact_growth"; ticker: string; metric: string; periodType: "quarterly" | "annual"; currentPeriod: string; priorPeriod: string }
+  | { kind: "fact_sum"; ticker: string; metric: string; periodType: "quarterly" | "annual"; periods: string[] }
+  | { kind: "annual_income_rate"; principal: number; monthlyIncome: number }
+  | { kind: "portfolio_top_weight"; quoteDate: string }
+  | { kind: "filing_guidance_growth"; url: string; currentRevenue: number; guidedRevenue: number };
+
+export type EvalTaskContract =
+  | {
+      id: string;
+      kind: "verified_calculation";
+      label: string;
+      points: number;
+      target: EvalCalculationTarget;
+      /** Absolute tolerance in the target's output unit, not a percentage of its value. */
+      tolerance: number;
+    }
+  | {
+      id: string;
+      kind: "required_evidence_used";
+      label: string;
+      points: number;
+      requirementLabels: string[];
+    }
+  | {
+      id: string;
+      kind: "required_evidence_cited";
+      label: string;
+      points: number;
+      /** Every citation check must pass; each may accept equivalent source filings. */
+      citations: Array<{
+        requirementLabels: string[];
+        match: "all" | "any";
+        /** Claim that must accompany the filing citation in delivered prose. */
+        claim?: "btc_holdings" | "convertible_terms";
+      }>;
+    }
+  | {
+      id: string;
+      kind: "dated_quote";
+      label: string;
+      points: number;
+      ticker: string;
+      date: string;
+    }
+  | {
+      id: string;
+      kind: "no_lookahead";
+      label: string;
+      points: number;
+    }
+  | {
+      id: string;
+      kind: "report";
+      label: string;
+      points: number;
+      template: string;
+      sections: string[];
+      /** A report rendered by the harness from prose is recovery, not agent delivery. */
+      requireAgentDelivery: boolean;
+    };
 
 export interface EntityCluster {
   label: string;
@@ -106,12 +189,16 @@ export interface EvalTask {
   latentIntent: string;
   /** Entity clusters (each with acceptable aliases/tickers) that must be inferred */
   expectedEntities: EntityCluster[];
-  /** Evidence outcomes that decide 15 of the deterministic points; their points total 15. */
+  /** Evidence outcomes whose requirement weights total 15 and are normalized onto v2's 12 integrity points. */
   requiredEvidence: EvalEvidenceRequirement[];
   /** Whether quantitative formulas / math calculations are required */
   requiresMathCalculation?: boolean;
   /** Rubric for grading */
   rubric: EvalTaskRubric;
+  /** The v2 semantic scorecard. Non-gating item weights total 60. */
+  rubricItems: EvalRubricItem[];
+  /** The v2 deterministic task contract. Points total 16. */
+  contracts: EvalTaskContract[];
 
   /* ---- optional harness inputs; every field below is seeded before the first turn ---- */
 
@@ -245,7 +332,15 @@ export interface DeterministicCheckResult {
   /** True when the ledger was available, so the evidence-based rules applied rather than the no-ledger fallbacks. */
   evidenceAvailable: boolean;
 
-  /** Total deterministic score (out of 40 points) */
+  /** v2 source/fact acquisition and use score, out of 12. */
+  evidenceScore: number;
+  /** v2 exact figure-support score, out of 12. */
+  figureSupportScore: number;
+  /** v2 task-specific contract score, out of 16. */
+  contractScore: number;
+  contractResults: Array<{ id: string; label: string; met: boolean; points: number }>;
+
+  /** Total deterministic integrity score (out of 40 points). */
   score: number;
   maxScore: number;
   details: string[];
@@ -287,7 +382,23 @@ export interface RunDiagnostics {
 
 /* ------------------------------------------------------------------ judge */
 
+export interface RubricItemEvaluation {
+  id: string;
+  dimension: RubricDimension;
+  verdict: RubricVerdict;
+  rationale: string;
+  /** Short quotation or precise description of the answer passage being judged. */
+  answerEvidence: string;
+  evidenceIds: string[];
+  awarded: number;
+  weight: number;
+  critical: boolean;
+}
+
 export interface JudgeEvaluationResult {
+  rubricItems: RubricItemEvaluation[];
+  dimensionScores: Record<RubricDimension, number>;
+  /** Kept as named fields so old summary consumers have a simple migration path. */
   intentScore: number; // 0-15
   intentFeedback: string;
   financialScore: number; // 0-20
@@ -298,6 +409,10 @@ export interface JudgeEvaluationResult {
   retailClarityFeedback: string;
   totalJudgeScore: number; // 0-60
   maxJudgeScore: number; // 60
+  criticalMisses: string[];
+  criticalContradictions: string[];
+  /** 69 for a missed critical item, 49 for a contradiction, otherwise absent. */
+  scoreCap?: number;
   overallVerdict: string;
   judgeModel: string;
   promptVersion: string;
@@ -334,7 +449,11 @@ export interface TaskEvalResult {
   transcript: AgentMessage[];
   deterministicCheck: DeterministicCheckResult;
   judgeResult?: JudgeEvaluationResult;
-  /** Combined score out of 100 (deterministic 40 + judge 60). */
+  /** Item-level semantic quality out of 60, present only for a judgeable completed/budget answer. */
+  qualityScore?: number;
+  /** Deterministic integrity out of 40. */
+  integrityScore?: number;
+  /** Combined v2 score out of 100 after any critical-item cap. */
   totalScore?: number;
   /** False means infrastructure, harness/data, or judge failure made this result non-comparable. */
   valid?: boolean;
@@ -351,18 +470,18 @@ export interface TaskEvalResult {
   stop?: TurnStop;
 }
 
-/** Per-task spread across `--repeat`, used to set the noise tolerance. */
+/** Per-task descriptive spread across `--repeat`; v2 regression gates use paired bootstrap. */
 export interface TaskStat {
   taskId: string;
   title: string;
   runs: number;
   scores: number[];
-  meanDeterministic: number;
-  meanJudge: number;
+  meanIntegrity: number;
+  meanQuality: number;
   meanTotal: number;
   /** Population standard deviation of the total score. */
   sdTotal: number;
-  /** Suggested noise tolerance: twice the standard deviation. */
+  /** Historical descriptive 2σ value, not a v2 regression threshold. */
   tolerance: number;
 }
 
@@ -375,9 +494,18 @@ export interface AgentSummary {
   agentFailures: number;
   infrastructureErrors: number;
   invalidRuns: number;
-  averageDeterministicScore: number;
-  averageJudgeScore: number;
+  /** Share of valid cells that reached a judgeable completed/budget answer. */
+  completionRate: number;
+  /** Mean 0-100 combined score among completed answers only. */
+  qualityOnCompleted: number;
+  /** Task-macro expected user score; model failures are zero. */
+  expectedUserScore: number;
+  averageIntegrityScore: number;
+  averageSemanticScore: number;
+  /** Compatibility alias for expectedUserScore in v2 summaries. */
   averageTotalScore: number;
+  criticalMissRate: number;
+  criticalContradictionRate: number;
   maxPossibleScore: number;
   perTask: TaskStat[];
   metrics: RunMetrics;
@@ -402,6 +530,18 @@ export interface EvalRunSummary {
   judgeThinking?: ThinkingLevel;
   /** Judge spec → what `judgeThinking` put on the wire, as `thinkingTransmitted` records it. */
   judgeThinkingTransmitted?: Record<string, string>;
+  /** Independent grades requested for each answer; v2 aggregates item verdicts by majority. */
+  judgeRepeat?: number;
+  /** Legacy judge calibration result; retained when reading older runs, never used for eligibility. */
+  calibration?: {
+    anchors: number;
+    repeats: number;
+    orderingAccuracy: number;
+    weightedKappa: number;
+    scoreMae: number;
+    maxScoreStdDev: number;
+    passed: boolean;
+  };
   /** Offline dataset format and task-level content hashes, when the run used it. */
   dataset?: {
     version: string;
@@ -442,9 +582,9 @@ export interface RunCheckpoint {
   judge: string;
   thinking?: string;
   judgeThinking?: string;
+  judgeRepeat: number;
   taskIds: string[];
   repeat: number;
   taskDatasetHashes: Record<string, string>;
   results: TaskEvalResult[];
 }
-

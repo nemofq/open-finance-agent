@@ -13,6 +13,7 @@ const identity: CheckpointIdentity = {
   judge: "p/judge",
   thinking: "medium",
   judgeThinking: "high",
+  judgeRepeat: 1,
   taskIds: ["retail-01-nvda-beat-and-drop"],
   repeat: 2,
   taskDatasetHashes: { "retail-01-nvda-beat-and-drop": "abc" },

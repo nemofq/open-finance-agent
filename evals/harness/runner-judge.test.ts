@@ -17,9 +17,10 @@ vi.mock("../scoring/judge", async (original) => ({
     judged.push(input);
     judgedAt.push(thinking);
     return {
+      rubricItems: [], dimensionScores: { intent: 1, financial: 1, grounding: 1, clarity: 1 },
       intentScore: 1, intentFeedback: "x", financialScore: 1, financialFeedback: "x", groundingScore: 1, groundingFeedback: "x",
-      retailClarityScore: 1, retailClarityFeedback: "x", totalJudgeScore: 4, maxJudgeScore: 60, overallVerdict: "x",
-      judgeModel: "p/judge", promptVersion: "7",
+      retailClarityScore: 1, retailClarityFeedback: "x", totalJudgeScore: 4, maxJudgeScore: 60,
+      criticalMisses: [], criticalContradictions: [], overallVerdict: "x", judgeModel: "p/judge", promptVersion: "9",
     };
   }),
 }));
@@ -54,7 +55,7 @@ describe("threading the offline audit to the judge", () => {
       diagnostics: emptyDiagnostics(),
       offlineAudit: audit,
     } as unknown as TaskEvalResult;
-    const summary = { agents: ["p/agent"], judge: "p/judge", taskIds: [result.task.id], results: [result] } as unknown as EvalRunSummary;
+    const summary = { benchmarkVersion: BENCHMARK_VERSION, judgePromptVersion: "9", agents: ["p/agent"], judge: "p/judge", taskIds: [result.task.id], results: [result] } as unknown as EvalRunSummary;
 
     await judgeRun(summary, defaultConfig(), JUDGE);
 
@@ -82,8 +83,8 @@ function savedRun(): EvalRunSummary {
   const agents = ["p/agent", "local/Qwen/Qwen3-32B"];
   const results = agents.flatMap((agent) => [0, 1].flatMap((task) => [1, 2].map((repeat) => unjudged(agent, task, repeat))));
   return {
-    timestamp: "2026-09-20T10:02:03.456Z", benchmarkVersion: BENCHMARK_VERSION, judgePromptVersion: "7", agents, judge: "p/judge",
-    fixtureMode: "offline", policyMode: "enforce", configHash: "abc", repeat: 2,
+    timestamp: "2026-09-20T10:02:03.456Z", benchmarkVersion: BENCHMARK_VERSION, judgePromptVersion: "9", agents, judge: "p/judge", judgeRepeat: 3,
+    fixtureMode: "offline", policyMode: "enforce", configHash: "abc", repeat: 3,
     taskIds: [RETAIL_EVAL_TASKS[0].id, RETAIL_EVAL_TASKS[1].id],
     agentSummaries: agents.map((agent) => ({ agent, selfJudged: false })), results,
   } as unknown as EvalRunSummary;
@@ -141,6 +142,13 @@ describe("--judge-only", () => {
     expect(existsSync(path.join(baselineDir, "finished.json"))).toBe(true);
   });
 
+  it("does not carry a failed legacy calibration into a newly judged run", async () => {
+    const old = savedRun();
+    old.calibration = { anchors: 36, repeats: 3, orderingAccuracy: 0, weightedKappa: 0, scoreMae: 50, maxScoreStdDev: 10, passed: false };
+    const outcome = await judgeOnly({ saved: old, config: config(), outDir: dir, baselineDir: dir });
+    expect(outcome.ok && outcome.summary.calibration).toBeUndefined();
+  });
+
   it("refuses a run written before results recorded diagnostics, before judging", async () => {
     const before = judged.length;
     const old = savedRun();
@@ -154,7 +162,7 @@ describe("--judge-only", () => {
     const before = judged.length;
     const single = { ...savedRun(), repeat: 1 };
     const outcome = await judgeOnly({ saved: single, config: config(), baseline: "single", outDir: dir, baselineDir: dir });
-    expect(outcome).toMatchObject({ ok: false, error: expect.stringContaining("needs --repeat 2 or more") });
+    expect(outcome).toMatchObject({ ok: false, error: expect.stringContaining("needs --repeat 3 or more") });
     expect(judged.length).toBe(before);
   });
 });

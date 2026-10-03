@@ -13,7 +13,7 @@ export function standardDeviation(values: number[]): number {
   return Math.sqrt(variance);
 }
 
-/** Suggested tolerance for the release gate: twice the spread of repeated runs. */
+/** Historical descriptive spread; v2 release gates use paired bootstrap instead. */
 export function noiseTolerance(values: number[]): number {
   return 2 * standardDeviation(values);
 }

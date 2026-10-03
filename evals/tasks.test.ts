@@ -46,6 +46,12 @@ describe("the report-delivery task", () => {
     expect(task.requiredEvidence.some((requirement) =>
       requirement.kind === "source" && requirement.urls.some((url) => url.endsWith("/q4fy24exhibit991er.htm")))).toBe(true);
   });
+
+  it("keeps formatting preferences out of the critical delivery gate", () => {
+    const critical = task.rubricItems.find((item) => item.id === "report-delivery");
+    expect(critical?.requirement).not.toMatch(/exactly one|short chat summary/i);
+    expect(critical?.requirement).toMatch(/five required sections/i);
+  });
 });
 
 describe("the profile-aware task", () => {
@@ -93,6 +99,12 @@ describe("the figure-survival task", () => {
     const pinned = task.requiredEvidence.filter((requirement) => requirement.kind === "fact" && requirement.period === "2024-09-28");
     expect(pinned?.map((requirement) => requirement.kind === "fact" && requirement.ticker)).toEqual(["AMD", "INTC"]);
   });
+
+  it("does not make extra relevant context a critical contradiction", () => {
+    const critical = task.rubricItems.find((item) => item.id === "exact-cross-turn-figures");
+    expect(critical?.requirement).not.toMatch(/answer only/i);
+    expect(critical?.requirement).toMatch(/not a contradiction/i);
+  });
 });
 
 describe("the task cohort", () => {
@@ -101,10 +113,19 @@ describe("the task cohort", () => {
     expect(RETAIL_EVAL_TASKS.every((task) => task.asOfDate.startsWith("2024-"))).toBe(true);
   });
 
-  it("scores evidence outcomes, with weights totalling the 15 evidence points", () => {
+  it("keeps evidence-contract raw weights at 15 before v2 normalizes them onto 12 points", () => {
     for (const task of RETAIL_EVAL_TASKS) {
       expect(task.requiredEvidence.length, task.id).toBeGreaterThan(0);
       expect(task.requiredEvidence.reduce((total, requirement) => total + requirement.points, 0), task.id).toBe(15);
+    }
+  });
+
+  it("defines a 60-point semantic rubric, critical gates and 16 contract points for every task", () => {
+    for (const task of RETAIL_EVAL_TASKS) {
+      expect(task.rubricItems.reduce((total, item) => total + item.weight, 0), task.id).toBe(60);
+      expect(task.rubricItems.some((item) => item.critical), task.id).toBe(true);
+      expect(new Set(task.rubricItems.map((item) => item.id)).size, task.id).toBe(task.rubricItems.length);
+      expect(task.contracts.reduce((total, contract) => total + contract.points, 0), task.id).toBe(16);
     }
   });
 
