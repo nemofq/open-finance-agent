@@ -1,67 +1,89 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="900" height="460" viewBox="0 0 900 460" role="img" aria-labelledby="t d">
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="600" viewBox="0 0 960 600" role="img" aria-labelledby="t d">
 <title id="t">Benchmark quality against cost</title>
-<desc id="d">Total score out of 100 against the agent's average cost per run in US dollars on a log scale. GPT-6.1 Sol medium: 74.1 at $2.13; GPT-5.6 Sol medium: 71.5 at $4.46; DeepSeek V4.1 Flash high: 67.0 at $1.05; GPT-5.6 Terra medium: 63.2 at $2.15; GPT-5.6 Luna medium: 62.8 at $0.27; GPT-6 Luna medium: 57.7 at $0.07; Qwen 3.8 27B medium: 56.6 at $0.84; Qwen 3.8 27B off: 50.9 at $0.44.</desc>
-<rect width="900" height="460" fill="#ffffff"/>
+<desc id="d">Total score out of 100 against the agent's average cost per run in US dollars on a log scale. GPT-6.1 Sol medium: 74.1 at $2.13; GPT-5.6 Sol medium: 71.5 at $4.46; DeepSeek V4.1 Flash high: 67.0 at $1.05; GPT-5.6 Terra medium: 63.2 at $2.15; GPT-5.6 Luna medium: 62.8 at $0.27; GPT-6 Luna medium: 57.7 at $0.07; Qwen 3.8 27B medium: 56.6 at $0.84; Qwen 3.8 27B off: 50.9 at $0.44; Claude Opus 5.5 medium: 67.7 at $6.84; Grok 4.7 medium: 64.9 at $6.05; Gemini 3.8 Flash medium: 62.5 at $2.95; GLM 5.3 Flash high: 61.5 at $0.56; Claude Sonnet 5.5 medium: 58.3 at $3.12.</desc>
+<rect width="960" height="600" fill="#ffffff"/>
 <g font-family="system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
 <text x="64" y="30" font-size="17" font-weight="600" fill="#0b0b0b">Quality against cost</text>
 <text x="64" y="52" font-size="13" fill="#52514e">Benchmark v2 total (avg@3; bar spans the three runs) against the agent's average cost per run, log scale</text>
-<line x1="64" x2="750" y1="396" y2="396" stroke="#c3c2b7" stroke-width="1"/>
-<text x="54" y="400" font-size="12" text-anchor="end" fill="#6f6d68" style="font-variant-numeric: tabular-nums">40</text>
-<line x1="64" x2="750" y1="315.5" y2="315.5" stroke="#e1e0d9" stroke-width="1"/>
-<text x="54" y="319.5" font-size="12" text-anchor="end" fill="#6f6d68" style="font-variant-numeric: tabular-nums">50</text>
-<line x1="64" x2="750" y1="235" y2="235" stroke="#e1e0d9" stroke-width="1"/>
-<text x="54" y="239" font-size="12" text-anchor="end" fill="#6f6d68" style="font-variant-numeric: tabular-nums">60</text>
-<line x1="64" x2="750" y1="154.5" y2="154.5" stroke="#e1e0d9" stroke-width="1"/>
-<text x="54" y="158.5" font-size="12" text-anchor="end" fill="#6f6d68" style="font-variant-numeric: tabular-nums">70</text>
-<line x1="64" x2="750" y1="74" y2="74" stroke="#e1e0d9" stroke-width="1"/>
+<line x1="64" x2="790" y1="536" y2="536" stroke="#c3c2b7" stroke-width="1"/>
+<text x="54" y="540" font-size="12" text-anchor="end" fill="#6f6d68" style="font-variant-numeric: tabular-nums">40</text>
+<line x1="64" x2="790" y1="420.5" y2="420.5" stroke="#e1e0d9" stroke-width="1"/>
+<text x="54" y="424.5" font-size="12" text-anchor="end" fill="#6f6d68" style="font-variant-numeric: tabular-nums">50</text>
+<line x1="64" x2="790" y1="305" y2="305" stroke="#e1e0d9" stroke-width="1"/>
+<text x="54" y="309" font-size="12" text-anchor="end" fill="#6f6d68" style="font-variant-numeric: tabular-nums">60</text>
+<line x1="64" x2="790" y1="189.5" y2="189.5" stroke="#e1e0d9" stroke-width="1"/>
+<text x="54" y="193.5" font-size="12" text-anchor="end" fill="#6f6d68" style="font-variant-numeric: tabular-nums">70</text>
+<line x1="64" x2="790" y1="74" y2="74" stroke="#e1e0d9" stroke-width="1"/>
 <text x="54" y="78" font-size="12" text-anchor="end" fill="#6f6d68" style="font-variant-numeric: tabular-nums">80</text>
-<line x1="64" x2="64" y1="74" y2="396" stroke="#e1e0d9" stroke-width="1"/>
-<text x="64" y="416" font-size="12" text-anchor="middle" fill="#6f6d68" style="font-variant-numeric: tabular-nums">$0.05</text>
-<line x1="163.32110412117527" x2="163.32110412117527" y1="74" y2="396" stroke="#e1e0d9" stroke-width="1"/>
-<text x="163.32110412117527" y="416" font-size="12" text-anchor="middle" fill="#6f6d68" style="font-variant-numeric: tabular-nums">$0.10</text>
-<line x1="294.6164620741898" x2="294.6164620741898" y1="74" y2="396" stroke="#e1e0d9" stroke-width="1"/>
-<text x="294.6164620741898" y="416" font-size="12" text-anchor="middle" fill="#6f6d68" style="font-variant-numeric: tabular-nums">$0.25</text>
-<line x1="393.9375661953651" x2="393.9375661953651" y1="74" y2="396" stroke="#e1e0d9" stroke-width="1"/>
-<text x="393.9375661953651" y="416" font-size="12" text-anchor="middle" fill="#6f6d68" style="font-variant-numeric: tabular-nums">$0.5</text>
-<line x1="493.2586703165404" x2="493.2586703165404" y1="74" y2="396" stroke="#e1e0d9" stroke-width="1"/>
-<text x="493.2586703165404" y="416" font-size="12" text-anchor="middle" fill="#6f6d68" style="font-variant-numeric: tabular-nums">$1</text>
-<line x1="592.5797744377156" x2="592.5797744377156" y1="74" y2="396" stroke="#e1e0d9" stroke-width="1"/>
-<text x="592.5797744377156" y="416" font-size="12" text-anchor="middle" fill="#6f6d68" style="font-variant-numeric: tabular-nums">$2</text>
-<line x1="723.8751323907302" x2="723.8751323907302" y1="74" y2="396" stroke="#e1e0d9" stroke-width="1"/>
-<text x="723.8751323907302" y="416" font-size="12" text-anchor="middle" fill="#6f6d68" style="font-variant-numeric: tabular-nums">$5</text>
-<text x="407" y="442" font-size="12.5" text-anchor="middle" fill="#52514e">Avg. cost per run (USD, log scale) · lower is better</text>
-<text transform="translate(18 235) rotate(-90)" font-size="12.5" text-anchor="middle" fill="#52514e">Total (/100) · higher is better</text>
+<line x1="64" x2="64" y1="74" y2="536" stroke="#e1e0d9" stroke-width="1"/>
+<text x="64" y="556" font-size="12" text-anchor="middle" fill="#6f6d68" style="font-variant-numeric: tabular-nums">$0.05</text>
+<line x1="158.9782389903121" x2="158.9782389903121" y1="74" y2="536" stroke="#e1e0d9" stroke-width="1"/>
+<text x="158.9782389903121" y="556" font-size="12" text-anchor="middle" fill="#6f6d68" style="font-variant-numeric: tabular-nums">$0.10</text>
+<line x1="284.53264151453186" x2="284.53264151453186" y1="74" y2="536" stroke="#e1e0d9" stroke-width="1"/>
+<text x="284.53264151453186" y="556" font-size="12" text-anchor="middle" fill="#6f6d68" style="font-variant-numeric: tabular-nums">$0.25</text>
+<line x1="379.51088050484395" x2="379.51088050484395" y1="74" y2="536" stroke="#e1e0d9" stroke-width="1"/>
+<text x="379.51088050484395" y="556" font-size="12" text-anchor="middle" fill="#6f6d68" style="font-variant-numeric: tabular-nums">$0.5</text>
+<line x1="474.48911949515605" x2="474.48911949515605" y1="74" y2="536" stroke="#e1e0d9" stroke-width="1"/>
+<text x="474.48911949515605" y="556" font-size="12" text-anchor="middle" fill="#6f6d68" style="font-variant-numeric: tabular-nums">$1</text>
+<line x1="569.4673584854681" x2="569.4673584854681" y1="74" y2="536" stroke="#e1e0d9" stroke-width="1"/>
+<text x="569.4673584854681" y="556" font-size="12" text-anchor="middle" fill="#6f6d68" style="font-variant-numeric: tabular-nums">$2</text>
+<line x1="695.0217610096879" x2="695.0217610096879" y1="74" y2="536" stroke="#e1e0d9" stroke-width="1"/>
+<text x="695.0217610096879" y="556" font-size="12" text-anchor="middle" fill="#6f6d68" style="font-variant-numeric: tabular-nums">$5</text>
+<line x1="790" x2="790" y1="74" y2="536" stroke="#e1e0d9" stroke-width="1"/>
+<text x="790" y="556" font-size="12" text-anchor="middle" fill="#6f6d68" style="font-variant-numeric: tabular-nums">$10</text>
+<text x="427" y="582" font-size="12.5" text-anchor="middle" fill="#52514e">Avg. cost per run (USD, log scale) · lower is better</text>
+<text transform="translate(18 305) rotate(-90)" font-size="12.5" text-anchor="middle" fill="#52514e">Total (/100) · higher is better</text>
 <text x="74" y="92" font-size="12" fill="#6f6d68">↖ better</text>
-<line x1="601.2666804002745" x2="601.2666804002745" y1="127.73374999999999" y2="110.82875000000001" stroke="#2a78d6" stroke-width="2" stroke-linecap="round" opacity="0.45"/>
-<line x1="707.4986332458358" x2="707.4986332458358" y1="180.9308333333333" y2="119.88500000000005" stroke="#2a78d6" stroke-width="2" stroke-linecap="round" opacity="0.45"/>
-<line x1="500.24981608106145" x2="500.24981608106145" y1="184.41916666666668" y2="175.09458333333328" stroke="#2a78d6" stroke-width="2" stroke-linecap="round" opacity="0.45"/>
-<line x1="602.9426066908306" x2="602.9426066908306" y1="219.3024999999999" y2="200.98875000000004" stroke="#2a78d6" stroke-width="2" stroke-linecap="round" opacity="0.45"/>
-<line x1="305.64421461266306" x2="305.64421461266306" y1="232.04833333333326" y2="187.63916666666674" stroke="#2a78d6" stroke-width="2" stroke-linecap="round" opacity="0.45"/>
-<line x1="114.24564570566726" x2="114.24564570566726" y1="280.28125" y2="233.8595833333333" stroke="#2a78d6" stroke-width="2" stroke-linecap="round" opacity="0.45"/>
-<line x1="468.61632356171265" x2="468.61632356171265" y1="279.1408333333334" y2="249.9595833333334" stroke="#2a78d6" stroke-width="2" stroke-linecap="round" opacity="0.45"/>
-<line x1="375.945603892568" x2="375.945603892568" y1="346.35833333333335" y2="278.5370833333334" stroke="#2a78d6" stroke-width="2" stroke-linecap="round" opacity="0.45"/>
-<circle cx="601.2666804002745" cy="121.49500000000006" r="6" fill="#2a78d6" stroke="#ffffff" stroke-width="2"/>
-<circle cx="707.4986332458358" cy="142.425" r="6" fill="#2a78d6" stroke="#ffffff" stroke-width="2"/>
-<circle cx="500.24981608106145" cy="178.64999999999998" r="6" fill="#2a78d6" stroke="#ffffff" stroke-width="2"/>
-<circle cx="602.9426066908306" cy="209.23999999999998" r="6" fill="#2a78d6" stroke="#ffffff" stroke-width="2"/>
-<circle cx="305.64421461266306" cy="212.46" r="6" fill="#2a78d6" stroke="#ffffff" stroke-width="2"/>
-<circle cx="114.24564570566726" cy="253.515" r="6" fill="#2a78d6" stroke="#ffffff" stroke-width="2"/>
-<circle cx="468.61632356171265" cy="262.37" r="6" fill="#2a78d6" stroke="#ffffff" stroke-width="2"/>
-<circle cx="375.945603892568" cy="308.255" r="6" fill="#2a78d6" stroke="#ffffff" stroke-width="2"/>
-<text x="589.2666804002745" y="119.49500000000006" font-size="13" font-weight="600" text-anchor="end" fill="#0b0b0b">GPT-6.1 Sol · medium</text>
-<text x="589.2666804002745" y="135.49500000000006" font-size="12" text-anchor="end" fill="#52514e" style="font-variant-numeric: tabular-nums">74.1 · $2.13</text>
-<text x="719.4986332458358" y="140.425" font-size="13" font-weight="600" text-anchor="start" fill="#0b0b0b">GPT-5.6 Sol · medium</text>
-<text x="719.4986332458358" y="156.425" font-size="12" text-anchor="start" fill="#52514e" style="font-variant-numeric: tabular-nums">71.5 · $4.46</text>
-<text x="488.24981608106145" y="176.64999999999998" font-size="13" font-weight="600" text-anchor="end" fill="#0b0b0b">DeepSeek V4.1 Flash · high</text>
-<text x="488.24981608106145" y="192.64999999999998" font-size="12" text-anchor="end" fill="#52514e" style="font-variant-numeric: tabular-nums">67.0 · $1.05</text>
-<text x="614.9426066908306" y="207.23999999999998" font-size="13" font-weight="600" text-anchor="start" fill="#0b0b0b">GPT-5.6 Terra · medium</text>
-<text x="614.9426066908306" y="223.23999999999998" font-size="12" text-anchor="start" fill="#52514e" style="font-variant-numeric: tabular-nums">63.2 · $2.15</text>
-<text x="293.64421461266306" y="210.46" font-size="13" font-weight="600" text-anchor="end" fill="#0b0b0b">GPT-5.6 Luna · medium</text>
-<text x="293.64421461266306" y="226.46" font-size="12" text-anchor="end" fill="#52514e" style="font-variant-numeric: tabular-nums">62.8 · $0.27</text>
-<text x="126.24564570566726" y="251.515" font-size="13" font-weight="600" text-anchor="start" fill="#0b0b0b">GPT-6 Luna · medium</text>
-<text x="126.24564570566726" y="267.515" font-size="12" text-anchor="start" fill="#52514e" style="font-variant-numeric: tabular-nums">57.7 · $0.07</text>
-<text x="480.61632356171265" y="260.37" font-size="13" font-weight="600" text-anchor="start" fill="#0b0b0b">Qwen 3.8 27B · medium</text>
-<text x="480.61632356171265" y="276.37" font-size="12" text-anchor="start" fill="#52514e" style="font-variant-numeric: tabular-nums">56.6 · $0.84</text>
-<text x="387.945603892568" y="306.255" font-size="13" font-weight="600" text-anchor="start" fill="#0b0b0b">Qwen 3.8 27B · off</text>
-<text x="387.945603892568" y="322.255" font-size="12" text-anchor="start" fill="#52514e" style="font-variant-numeric: tabular-nums">50.9 · $0.44</text>
+<line x1="577.7744251245146" x2="577.7744251245146" y1="151.09624999999994" y2="126.84125000000006" stroke="#2a78d6" stroke-width="2" stroke-linecap="round" opacity="0.45"/>
+<line x1="679.3613325099124" x2="679.3613325099124" y1="227.42249999999996" y2="139.83500000000004" stroke="#2a78d6" stroke-width="2" stroke-linecap="round" opacity="0.45"/>
+<line x1="481.1745739019927" x2="481.1745739019927" y1="232.42750000000007" y2="219.04874999999993" stroke="#2a78d6" stroke-width="2" stroke-linecap="round" opacity="0.45"/>
+<line x1="579.377070696803" x2="579.377070696803" y1="282.47749999999985" y2="256.2012500000001" stroke="#2a78d6" stroke-width="2" stroke-linecap="round" opacity="0.45"/>
+<line x1="295.07820003799804" x2="295.07820003799804" y1="300.7649999999999" y2="237.04750000000007" stroke="#2a78d6" stroke-width="2" stroke-linecap="round" opacity="0.45"/>
+<line x1="112.04862962692306" x2="112.04862962692306" y1="369.96875" y2="303.36375" stroke="#2a78d6" stroke-width="2" stroke-linecap="round" opacity="0.45"/>
+<line x1="450.92427172114526" x2="450.92427172114526" y1="368.3325000000001" y2="326.4637500000001" stroke="#2a78d6" stroke-width="2" stroke-linecap="round" opacity="0.45"/>
+<line x1="362.3056257846095" x2="362.3056257846095" y1="464.77500000000003" y2="367.46625000000006" stroke="#2a78d6" stroke-width="2" stroke-linecap="round" opacity="0.45"/>
+<line x1="737.9584054198125" x2="737.9584054198125" y1="233.58249999999998" y2="204.61125000000004" stroke="#2a78d6" stroke-width="2" stroke-linecap="round" opacity="0.45"/>
+<line x1="721.1414460911508" x2="721.1414460911508" y1="261.78375000000017" y2="240.99374999999992" stroke="#2a78d6" stroke-width="2" stroke-linecap="round" opacity="0.45"/>
+<line x1="622.7230774369872" x2="622.7230774369872" y1="307.59875" y2="250.42625000000027" stroke="#2a78d6" stroke-width="2" stroke-linecap="round" opacity="0.45"/>
+<line x1="395.03970217422034" x2="395.03970217422034" y1="292.87249999999995" y2="281.13000000000005" stroke="#2a78d6" stroke-width="2" stroke-linecap="round" opacity="0.45"/>
+<line x1="630.4002705594286" x2="630.4002705594286" y1="339.07249999999993" y2="302.2087499999999" stroke="#2a78d6" stroke-width="2" stroke-linecap="round" opacity="0.45"/>
+<circle cx="577.7744251245146" cy="142.1450000000001" r="6" fill="#2a78d6" stroke="#ffffff" stroke-width="2"/>
+<circle cx="679.3613325099124" cy="172.175" r="6" fill="#2a78d6" stroke="#ffffff" stroke-width="2"/>
+<circle cx="481.1745739019927" cy="224.14999999999998" r="6" fill="#2a78d6" stroke="#ffffff" stroke-width="2"/>
+<circle cx="579.377070696803" cy="268.03999999999996" r="6" fill="#2a78d6" stroke="#ffffff" stroke-width="2"/>
+<circle cx="295.07820003799804" cy="272.66" r="6" fill="#2a78d6" stroke="#ffffff" stroke-width="2"/>
+<circle cx="112.04862962692306" cy="331.56499999999994" r="6" fill="#2a78d6" stroke="#ffffff" stroke-width="2"/>
+<circle cx="450.92427172114526" cy="344.27" r="6" fill="#2a78d6" stroke="#ffffff" stroke-width="2"/>
+<circle cx="362.3056257846095" cy="410.105" r="6" fill="#2a78d6" stroke="#ffffff" stroke-width="2"/>
+<circle cx="737.9584054198125" cy="216.06499999999994" r="6" fill="#2a78d6" stroke="#ffffff" stroke-width="2"/>
+<circle cx="721.1414460911508" cy="248.40499999999992" r="6" fill="#2a78d6" stroke="#ffffff" stroke-width="2"/>
+<circle cx="622.7230774369872" cy="276.125" r="6" fill="#2a78d6" stroke="#ffffff" stroke-width="2"/>
+<circle cx="395.03970217422034" cy="287.675" r="6" fill="#2a78d6" stroke="#ffffff" stroke-width="2"/>
+<circle cx="630.4002705594286" cy="324.63500000000005" r="6" fill="#2a78d6" stroke="#ffffff" stroke-width="2"/>
+<text x="565.7744251245146" y="140.1450000000001" font-size="13" font-weight="600" text-anchor="end" fill="#0b0b0b">GPT-6.1 Sol · medium</text>
+<text x="565.7744251245146" y="156.1450000000001" font-size="12" text-anchor="end" fill="#52514e" style="font-variant-numeric: tabular-nums">74.1 · $2.13</text>
+<text x="691.3613325099124" y="170.175" font-size="13" font-weight="600" text-anchor="start" fill="#0b0b0b">GPT-5.6 Sol · medium</text>
+<text x="691.3613325099124" y="186.175" font-size="12" text-anchor="start" fill="#52514e" style="font-variant-numeric: tabular-nums">71.5 · $4.46</text>
+<text x="469.1745739019927" y="222.14999999999998" font-size="13" font-weight="600" text-anchor="end" fill="#0b0b0b">DeepSeek V4.1 Flash · high</text>
+<text x="469.1745739019927" y="238.14999999999998" font-size="12" text-anchor="end" fill="#52514e" style="font-variant-numeric: tabular-nums">67.0 · $1.05</text>
+<text x="567.377070696803" y="256.03999999999996" font-size="13" font-weight="600" text-anchor="end" fill="#0b0b0b">GPT-5.6 Terra · medium</text>
+<text x="567.377070696803" y="272.03999999999996" font-size="12" text-anchor="end" fill="#52514e" style="font-variant-numeric: tabular-nums">63.2 · $2.15</text>
+<text x="283.07820003799804" y="270.66" font-size="13" font-weight="600" text-anchor="end" fill="#0b0b0b">GPT-5.6 Luna · medium</text>
+<text x="283.07820003799804" y="286.66" font-size="12" text-anchor="end" fill="#52514e" style="font-variant-numeric: tabular-nums">62.8 · $0.27</text>
+<text x="124.04862962692306" y="329.56499999999994" font-size="13" font-weight="600" text-anchor="start" fill="#0b0b0b">GPT-6 Luna · medium</text>
+<text x="124.04862962692306" y="345.56499999999994" font-size="12" text-anchor="start" fill="#52514e" style="font-variant-numeric: tabular-nums">57.7 · $0.07</text>
+<text x="462.92427172114526" y="342.27" font-size="13" font-weight="600" text-anchor="start" fill="#0b0b0b">Qwen 3.8 27B · medium</text>
+<text x="462.92427172114526" y="358.27" font-size="12" text-anchor="start" fill="#52514e" style="font-variant-numeric: tabular-nums">56.6 · $0.84</text>
+<text x="374.3056257846095" y="408.105" font-size="13" font-weight="600" text-anchor="start" fill="#0b0b0b">Qwen 3.8 27B · off</text>
+<text x="374.3056257846095" y="424.105" font-size="12" text-anchor="start" fill="#52514e" style="font-variant-numeric: tabular-nums">50.9 · $0.44</text>
+<text x="749.9584054198125" y="206.06499999999994" font-size="13" font-weight="600" text-anchor="start" fill="#0b0b0b">Claude Opus 5.5 · medium</text>
+<text x="749.9584054198125" y="222.06499999999994" font-size="12" text-anchor="start" fill="#52514e" style="font-variant-numeric: tabular-nums">67.7 · $6.84</text>
+<text x="733.1414460911508" y="252.40499999999992" font-size="13" font-weight="600" text-anchor="start" fill="#0b0b0b">Grok 4.7 · medium</text>
+<text x="733.1414460911508" y="268.4049999999999" font-size="12" text-anchor="start" fill="#52514e" style="font-variant-numeric: tabular-nums">64.9 · $6.05</text>
+<text x="634.7230774369872" y="288.125" font-size="13" font-weight="600" text-anchor="start" fill="#0b0b0b">Gemini 3.8 Flash · medium</text>
+<text x="634.7230774369872" y="304.125" font-size="12" text-anchor="start" fill="#52514e" style="font-variant-numeric: tabular-nums">62.5 · $2.95</text>
+<text x="407.03970217422034" y="289.675" font-size="13" font-weight="600" text-anchor="start" fill="#0b0b0b">GLM 5.3 Flash · high</text>
+<text x="407.03970217422034" y="305.675" font-size="12" text-anchor="start" fill="#52514e" style="font-variant-numeric: tabular-nums">61.5 · $0.56</text>
+<text x="642.4002705594286" y="322.63500000000005" font-size="13" font-weight="600" text-anchor="start" fill="#0b0b0b">Claude Sonnet 5.5 · medium</text>
+<text x="642.4002705594286" y="338.63500000000005" font-size="12" text-anchor="start" fill="#52514e" style="font-variant-numeric: tabular-nums">58.3 · $3.12</text>
 </g></svg>
