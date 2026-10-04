@@ -279,7 +279,6 @@ Each column comes from the agent's entry in `agentSummaries` of the run or basel
 | Total (/100) | `expectedUserScore` |
 | Integrity (/40) | `averageIntegrityScore` |
 | Judged (/60) | `averageSemanticScore` |
-| Completed | `completionRate` |
 | Avg. cost per run | each of `results[].metrics.tokens` at the provider's list prices, summed, ÷ repeats; see below |
 | Avg. run time | `metrics.latencyMs` × tasks; the summary's `Mean latency` row × tasks |
 | Avg. output tokens per run | `metrics.tokens.output` ÷ repeats |
@@ -312,7 +311,8 @@ reports, so a provider that reports little of its reasoning also shows a low cos
 
 The quality-against-cost chart above the table (`docs/images/benchmark-quality-cost-light.svg` and
 `-dark.svg`) plots each row's Total against its average cost per run, with a bar spanning its runs'
-totals, so it is redrawn with every row added.
+totals and a dotted Pareto line joining the rows no other row beats on both, so it is redrawn with
+every row added.
 
 ### Calibrating a policy rule
 
