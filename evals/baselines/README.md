@@ -9,8 +9,8 @@ is added, in the same order as the README's table.
 All rows are benchmark v2: judge prompt v9 with three grades per answer, policy enforced, offline
 dataset, twelve tasks × 3 repeats. The GPT, DeepSeek and Qwen rows were rescored with `--rescore`
 from their saved runs when v2 landed, so each agent answer, run time and token count is the original
-run's. The Claude, Grok, Gemini and GLM rows were run on v2 through a custom OpenAI-compatible
-endpoint. The commit below is the run's. Benchmark v1 scores are not comparable and are kept only in
+run's. The Claude, Grok, Gemini, GLM and Kimi rows were run on v2 through a custom
+OpenAI-compatible endpoint. The commit below is the run's. Benchmark v1 scores are not comparable and are kept only in
 git history.
 
 Each per-task value is over the task's three runs, from the baseline's `results`:
@@ -186,6 +186,40 @@ re-running the agent.
 
 Grok passed malformed tool arguments 143 times across the 36 runs; each was rejected and retried,
 which adds to its run time rather than costing points directly.
+
+## Kimi K3 avg@3
+
+[`2026-10-06-custom-kimi-k3-openai-codex-gpt-6-astra.json`](2026-10-06-custom-kimi-k3-openai-codex-gpt-6-astra.json)
+
+- **Agent:** `custom-bsxs/kimi-k3`, thinking high, through a custom OpenAI-compatible endpoint
+- **Judge:** `openai-codex/gpt-6-astra`, thinking medium, three grades per answer
+- **Commit:** `73badcf`
+- **Scores:** total 63.5 · integrity 29.0 · judged 34.7 · completed 100.0% · mean per-task σ 5.31
+- **Critical caps:** 7 of 36 answers (contradicted `roc-not-inferred` 3, `time-and-motive` 2; missed
+  `life-savings-guardrail` 1, `report-delivery` 1)
+- **Diagnostics:** tool argument errors 100 · fallback reports 2 · unverified report figures 198 ·
+  repaired 16
+- **Cost:** $13.54 per run · per million tokens: input $3.00, cache read $0.30, cache write $3.00,
+  output $15.00 · Kimi API list price, 2026-10-06
+
+| Task | Evidence | Figures | Contracts | Intent | Financial | Grounding | Clarity | Total (σ) | Capped | Run time | Output tokens |
+| :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| `retail-01-nvda-beat-and-drop` | 9.9 | 11.6 | 0.0 | 15.0 | 10.0 | 7.5 | 5.0 | 59.0 (3.1) | 0 | 283 s | 9,767 |
+| `retail-02-nike-moat-erosion` | 12.0 | 10.9 | 5.3 | 10.0 | 10.0 | 7.5 | 5.0 | 60.7 (6.5) | 0 | 485 s | 18,458 |
+| `retail-03-nuclear-thematic-purity` | 12.0 | 11.2 | 16.0 | 15.0 | 10.0 | 7.5 | 5.0 | 76.7 (0.4) | 0 | 326 s | 11,246 |
+| `retail-04-dividend-yield-trap` | 10.1 | 10.9 | 0.0 | 7.5 | 10.0 | 0.0 | 5.0 | 43.5 (2.1) | 3 | 217 s | 7,422 |
+| `retail-05-intel-value-trap` | 8.8 | 11.1 | 0.0 | 15.0 | 10.0 | 7.5 | 8.3 | 60.8 (2.2) | 1 | 383 s | 12,384 |
+| `retail-06-mstr-proxy-leverage` | 12.0 | 9.2 | 10.7 | 10.0 | 10.0 | 7.5 | 5.0 | 64.4 (10.3) | 0 | 458 s | 14,204 |
+| `retail-09-narrative-factcheck-apple` | 8.0 | 11.3 | 0.0 | 10.0 | 3.3 | 7.5 | 6.7 | 44.7 (9.5) | 2 | 355 s | 12,277 |
+| `retail-10-smci-accounting-red-flag` | 9.3 | 10.5 | 10.7 | 15.0 | 16.7 | 15.0 | 6.7 | 83.9 (1.4) | 0 | 222 s | 7,795 |
+| `retail-11-nike-earnings-review-report` | 12.0 | 11.1 | 10.7 | 7.5 | 10.0 | 7.5 | 5.0 | 63.7 (7.2) | 1 | 349 s | 12,739 |
+| `retail-12-concentration-profile-fit` | 10.1 | 10.4 | 2.7 | 15.0 | 13.3 | 7.5 | 5.0 | 64.0 (8.5) | 0 | 99 s | 3,975 |
+| `retail-13-semis-figure-survival` | 12.0 | 11.8 | 16.0 | 10.0 | 10.0 | 7.5 | 8.3 | 75.6 (5.1) | 0 | 183 s | 7,629 |
+| `retail-14-apple-pre-open-timing` | 12.0 | 12.0 | 16.0 | 7.5 | 10.0 | 2.5 | 5.0 | 65.0 (7.4) | 0 | 265 s | 10,479 |
+
+Only 19% of Kimi's input was read from the cache on this route, so most input is billed at the
+full $3.00 input price; that makes it the costliest row per run. Two runs, one each of MSTR and the
+Nike report, used up the 32-call turn budget and ended with a fallback report.
 
 ## GPT-5.6 Terra avg@3
 
