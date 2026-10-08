@@ -2,6 +2,7 @@ import { randomUUID } from "node:crypto";
 import { readdir, readFile, rm } from "node:fs/promises";
 import path from "node:path";
 import { isMissingFile, writeJsonFile } from "@/lib/atomic-write";
+import { currentModelRef } from "@/lib/config/legacy-providers";
 import { ensureDataDirs, scheduledTaskRunsDir, scheduledTasksDir } from "@/lib/paths";
 import { errorMessage, UUID } from "@/lib/utils";
 import { advanceSchedule, initialNextRun, normalizeSchedule } from "./schedule";
@@ -37,7 +38,11 @@ export async function createScheduledTask(input: TaskInput & { now?: Date }): Pr
 
 export async function getScheduledTask(id: string): Promise<ScheduledTask | null> {
   try {
-    return JSON.parse(await readFile(taskPath(id), "utf8")) as ScheduledTask;
+    const task = JSON.parse(await readFile(taskPath(id), "utf8")) as ScheduledTask;
+    // A standalone task saved before a pi provider rename resolves to the provider's current id.
+    return task.destination?.type === "standalone"
+      ? { ...task, destination: { ...task.destination, model: currentModelRef(task.destination.model) } }
+      : task;
   } catch (error) {
     if (isMissingFile(error)) return null;
     throw error;

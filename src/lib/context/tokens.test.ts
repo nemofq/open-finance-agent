@@ -4,6 +4,10 @@ import type { StoredAttachment, StoredImage } from "@/lib/attachments/types";
 import { estimateMessages, extraTokens, isCustomMessage, messageTokens, textTokens, tokenChars } from "./tokens";
 import { assistant, user } from "./testing";
 
+/** pi's estimate of a message's characters, at its 3.5 to a token; an image counts as 4,800. */
+const piTokens = (chars: number) => Math.ceil(chars / 3.5);
+const PI_IMAGE_CHARS = 4_800;
+
 const image = (name: string): StoredImage => ({ type: "image", data: "", mimeType: "image/png", attachment: name, bytes: 4096 });
 
 const skill = (prompt: string, images?: StoredImage[], documents?: StoredAttachment[]): AgentMessage => ({
@@ -34,14 +38,14 @@ const withDocuments = (text: string, documents: StoredAttachment[]): AgentMessag
 
 describe("messageTokens", () => {
   it("counts the text a custom message sends to the model", () => {
-    expect(messageTokens(skill("a".repeat(400)))).toBe(100);
+    expect(messageTokens(skill("a".repeat(400)))).toBe(piTokens(400));
     expect(messageTokens({ role: "compaction", summary: "b".repeat(40), timestamp: 1 } as AgentMessage)).toBe(10);
   });
 
   it("charges only what the model is sent: an open, enforced follow-up, and no flag or superseded draft", () => {
     const check = (kind: "flag" | "follow_up", resolved = false): AgentMessage => ({ role: "check", timestamp: 1,
       check: { id: "chk_1", rule: "P8", kind, reason: "r".repeat(400), text: "t".repeat(40), stage: "before_stop", mode: "enforce", enforced: true, timestamp: 1, resolved } });
-    expect(messageTokens(check("follow_up"))).toBe(10);
+    expect(messageTokens(check("follow_up"))).toBe(piTokens(40));
     expect(messageTokens(check("follow_up", true))).toBe(0);
     expect(messageTokens(check("flag"))).toBe(0);
     expect(messageTokens({ ...assistant({ text: "a".repeat(400) }), superseded: true })).toBe(0);
@@ -49,9 +53,9 @@ describe("messageTokens", () => {
 
   it("charges a skill turn for its images, which pi's estimator cannot see", () => {
     const prompt = "a".repeat(400);
-    // pi's own per-image price is 4,800 characters, so 1,200 tokens apiece.
-    expect(messageTokens(skill(prompt, [image("x.png")]))).toBe(100 + 1_200);
-    expect(messageTokens(skill(prompt, [image("x.png"), image("y.png")]))).toBe(100 + 2_400);
+    // pi prices an image at 4,800 characters and divides a message's characters once, text and images together.
+    expect(messageTokens(skill(prompt, [image("x.png")]))).toBe(piTokens(400 + PI_IMAGE_CHARS));
+    expect(messageTokens(skill(prompt, [image("x.png"), image("y.png")]))).toBe(piTokens(400 + 2 * PI_IMAGE_CHARS));
   });
 
   it("leaves a message the estimator already understands to pi", () => {
@@ -61,7 +65,7 @@ describe("messageTokens", () => {
   it("charges a message for the documents beside it, which pi has no block for", () => {
     const plain = messageTokens(withDocuments("read this", []));
     expect(messageTokens(withDocuments("read this", [document(2_000)]))).toBe(plain + 2_000);
-    expect(messageTokens(skill("a".repeat(400), undefined, [document(2_000)]))).toBe(100 + 2_000);
+    expect(messageTokens(skill("a".repeat(400), undefined, [document(2_000)]))).toBe(piTokens(400) + 2_000);
   });
 
   it("charges no more than could ever be inlined, so one huge file does not compact the chat", () => {

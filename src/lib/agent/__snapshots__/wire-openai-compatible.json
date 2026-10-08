@@ -1149,6 +1149,7 @@
         "timestamp": "<clock>",
         "responseId": "chatcmpl-1",
         "rawStopReason": "tool_calls",
+        "durationMs": "<clock>",
         "execution": {
           "phase": "analysis",
           "startedAt": "<clock>",
@@ -1171,6 +1172,7 @@
         ],
         "details": {},
         "isError": true,
+        "durationMs": "<clock>",
         "timestamp": "<clock>"
       },
       {
@@ -1203,6 +1205,7 @@
         "timestamp": "<clock>",
         "responseId": "chatcmpl-1",
         "rawStopReason": "stop",
+        "durationMs": "<clock>",
         "execution": {
           "phase": "analysis",
           "startedAt": "<clock>",
@@ -1263,6 +1266,7 @@
         "timestamp": "<clock>",
         "responseId": "chatcmpl-1",
         "rawStopReason": "stop",
+        "durationMs": "<clock>",
         "execution": {
           "phase": "analysis",
           "startedAt": "<clock>",
@@ -1313,6 +1317,7 @@
         "timestamp": "<clock>",
         "responseId": "chatcmpl-1",
         "rawStopReason": "stop",
+        "durationMs": "<clock>",
         "execution": {
           "phase": "analysis",
           "startedAt": "<clock>",

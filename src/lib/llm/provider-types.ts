@@ -687,7 +687,7 @@ export const llmProviderTypeTable = {
       ],
     },
   },
-  "azure-openai-responses": {
+  azure: {
     name: "Azure OpenAI",
     description: "OpenAI models deployed in your Azure resource, billed by Azure.",
     keyHelp: {

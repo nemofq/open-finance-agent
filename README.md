@@ -139,7 +139,7 @@ total at 69 or 49.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/images/benchmark-quality-cost-dark.svg" />
-  <img src="docs/images/benchmark-quality-cost-light.svg" alt="Scatter of total benchmark score against the agent's average cost per run, log scale: GPT-6.1 Sol medium 74.1 at $2.13, GPT-5.6 Sol medium 71.5 at $4.46, Claude Opus 5.5 medium 67.7 at $6.84, DeepSeek V4.1 Flash high 67.0 at $1.05, Grok 4.7 medium 64.9 at $6.05, Kimi K3 high 63.5 at $13.54, GPT-5.6 Terra medium 63.2 at $2.15, GPT-5.6 Luna medium 62.8 at $0.27, Gemini 3.8 Flash medium 62.5 at $2.95, GLM 5.3 Flash high 61.5 at $0.56, Claude Sonnet 5.5 medium 58.3 at $3.12, GPT-6 Luna medium 57.7 at $0.07, Qwen 3.8 27B medium 56.6 at $0.84, Qwen 3.8 27B off 50.9 at $0.44; a dotted Pareto line joins GPT-6 Luna, GPT-5.6 Luna, DeepSeek V4.1 Flash and GPT-6.1 Sol" width="100%" />
+  <img src="docs/images/benchmark-quality-cost-light.svg" alt="Scatter of total benchmark score against the agent's average cost per run, log scale: GPT-6.1 Sol medium 74.1 at $2.13, GPT-5.6 Sol medium 71.5 at $4.46, Claude Opus 5.5 medium 67.7 at $6.84, DeepSeek V4.1 Flash high 67.0 at $1.05, Grok 4.7 medium 64.9 at $6.05, Kimi K3 high 63.5 at $13.54, GPT-5.6 Terra medium 63.2 at $2.15, GPT-5.6 Luna medium 62.8 at $0.27, Gemini 3.8 Flash medium 62.5 at $2.95, GLM 5.3 Flash high 61.5 at $0.56, Claude Sonnet 5.5 medium 58.3 at $3.12, Claude Haiku 5.5 medium 58.2 at $0.18, GPT-6 Luna medium 57.7 at $0.07, Qwen 3.8 27B medium 56.6 at $0.84, Qwen 3.8 27B off 50.9 at $0.44; a dotted Pareto line joins GPT-6 Luna, Claude Haiku 5.5, GPT-5.6 Luna, DeepSeek V4.1 Flash and GPT-6.1 Sol" width="100%" />
 </picture>
 
 | Model | Thinking effort | Judge model | Total (/100) ↑ | Integrity (/40) ↑ | Judged (/60) ↑ | Avg. cost per run ↓ | Avg. run time | Avg. output tokens per run | Avg. tool calls per run |
@@ -155,6 +155,7 @@ total at 69 or 49.
 | Gemini 3.8 Flash avg@3 | Medium | GPT-6 Astra, medium | 62.5 | 29.4 | 34.3 | $2.95 | 1,889 s | 157,249 | 344 |
 | GLM 5.3 Flash avg@3 | High | GPT-6 Astra, medium | 61.5 | 27.1 | 35.3 | $0.56 | 4,168 s | 238,929 | 313 |
 | Claude Sonnet 5.5 avg@3 | Medium | GPT-6 Astra, medium | 58.3 | 25.2 | 33.4 | $3.12 | 573 s | 62,227 | 113 |
+| Claude Haiku 5.5 avg@3 | Medium | GPT-6 Astra, medium | 58.2 | 28.0 | 31.6 | $0.18 | 682 s | 132,425 | 172 |
 | GPT-6 Luna avg@3 | Medium | GPT-6 Astra, medium | 57.7 | 25.3 | 33.0 | $0.07 | 554 s | 20,268 | 149 |
 | Qwen 3.8 27B avg@3 | Medium | GPT-6 Astra, medium | 56.6 | 27.3 | 31.0 | $0.84 | 1,685 s | 239,026 | 202 |
 | Qwen 3.8 27B avg@3 | Off | GPT-6 Astra, medium | 50.9 | 25.6 | 28.8 | $0.44 | 835 s | 100,714 | 216 |
@@ -166,15 +167,16 @@ answers only. Every run completed except two of Qwen 3.8 27B off's 36, which is 
 below what its Integrity and Judged suggest. In the chart, the dotted Pareto line joins the rows no
 other row beats on both cost and Total. The GPT, DeepSeek and Qwen rows were rescored from their
 saved runs when v2 landed, so the agents' answers, run time, tokens and cost are those of the
-original runs; the Claude, Grok, Gemini, GLM and Kimi rows were run on v2 through a custom
-OpenAI-compatible endpoint. v1 scores are not comparable. Run time counts the model's turns, not
-judging. Cost is the agent's, not the judge's, from the tokens reported, at the provider's list
-prices on 2026-10-01 or, for the custom-endpoint rows, each model maker's official API price on the
-day each row was added. GPT-5.6 Sol's uses OpenAI's promotional price, offered through at least
-2026-11-21, and Gemini 3.8 Flash's Google's introductory price, which doubles on 2027-01-01. Each
-row is a committed baseline, with its per-task scores and the prices used in
-[evals/baselines/README.md](evals/baselines/README.md), and the tasks, the scoring, how cost is
-calculated and how to reproduce a run are in [evals/README.md](evals/README.md).
+original runs; the Claude Opus and Sonnet, Grok, Gemini, GLM and Kimi rows were run on v2 through a
+custom OpenAI-compatible endpoint, and Claude Haiku 5.5 through Anthropic's API. v1 scores are not
+comparable. Run time counts the model's turns, not judging. Cost is the agent's, not the judge's,
+from the tokens reported, at the provider's list prices on 2026-10-01 or, for rows added later, each
+model maker's official API price on the day the row was added. GPT-5.6 Sol's uses OpenAI's
+promotional price, offered through at least 2026-11-21, and Gemini 3.8 Flash's Google's introductory
+price, which doubles on 2027-01-01. Each row is a committed baseline, with its per-task scores and
+the prices used in [evals/baselines/README.md](evals/baselines/README.md), and the tasks, the
+scoring, how cost is calculated and how to reproduce a run are in
+[evals/README.md](evals/README.md).
 
 ## Features
 

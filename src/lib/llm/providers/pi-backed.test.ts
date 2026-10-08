@@ -128,8 +128,8 @@ describe("toPiProvider with setup fields", () => {
 
   it("pins what pi would otherwise read from the environment, and expands a home path", async () => {
     const azure = await resolve({
-      id: "azure-openai-responses",
-      type: "azure-openai-responses",
+      id: "azure",
+      type: "azure",
       name: "Azure OpenAI",
       apiKey: "azure-key",
       settings: { AZURE_OPENAI_BASE_URL: "https://mine.openai.azure.com" },
@@ -168,12 +168,12 @@ describe("toPiProvider with setup fields", () => {
     const fetchMock = vi.fn();
     vi.stubGlobal("fetch", fetchMock);
     const config = {
-      id: "azure-openai-responses",
-      type: "azure-openai-responses",
+      id: "azure",
+      type: "azure",
       name: "Azure OpenAI",
       apiKey: "azure-key",
     } as const;
-    const definition = piBackedDefinitions["azure-openai-responses"];
+    const definition = piBackedDefinitions.azure;
     expect(await definition.validate(config, draftModels(config))).toEqual({ ok: false, error: "Add the endpoint" });
     expect(fetchMock).not.toHaveBeenCalled();
   });

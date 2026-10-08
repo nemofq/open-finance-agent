@@ -2,6 +2,7 @@ import { randomUUID } from "node:crypto";
 import { readdir, readFile, rm, stat } from "node:fs/promises";
 import path from "node:path";
 import { writeJsonFile } from "@/lib/atomic-write";
+import { currentModelRef } from "@/lib/config/legacy-providers";
 import type { ModelRef } from "@/lib/config/schema";
 import { ensureDataDirs, sessionDir, sessionsDir } from "@/lib/paths";
 import { processSingleton } from "@/lib/process-state";
@@ -49,7 +50,9 @@ export async function createSession({
 
 export async function getSession(id: string): Promise<SessionFile | null> {
   try {
-    return JSON.parse(await readFile(sessionPath(id), "utf8")) as SessionFile;
+    const session = JSON.parse(await readFile(sessionPath(id), "utf8")) as SessionFile;
+    // A chat saved before a pi provider rename resolves to the provider's current id.
+    return session.model ? { ...session, model: currentModelRef(session.model) } : session;
   } catch {
     return null;
   }

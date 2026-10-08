@@ -2,6 +2,7 @@ import { readFileSync } from "node:fs";
 import { isMissingFile, writeFileAtomicSync } from "@/lib/atomic-write";
 import { configPath, ensureDataDirs } from "@/lib/paths";
 import { deepMerge, isRecord } from "@/lib/utils";
+import { renameLegacyProviders } from "./legacy-providers";
 import { type AppConfig, appConfigSchema, CONFIG_VERSION, defaultConfig } from "./schema";
 
 /**
@@ -36,7 +37,7 @@ export function readConfig(): AppConfig {
     throw new Error(`${configPath()} is not valid JSON. Fix the file or move it aside and restart to create a new one.`);
   }
   checkVersion(onDisk);
-  return appConfigSchema.parse(deepMerge(defaultConfig(), onDisk));
+  return appConfigSchema.parse(deepMerge(defaultConfig(), renameLegacyProviders(onDisk)));
 }
 
 /** Validate and write config.json atomically with owner-only permissions. */

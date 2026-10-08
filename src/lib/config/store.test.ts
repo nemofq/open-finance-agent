@@ -34,6 +34,28 @@ describe("readConfig", () => {
     expect(readFileSync(configPath(), "utf8")).toBe(onDisk);
   });
 
+  it("reads an Azure provider saved under pi's old id as the renamed one", () => {
+    const azure = {
+      id: "azure-openai-responses",
+      type: "azure-openai-responses",
+      name: "Azure OpenAI",
+      apiKey: "azure-key",
+      settings: { AZURE_OPENAI_BASE_URL: "https://mine.openai.azure.com" },
+    };
+    const onDisk = JSON.stringify({
+      version: 3,
+      llm: { providers: [azure], defaultModel: { provider: "azure-openai-responses", model: "gpt-5.6-sol" }, thinkingLevel: "medium" },
+    });
+    writeFileSync(configPath(), onDisk);
+    const cfg = readConfig();
+    expect(cfg.llm.providers).toEqual([expect.objectContaining({ id: "azure", type: "azure", apiKey: "azure-key" })]);
+    expect(cfg.llm.defaultModel).toEqual({ provider: "azure", model: "gpt-5.6-sol" });
+    // The file keeps the old id until the next save writes the new one.
+    expect(readFileSync(configPath(), "utf8")).toBe(onDisk);
+    writeConfig(cfg);
+    expect(JSON.parse(readFileSync(configPath(), "utf8")).llm.providers[0].id).toBe("azure");
+  });
+
   it("refuses a config from an older release and leaves the file alone", () => {
     const v1 = JSON.stringify({ version: 1, llm: { provider: "openrouter", apiKey: "sk-or-1", defaultModel: "a/b" } });
     const v2 = JSON.stringify({ version: 2, llm: { providers: [], defaultModel: null, thinkingLevel: "off" } });
