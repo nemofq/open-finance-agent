@@ -5,13 +5,13 @@ import { MAX_INLINE_TOKENS } from "@/lib/attachments/budget";
 import type { StoredAttachment } from "@/lib/attachments/types";
 
 /**
- * Token arithmetic for the context layers. Messages are estimated by pi's own estimator, which
- * counts 3.5 characters to a token from pi-ai 1.0. The app's own heuristic below stays at four:
- * it sizes the tool-result views, stubs and serialized history the model reads, and moving it
- * would change what every agent sees. Align it with pi's only alongside a benchmark run.
+ * Token arithmetic for the context layers. Everything here uses pi's own heuristic, 3.5
+ * characters to a token from pi-ai 1.0, so our budgets and its estimates agree. It also sizes the
+ * tool-result views, stubs and serialized history the model reads, so changing it changes what
+ * every agent sees: pair any change with a benchmark comparison.
  */
 
-const CHARS_PER_TOKEN = 4;
+const CHARS_PER_TOKEN = 3.5;
 
 /**
  * What the documents on a message are worth. They sit beside the content rather than in it — pi

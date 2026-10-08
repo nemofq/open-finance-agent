@@ -52,6 +52,20 @@ describe("compactToolResult", () => {
     expect(textTokens(out)).toBeLessThanOrEqual(200);
   });
 
+  it("drops the oldest of the recent rows, never the latest, when even they do not all fit", () => {
+    const table = priceTable(60);
+    const body = table.rows.map((row) => row.join(",")).join("\n");
+    const out = view(`${TAG}\n${body}`, budgetOf(120), entry("E12", { table, summary: "$NVDA daily prices" }));
+    const shown = Number(/Most recent (\d+) rows:/.exec(out)?.[1]);
+
+    expect(shown).toBeGreaterThan(0);
+    expect(shown).toBeLessThan(20);
+    expect(out).toContain("2026-03-04 | 159 | 159.5");
+    // The first of the twenty recent rows is the first to go.
+    expect(out).not.toContain("2026-02-13 | 140 |");
+    expect(textTokens(out)).toBeLessThanOrEqual(120);
+  });
+
   it("keeps the cross-check lines under the tag, not just the tag", () => {
     const header = `${TAG}\nCONFLICT: revenue FY26 Q2 — E3 reports $30.0B vs $31.0B here`;
     const out = view(`${header}\n\n${"filler ".repeat(300)}`, budgetOf(80), entry("E12"));

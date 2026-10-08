@@ -140,7 +140,8 @@ function seriesView(table: EvidenceTable, limit: number, entry?: EvidenceEntry):
   const recent = ascending ? rows.slice(-SERIES_ROWS) : rows.slice(0, SERIES_ROWS);
   const hint = entry ? `full series in ${entry.id} (evidence_get)` : "full series omitted";
   const spent = textTokens([...lines, `Most recent ${recent.length} rows:`, hint].join("\n"));
-  const body = renderRows(table.columns, recent, limit - spent);
+  // A tight budget drops the oldest of the recent rows, never the latest.
+  const body = renderRows(table.columns, recent, limit - spent, ascending ? "last" : "first");
 
   return [...lines, `Most recent ${body.rows} rows:`, body.text, hint].join("\n");
 }
@@ -154,25 +155,29 @@ function tableView(table: EvidenceTable, limit: number, entry?: EvidenceEntry): 
   return [head, body.text, body.rows < table.rows.length ? hint : ""].filter(Boolean).join("\n");
 }
 
-/** Render as many rows as fit, header first; values are never reformatted so figures stay exact. */
+/**
+ * Render as many rows as fit, header first; values are never reformatted so figures stay exact.
+ * `keep` says which end of `rows` survives a tight budget: a table keeps its top rows, a series in
+ * date order its latest ones. Kept rows are printed in their original order either way.
+ */
 function renderRows(
   columns: string[],
   rows: (string | number | null)[][],
   limit: number,
+  keep: "first" | "last" = "first",
 ): { text: string; rows: number } {
   const chars = tokenChars(limit);
   const header = columns.join(" | ");
-  const lines = [header];
+  const lines = rows.map((row) => row.map((cell) => (cell === null ? "" : String(cell))).join(" | "));
   let used = header.length;
-  let kept = 0;
-  for (const row of rows) {
-    const line = row.map((cell) => (cell === null ? "" : String(cell))).join(" | ");
+  const kept: string[] = [];
+  for (const line of keep === "last" ? [...lines].reverse() : lines) {
     if (used + line.length + 1 > chars) break;
-    lines.push(line);
+    kept.push(line);
     used += line.length + 1;
-    kept += 1;
   }
-  return { text: lines.join("\n"), rows: kept };
+  if (keep === "last") kept.reverse();
+  return { text: [header, ...kept].join("\n"), rows: kept.length };
 }
 
 /* --------------------------------------------------------------- sections */
