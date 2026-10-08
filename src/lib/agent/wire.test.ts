@@ -133,8 +133,8 @@ function configFor(wire: WireCase): AppConfig {
   return config;
 }
 
-/** Keys whose values are clock readings: stamped on messages, checks, request traces and the chat file. */
-const CLOCK_KEYS = new Set(["timestamp", "startedAt", "endedAt", "createdAt", "updatedAt"]);
+/** Keys whose values are clock readings or timings: stamped on messages, checks, request traces and the chat file. */
+const CLOCK_KEYS = new Set(["timestamp", "startedAt", "endedAt", "createdAt", "updatedAt", "durationMs"]);
 
 /**
  * Every request offers the same tools, so a request after the first names them instead of

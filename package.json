@@ -23,8 +23,8 @@
   },
   "dependencies": {
     "@base-ui/react": "^1.8.0",
-    "@earendil-works/pi-agent-core": "0.99.1",
-    "@earendil-works/pi-ai": "0.99.1",
+    "@earendil-works/pi-agent-core": "1.1.0",
+    "@earendil-works/pi-ai": "1.1.0",
     "@modelcontextprotocol/sdk": "^1.32.1",
     "@tavily/core": "^0.7.14",
     "class-variance-authority": "^0.7.1",

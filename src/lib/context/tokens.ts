@@ -1,11 +1,14 @@
-import { type AgentMessage, estimateTokens } from "@earendil-works/pi-agent-core";
+import type { AgentMessage } from "@earendil-works/pi-agent-core";
+import { estimateMessageTokens } from "@earendil-works/pi-ai/utils/estimate";
 import { toProviderShape } from "@/lib/agent/messages";
 import { MAX_INLINE_TOKENS } from "@/lib/attachments/budget";
 import type { StoredAttachment } from "@/lib/attachments/types";
 
 /**
- * Token arithmetic for the context layers. Everything here uses pi's own
- * four-characters-to-a-token heuristic so our budgets and its estimates agree.
+ * Token arithmetic for the context layers. Messages are estimated by pi's own estimator, which
+ * counts 3.5 characters to a token from pi-ai 1.0. The app's own heuristic below stays at four:
+ * it sizes the tool-result views, stubs and serialized history the model reads, and moving it
+ * would change what every agent sees. Align it with pi's only alongside a benchmark run.
  */
 
 const CHARS_PER_TOKEN = 4;
@@ -51,7 +54,7 @@ export function isCustomMessage(message: AgentMessage): boolean {
  */
 export function messageTokens(message: AgentMessage): number {
   if (message.role === "compaction") return textTokens(message.summary);
-  return toProviderShape([message]).reduce((total, sent) => total + estimateTokens(sent) + extraTokens(sent), 0);
+  return toProviderShape([message]).reduce((total, sent) => total + estimateMessageTokens(sent) + extraTokens(sent), 0);
 }
 
 /** Character heuristic over a whole list, for counts that provider usage would overstate. */

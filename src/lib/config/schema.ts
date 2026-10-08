@@ -36,7 +36,7 @@ const providerIdSchema = z.string().regex(/^[a-z0-9][a-z0-9-]{0,63}$/, "must be 
  * provider or drops one.
  */
 const piBuiltinProviders = {
-  "amazon-bedrock": true, "ant-ling": true, anthropic: true, "azure-openai-responses": true,
+  "amazon-bedrock": true, "ant-ling": true, anthropic: true, azure: true,
   baseten: true, cerebras: true, "cloudflare-ai-gateway": true, "cloudflare-workers-ai": true,
   deepseek: true, fireworks: true, "github-copilot": true, google: true, "google-vertex": true,
   groq: true, huggingface: true, "kimi-coding": true, meta: true, minimax: true, "minimax-cn": true,

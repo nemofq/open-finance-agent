@@ -4,7 +4,7 @@ import { type Api, getSupportedThinkingLevels, type Model, type Models, type Pro
 import { amazonBedrockProvider } from "@earendil-works/pi-ai/providers/amazon-bedrock";
 import { antLingProvider } from "@earendil-works/pi-ai/providers/ant-ling";
 import { anthropicProvider } from "@earendil-works/pi-ai/providers/anthropic";
-import { azureOpenAIResponsesProvider } from "@earendil-works/pi-ai/providers/azure-openai-responses";
+import { azureProvider } from "@earendil-works/pi-ai/providers/azure";
 import { basetenProvider } from "@earendil-works/pi-ai/providers/baseten";
 import { cerebrasProvider } from "@earendil-works/pi-ai/providers/cerebras";
 import { cloudflareAIGatewayProvider } from "@earendil-works/pi-ai/providers/cloudflare-ai-gateway";
@@ -74,7 +74,7 @@ const piProviders: Record<PiBackedType, () => Provider> = {
   "amazon-bedrock": amazonBedrockProvider,
   "ant-ling": antLingProvider,
   anthropic: anthropicProvider,
-  "azure-openai-responses": azureOpenAIResponsesProvider,
+  azure: azureProvider,
   baseten: basetenProvider,
   cerebras: cerebrasProvider,
   "cloudflare-ai-gateway": cloudflareAIGatewayProvider,
@@ -182,7 +182,7 @@ export function requestSettings(config: PiBackedConfig): Record<string, string> 
   switch (config.type) {
     case "amazon-bedrock":
       return { AWS_BEDROCK_SKIP_AUTH: "0", AWS_BEDROCK_FORCE_HTTP1: "0", AWS_BEDROCK_FORCE_CACHE: "0", ...settings };
-    case "azure-openai-responses":
+    case "azure":
       // A map of one empty entry parses to no mapping, so each model is its own deployment.
       return { AZURE_OPENAI_DEPLOYMENT_NAME_MAP: ",", AZURE_OPENAI_API_VERSION: "v1", ...settings };
     case "google-vertex": {

@@ -1,4 +1,5 @@
 import { type Api, type Model, type Models, ModelsError } from "@earendil-works/pi-ai";
+import { currentProviderId } from "@/lib/config/legacy-providers";
 import type { AppConfig, LlmProviderConfig, ModelRef } from "@/lib/config/schema";
 import type { LlmModelInfo, ProviderModels } from "@/lib/llm/types";
 import { errorMessage } from "@/lib/utils";
@@ -8,8 +9,10 @@ import { providerErrorText } from "./error-text";
 import { getModels } from "./models";
 import { providerDefinition } from "./providers";
 
+/** The configured provider with this id, or with the id it was saved under before a pi rename. */
 export function findProvider(config: AppConfig, id: string): LlmProviderConfig | undefined {
-  return config.llm.providers.find((provider) => provider.id === id);
+  const current = currentProviderId(id);
+  return config.llm.providers.find((provider) => provider.id === current);
 }
 
 /** Everything a provider failure is shown as goes through here, so none of it arrives as a wire body. */

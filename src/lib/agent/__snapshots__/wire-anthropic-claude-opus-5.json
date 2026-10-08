@@ -1286,6 +1286,7 @@
         "timestamp": "<clock>",
         "responseId": "msg_1",
         "rawStopReason": "tool_use",
+        "durationMs": "<clock>",
         "execution": {
           "phase": "analysis",
           "startedAt": "<clock>",
@@ -1308,6 +1309,7 @@
         ],
         "details": {},
         "isError": true,
+        "durationMs": "<clock>",
         "timestamp": "<clock>"
       },
       {
@@ -1341,6 +1343,7 @@
         "timestamp": "<clock>",
         "responseId": "msg_1",
         "rawStopReason": "end_turn",
+        "durationMs": "<clock>",
         "execution": {
           "phase": "analysis",
           "startedAt": "<clock>",
@@ -1402,6 +1405,7 @@
         "timestamp": "<clock>",
         "responseId": "msg_1",
         "rawStopReason": "end_turn",
+        "durationMs": "<clock>",
         "execution": {
           "phase": "analysis",
           "startedAt": "<clock>",
@@ -1453,6 +1457,7 @@
         "timestamp": "<clock>",
         "responseId": "msg_1",
         "rawStopReason": "end_turn",
+        "durationMs": "<clock>",
         "execution": {
           "phase": "analysis",
           "startedAt": "<clock>",
