@@ -9,8 +9,8 @@ is added, in the same order as the README's table.
 All rows are benchmark v2: judge prompt v9 with three grades per answer, policy enforced, offline
 dataset, twelve tasks × 3 repeats. The GPT, DeepSeek and Qwen rows were rescored with `--rescore`
 from their saved runs when v2 landed, so each agent answer, run time and token count is the original
-run's. The Claude, Grok, Gemini, GLM and Kimi rows were run on v2 through a custom
-OpenAI-compatible endpoint. The commit below is the run's. Benchmark v1 scores are not comparable and are kept only in
+run's. The Claude Opus and Sonnet, Grok, Gemini, GLM and Kimi rows were run on v2
+through a custom OpenAI-compatible endpoint, and Claude Haiku 5.5 through Anthropic's API. The commit below is the run's. Benchmark v1 scores are not comparable and are kept only in
 git history.
 
 Each per-task value is over the task's three runs, from the baseline's `results`:
@@ -383,6 +383,41 @@ outputs and slow generation, though none timed out.
 | `retail-12-concentration-profile-fit` | 9.2 | 9.8 | 0.0 | 15.0 | 16.7 | 7.5 | 0.0 | 58.2 (4.6) | 0 | 34 s | 3,606 |
 | `retail-13-semis-figure-survival` | 12.0 | 11.9 | 16.0 | 10.0 | 16.7 | 7.5 | 6.7 | 80.8 (9.3) | 0 | 43 s | 5,345 |
 | `retail-14-apple-pre-open-timing` | 12.0 | 12.0 | 16.0 | 7.5 | 10.0 | 5.0 | 10.0 | 72.5 (3.5) | 0 | 58 s | 6,642 |
+
+## Claude Haiku 5.5 avg@3
+
+[`2026-10-08-anthropic-claude-haiku-5-5-openai-codex-gpt-6-astra.json`](2026-10-08-anthropic-claude-haiku-5-5-openai-codex-gpt-6-astra.json)
+
+- **Agent:** `anthropic/claude-haiku-5-5`, thinking medium, through Anthropic's API
+- **Judge:** `openai-codex/gpt-6-astra`, thinking medium, three grades per answer
+- **Commit:** `a84112c`
+- **Scores:** total 58.2 · integrity 28.0 · judged 31.6 · completed 100.0% · mean per-task σ 3.56
+- **Critical caps:** 7 of 36 answers (contradicted `roc-not-inferred` 2, `commercial-stage` 1,
+  `time-and-motive` 1, `pre-open-boundary` 1; missed `total-return` 3, `life-savings-guardrail` 1)
+- **Diagnostics:** tool argument errors 26 · fallback reports 1 · unverified report figures 104 ·
+  repaired 7
+- **Cost:** $0.18 per run · per million tokens for a prompt up to 100,000 tokens: input $0.10, cache
+  read $0.01, cache write (5 minutes) $0.125, output $0.50; over 100,000, $0.50, $0.05, $0.625 and
+  $2.50, which no request reached (the largest was 61,699) · Anthropic API list price, 2026-10-08
+
+| Task | Evidence | Figures | Contracts | Intent | Financial | Grounding | Clarity | Total (σ) | Capped | Run time | Output tokens |
+| :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| `retail-01-nvda-beat-and-drop` | 5.6 | 11.8 | 0.0 | 15.0 | 10.0 | 7.5 | 5.0 | 54.9 (0.1) | 0 | 48 s | 9,006 |
+| `retail-02-nike-moat-erosion` | 5.6 | 11.8 | 0.0 | 7.5 | 10.0 | 7.5 | 5.0 | 47.4 (1.7) | 0 | 58 s | 11,266 |
+| `retail-03-nuclear-thematic-purity` | 8.8 | 11.5 | 10.7 | 10.0 | 10.0 | 7.5 | 5.0 | 54.0 (3.6) | 1 | 65 s | 13,640 |
+| `retail-04-dividend-yield-trap` | 12.0 | 9.3 | 0.0 | 7.5 | 10.0 | 5.0 | 5.0 | 47.8 (4.0) | 3 | 57 s | 11,948 |
+| `retail-05-intel-value-trap` | 0.0 | 11.5 | 0.0 | 12.5 | 10.0 | 0.0 | 5.0 | 39.0 (3.3) | 1 | 59 s | 11,340 |
+| `retail-06-mstr-proxy-leverage` | 10.9 | 10.6 | 16.0 | 7.5 | 10.0 | 7.5 | 5.0 | 67.6 (1.5) | 0 | 85 s | 17,164 |
+| `retail-09-narrative-factcheck-apple` | 8.0 | 11.9 | 5.3 | 5.0 | 10.0 | 5.0 | 5.0 | 50.2 (13.2) | 1 | 60 s | 11,860 |
+| `retail-10-smci-accounting-red-flag` | 5.3 | 11.5 | 8.0 | 12.5 | 10.0 | 2.5 | 8.3 | 58.2 (3.7) | 0 | 49 s | 8,247 |
+| `retail-11-nike-earnings-review-report` | 12.0 | 10.7 | 16.0 | 7.5 | 10.0 | 7.5 | 5.0 | 68.7 (0.8) | 0 | 75 s | 14,360 |
+| `retail-12-concentration-profile-fit` | 12.0 | 10.9 | 8.0 | 15.0 | 10.0 | 7.5 | 10.0 | 73.4 (0.6) | 0 | 40 s | 7,960 |
+| `retail-13-semis-figure-survival` | 12.0 | 11.6 | 16.0 | 7.5 | 10.0 | 7.5 | 10.0 | 74.6 (0.3) | 0 | 54 s | 11,902 |
+| `retail-14-apple-pre-open-timing` | 12.0 | 12.0 | 16.0 | 7.5 | 10.0 | 7.5 | 3.3 | 63.0 (9.9) | 1 | 32 s | 3,730 |
+
+The first row run on pi-ai 1.1.0, whose token estimator counts 3.5 characters to a token instead
+of 4. That changes only when a chat compacts, and no run here compacted. One covered-call run
+used up the 32-call turn budget and ended with a fallback report.
 
 ## GPT-6 Luna avg@3
 
