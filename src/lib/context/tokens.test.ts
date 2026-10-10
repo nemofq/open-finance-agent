@@ -39,7 +39,7 @@ const withDocuments = (text: string, documents: StoredAttachment[]): AgentMessag
 describe("messageTokens", () => {
   it("counts the text a custom message sends to the model", () => {
     expect(messageTokens(skill("a".repeat(400)))).toBe(piTokens(400));
-    expect(messageTokens({ role: "compaction", summary: "b".repeat(40), timestamp: 1 } as AgentMessage)).toBe(10);
+    expect(messageTokens({ role: "compaction", summary: "b".repeat(40), timestamp: 1 } as AgentMessage)).toBe(piTokens(40));
   });
 
   it("charges only what the model is sent: an open, enforced follow-up, and no flag or superseded draft", () => {
@@ -81,8 +81,10 @@ describe("messageTokens", () => {
 
 describe("token arithmetic", () => {
   it("rounds a text length up to whole tokens, and back down to whole characters", () => {
+    // 3.5 characters to a token, pi's rate.
     expect(textTokens("abcde")).toBe(2);
-    expect(tokenChars(2)).toBe(8);
+    expect(textTokens("a".repeat(8))).toBe(3);
+    expect(tokenChars(2)).toBe(7);
     expect(tokenChars(-1)).toBe(0);
   });
 
