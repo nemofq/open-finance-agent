@@ -1,3 +1,5 @@
+import { readFileSync } from "node:fs";
+import { createRequire } from "node:module";
 import { describe, expect, it } from "vitest";
 import React from "react";
 import { renderToStaticMarkup } from "react-dom/server";
@@ -42,6 +44,16 @@ describe("Markdown", () => {
     );
     expect(html).toContain("katex");
     expect(html).toContain("1,000,000");
+  });
+
+  it("renders math markup that the imported KaTeX stylesheet styles", () => {
+    const html = renderToStaticMarkup(React.createElement(Markdown, null, "$$a^2 + b^2$$"));
+    // The first span inside .katex-html is the layout box; a renderer and stylesheet from
+    // different KaTeX versions disagree on its class name.
+    const box = /class="katex-html"[^>]*><span class="([^" ]+)"/.exec(html)?.[1];
+    expect(box).toBeDefined();
+    const css = readFileSync(createRequire(import.meta.url).resolve("katex/dist/katex.min.css"), "utf8");
+    expect(css).toContain(`.${box}{`);
   });
 
   it("preserves price currency like $100 and cashtags alongside formulas", () => {
