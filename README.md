@@ -88,6 +88,21 @@ Then start a chat and ask your first question, or type `/` to pick a skill.
 Settings, chats and holdings live in `~/.open-finance-agent`; set `OFA_HOME` to move them.
 [docs/usage.md](docs/usage.md) covers every setting in detail.
 
+### Connect Robinhood with your chosen model
+
+Give a setup-capable agent this request:
+
+> Follow [connect-robinhood](setup-skills/connect-robinhood/SKILL.md) to connect my Robinhood
+> account to this checkout. Keep my current model, enable the read tools I need for research,
+> and verify a quote through the actual harness.
+
+To choose a different model, include its provider and model name in the request. This portable
+[Agent Skills](https://agentskills.io/specification) folder also covers other MCP hosts: copy
+`setup-skills/connect-robinhood/` into your agent's documented skill directory, or give it the
+`SKILL.md` and its `references/` folder directly. The setup agent needs configuration access;
+the app's research chat cannot install connections. Each user completes their own Robinhood
+OAuth login. The skill contains no credentials or required model provider.
+
 ## Under the hood
 
 ### Concerns: the loop, organised by intent
