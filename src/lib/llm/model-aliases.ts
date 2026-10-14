@@ -42,6 +42,11 @@ export const modelAliases: readonly ModelAlias[] = [
   { type: "cloudflare-ai-gateway", from: "claude-sonnet-4.6", name: "Claude Sonnet 4.6", pricing: { input: 3, output: 15 }, to: "claude-sonnet-4-6" },
   // Together renamed DeepSeek V4 Pro to its dated id.
   { type: "together", from: "deepseek-ai/DeepSeek-V4-Pro", name: "DeepSeek V4 Pro", pricing: { input: 1.74, output: 3.48 }, to: "deepseek-ai/DeepSeek-V4-Pro-0813" },
+  // pi-ai 1.1.0 → 1.2.0: nothing renamed. Retired without a successor: google-vertex
+  // gemini-flash-latest and gemini-flash-lite-latest (moving aliases, not one model), opencode
+  // fledge-alpha-free, and vercel-ai-gateway alibaba/qwen-3.6-max-preview,
+  // qwen3-235b-a22b-thinking, qwen3-coder-plus, qwen3-max, qwen3-max-preview,
+  // qwen3-vl-235b-a22b-instruct, qwen3-vl-thinking, anthropic/claude-3-haiku and claude-opus-4.
 ];
 
 export function modelAlias(type: LlmProviderType, id: string): ModelAlias | undefined {
