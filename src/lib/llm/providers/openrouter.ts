@@ -19,7 +19,8 @@ interface OpenRouterModel {
   id: string;
   name: string;
   context_length: number | null;
-  pricing: { prompt: string; completion: string };
+  /** USD per token, as strings; the cache prices only for models that cache. */
+  pricing: { prompt: string; completion: string; input_cache_read?: string; input_cache_write?: string };
   supported_parameters?: string[];
   /** Whether thinking can be turned off (`mandatory`) and the efforts the model takes. */
   reasoning?: { mandatory?: boolean; supported_efforts?: string[] };
@@ -61,7 +62,12 @@ function toInfo(m: OpenRouterModel): LlmModelInfo {
     id: m.id,
     name: m.name,
     contextLength: m.context_length ?? 0,
-    pricing: { input: perMillion(m.pricing.prompt), output: perMillion(m.pricing.completion) },
+    pricing: {
+      input: perMillion(m.pricing.prompt),
+      output: perMillion(m.pricing.completion),
+      ...(m.pricing.input_cache_read ? { cacheRead: perMillion(m.pricing.input_cache_read) } : {}),
+      ...(m.pricing.input_cache_write ? { cacheWrite: perMillion(m.pricing.input_cache_write) } : {}),
+    },
     supportsReasoning: params.includes("reasoning"),
     ...(m.reasoning ? { reasoningControl: reasoningControl(m.reasoning) } : {}),
     supportsImages: m.architecture?.input_modalities?.includes("image") ?? false,
@@ -87,7 +93,7 @@ async function listModels(
   _models: Models,
   options?: { refresh?: boolean },
 ): Promise<LlmModelInfo[]> {
-  const models = await cached("llm-models:openrouter:v3", MODELS_TTL_SECONDS, fetchCatalog, { refresh: options?.refresh });
+  const models = await cached("llm-models:openrouter:v4", MODELS_TTL_SECONDS, fetchCatalog, { refresh: options?.refresh });
   return models.map((info) => ({ ...info, thinkingLevels: getSupportedThinkingLevels(toPiModel(config, info)) }));
 }
 

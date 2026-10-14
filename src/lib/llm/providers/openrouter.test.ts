@@ -126,6 +126,27 @@ describe("openrouter catalog", () => {
     expect(info).toMatchObject({ contextLength: 128000, supportsImages: true });
   });
 
+  it("reads cache prices where the catalog lists them, and leaves them out where it does not", async () => {
+    stubFetch([
+      model("acme/cached", { pricing: { prompt: "0.000002", completion: "0.00001", input_cache_read: "0.0000001", input_cache_write: "0.0000001875" } }),
+      model("acme/uncached"),
+    ]);
+    const models = await openrouter.listModels(provider(), piModels);
+    expect(models.find((m) => m.id === "acme/cached")?.pricing).toEqual({ input: 2, output: 10, cacheRead: 0.1, cacheWrite: 0.188 });
+    expect(models.find((m) => m.id === "acme/uncached")?.pricing).toEqual({ input: 1, output: 2 });
+  });
+
+  it("ignores a catalog cached before cache prices were recorded", async () => {
+    const fetchMock = stubFetch([model("acme/cached", { pricing: { prompt: "0.000002", completion: "0.00001", input_cache_read: "0.0000001" } })]);
+    seedCache("llm-models:openrouter:v3", [
+      { id: "acme/cached", name: "acme/cached", contextLength: 0, pricing: { input: 2, output: 10 }, supportsReasoning: false, supportsImages: false },
+    ]);
+
+    const [info] = await openrouter.listModels(provider(), piModels);
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    expect(info.pricing.cacheRead).toBe(0.1);
+  });
+
   it("returns the fresh catalog from validate", async () => {
     stubFetch([model("acme/vision", { architecture: { input_modalities: ["text", "image"] } })]);
     const result = await openrouter.validate(provider(), piModels);
@@ -145,6 +166,14 @@ describe("openrouter toPiModel", () => {
     };
     expect(openrouter.toPiModel(provider(), { ...base, supportsImages: true }).input).toEqual(["text", "image"]);
     expect(openrouter.toPiModel(provider(), { ...base, supportsImages: false }).input).toEqual(["text"]);
+  });
+
+  it("prices cache reads and writes at the catalog's rates, and at nothing where it lists none", () => {
+    const base = { id: "acme/fast", name: "Acme Fast", contextLength: 128000, supportsReasoning: false, supportsImages: false };
+    const cached = openrouter.toPiModel(provider(), { ...base, pricing: { input: 2, output: 10, cacheRead: 0.1, cacheWrite: 0.188 } });
+    expect(cached.cost).toEqual({ input: 2, output: 10, cacheRead: 0.1, cacheWrite: 0.188 });
+    const uncached = openrouter.toPiModel(provider(), { ...base, pricing: { input: 1, output: 2 } });
+    expect(uncached.cost).toEqual({ input: 1, output: 2, cacheRead: 0, cacheWrite: 0 });
   });
 });
 
