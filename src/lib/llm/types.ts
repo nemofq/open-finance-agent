@@ -6,8 +6,11 @@ export interface LlmModelInfo {
   name: string;
   /** 0 when unknown. */
   contextLength: number;
-  /** USD per million tokens; 0 when unknown or free. */
-  pricing: { input: number; output: number };
+  /**
+   * USD per million tokens; 0 when unknown or free. Cache prices only where a catalog lists them
+   * (OpenRouter); pi's own models carry theirs on the pi model.
+   */
+  pricing: { input: number; output: number; cacheRead?: number; cacheWrite?: number };
   supportsReasoning: boolean;
   /**
    * How far a catalog says thinking can be controlled, where it says so: whether thinking can be

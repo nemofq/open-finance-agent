@@ -41,7 +41,7 @@ export function completionsModel(
     baseUrl,
     reasoning: info.supportsReasoning,
     input: info.supportsImages ? ["text", "image"] : ["text"],
-    cost: { input: info.pricing.input, output: info.pricing.output, cacheRead: 0, cacheWrite: 0 },
+    cost: { input: info.pricing.input, output: info.pricing.output, cacheRead: info.pricing.cacheRead ?? 0, cacheWrite: info.pricing.cacheWrite ?? 0 },
     contextWindow: info.contextLength,
     maxTokens: info.maxTokens ?? 16384,
     ...extras,
