@@ -10,7 +10,7 @@ All rows are benchmark v2: judge prompt v9 with three grades per answer, policy 
 dataset, twelve tasks × 3 repeats. The GPT, DeepSeek and Qwen rows were rescored with `--rescore`
 from their saved runs when v2 landed, so each agent answer, run time and token count is the original
 run's. The Claude Opus and Sonnet, Grok, Gemini 3.8 Flash and 4 Argon, GLM and Kimi rows were run on
-v2 through a custom OpenAI-compatible endpoint, and Claude Haiku 5.5 through Anthropic's API. The commit below is the run's. Benchmark v1 scores are not comparable and are kept only in
+v2 through a custom OpenAI-compatible endpoint, and Claude Haiku 5.5 and Fable 5.1 through Anthropic's API. The commit below is the run's. Benchmark v1 scores are not comparable and are kept only in
 git history.
 
 Each per-task value is over the task's three runs, from the baseline's `results`:
@@ -125,6 +125,42 @@ report figures are the most of any row, though integrity stays the highest of an
 | `retail-12-concentration-profile-fit` | 11.1 | 11.8 | 5.3 | 15.0 | 20.0 | 7.5 | 10.0 | 80.7 (5.2) | 0 | 91 s | 3,922 |
 | `retail-13-semis-figure-survival` | 12.0 | 11.9 | 16.0 | 7.5 | 16.7 | 7.5 | 10.0 | 81.6 (4.8) | 0 | 154 s | 7,052 |
 | `retail-14-apple-pre-open-timing` | 12.0 | 11.8 | 16.0 | 7.5 | 10.0 | 7.5 | 10.0 | 74.8 (0.3) | 0 | 157 s | 6,913 |
+
+## Claude Fable 5.1 avg@3
+
+[`2026-10-15-anthropic-claude-fable-5-1-openai-codex-gpt-6-astra.json`](2026-10-15-anthropic-claude-fable-5-1-openai-codex-gpt-6-astra.json)
+
+- **Agent:** `anthropic/claude-fable-5-1`, thinking medium, through Anthropic's API
+- **Judge:** `openai-codex/gpt-6-astra`, thinking medium, three grades per answer
+- **Commit:** `15fe014`
+- **Scores:** total 68.0 · integrity 32.0 · judged 37.8 · completed 100.0% · mean per-task σ 5.15
+- **Critical caps:** 6 of 36 answers (contradicted `roc-not-inferred` 3, `commercial-stage` 1,
+  `time-and-motive` 1, `pre-open-boundary` 1)
+- **Diagnostics:** tool argument errors 41 · fallback reports 0 · unverified report figures 194 ·
+  repaired 13
+- **Cost:** $20.54 per run · per million tokens: input $10.00, cache read $0.25, cache write (5
+  minutes) $12.50, output $50.00 · Anthropic API list price, 2026-10-15
+
+| Task | Evidence | Figures | Contracts | Intent | Financial | Grounding | Clarity | Total (σ) | Capped | Run time | Output tokens |
+| :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| `retail-01-nvda-beat-and-drop` | 7.7 | 11.6 | 0.0 | 15.0 | 10.0 | 7.5 | 5.0 | 56.8 (3.0) | 0 | 129 s | 10,623 |
+| `retail-02-nike-moat-erosion` | 12.0 | 11.7 | 0.0 | 10.0 | 10.0 | 7.5 | 5.0 | 56.2 (3.6) | 0 | 174 s | 13,424 |
+| `retail-03-nuclear-thematic-purity` | 12.0 | 11.6 | 16.0 | 15.0 | 10.0 | 7.5 | 5.0 | 67.6 (13.2) | 1 | 169 s | 11,599 |
+| `retail-04-dividend-yield-trap` | 12.0 | 10.6 | 5.3 | 15.0 | 10.0 | 0.0 | 6.7 | 49.0 (0.0) | 3 | 155 s | 11,789 |
+| `retail-05-intel-value-trap` | 12.0 | 11.3 | 5.3 | 15.0 | 10.0 | 7.5 | 10.0 | 71.2 (7.6) | 0 | 117 s | 8,897 |
+| `retail-06-mstr-proxy-leverage` | 12.0 | 10.4 | 16.0 | 15.0 | 10.0 | 7.5 | 6.7 | 77.6 (2.1) | 0 | 128 s | 9,337 |
+| `retail-09-narrative-factcheck-apple` | 6.4 | 11.9 | 0.0 | 7.5 | 6.7 | 7.5 | 5.0 | 45.0 (4.6) | 1 | 115 s | 8,689 |
+| `retail-10-smci-accounting-red-flag` | 11.3 | 11.9 | 16.0 | 15.0 | 16.7 | 15.0 | 8.3 | 94.2 (7.9) | 0 | 107 s | 8,143 |
+| `retail-11-nike-earnings-review-report` | 12.0 | 11.3 | 16.0 | 7.5 | 10.0 | 7.5 | 5.0 | 69.3 (0.4) | 0 | 155 s | 12,134 |
+| `retail-12-concentration-profile-fit` | 12.0 | 10.9 | 8.0 | 15.0 | 16.7 | 7.5 | 10.0 | 80.1 (4.4) | 0 | 72 s | 5,713 |
+| `retail-13-semis-figure-survival` | 12.0 | 11.0 | 16.0 | 7.5 | 20.0 | 7.5 | 8.3 | 82.3 (2.8) | 0 | 142 s | 11,817 |
+| `retail-14-apple-pre-open-timing` | 12.0 | 11.5 | 16.0 | 7.5 | 10.0 | 2.5 | 8.3 | 66.1 (12.1) | 1 | 77 s | 5,735 |
+
+The three runs scored 69.6, 63.1 and 71.1. Most of the gap to the top rows is in Contracts (9.6 of
+16 on average): on NVIDIA every run typed the release's revenue and guidance into the calculator
+as assumptions instead of reading them from the evidence, so the calculation could not be verified,
+and no Nike moat erosion run produced a verified Deckers growth calculation. Cache writes are about
+two thirds of its cost.
 
 ## Claude Opus 5.5 avg@3
 
