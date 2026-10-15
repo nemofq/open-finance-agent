@@ -9,8 +9,8 @@ is added, in the same order as the README's table.
 All rows are benchmark v2: judge prompt v9 with three grades per answer, policy enforced, offline
 dataset, twelve tasks × 3 repeats. The GPT, DeepSeek and Qwen rows were rescored with `--rescore`
 from their saved runs when v2 landed, so each agent answer, run time and token count is the original
-run's. The Claude Opus and Sonnet, Grok, Gemini, GLM and Kimi rows were run on v2
-through a custom OpenAI-compatible endpoint, and Claude Haiku 5.5 through Anthropic's API. The commit below is the run's. Benchmark v1 scores are not comparable and are kept only in
+run's. The Claude Opus and Sonnet, Grok, Gemini 3.8 Flash and 4 Argon, GLM and Kimi rows were run on
+v2 through a custom OpenAI-compatible endpoint, and Claude Haiku 5.5 through Anthropic's API. The commit below is the run's. Benchmark v1 scores are not comparable and are kept only in
 git history.
 
 Each per-task value is over the task's three runs, from the baseline's `results`:
@@ -59,6 +59,42 @@ out as in [evals/README.md › Reproducing the README table](../README.md#reprod
 | `retail-12-concentration-profile-fit` | 12.0 | 11.8 | 13.3 | 15.0 | 16.7 | 7.5 | 10.0 | 86.3 (8.7) | 0 | 86 s | 1,871 |
 | `retail-13-semis-figure-survival` | 12.0 | 11.9 | 16.0 | 7.5 | 20.0 | 7.5 | 10.0 | 84.9 (0.1) | 0 | 261 s | 7,115 |
 | `retail-14-apple-pre-open-timing` | 12.0 | 12.0 | 16.0 | 7.5 | 20.0 | 7.5 | 10.0 | 85.0 (0.0) | 0 | 125 s | 2,395 |
+
+## Gemini 4 Argon avg@3
+
+[`2026-10-14-custom-gemini-4-argon-openai-codex-gpt-6-astra.json`](2026-10-14-custom-gemini-4-argon-openai-codex-gpt-6-astra.json)
+
+- **Agent:** `custom-bsxs/gemini-4-argon`, thinking medium, through a custom OpenAI-compatible
+  endpoint
+- **Judge:** `openai-codex/gpt-6-astra`, thinking medium, three grades per answer
+- **Commit:** `7658738`
+- **Scores:** total 73.6 · integrity 37.6 · judged 38.5 · completed 100.0% · mean per-task σ 2.56
+- **Critical caps:** 6 of 36 answers (contradicted `roc-not-inferred` 3, `time-and-motive` 3)
+- **Diagnostics:** tool argument errors 3 · fallback reports 2 · unverified report figures 475 ·
+  repaired 12
+- **Cost:** $10.86 per run · per million tokens: input $2.00, cache read $0.10, output $10.00 ·
+  Gemini API paid tier, launch price through 2026-11-30 ($4.00, $0.20 and $20.00 from
+  2026-12-01, which would make it $21.72 per run), 2026-10-15
+
+| Task | Evidence | Figures | Contracts | Intent | Financial | Grounding | Clarity | Total (σ) | Capped | Run time | Output tokens |
+| :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| `retail-01-nvda-beat-and-drop` | 12.0 | 11.5 | 5.3 | 15.0 | 10.0 | 7.5 | 5.0 | 66.4 (7.5) | 0 | 469 s | 34,496 |
+| `retail-02-nike-moat-erosion` | 10.9 | 11.4 | 16.0 | 12.5 | 20.0 | 7.5 | 5.0 | 83.3 (3.1) | 0 | 445 s | 39,823 |
+| `retail-03-nuclear-thematic-purity` | 12.0 | 11.6 | 16.0 | 15.0 | 10.0 | 7.5 | 5.0 | 77.1 (0.3) | 0 | 262 s | 22,954 |
+| `retail-04-dividend-yield-trap` | 12.0 | 10.6 | 16.0 | 12.5 | 10.0 | 2.5 | 5.0 | 49.0 (0.0) | 3 | 370 s | 36,975 |
+| `retail-05-intel-value-trap` | 12.0 | 11.7 | 16.0 | 15.0 | 10.0 | 7.5 | 10.0 | 82.2 (0.1) | 0 | 271 s | 22,512 |
+| `retail-06-mstr-proxy-leverage` | 12.0 | 10.9 | 16.0 | 15.0 | 16.7 | 10.0 | 6.7 | 87.2 (9.2) | 0 | 270 s | 23,613 |
+| `retail-09-narrative-factcheck-apple` | 12.0 | 11.6 | 16.0 | 7.5 | 0.0 | 7.5 | 5.0 | 49.0 (0.0) | 3 | 289 s | 28,240 |
+| `retail-10-smci-accounting-red-flag` | 12.0 | 11.8 | 16.0 | 15.0 | 16.7 | 15.0 | 8.3 | 94.8 (4.2) | 0 | 134 s | 12,402 |
+| `retail-11-nike-earnings-review-report` | 12.0 | 11.3 | 16.0 | 7.5 | 10.0 | 7.5 | 5.0 | 69.3 (0.2) | 0 | 418 s | 32,254 |
+| `retail-12-concentration-profile-fit` | 12.0 | 11.5 | 8.0 | 15.0 | 20.0 | 7.5 | 10.0 | 84.0 (0.1) | 0 | 152 s | 11,457 |
+| `retail-13-semis-figure-survival` | 12.0 | 11.8 | 16.0 | 7.5 | 20.0 | 7.5 | 8.3 | 83.2 (2.4) | 0 | 296 s | 23,160 |
+| `retail-14-apple-pre-open-timing` | 12.0 | 9.7 | 16.0 | 7.5 | 10.0 | 2.5 | 0.0 | 57.7 (3.7) | 0 | 289 s | 21,824 |
+
+The three runs scored 73.3, 73.7 and 73.8. Every cap is one of two tasks, each capped in all three
+runs by the same item: the dividend trap reads a return of capital into the distribution rate's gap
+over the SEC yield, and the Apple fact-check contradicts `time-and-motive`. Its 475 unverified
+report figures are the most of any row, though integrity stays the highest of any row.
 
 ## GPT-5.6 Sol avg@3
 
