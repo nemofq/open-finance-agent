@@ -402,7 +402,7 @@ outputs and slow generation, though none timed out.
   missed `total-return` 1)
 - **Diagnostics:** tool argument errors 11 · fallback reports 0 · unverified report figures 87 ·
   repaired 4
-- **Cost:** $3.12 per run · per million tokens: input $2.00, cache read $0.20, cache write (5
+- **Cost:** $2.94 per run · per million tokens: input $2.00, cache read $0.10, cache write (5
   minutes) $2.50, output $10.00 · Anthropic API list price, 2026-10-03
 
 | Task | Evidence | Figures | Contracts | Intent | Financial | Grounding | Clarity | Total (σ) | Capped | Run time | Output tokens |
