@@ -1266,7 +1266,6 @@
         "api": "anthropic-messages",
         "provider": "anthropic",
         "model": "claude-opus-5",
-        "providerThinkingLevel": "medium",
         "usage": {
           "input": 100,
           "output": 10,
@@ -1284,6 +1283,7 @@
         },
         "stopReason": "toolUse",
         "timestamp": "<clock>",
+        "providerThinkingLevel": "medium",
         "responseId": "msg_1",
         "rawStopReason": "tool_use",
         "durationMs": "<clock>",
@@ -1323,7 +1323,6 @@
         "api": "anthropic-messages",
         "provider": "anthropic",
         "model": "claude-opus-5",
-        "providerThinkingLevel": "medium",
         "usage": {
           "input": 100,
           "output": 10,
@@ -1341,6 +1340,7 @@
         },
         "stopReason": "stop",
         "timestamp": "<clock>",
+        "providerThinkingLevel": "medium",
         "responseId": "msg_1",
         "rawStopReason": "end_turn",
         "durationMs": "<clock>",
@@ -1385,7 +1385,6 @@
         "api": "anthropic-messages",
         "provider": "anthropic",
         "model": "claude-opus-5",
-        "providerThinkingLevel": "medium",
         "usage": {
           "input": 100,
           "output": 10,
@@ -1403,6 +1402,7 @@
         },
         "stopReason": "stop",
         "timestamp": "<clock>",
+        "providerThinkingLevel": "medium",
         "responseId": "msg_1",
         "rawStopReason": "end_turn",
         "durationMs": "<clock>",
@@ -1437,7 +1437,6 @@
         "api": "anthropic-messages",
         "provider": "anthropic",
         "model": "claude-opus-5",
-        "providerThinkingLevel": "medium",
         "usage": {
           "input": 100,
           "output": 10,
@@ -1455,6 +1454,7 @@
         },
         "stopReason": "stop",
         "timestamp": "<clock>",
+        "providerThinkingLevel": "medium",
         "responseId": "msg_1",
         "rawStopReason": "end_turn",
         "durationMs": "<clock>",
