@@ -6,7 +6,7 @@ import { type Api, type ChatTemplateKwargValue, clampThinkingLevel, type Model }
  * where Anthropic manages the effort), a switch that turns thinking off (`disabled`), the lowest
  * level a Gemini model accepts, or nothing at all (`not sent`).
  *
- * This follows pi-ai 0.99's request builders, deciding as they do by API and model fields and never
+ * This follows pi-ai 1.3's request builders, deciding as they do by API and model fields and never
  * by a model's name; `thinking-off.test.ts` checks it against the request pi builds for every model
  * in its catalogs, so a pi upgrade that changes one fails there.
  */
@@ -14,9 +14,10 @@ export function hostedOff(model: Model<Api>): string {
   const off = model.thinkingLevelMap?.off;
   switch (model.api) {
     case "anthropic-messages":
-      // A model whose effort pi manages always thinks adaptively, at "high" when no level is sent.
-      if ((model as Model<"anthropic-messages">).compat?.supportsMidConvoEffort) return `"high"`;
-      return off === null ? "not sent" : "disabled";
+      // Off turns thinking off wherever the catalog allows it. A model that cannot turn it off and
+      // whose effort pi manages thinks adaptively, at "high" when no level is sent.
+      if (off !== null) return "disabled";
+      return (model as Model<"anthropic-messages">).compat?.supportsMidConvoEffort ? `"high"` : "not sent";
     case "openai-responses":
       // pi leaves Copilot's Responses models to the server's default.
       if (model.provider === "github-copilot") return "not sent";

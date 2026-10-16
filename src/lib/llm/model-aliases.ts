@@ -47,6 +47,14 @@ export const modelAliases: readonly ModelAlias[] = [
   // fledge-alpha-free, and vercel-ai-gateway alibaba/qwen-3.6-max-preview,
   // qwen3-235b-a22b-thinking, qwen3-coder-plus, qwen3-max, qwen3-max-preview,
   // qwen3-vl-235b-a22b-instruct, qwen3-vl-thinking, anthropic/claude-3-haiku and claude-opus-4.
+  // pi-ai 1.2.0 → 1.3.0. Retired without a successor: nvidia moonshotai/kimi-k3, opencode
+  // exo-free, ling-3.0-flash-fin-free and ling-3.1-flash-free, and vercel-ai-gateway
+  // inclusionai/ling-3.1-flash-free (the paid Ling 3.1 Flash is a different tier).
+  { type: "nvidia", from: "nvidia/nemotron-3-super-120b-a12b", name: "Nemotron 3 Super", pricing: { input: 0.2, output: 0.8 }, to: "nvidia/nemotron-3.5-super-vl-120b-a12b" },
+  { type: "opencode-go", from: "deepseek-v4-flash", name: "DeepSeek V4 Flash", pricing: { input: 0.15, output: 0.6 }, to: "deepseek-v4.1-flash" },
+  { type: "opencode-go", from: "deepseek-v4-flash-vision-exp", name: "DeepSeek V4 Flash Vision Exp", pricing: { input: 0.15, output: 0.6 }, to: "deepseek-v4.1-flash" },
+  { type: "opencode-go", from: "minimax-m2.7", name: "MiniMax-M2.7", pricing: { input: 0.3, output: 1.2 }, to: "minimax-m3" },
+  { type: "opencode-go", from: "grok-4.6", name: "Grok 4.6", pricing: { input: 2, output: 6 }, to: "grok-4.7" },
 ];
 
 export function modelAlias(type: LlmProviderType, id: string): ModelAlias | undefined {

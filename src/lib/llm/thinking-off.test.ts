@@ -80,9 +80,13 @@ describe("what a hosted model's request carries at thinking Off", () => {
     expect(always && hostedOff(always)).toBe("not sent");
   });
 
-  it("reads Anthropic's managed effort as high, since Off sends no level to lower it", () => {
+  it("reads Anthropic's managed effort as high where Off cannot turn thinking off, and disabled where it can", () => {
     const managed = getBuiltinModels("anthropic").filter((model) => model.compat?.supportsMidConvoEffort === true);
-    expect(managed.length).toBeGreaterThan(0);
-    for (const model of managed) expect(hostedOff(model), model.id).toBe('"high"');
+    const alwaysOn = managed.filter((model) => model.thinkingLevelMap?.off === null);
+    const canTurnOff = managed.filter((model) => model.thinkingLevelMap?.off !== null);
+    expect(alwaysOn.length).toBeGreaterThan(0);
+    expect(canTurnOff.length).toBeGreaterThan(0);
+    for (const model of alwaysOn) expect(hostedOff(model), model.id).toBe('"high"');
+    for (const model of canTurnOff) expect(hostedOff(model), model.id).toBe("disabled");
   });
 });

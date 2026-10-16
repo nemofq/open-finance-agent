@@ -219,7 +219,7 @@ describe("the wire to OpenCode Go", () => {
     expect(result.status).toBe("complete");
     await vi.waitFor(() => expect(requests).toHaveLength(2));
     for (const request of requests) {
-      expect(request.url).toMatch(/^https:\/\/opencode\.ai\/zen\/go\//);
+      expect(request.url).toMatch(/^https:\/\/opencode\.ai\/inference\/go\//);
       expect(request.headers["x-opencode-session"]).toBe(id);
       expect(request.headers["user-agent"]).toMatch(/^open-finance-agent\/\d+\.\d+\.\d+/);
     }
