@@ -7,8 +7,9 @@
  *
  * Each per-task value is over the task's runs, as the baselines doc describes: integrity and judge
  * columns average the completed answers, Total is the task's mean `totalScore` with its population
- * standard deviation, Capped counts answers with a missed or contradicted critical item, and run
- * time and output tokens are means per run. Dependency-free ESM, Node >= 24.
+ * standard deviation, Capped counts the answers a critical cap actually lowered, and run time and
+ * output tokens are means per run. Long lines are wrapped at 100 columns, as the doc is.
+ * Dependency-free ESM, Node >= 24.
  */
 
 import { readFileSync } from "node:fs";
@@ -24,10 +25,13 @@ const summary = baseline.agentSummaries[0];
 const one = (value) => value.toFixed(1);
 const mean = (values) => values.reduce((sum, value) => sum + value, 0) / values.length;
 const whole = (value) => Math.round(value).toLocaleString("en-US");
-const capped = (result) => {
+const flagged = (result) => {
   const judge = result.judgeResult;
   return Boolean(judge) && (judge.criticalMisses?.length ?? 0) + (judge.criticalContradictions?.length ?? 0) > 0;
 };
+/** Points a critical cap took off an answer: what its integrity and judged scores add up to, less its total. */
+const capCost = (result) => (flagged(result) ? Math.max(0, result.integrityScore + result.qualityScore - result.totalScore) : 0);
+const capped = (result) => capCost(result) > 0.05;
 
 const rows = summary.perTask.map((task) => {
   const results = baseline.results.filter((result) => result.task.id === task.taskId);
@@ -41,10 +45,11 @@ const rows = summary.perTask.map((task) => {
 });
 
 const caps = { contradicted: {}, missed: {} };
-let cappedAnswers = 0;
+let flaggedAnswers = 0, cappedAnswers = 0, pointsLost = 0;
 for (const result of baseline.results) {
   if (!result.judgeResult) continue;
-  if (capped(result)) cappedAnswers += 1;
+  if (flagged(result)) flaggedAnswers += 1;
+  if (capped(result)) { cappedAnswers += 1; pointsLost += capCost(result); }
   for (const id of result.judgeResult.criticalContradictions ?? []) caps.contradicted[id] = (caps.contradicted[id] ?? 0) + 1;
   for (const id of result.judgeResult.criticalMisses ?? []) caps.missed[id] = (caps.missed[id] ?? 0) + 1;
 }
@@ -57,12 +62,26 @@ const diagnostics = baseline.results.reduce((totals, result) => {
   return totals;
 }, {});
 
-console.log(`- **Scores:** total ${one(summary.expectedUserScore)} · integrity ${one(summary.averageIntegrityScore)} · ` +
+/** A bullet wrapped at 100 columns, continuation lines indented two spaces, as the doc writes them. */
+function bullet(text) {
+  const lines = [];
+  let line = "";
+  for (const word of text.split(" ")) {
+    const next = line ? `${line} ${word}` : word;
+    if (next.length > 100 && line) { lines.push(line); line = `  ${word}`; } else line = next;
+  }
+  return [...lines, line].join("\n");
+}
+const lowered = cappedAnswers === 0 ? "none lowered" : `${cappedAnswers} lowered by ${one(pointsLost)} points`;
+console.log(bullet(`- **Scores:** total ${one(summary.expectedUserScore)} · integrity ${one(summary.averageIntegrityScore)} · ` +
   `judged ${one(summary.averageSemanticScore)} · completed ${(summary.completionRate * 100).toFixed(1)}% · ` +
-  `mean per-task σ ${mean(summary.perTask.map((task) => task.sdTotal)).toFixed(2)}`);
-console.log(`- **Critical caps:** ${cappedAnswers} of ${baseline.results.length} answers` + (capParts.length ? ` (${capParts.join("; ")})` : ""));
-console.log(`- **Diagnostics:** tool argument errors ${diagnostics.toolArgumentErrors} · fallback reports ${diagnostics.fallbackReports} · ` +
-  `unverified report figures ${diagnostics.unverifiedFigures} · repaired ${diagnostics.repairedFigures}`);
+  `mean per-task σ ${mean(summary.perTask.map((task) => task.sdTotal)).toFixed(2)}`));
+console.log(bullet(flaggedAnswers === 0
+  ? `- **Critical caps:** 0 of ${baseline.results.length} answers`
+  : `- **Critical caps:** ${flaggedAnswers} of ${baseline.results.length} answers missed or contradicted a critical item, ${lowered}` +
+    (capParts.length ? ` (${capParts.join("; ")})` : "")));
+console.log(bullet(`- **Diagnostics:** tool argument errors ${diagnostics.toolArgumentErrors} · fallback reports ${diagnostics.fallbackReports} · ` +
+  `unverified report figures ${diagnostics.unverifiedFigures} · repaired ${diagnostics.repairedFigures}`));
 console.log("");
 console.log("| Task | Evidence | Figures | Contracts | Intent | Financial | Grounding | Clarity | Total (σ) | Capped | Run time | Output tokens |");
 console.log("| :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |");

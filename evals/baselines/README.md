@@ -24,8 +24,8 @@ Each per-task value is over the task's three runs, from the baseline's `results`
   points by dimension, `judgeResult.dimensionScores`, which add up to Judged (/60).
 - **Total** (/100): the task's mean `totalScore` with its population standard deviation (σ). A
   failed run counts as zero; the integrity and judge columns average the completed answers only.
-- **Capped**: answers limited by a critical rubric item, at 49 when it was contradicted and at 69
-  when it was missed.
+- **Capped**: answers a critical rubric item's cap actually lowered: capped at 49 when the item was
+  contradicted and at 69 when it was missed. An answer already below its cap is not counted.
 - **Run time**: the task's turn, `metrics.latencyMs`, judging excluded.
 - **Output tokens**: `metrics.tokens.output`, as the provider reports it. DeepSeek and Qwen count
   their thinking in it, so their figures are not comparable with the OpenAI models'.
@@ -71,7 +71,8 @@ out as in [evals/README.md › Reproducing the README table](../README.md#reprod
 - **Judge:** `openai-codex/gpt-6-astra`, thinking medium, three grades per answer
 - **Commit:** `7658738`
 - **Scores:** total 73.6 · integrity 37.6 · judged 38.5 · completed 100.0% · mean per-task σ 2.56
-- **Critical caps:** 6 of 36 answers (contradicted `roc-not-inferred` 3, `time-and-motive` 3)
+- **Critical caps:** 6 of 36 answers missed or contradicted a critical item, 6 lowered by 90.5
+  points (contradicted `roc-not-inferred` 3, `time-and-motive` 3)
 - **Diagnostics:** tool argument errors 3 · fallback reports 2 · unverified report figures 475 ·
   repaired 12
 - **Cost:** $10.86 per run · per million tokens: input $2.00, cache read $0.10, output $10.00 ·
@@ -106,7 +107,8 @@ report figures are the most of any row, though integrity stays the highest of an
 - **Judge:** `openai-codex/gpt-6-astra`, thinking medium, three grades per answer
 - **Commit:** `196afb7`
 - **Scores:** total 71.5 · integrity 32.3 · judged 39.4 · completed 100.0% · mean per-task σ 6.27
-- **Critical caps:** 1 of 36 answers (missed `roc-not-inferred` 1)
+- **Critical caps:** 1 of 36 answers missed or contradicted a critical item, 1 lowered by 7.8 points
+  (missed `roc-not-inferred` 1)
 - **Diagnostics:** tool argument errors 0 · fallback reports 0 · unverified report figures 33 ·
   repaired 8
 - **Cost:** $4.46 per run · per million tokens: input $2.00, cache read $0.20, cache write
@@ -136,8 +138,9 @@ report figures are the most of any row, though integrity stays the highest of an
 - **Judge:** `openai-codex/gpt-6-astra`, thinking medium, three grades per answer
 - **Commit:** `15fe014`
 - **Scores:** total 68.0 · integrity 32.0 · judged 37.8 · completed 100.0% · mean per-task σ 5.15
-- **Critical caps:** 6 of 36 answers (contradicted `roc-not-inferred` 3, `commercial-stage` 1,
-  `time-and-motive` 1, `pre-open-boundary` 1)
+- **Critical caps:** 6 of 36 answers missed or contradicted a critical item, 5 lowered by 65.3
+  points (contradicted `roc-not-inferred` 3, `commercial-stage` 1, `time-and-motive` 1,
+  `pre-open-boundary` 1)
 - **Diagnostics:** tool argument errors 41 · fallback reports 0 · unverified report figures 194 ·
   repaired 13
 - **Cost:** $20.54 per run · per million tokens: input $10.00, cache read $0.25, cache write (5
@@ -151,7 +154,7 @@ report figures are the most of any row, though integrity stays the highest of an
 | `retail-04-dividend-yield-trap` | 12.0 | 10.6 | 5.3 | 15.0 | 10.0 | 0.0 | 6.7 | 49.0 (0.0) | 3 | 155 s | 11,789 |
 | `retail-05-intel-value-trap` | 12.0 | 11.3 | 5.3 | 15.0 | 10.0 | 7.5 | 10.0 | 71.2 (7.6) | 0 | 117 s | 8,897 |
 | `retail-06-mstr-proxy-leverage` | 12.0 | 10.4 | 16.0 | 15.0 | 10.0 | 7.5 | 6.7 | 77.6 (2.1) | 0 | 128 s | 9,337 |
-| `retail-09-narrative-factcheck-apple` | 6.4 | 11.9 | 0.0 | 7.5 | 6.7 | 7.5 | 5.0 | 45.0 (4.6) | 1 | 115 s | 8,689 |
+| `retail-09-narrative-factcheck-apple` | 6.4 | 11.9 | 0.0 | 7.5 | 6.7 | 7.5 | 5.0 | 45.0 (4.6) | 0 | 115 s | 8,689 |
 | `retail-10-smci-accounting-red-flag` | 11.3 | 11.9 | 16.0 | 15.0 | 16.7 | 15.0 | 8.3 | 94.2 (7.9) | 0 | 107 s | 8,143 |
 | `retail-11-nike-earnings-review-report` | 12.0 | 11.3 | 16.0 | 7.5 | 10.0 | 7.5 | 5.0 | 69.3 (0.4) | 0 | 155 s | 12,134 |
 | `retail-12-concentration-profile-fit` | 12.0 | 10.9 | 8.0 | 15.0 | 16.7 | 7.5 | 10.0 | 80.1 (4.4) | 0 | 72 s | 5,713 |
@@ -173,7 +176,8 @@ two thirds of its cost.
 - **Judge:** `openai-codex/gpt-6-astra`, thinking medium, three grades per answer
 - **Commit:** `5cd63ec`
 - **Scores:** total 67.7 · integrity 30.9 · judged 37.2 · completed 100.0% · mean per-task σ 3.25
-- **Critical caps:** 3 of 36 answers (contradicted `roc-not-inferred` 3)
+- **Critical caps:** 3 of 36 answers missed or contradicted a critical item, 2 lowered by 16.2
+  points (contradicted `roc-not-inferred` 3)
 - **Diagnostics:** tool argument errors 0 · fallback reports 0 · unverified report figures 71 ·
   repaired 1
 - **Cost:** $6.84 per run · per million tokens: input $4.00, cache read $0.20, cache write (5
@@ -184,7 +188,7 @@ two thirds of its cost.
 | `retail-01-nvda-beat-and-drop` | 5.6 | 11.8 | 0.0 | 15.0 | 10.0 | 7.5 | 5.0 | 54.9 (0.1) | 0 | 87 s | 7,235 |
 | `retail-02-nike-moat-erosion` | 10.9 | 11.6 | 10.7 | 7.5 | 13.3 | 7.5 | 5.0 | 66.6 (9.3) | 0 | 125 s | 8,374 |
 | `retail-03-nuclear-thematic-purity` | 12.0 | 11.8 | 16.0 | 15.0 | 10.0 | 7.5 | 5.0 | 77.3 (0.2) | 0 | 61 s | 5,009 |
-| `retail-04-dividend-yield-trap` | 12.0 | 11.0 | 0.0 | 12.5 | 10.0 | 2.5 | 5.0 | 47.6 (1.9) | 3 | 111 s | 7,038 |
+| `retail-04-dividend-yield-trap` | 12.0 | 11.0 | 0.0 | 12.5 | 10.0 | 2.5 | 5.0 | 47.6 (1.9) | 2 | 111 s | 7,038 |
 | `retail-05-intel-value-trap` | 4.0 | 11.8 | 0.0 | 12.5 | 10.0 | 7.5 | 8.3 | 54.1 (2.4) | 0 | 75 s | 5,791 |
 | `retail-06-mstr-proxy-leverage` | 12.0 | 11.1 | 5.3 | 15.0 | 10.0 | 7.5 | 8.3 | 69.3 (5.8) | 0 | 130 s | 8,531 |
 | `retail-09-narrative-factcheck-apple` | 6.4 | 11.9 | 0.0 | 7.5 | 10.0 | 7.5 | 10.0 | 53.3 (0.1) | 0 | 94 s | 6,822 |
@@ -207,8 +211,8 @@ re-running the agent.
 - **Judge:** `openai-codex/gpt-6-astra`, thinking medium, three grades per answer
 - **Commit:** `fb42f3d`
 - **Scores:** total 67.3 · integrity 33.0 · judged 34.7 · completed 100.0% · mean per-task σ 4.61
-- **Critical caps:** 5 of 36 answers (contradicted `roc-not-inferred` 3, `time-and-motive` 1; missed
-  `life-savings-guardrail` 1)
+- **Critical caps:** 5 of 36 answers missed or contradicted a critical item, 3 lowered by 15.9
+  points (contradicted `roc-not-inferred` 3, `time-and-motive` 1; missed `life-savings-guardrail` 1)
 - **Diagnostics:** tool argument errors 18 · fallback reports 1 · unverified report figures 346 ·
   repaired 12
 - **Cost:** $0.91 per run · per million tokens: input (cache miss) $0.30, cache hit $0.006,
@@ -219,8 +223,8 @@ re-running the agent.
 | `retail-01-nvda-beat-and-drop` | 12.0 | 11.1 | 0.0 | 15.0 | 13.3 | 7.5 | 5.0 | 63.9 (5.1) | 0 | 118 s | 22,396 |
 | `retail-02-nike-moat-erosion` | 10.4 | 10.8 | 10.7 | 7.5 | 10.0 | 7.5 | 5.0 | 61.9 (6.7) | 0 | 217 s | 46,255 |
 | `retail-03-nuclear-thematic-purity` | 12.0 | 11.5 | 13.3 | 15.0 | 10.0 | 10.0 | 6.7 | 78.5 (2.5) | 0 | 156 s | 27,369 |
-| `retail-04-dividend-yield-trap` | 12.0 | 11.2 | 0.0 | 12.5 | 10.0 | 0.0 | 5.0 | 47.8 (1.6) | 3 | 176 s | 34,682 |
-| `retail-05-intel-value-trap` | 12.0 | 11.0 | 5.3 | 10.0 | 10.0 | 7.5 | 6.7 | 62.5 (9.4) | 1 | 167 s | 33,537 |
+| `retail-04-dividend-yield-trap` | 12.0 | 11.2 | 0.0 | 12.5 | 10.0 | 0.0 | 5.0 | 47.8 (1.6) | 2 | 176 s | 34,682 |
+| `retail-05-intel-value-trap` | 12.0 | 11.0 | 5.3 | 10.0 | 10.0 | 7.5 | 6.7 | 62.5 (9.4) | 0 | 167 s | 33,537 |
 | `retail-06-mstr-proxy-leverage` | 12.0 | 11.0 | 5.3 | 12.5 | 6.7 | 10.0 | 6.7 | 64.1 (2.6) | 0 | 205 s | 41,293 |
 | `retail-09-narrative-factcheck-apple` | 9.2 | 11.4 | 16.0 | 7.5 | 6.7 | 7.5 | 5.0 | 60.9 (8.7) | 1 | 121 s | 24,984 |
 | `retail-10-smci-accounting-red-flag` | 12.0 | 10.9 | 16.0 | 12.5 | 10.0 | 12.5 | 5.0 | 78.9 (2.9) | 0 | 156 s | 30,744 |
@@ -242,8 +246,9 @@ thematic purity (+20.8) and the Apple fact-check (+10.9) improved most, MSTR (�
 - **Judge:** `openai-codex/gpt-6-astra`, thinking medium, three grades per answer
 - **Commit:** `a8ec63f`
 - **Scores:** total 67.0 · integrity 33.3 · judged 36.0 · completed 100.0% · mean per-task σ 4.10
-- **Critical caps:** 8 of 36 answers (contradicted `commercial-stage` 2, `roc-not-inferred` 2,
-  `time-and-motive` 1; missed `life-savings-guardrail` 2, `roc-not-inferred` 1)
+- **Critical caps:** 8 of 36 answers missed or contradicted a critical item, 4 lowered by 82.2
+  points (contradicted `commercial-stage` 2, `roc-not-inferred` 2, `time-and-motive` 1; missed
+  `life-savings-guardrail` 2, `roc-not-inferred` 1)
 - **Diagnostics:** tool argument errors 17 · fallback reports 0 · unverified report figures 420 ·
   repaired 19
 - **Cost:** $1.05 per run · per million tokens: input (cache miss) $0.30, cache hit $0.006,
@@ -254,10 +259,10 @@ thematic purity (+20.8) and the Apple fact-check (+10.9) improved most, MSTR (�
 | `retail-01-nvda-beat-and-drop` | 12.0 | 11.1 | 0.0 | 15.0 | 10.0 | 7.5 | 5.0 | 60.6 (0.2) | 0 | 156 s | 32,696 |
 | `retail-02-nike-moat-erosion` | 12.0 | 10.9 | 10.7 | 10.0 | 10.0 | 7.5 | 5.0 | 66.1 (10.0) | 0 | 221 s | 49,293 |
 | `retail-03-nuclear-thematic-purity` | 12.0 | 10.6 | 16.0 | 15.0 | 10.0 | 7.5 | 5.0 | 57.7 (12.3) | 2 | 191 s | 39,615 |
-| `retail-04-dividend-yield-trap` | 12.0 | 10.9 | 5.3 | 12.5 | 10.0 | 2.5 | 5.0 | 51.7 (6.5) | 3 | 215 s | 43,871 |
-| `retail-05-intel-value-trap` | 12.0 | 11.0 | 5.3 | 12.5 | 10.0 | 10.0 | 5.0 | 63.4 (4.0) | 2 | 178 s | 38,013 |
+| `retail-04-dividend-yield-trap` | 12.0 | 10.9 | 5.3 | 12.5 | 10.0 | 2.5 | 5.0 | 51.7 (6.5) | 1 | 215 s | 43,871 |
+| `retail-05-intel-value-trap` | 12.0 | 11.0 | 5.3 | 12.5 | 10.0 | 10.0 | 5.0 | 63.4 (4.0) | 1 | 178 s | 38,013 |
 | `retail-06-mstr-proxy-leverage` | 12.0 | 10.7 | 16.0 | 15.0 | 10.0 | 7.5 | 5.0 | 76.2 (0.6) | 0 | 215 s | 44,955 |
-| `retail-09-narrative-factcheck-apple` | 11.1 | 10.6 | 0.0 | 7.5 | 6.7 | 7.5 | 6.7 | 50.0 (5.2) | 1 | 178 s | 39,034 |
+| `retail-09-narrative-factcheck-apple` | 11.1 | 10.6 | 0.0 | 7.5 | 6.7 | 7.5 | 6.7 | 50.0 (5.2) | 0 | 178 s | 39,034 |
 | `retail-10-smci-accounting-red-flag` | 12.0 | 10.9 | 16.0 | 15.0 | 13.3 | 15.0 | 10.0 | 92.2 (4.2) | 0 | 162 s | 35,520 |
 | `retail-11-nike-earnings-review-report` | 12.0 | 10.2 | 16.0 | 7.5 | 10.0 | 7.5 | 5.0 | 68.2 (0.1) | 0 | 179 s | 37,610 |
 | `retail-12-concentration-profile-fit` | 12.0 | 11.1 | 8.0 | 15.0 | 20.0 | 7.5 | 10.0 | 83.6 (0.7) | 0 | 67 s | 13,775 |
@@ -272,8 +277,9 @@ thematic purity (+20.8) and the Apple fact-check (+10.9) improved most, MSTR (�
 - **Judge:** `openai-codex/gpt-6-astra`, thinking medium, three grades per answer
 - **Commit:** `5cd63ec`
 - **Scores:** total 64.9 · integrity 29.6 · judged 35.5 · completed 100.0% · mean per-task σ 4.99
-- **Critical caps:** 6 of 36 answers (contradicted `time-and-motive` 3, `roc-not-inferred` 1; missed
-  `roc-not-inferred` 1, `report-delivery` 1)
+- **Critical caps:** 6 of 36 answers missed or contradicted a critical item, 2 lowered by 6.7 points
+  (contradicted `time-and-motive` 3, `roc-not-inferred` 1; missed `roc-not-inferred` 1,
+  `report-delivery` 1)
 - **Diagnostics:** tool argument errors 143 · fallback reports 1 · unverified report figures 197 ·
   repaired 8
 - **Cost:** $6.05 per run · per million tokens: input $2.00, cache read $0.50, output $6.00, the
@@ -284,12 +290,12 @@ thematic purity (+20.8) and the Apple fact-check (+10.9) improved most, MSTR (�
 | `retail-01-nvda-beat-and-drop` | 9.9 | 11.2 | 0.0 | 15.0 | 10.0 | 7.5 | 5.0 | 58.6 (2.8) | 0 | 187 s | 12,101 |
 | `retail-02-nike-moat-erosion` | 12.0 | 11.3 | 5.3 | 10.0 | 10.0 | 7.5 | 5.0 | 61.1 (6.8) | 0 | 150 s | 12,208 |
 | `retail-03-nuclear-thematic-purity` | 9.2 | 11.6 | 10.7 | 15.0 | 10.0 | 7.5 | 5.0 | 68.9 (5.3) | 0 | 168 s | 10,891 |
-| `retail-04-dividend-yield-trap` | 12.0 | 11.0 | 0.0 | 7.5 | 10.0 | 7.5 | 5.0 | 51.8 (2.0) | 2 | 176 s | 12,631 |
+| `retail-04-dividend-yield-trap` | 12.0 | 11.0 | 0.0 | 7.5 | 10.0 | 7.5 | 5.0 | 51.8 (2.0) | 1 | 176 s | 12,631 |
 | `retail-05-intel-value-trap` | 9.3 | 11.0 | 5.3 | 7.5 | 10.0 | 10.0 | 6.7 | 59.8 (10.3) | 0 | 193 s | 13,668 |
 | `retail-06-mstr-proxy-leverage` | 10.4 | 11.3 | 10.7 | 15.0 | 10.0 | 7.5 | 5.0 | 69.9 (7.6) | 0 | 179 s | 12,195 |
-| `retail-09-narrative-factcheck-apple` | 11.1 | 11.5 | 5.3 | 0.0 | 6.7 | 7.5 | 5.0 | 46.0 (2.5) | 3 | 355 s | 12,998 |
+| `retail-09-narrative-factcheck-apple` | 11.1 | 11.5 | 5.3 | 0.0 | 6.7 | 7.5 | 5.0 | 46.0 (2.5) | 1 | 355 s | 12,998 |
 | `retail-10-smci-accounting-red-flag` | 11.3 | 11.2 | 16.0 | 15.0 | 20.0 | 7.5 | 8.3 | 89.4 (2.3) | 0 | 203 s | 10,596 |
-| `retail-11-nike-earnings-review-report` | 12.0 | 10.7 | 0.0 | 7.5 | 3.3 | 7.5 | 5.0 | 46.0 (4.0) | 1 | 242 s | 9,215 |
+| `retail-11-nike-earnings-review-report` | 12.0 | 10.7 | 0.0 | 7.5 | 3.3 | 7.5 | 5.0 | 46.0 (4.0) | 0 | 242 s | 9,215 |
 | `retail-12-concentration-profile-fit` | 10.1 | 11.8 | 2.7 | 15.0 | 16.7 | 7.5 | 8.3 | 72.1 (8.8) | 0 | 63 s | 4,510 |
 | `retail-13-semis-figure-survival` | 12.0 | 11.4 | 16.0 | 12.5 | 13.3 | 10.0 | 10.0 | 85.3 (7.3) | 0 | 121 s | 9,284 |
 | `retail-14-apple-pre-open-timing` | 12.0 | 11.6 | 16.0 | 7.5 | 10.0 | 7.5 | 5.0 | 69.6 (0.3) | 0 | 93 s | 8,450 |
@@ -305,8 +311,9 @@ which adds to its run time rather than costing points directly.
 - **Judge:** `openai-codex/gpt-6-astra`, thinking medium, three grades per answer
 - **Commit:** `73badcf`
 - **Scores:** total 63.5 · integrity 29.0 · judged 34.7 · completed 100.0% · mean per-task σ 5.31
-- **Critical caps:** 7 of 36 answers (contradicted `roc-not-inferred` 3, `time-and-motive` 2; missed
-  `life-savings-guardrail` 1, `report-delivery` 1)
+- **Critical caps:** 7 of 36 answers missed or contradicted a critical item, 1 lowered by 6.2 points
+  (contradicted `roc-not-inferred` 3, `time-and-motive` 2; missed `life-savings-guardrail` 1,
+  `report-delivery` 1)
 - **Diagnostics:** tool argument errors 100 · fallback reports 2 · unverified report figures 198 ·
   repaired 16
 - **Cost:** $13.54 per run · per million tokens: input $3.00, cache read $0.30, cache write $3.00,
@@ -317,12 +324,12 @@ which adds to its run time rather than costing points directly.
 | `retail-01-nvda-beat-and-drop` | 9.9 | 11.6 | 0.0 | 15.0 | 10.0 | 7.5 | 5.0 | 59.0 (3.1) | 0 | 283 s | 9,767 |
 | `retail-02-nike-moat-erosion` | 12.0 | 10.9 | 5.3 | 10.0 | 10.0 | 7.5 | 5.0 | 60.7 (6.5) | 0 | 485 s | 18,458 |
 | `retail-03-nuclear-thematic-purity` | 12.0 | 11.2 | 16.0 | 15.0 | 10.0 | 7.5 | 5.0 | 76.7 (0.4) | 0 | 326 s | 11,246 |
-| `retail-04-dividend-yield-trap` | 10.1 | 10.9 | 0.0 | 7.5 | 10.0 | 0.0 | 5.0 | 43.5 (2.1) | 3 | 217 s | 7,422 |
-| `retail-05-intel-value-trap` | 8.8 | 11.1 | 0.0 | 15.0 | 10.0 | 7.5 | 8.3 | 60.8 (2.2) | 1 | 383 s | 12,384 |
+| `retail-04-dividend-yield-trap` | 10.1 | 10.9 | 0.0 | 7.5 | 10.0 | 0.0 | 5.0 | 43.5 (2.1) | 0 | 217 s | 7,422 |
+| `retail-05-intel-value-trap` | 8.8 | 11.1 | 0.0 | 15.0 | 10.0 | 7.5 | 8.3 | 60.8 (2.2) | 0 | 383 s | 12,384 |
 | `retail-06-mstr-proxy-leverage` | 12.0 | 9.2 | 10.7 | 10.0 | 10.0 | 7.5 | 5.0 | 64.4 (10.3) | 0 | 458 s | 14,204 |
-| `retail-09-narrative-factcheck-apple` | 8.0 | 11.3 | 0.0 | 10.0 | 3.3 | 7.5 | 6.7 | 44.7 (9.5) | 2 | 355 s | 12,277 |
+| `retail-09-narrative-factcheck-apple` | 8.0 | 11.3 | 0.0 | 10.0 | 3.3 | 7.5 | 6.7 | 44.7 (9.5) | 1 | 355 s | 12,277 |
 | `retail-10-smci-accounting-red-flag` | 9.3 | 10.5 | 10.7 | 15.0 | 16.7 | 15.0 | 6.7 | 83.9 (1.4) | 0 | 222 s | 7,795 |
-| `retail-11-nike-earnings-review-report` | 12.0 | 11.1 | 10.7 | 7.5 | 10.0 | 7.5 | 5.0 | 63.7 (7.2) | 1 | 349 s | 12,739 |
+| `retail-11-nike-earnings-review-report` | 12.0 | 11.1 | 10.7 | 7.5 | 10.0 | 7.5 | 5.0 | 63.7 (7.2) | 0 | 349 s | 12,739 |
 | `retail-12-concentration-profile-fit` | 10.1 | 10.4 | 2.7 | 15.0 | 13.3 | 7.5 | 5.0 | 64.0 (8.5) | 0 | 99 s | 3,975 |
 | `retail-13-semis-figure-survival` | 12.0 | 11.8 | 16.0 | 10.0 | 10.0 | 7.5 | 8.3 | 75.6 (5.1) | 0 | 183 s | 7,629 |
 | `retail-14-apple-pre-open-timing` | 12.0 | 12.0 | 16.0 | 7.5 | 10.0 | 2.5 | 5.0 | 65.0 (7.4) | 0 | 265 s | 10,479 |
@@ -339,7 +346,8 @@ Nike report, used up the 32-call turn budget and ended with a fallback report.
 - **Judge:** `openai-codex/gpt-6-astra`, thinking medium, three grades per answer
 - **Commit:** `196afb7`
 - **Scores:** total 63.2 · integrity 29.2 · judged 34.2 · completed 100.0% · mean per-task σ 6.09
-- **Critical caps:** 3 of 36 answers (missed `roc-not-inferred` 2, `competitor-mapping` 1)
+- **Critical caps:** 3 of 36 answers missed or contradicted a critical item, 1 lowered by 8.5 points
+  (missed `roc-not-inferred` 2, `competitor-mapping` 1)
 - **Diagnostics:** tool argument errors 0 · fallback reports 0 · unverified report figures 61 ·
   repaired 3
 - **Cost:** $2.15 per run · per million tokens: input $2.00, cache read $0.20, cache write
@@ -348,9 +356,9 @@ Nike report, used up the 32-call turn budget and ended with a fallback report.
 | Task | Evidence | Figures | Contracts | Intent | Financial | Grounding | Clarity | Total (σ) | Capped | Run time | Output tokens |
 | :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
 | `retail-01-nvda-beat-and-drop` | 12.0 | 11.8 | 0.0 | 15.0 | 10.0 | 7.5 | 10.0 | 66.3 (0.1) | 0 | 91 s | 3,952 |
-| `retail-02-nike-moat-erosion` | 8.0 | 7.5 | 5.3 | 7.5 | 6.7 | 5.0 | 3.3 | 43.4 (32.0) | 1 | 67 s | 2,934 |
+| `retail-02-nike-moat-erosion` | 8.0 | 7.5 | 5.3 | 7.5 | 6.7 | 5.0 | 3.3 | 43.4 (32.0) | 0 | 67 s | 2,934 |
 | `retail-03-nuclear-thematic-purity` | 12.0 | 11.4 | 16.0 | 10.0 | 10.0 | 7.5 | 5.0 | 71.9 (3.5) | 0 | 79 s | 3,562 |
-| `retail-04-dividend-yield-trap` | 12.0 | 11.8 | 5.3 | 12.5 | 10.0 | 7.5 | 5.0 | 61.3 (6.1) | 2 | 94 s | 3,877 |
+| `retail-04-dividend-yield-trap` | 12.0 | 11.8 | 5.3 | 12.5 | 10.0 | 7.5 | 5.0 | 61.3 (6.1) | 1 | 94 s | 3,877 |
 | `retail-05-intel-value-trap` | 8.9 | 10.7 | 0.0 | 7.5 | 10.0 | 10.0 | 5.0 | 52.2 (3.1) | 0 | 89 s | 3,758 |
 | `retail-06-mstr-proxy-leverage` | 8.8 | 10.5 | 16.0 | 15.0 | 10.0 | 7.5 | 5.0 | 72.8 (0.4) | 0 | 109 s | 5,104 |
 | `retail-09-narrative-factcheck-apple` | 5.1 | 12.0 | 0.0 | 7.5 | 10.0 | 2.5 | 6.7 | 43.7 (9.2) | 0 | 86 s | 3,784 |
@@ -373,7 +381,8 @@ ticker in 2 of 10 runs.
 - **Judge:** `openai-codex/gpt-6-astra`, thinking medium, three grades per answer
 - **Commit:** `196afb7`
 - **Scores:** total 62.8 · integrity 27.3 · judged 35.5 · completed 100.0% · mean per-task σ 5.74
-- **Critical caps:** 2 of 36 answers (contradicted `time-and-motive` 1; missed `report-delivery` 1)
+- **Critical caps:** 2 of 36 answers missed or contradicted a critical item, none lowered
+  (contradicted `time-and-motive` 1; missed `report-delivery` 1)
 - **Diagnostics:** tool argument errors 0 · fallback reports 1 · unverified report figures 100 ·
   repaired 1
 - **Cost:** $0.27 per run · per million tokens: input $0.20, cache read $0.02, cache write
@@ -387,9 +396,9 @@ ticker in 2 of 10 runs.
 | `retail-04-dividend-yield-trap` | 11.1 | 8.5 | 0.0 | 15.0 | 10.0 | 7.5 | 5.0 | 57.1 (2.4) | 0 | 97 s | 3,875 |
 | `retail-05-intel-value-trap` | 9.1 | 10.3 | 0.0 | 7.5 | 10.0 | 7.5 | 8.3 | 52.7 (4.3) | 0 | 115 s | 5,103 |
 | `retail-06-mstr-proxy-leverage` | 10.4 | 11.9 | 5.3 | 15.0 | 10.0 | 7.5 | 5.0 | 65.1 (8.8) | 0 | 100 s | 4,057 |
-| `retail-09-narrative-factcheck-apple` | 9.1 | 10.3 | 0.0 | 5.0 | 10.0 | 5.0 | 8.3 | 47.7 (7.0) | 1 | 195 s | 3,203 |
+| `retail-09-narrative-factcheck-apple` | 9.1 | 10.3 | 0.0 | 5.0 | 10.0 | 5.0 | 8.3 | 47.7 (7.0) | 0 | 195 s | 3,203 |
 | `retail-10-smci-accounting-red-flag` | 4.0 | 11.4 | 8.0 | 7.5 | 10.0 | 2.5 | 10.0 | 53.4 (4.0) | 0 | 96 s | 4,457 |
-| `retail-11-nike-earnings-review-report` | 12.0 | 9.7 | 10.7 | 10.0 | 10.0 | 7.5 | 6.7 | 66.6 (12.2) | 1 | 232 s | 4,924 |
+| `retail-11-nike-earnings-review-report` | 12.0 | 9.7 | 10.7 | 10.0 | 10.0 | 7.5 | 6.7 | 66.6 (12.2) | 0 | 232 s | 4,924 |
 | `retail-12-concentration-profile-fit` | 9.1 | 11.8 | 2.7 | 15.0 | 13.3 | 5.0 | 5.0 | 61.9 (7.7) | 0 | 68 s | 2,837 |
 | `retail-13-semis-figure-survival` | 12.0 | 11.9 | 16.0 | 7.5 | 16.7 | 7.5 | 10.0 | 81.5 (4.6) | 0 | 68 s | 3,086 |
 | `retail-14-apple-pre-open-timing` | 12.0 | 12.0 | 16.0 | 7.5 | 10.0 | 5.0 | 10.0 | 72.5 (3.5) | 0 | 94 s | 4,357 |
@@ -403,9 +412,9 @@ ticker in 2 of 10 runs.
 - **Judge:** `openai-codex/gpt-6-astra`, thinking medium, three grades per answer
 - **Commit:** `5cd63ec`
 - **Scores:** total 62.5 · integrity 29.4 · judged 34.3 · completed 100.0% · mean per-task σ 4.31
-- **Critical caps:** 12 of 36 answers (contradicted `time-and-motive` 3, `roc-not-inferred` 2,
-  `pre-open-boundary` 2, `commercial-stage` 1; missed `report-delivery` 3, `roc-not-inferred` 1,
-  `total-return` 1)
+- **Critical caps:** 12 of 36 answers missed or contradicted a critical item, 4 lowered by 41.6
+  points (contradicted `time-and-motive` 3, `roc-not-inferred` 2, `pre-open-boundary` 2,
+  `commercial-stage` 1; missed `report-delivery` 3, `roc-not-inferred` 1, `total-return` 1)
 - **Diagnostics:** tool argument errors 46 · fallback reports 14 · unverified report figures 277 ·
   repaired 12
 - **Cost:** $2.95 per run · per million tokens: input $0.75, cache read $0.075, output $3.75 ·
@@ -417,12 +426,12 @@ ticker in 2 of 10 runs.
 | `retail-01-nvda-beat-and-drop` | 8.8 | 11.3 | 0.0 | 15.0 | 10.0 | 7.5 | 5.0 | 57.6 (3.5) | 0 | 155 s | 7,776 |
 | `retail-02-nike-moat-erosion` | 12.0 | 10.0 | 0.0 | 7.5 | 10.0 | 7.5 | 5.0 | 52.0 (0.1) | 0 | 137 s | 7,465 |
 | `retail-03-nuclear-thematic-purity` | 12.0 | 9.1 | 16.0 | 15.0 | 10.0 | 7.5 | 6.7 | 67.6 (13.3) | 1 | 173 s | 12,952 |
-| `retail-04-dividend-yield-trap` | 10.1 | 10.0 | 0.0 | 7.5 | 0.0 | 2.5 | 5.0 | 35.1 (1.2) | 3 | 151 s | 13,338 |
+| `retail-04-dividend-yield-trap` | 10.1 | 10.0 | 0.0 | 7.5 | 0.0 | 2.5 | 5.0 | 35.1 (1.2) | 0 | 151 s | 13,338 |
 | `retail-05-intel-value-trap` | 8.3 | 11.2 | 5.3 | 12.5 | 10.0 | 7.5 | 6.7 | 61.5 (10.5) | 0 | 130 s | 8,541 |
 | `retail-06-mstr-proxy-leverage` | 9.9 | 11.7 | 16.0 | 15.0 | 10.0 | 7.5 | 5.0 | 75.1 (1.2) | 0 | 91 s | 5,198 |
-| `retail-09-narrative-factcheck-apple` | 9.2 | 9.5 | 0.0 | 15.0 | 0.0 | 7.5 | 5.0 | 45.9 (2.2) | 3 | 182 s | 14,059 |
+| `retail-09-narrative-factcheck-apple` | 9.2 | 9.5 | 0.0 | 15.0 | 0.0 | 7.5 | 5.0 | 45.9 (2.2) | 1 | 182 s | 14,059 |
 | `retail-10-smci-accounting-red-flag` | 12.0 | 11.4 | 16.0 | 15.0 | 10.0 | 15.0 | 5.0 | 84.4 (0.3) | 0 | 192 s | 15,672 |
-| `retail-11-nike-earnings-review-report` | 12.0 | 11.7 | 0.0 | 7.5 | 6.7 | 7.5 | 5.0 | 50.4 (4.7) | 3 | 155 s | 10,090 |
+| `retail-11-nike-earnings-review-report` | 12.0 | 11.7 | 0.0 | 7.5 | 6.7 | 7.5 | 5.0 | 50.4 (4.7) | 0 | 155 s | 10,090 |
 | `retail-12-concentration-profile-fit` | 12.0 | 11.1 | 8.0 | 15.0 | 20.0 | 7.5 | 8.3 | 82.0 (3.0) | 0 | 132 s | 13,491 |
 | `retail-13-semis-figure-survival` | 12.0 | 10.7 | 16.0 | 15.0 | 13.3 | 7.5 | 10.0 | 84.6 (4.8) | 0 | 188 s | 27,459 |
 | `retail-14-apple-pre-open-timing` | 12.0 | 10.9 | 16.0 | 7.5 | 10.0 | 2.5 | 0.0 | 54.0 (7.1) | 2 | 204 s | 21,208 |
@@ -438,8 +447,9 @@ all three runs of NVIDIA, Nike moat erosion, MSTR and the Nike report.
 - **Judge:** `openai-codex/gpt-6-astra`, thinking medium, three grades per answer
 - **Commit:** `5cd63ec`
 - **Scores:** total 61.5 · integrity 27.1 · judged 35.3 · completed 100.0% · mean per-task σ 6.13
-- **Critical caps:** 9 of 36 answers (contradicted `roc-not-inferred` 3, `commercial-stage` 2,
-  `time-and-motive` 2; missed `report-delivery` 2)
+- **Critical caps:** 9 of 36 answers missed or contradicted a critical item, 1 lowered by 33.1
+  points (contradicted `roc-not-inferred` 3, `commercial-stage` 2, `time-and-motive` 2; missed
+  `report-delivery` 2)
 - **Diagnostics:** tool argument errors 34 · fallback reports 11 · unverified report figures 400 ·
   repaired 29
 - **Cost:** $0.56 per run · per million tokens: input $0.15, cache read $0.03, output $0.50 · Z.ai
@@ -449,13 +459,13 @@ all three runs of NVIDIA, Nike moat erosion, MSTR and the Nike report.
 | :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
 | `retail-01-nvda-beat-and-drop` | 9.9 | 11.1 | 0.0 | 15.0 | 10.0 | 7.5 | 5.0 | 58.4 (2.5) | 0 | 207 s | 21,526 |
 | `retail-02-nike-moat-erosion` | 12.0 | 10.3 | 0.0 | 12.5 | 10.0 | 7.5 | 5.0 | 57.3 (4.6) | 0 | 428 s | 24,386 |
-| `retail-03-nuclear-thematic-purity` | 8.0 | 11.1 | 10.7 | 12.5 | 10.0 | 7.5 | 6.7 | 55.4 (15.0) | 2 | 124 s | 14,300 |
-| `retail-04-dividend-yield-trap` | 12.0 | 10.6 | 0.0 | 7.5 | 10.0 | 0.0 | 5.0 | 45.1 (0.3) | 3 | 425 s | 21,213 |
+| `retail-03-nuclear-thematic-purity` | 8.0 | 11.1 | 10.7 | 12.5 | 10.0 | 7.5 | 6.7 | 55.4 (15.0) | 1 | 124 s | 14,300 |
+| `retail-04-dividend-yield-trap` | 12.0 | 10.6 | 0.0 | 7.5 | 10.0 | 0.0 | 5.0 | 45.1 (0.3) | 0 | 425 s | 21,213 |
 | `retail-05-intel-value-trap` | 6.9 | 9.6 | 0.0 | 12.5 | 10.0 | 7.5 | 6.7 | 53.2 (6.2) | 0 | 353 s | 30,827 |
 | `retail-06-mstr-proxy-leverage` | 9.3 | 8.4 | 16.0 | 12.5 | 10.0 | 7.5 | 5.0 | 68.7 (3.6) | 0 | 625 s | 18,564 |
-| `retail-09-narrative-factcheck-apple` | 12.0 | 9.8 | 0.0 | 2.5 | 10.0 | 7.5 | 5.0 | 46.8 (2.5) | 2 | 366 s | 17,142 |
+| `retail-09-narrative-factcheck-apple` | 12.0 | 9.8 | 0.0 | 2.5 | 10.0 | 7.5 | 5.0 | 46.8 (2.5) | 0 | 366 s | 17,142 |
 | `retail-10-smci-accounting-red-flag` | 10.7 | 10.3 | 13.3 | 15.0 | 20.0 | 15.0 | 8.3 | 92.6 (4.8) | 0 | 313 s | 13,301 |
-| `retail-11-nike-earnings-review-report` | 12.0 | 10.4 | 5.3 | 7.5 | 10.0 | 7.5 | 5.0 | 57.8 (7.9) | 2 | 321 s | 25,159 |
+| `retail-11-nike-earnings-review-report` | 12.0 | 10.4 | 5.3 | 7.5 | 10.0 | 7.5 | 5.0 | 57.8 (7.9) | 0 | 321 s | 25,159 |
 | `retail-12-concentration-profile-fit` | 9.1 | 9.3 | 2.7 | 15.0 | 16.7 | 7.5 | 3.3 | 63.5 (8.8) | 0 | 205 s | 8,374 |
 | `retail-13-semis-figure-survival` | 12.0 | 10.1 | 16.0 | 10.0 | 13.3 | 7.5 | 8.3 | 77.2 (10.4) | 0 | 553 s | 17,230 |
 | `retail-14-apple-pre-open-timing` | 12.0 | 11.3 | 13.3 | 7.5 | 10.0 | 2.5 | 5.0 | 61.6 (7.0) | 0 | 249 s | 26,907 |
@@ -471,9 +481,10 @@ outputs and slow generation, though none timed out.
 - **Judge:** `openai-codex/gpt-6-astra`, thinking medium, three grades per answer
 - **Commit:** `7d5198c`
 - **Scores:** total 60.2 · integrity 26.7 · judged 35.3 · completed 100.0% · mean per-task σ 6.14
-- **Critical caps:** 12 of 36 answers (contradicted `time-and-motive` 3, `commercial-stage` 2,
-  `report-delivery` 2, `roc-not-inferred` 1, `pre-open-boundary` 1; missed `roc-not-inferred` 2,
-  `life-savings-guardrail` 1)
+- **Critical caps:** 12 of 36 answers missed or contradicted a critical item, 5 lowered by 68.3
+  points (contradicted `time-and-motive` 3, `commercial-stage` 2, `report-delivery` 2,
+  `roc-not-inferred` 1, `pre-open-boundary` 1; missed `roc-not-inferred` 2, `life-savings-guardrail`
+  1)
 - **Diagnostics:** tool argument errors 39 · fallback reports 0 · unverified report figures 454 ·
   repaired 25
 - **Cost:** $2.54 per run · per million tokens: input $1.25, cache read $0.15, output $4.25 ·
@@ -484,10 +495,10 @@ outputs and slow generation, though none timed out.
 | `retail-01-nvda-beat-and-drop` | 9.9 | 9.8 | 0.0 | 15.0 | 10.0 | 7.5 | 5.0 | 57.2 (3.4) | 0 | 214 s | 7,782 |
 | `retail-02-nike-moat-erosion` | 8.0 | 10.9 | 0.0 | 7.5 | 10.0 | 7.5 | 5.0 | 48.9 (3.0) | 0 | 295 s | 9,374 |
 | `retail-03-nuclear-thematic-purity` | 7.2 | 10.4 | 8.0 | 10.0 | 13.3 | 7.5 | 5.0 | 57.3 (11.8) | 2 | 293 s | 8,094 |
-| `retail-04-dividend-yield-trap` | 6.1 | 8.6 | 0.0 | 15.0 | 10.0 | 2.5 | 6.7 | 48.9 (2.7) | 3 | 160 s | 7,674 |
-| `retail-05-intel-value-trap` | 7.2 | 10.4 | 0.0 | 12.5 | 10.0 | 7.5 | 6.7 | 54.2 (5.0) | 1 | 144 s | 7,849 |
+| `retail-04-dividend-yield-trap` | 6.1 | 8.6 | 0.0 | 15.0 | 10.0 | 2.5 | 6.7 | 48.9 (2.7) | 0 | 160 s | 7,674 |
+| `retail-05-intel-value-trap` | 7.2 | 10.4 | 0.0 | 12.5 | 10.0 | 7.5 | 6.7 | 54.2 (5.0) | 0 | 144 s | 7,849 |
 | `retail-06-mstr-proxy-leverage` | 7.5 | 9.1 | 10.7 | 15.0 | 6.7 | 7.5 | 5.0 | 61.4 (7.3) | 0 | 103 s | 8,530 |
-| `retail-09-narrative-factcheck-apple` | 4.3 | 10.6 | 0.0 | 10.0 | 0.0 | 5.0 | 5.0 | 34.8 (8.7) | 3 | 87 s | 9,098 |
+| `retail-09-narrative-factcheck-apple` | 4.3 | 10.6 | 0.0 | 10.0 | 0.0 | 5.0 | 5.0 | 34.8 (8.7) | 0 | 87 s | 9,098 |
 | `retail-10-smci-accounting-red-flag` | 10.7 | 11.0 | 13.3 | 15.0 | 13.3 | 15.0 | 6.7 | 85.0 (3.4) | 0 | 89 s | 6,502 |
 | `retail-11-nike-earnings-review-report` | 12.0 | 11.1 | 16.0 | 7.5 | 10.0 | 7.5 | 5.0 | 55.6 (9.3) | 2 | 77 s | 8,249 |
 | `retail-12-concentration-profile-fit` | 10.0 | 11.2 | 8.0 | 15.0 | 20.0 | 7.5 | 10.0 | 81.7 (9.2) | 0 | 63 s | 6,283 |
@@ -509,8 +520,8 @@ answers read none, 36% overall. At the earlier rate the cost would be about $1.4
 - **Judge:** `openai-codex/gpt-6-astra`, thinking medium, three grades per answer
 - **Commit:** `5cd63ec`
 - **Scores:** total 58.3 · integrity 25.2 · judged 33.4 · completed 100.0% · mean per-task σ 4.92
-- **Critical caps:** 4 of 36 answers (contradicted `commercial-stage` 2, `roc-not-inferred` 1;
-  missed `total-return` 1)
+- **Critical caps:** 4 of 36 answers missed or contradicted a critical item, 1 lowered by 8.2 points
+  (contradicted `commercial-stage` 2, `roc-not-inferred` 1; missed `total-return` 1)
 - **Diagnostics:** tool argument errors 11 · fallback reports 0 · unverified report figures 87 ·
   repaired 4
 - **Cost:** $2.94 per run · per million tokens: input $2.00, cache read $0.10, cache write (5
@@ -520,8 +531,8 @@ answers read none, 36% overall. At the earlier rate the cost would be about $1.4
 | :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
 | `retail-01-nvda-beat-and-drop` | 5.9 | 11.9 | 0.0 | 12.5 | 10.0 | 7.5 | 5.0 | 52.7 (3.1) | 0 | 46 s | 4,525 |
 | `retail-02-nike-moat-erosion` | 12.0 | 11.6 | 5.3 | 7.5 | 10.0 | 7.5 | 5.0 | 58.9 (7.8) | 0 | 67 s | 7,112 |
-| `retail-03-nuclear-thematic-purity` | 2.4 | 11.9 | 2.7 | 10.0 | 10.0 | 7.5 | 5.0 | 46.7 (3.6) | 2 | 45 s | 4,966 |
-| `retail-04-dividend-yield-trap` | 10.1 | 10.2 | 0.0 | 7.5 | 10.0 | 7.5 | 5.0 | 50.3 (3.0) | 2 | 50 s | 5,084 |
+| `retail-03-nuclear-thematic-purity` | 2.4 | 11.9 | 2.7 | 10.0 | 10.0 | 7.5 | 5.0 | 46.7 (3.6) | 1 | 45 s | 4,966 |
+| `retail-04-dividend-yield-trap` | 10.1 | 10.2 | 0.0 | 7.5 | 10.0 | 7.5 | 5.0 | 50.3 (3.0) | 0 | 50 s | 5,084 |
 | `retail-05-intel-value-trap` | 4.3 | 11.9 | 0.0 | 12.5 | 10.0 | 7.5 | 8.3 | 54.5 (4.3) | 0 | 43 s | 4,343 |
 | `retail-06-mstr-proxy-leverage` | 7.5 | 11.8 | 5.3 | 10.0 | 10.0 | 5.0 | 5.0 | 54.6 (11.7) | 0 | 49 s | 5,347 |
 | `retail-09-narrative-factcheck-apple` | 2.1 | 11.2 | 0.0 | 7.5 | 10.0 | 2.5 | 5.0 | 38.3 (5.7) | 0 | 38 s | 3,927 |
@@ -539,8 +550,9 @@ answers read none, 36% overall. At the earlier rate the cost would be about $1.4
 - **Judge:** `openai-codex/gpt-6-astra`, thinking medium, three grades per answer
 - **Commit:** `a84112c`
 - **Scores:** total 58.2 · integrity 28.0 · judged 31.6 · completed 100.0% · mean per-task σ 3.56
-- **Critical caps:** 7 of 36 answers (contradicted `roc-not-inferred` 2, `commercial-stage` 1,
-  `time-and-motive` 1, `pre-open-boundary` 1; missed `total-return` 3, `life-savings-guardrail` 1)
+- **Critical caps:** 7 of 36 answers missed or contradicted a critical item, 3 lowered by 47.5
+  points (contradicted `roc-not-inferred` 2, `commercial-stage` 1, `time-and-motive` 1,
+  `pre-open-boundary` 1; missed `total-return` 3, `life-savings-guardrail` 1)
 - **Diagnostics:** tool argument errors 26 · fallback reports 1 · unverified report figures 104 ·
   repaired 7
 - **Cost:** $0.18 per run · per million tokens for a prompt up to 100,000 tokens: input $0.10, cache
@@ -552,10 +564,10 @@ answers read none, 36% overall. At the earlier rate the cost would be about $1.4
 | `retail-01-nvda-beat-and-drop` | 5.6 | 11.8 | 0.0 | 15.0 | 10.0 | 7.5 | 5.0 | 54.9 (0.1) | 0 | 48 s | 9,006 |
 | `retail-02-nike-moat-erosion` | 5.6 | 11.8 | 0.0 | 7.5 | 10.0 | 7.5 | 5.0 | 47.4 (1.7) | 0 | 58 s | 11,266 |
 | `retail-03-nuclear-thematic-purity` | 8.8 | 11.5 | 10.7 | 10.0 | 10.0 | 7.5 | 5.0 | 54.0 (3.6) | 1 | 65 s | 13,640 |
-| `retail-04-dividend-yield-trap` | 12.0 | 9.3 | 0.0 | 7.5 | 10.0 | 5.0 | 5.0 | 47.8 (4.0) | 3 | 57 s | 11,948 |
-| `retail-05-intel-value-trap` | 0.0 | 11.5 | 0.0 | 12.5 | 10.0 | 0.0 | 5.0 | 39.0 (3.3) | 1 | 59 s | 11,340 |
+| `retail-04-dividend-yield-trap` | 12.0 | 9.3 | 0.0 | 7.5 | 10.0 | 5.0 | 5.0 | 47.8 (4.0) | 1 | 57 s | 11,948 |
+| `retail-05-intel-value-trap` | 0.0 | 11.5 | 0.0 | 12.5 | 10.0 | 0.0 | 5.0 | 39.0 (3.3) | 0 | 59 s | 11,340 |
 | `retail-06-mstr-proxy-leverage` | 10.9 | 10.6 | 16.0 | 7.5 | 10.0 | 7.5 | 5.0 | 67.6 (1.5) | 0 | 85 s | 17,164 |
-| `retail-09-narrative-factcheck-apple` | 8.0 | 11.9 | 5.3 | 5.0 | 10.0 | 5.0 | 5.0 | 50.2 (13.2) | 1 | 60 s | 11,860 |
+| `retail-09-narrative-factcheck-apple` | 8.0 | 11.9 | 5.3 | 5.0 | 10.0 | 5.0 | 5.0 | 50.2 (13.2) | 0 | 60 s | 11,860 |
 | `retail-10-smci-accounting-red-flag` | 5.3 | 11.5 | 8.0 | 12.5 | 10.0 | 2.5 | 8.3 | 58.2 (3.7) | 0 | 49 s | 8,247 |
 | `retail-11-nike-earnings-review-report` | 12.0 | 10.7 | 16.0 | 7.5 | 10.0 | 7.5 | 5.0 | 68.7 (0.8) | 0 | 75 s | 14,360 |
 | `retail-12-concentration-profile-fit` | 12.0 | 10.9 | 8.0 | 15.0 | 10.0 | 7.5 | 10.0 | 73.4 (0.6) | 0 | 40 s | 7,960 |
@@ -574,7 +586,8 @@ used up the 32-call turn budget and ended with a fallback report.
 - **Judge:** `openai-codex/gpt-6-astra`, thinking medium, three grades per answer
 - **Commit:** `196afb7`
 - **Scores:** total 57.7 · integrity 25.3 · judged 33.0 · completed 100.0% · mean per-task σ 6.10
-- **Critical caps:** 2 of 36 answers (contradicted `time-and-motive` 1, `report-delivery` 1)
+- **Critical caps:** 2 of 36 answers missed or contradicted a critical item, 1 lowered by 20.7
+  points (contradicted `time-and-motive` 1, `report-delivery` 1)
 - **Diagnostics:** tool argument errors 1 · fallback reports 0 · unverified report figures 36 ·
   repaired 2
 - **Cost:** $0.07 per run · per million tokens: input $0.10, cache read $0.01, cache write
@@ -588,7 +601,7 @@ used up the 32-call turn budget and ended with a fallback report.
 | `retail-04-dividend-yield-trap` | 0.0 | 11.0 | 5.3 | 15.0 | 10.0 | 7.5 | 5.0 | 53.8 (7.8) | 0 | 49 s | 1,861 |
 | `retail-05-intel-value-trap` | 2.9 | 9.6 | 0.0 | 10.0 | 10.0 | 5.0 | 5.0 | 42.5 (1.9) | 0 | 49 s | 1,324 |
 | `retail-06-mstr-proxy-leverage` | 7.2 | 12.0 | 5.3 | 10.0 | 10.0 | 7.5 | 5.0 | 57.0 (5.6) | 0 | 44 s | 1,716 |
-| `retail-09-narrative-factcheck-apple` | 6.4 | 11.7 | 0.0 | 5.0 | 10.0 | 7.5 | 10.0 | 50.6 (3.9) | 1 | 44 s | 1,707 |
+| `retail-09-narrative-factcheck-apple` | 6.4 | 11.7 | 0.0 | 5.0 | 10.0 | 7.5 | 10.0 | 50.6 (3.9) | 0 | 44 s | 1,707 |
 | `retail-10-smci-accounting-red-flag` | 4.0 | 11.1 | 8.0 | 10.0 | 10.0 | 0.0 | 5.0 | 48.1 (4.3) | 0 | 39 s | 1,603 |
 | `retail-11-nike-earnings-review-report` | 12.0 | 11.4 | 16.0 | 7.5 | 10.0 | 7.5 | 6.7 | 64.2 (10.9) | 1 | 81 s | 2,632 |
 | `retail-12-concentration-profile-fit` | 9.2 | 11.8 | 0.0 | 12.5 | 16.7 | 7.5 | 10.0 | 67.7 (4.4) | 0 | 36 s | 1,532 |
@@ -607,8 +620,9 @@ file was not kept; this one was run at the same commit as the GPT-5.6 rows.
 - **Judge:** `openai-codex/gpt-6-astra`, thinking medium, three grades per answer
 - **Commit:** `809619e`
 - **Scores:** total 56.6 · integrity 27.3 · judged 31.0 · completed 100.0% · mean per-task σ 4.63
-- **Critical caps:** 11 of 36 answers (contradicted `roc-not-inferred` 3, `time-and-motive` 3,
-  `report-delivery` 3, `commercial-stage` 2; missed `total-return` 1)
+- **Critical caps:** 11 of 36 answers missed or contradicted a critical item, 6 lowered by 62.7
+  points (contradicted `roc-not-inferred` 3, `time-and-motive` 3, `report-delivery` 3,
+  `commercial-stage` 2; missed `total-return` 1)
 - **Diagnostics:** tool argument errors 9 · fallback reports 0 · unverified report figures 300 ·
   repaired 18
 - **Cost:** $0.84 per run · per million tokens: input $0.049, cache read $0.020, output $3.00 ·
@@ -619,10 +633,10 @@ file was not kept; this one was run at the same commit as the GPT-5.6 rows.
 | `retail-01-nvda-beat-and-drop` | 8.0 | 11.2 | 0.0 | 15.0 | 10.0 | 7.5 | 5.0 | 56.7 (3.0) | 0 | 171 s | 24,436 |
 | `retail-02-nike-moat-erosion` | 12.0 | 10.0 | 5.3 | 7.5 | 10.0 | 7.5 | 6.7 | 59.0 (6.7) | 0 | 212 s | 27,926 |
 | `retail-03-nuclear-thematic-purity` | 7.2 | 9.6 | 8.0 | 10.0 | 10.0 | 7.5 | 5.0 | 53.7 (6.7) | 2 | 126 s | 14,254 |
-| `retail-04-dividend-yield-trap` | 12.0 | 11.3 | 0.0 | 10.0 | 6.7 | 0.0 | 5.0 | 43.3 (5.6) | 3 | 117 s | 15,824 |
+| `retail-04-dividend-yield-trap` | 12.0 | 11.3 | 0.0 | 10.0 | 6.7 | 0.0 | 5.0 | 43.3 (5.6) | 1 | 117 s | 15,824 |
 | `retail-05-intel-value-trap` | 6.1 | 10.6 | 0.0 | 15.0 | 10.0 | 7.5 | 10.0 | 59.2 (0.9) | 0 | 139 s | 17,097 |
 | `retail-06-mstr-proxy-leverage` | 8.5 | 9.9 | 10.7 | 7.5 | 10.0 | 7.5 | 5.0 | 59.1 (10.9) | 0 | 157 s | 24,283 |
-| `retail-09-narrative-factcheck-apple` | 7.7 | 10.2 | 5.3 | 0.0 | 10.0 | 5.0 | 5.0 | 43.3 (5.6) | 3 | 138 s | 23,174 |
+| `retail-09-narrative-factcheck-apple` | 7.7 | 10.2 | 5.3 | 0.0 | 10.0 | 5.0 | 5.0 | 43.3 (5.6) | 0 | 138 s | 23,174 |
 | `retail-10-smci-accounting-red-flag` | 2.7 | 10.4 | 5.3 | 10.0 | 10.0 | 0.0 | 5.0 | 43.4 (7.1) | 0 | 152 s | 21,882 |
 | `retail-11-nike-earnings-review-report` | 12.0 | 10.1 | 16.0 | 7.5 | 6.7 | 7.5 | 5.0 | 49.0 (0.0) | 3 | 139 s | 19,335 |
 | `retail-12-concentration-profile-fit` | 10.9 | 10.7 | 8.0 | 15.0 | 13.3 | 7.5 | 8.3 | 73.8 (1.0) | 0 | 64 s | 9,445 |
@@ -638,9 +652,9 @@ file was not kept; this one was run at the same commit as the GPT-5.6 rows.
 - **Judge:** `openai-codex/gpt-6-astra`, thinking medium, three grades per answer
 - **Commit:** `809619e`
 - **Scores:** total 50.9 · integrity 25.6 · judged 28.8 · completed 94.4% · mean per-task σ 9.35
-- **Critical caps:** 10 of 36 answers (contradicted `roc-not-inferred` 3, `time-and-motive` 3,
-  `pre-open-boundary` 2, `commercial-stage` 1, `profile-safe-observation` 1; missed `total-return`
-  1)
+- **Critical caps:** 10 of 36 answers missed or contradicted a critical item, 3 lowered by 13.5
+  points (contradicted `roc-not-inferred` 3, `time-and-motive` 3, `pre-open-boundary` 2,
+  `commercial-stage` 1, `profile-safe-observation` 1; missed `total-return` 1)
 - **Diagnostics:** tool argument errors 6 · fallback reports 3 · unverified report figures 273 ·
   repaired 21
 - **Cost:** $0.44 per run · per million tokens: input $0.049, cache read $0.020, output $3.00 ·
@@ -651,15 +665,15 @@ file was not kept; this one was run at the same commit as the GPT-5.6 rows.
 | `retail-01-nvda-beat-and-drop` | 8.8 | 10.8 | 0.0 | 7.5 | 5.0 | 7.5 | 5.0 | 29.7 (21.1) | 0 | 46 s | 4,699 |
 | `retail-02-nike-moat-erosion` | 6.1 | 9.4 | 0.0 | 7.5 | 10.0 | 7.5 | 5.0 | 45.5 (1.2) | 0 | 131 s | 12,380 |
 | `retail-03-nuclear-thematic-purity` | 9.2 | 11.5 | 8.0 | 12.5 | 10.0 | 7.5 | 5.0 | 63.6 (11.5) | 1 | 64 s | 6,108 |
-| `retail-04-dividend-yield-trap` | 10.1 | 8.9 | 0.0 | 10.0 | 10.0 | 0.0 | 5.0 | 43.4 (5.0) | 3 | 69 s | 7,962 |
+| `retail-04-dividend-yield-trap` | 10.1 | 8.9 | 0.0 | 10.0 | 10.0 | 0.0 | 5.0 | 43.4 (5.0) | 1 | 69 s | 7,962 |
 | `retail-05-intel-value-trap` | 2.1 | 10.1 | 0.0 | 15.0 | 10.0 | 2.5 | 8.3 | 48.0 (6.9) | 0 | 107 s | 15,182 |
 | `retail-06-mstr-proxy-leverage` | 8.8 | 9.4 | 10.7 | 7.5 | 10.0 | 7.5 | 5.0 | 58.9 (6.8) | 0 | 80 s | 11,284 |
-| `retail-09-narrative-factcheck-apple` | 12.0 | 10.7 | 0.0 | 0.0 | 10.0 | 5.0 | 5.0 | 42.7 (3.8) | 3 | 63 s | 8,601 |
+| `retail-09-narrative-factcheck-apple` | 12.0 | 10.7 | 0.0 | 0.0 | 10.0 | 5.0 | 5.0 | 42.7 (3.8) | 0 | 63 s | 8,601 |
 | `retail-10-smci-accounting-red-flag` | 6.7 | 8.3 | 8.0 | 7.5 | 10.0 | 7.5 | 5.0 | 53.0 (6.8) | 0 | 40 s | 4,110 |
 | `retail-11-nike-earnings-review-report` | 12.0 | 9.1 | 8.0 | 7.5 | 5.0 | 7.5 | 5.0 | 36.1 (25.6) | 0 | 78 s | 7,042 |
 | `retail-12-concentration-profile-fit` | 12.0 | 9.3 | 8.0 | 12.5 | 10.0 | 7.5 | 5.0 | 60.6 (9.9) | 1 | 39 s | 5,004 |
 | `retail-13-semis-figure-survival` | 12.0 | 11.3 | 16.0 | 12.5 | 10.0 | 7.5 | 10.0 | 79.3 (3.8) | 0 | 64 s | 11,750 |
-| `retail-14-apple-pre-open-timing` | 12.0 | 10.9 | 16.0 | 2.5 | 6.7 | 2.5 | 0.0 | 50.5 (9.9) | 2 | 55 s | 6,592 |
+| `retail-14-apple-pre-open-timing` | 12.0 | 10.9 | 16.0 | 2.5 | 6.7 | 2.5 | 0.0 | 50.5 (9.9) | 0 | 55 s | 6,592 |
 
 Two runs, one each of NVIDIA and the Nike report, ended in an agent error: the final answer was
 tool-call markup, and the recovery request did not replace it with prose. Each counts as zero in
