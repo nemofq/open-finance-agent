@@ -10,7 +10,8 @@ All rows are benchmark v2: judge prompt v9 with three grades per answer, policy 
 dataset, twelve tasks × 3 repeats. The GPT, DeepSeek and Qwen rows were rescored with `--rescore`
 from their saved runs when v2 landed, so each agent answer, run time and token count is the original
 run's. The Claude Opus and Sonnet, Grok, Gemini 3.8 Flash and 4 Argon, GLM and Kimi rows were run on
-v2 through a custom OpenAI-compatible endpoint, and Claude Haiku 5.5 and Fable 5.1 through Anthropic's API. The commit below is the run's. Benchmark v1 scores are not comparable and are kept only in
+v2 through a custom OpenAI-compatible endpoint, Claude Haiku 5.5 and Fable 5.1 through Anthropic's API, and
+Muse Spark Open through OpenRouter. The commit below is the run's. Benchmark v1 scores are not comparable and are kept only in
 git history.
 
 Each per-task value is over the task's three runs, from the baseline's `results`:
@@ -424,6 +425,43 @@ all three runs of NVIDIA, Nike moat erosion, MSTR and the Nike report.
 
 The slowest row: several runs took 9–11 minutes against the 12-minute task deadline, from long
 outputs and slow generation, though none timed out.
+
+## Muse Spark Open avg@3
+
+[`2026-10-16-openrouter-meta-muse-spark-open-openai-codex-gpt-6-astra.json`](2026-10-16-openrouter-meta-muse-spark-open-openai-codex-gpt-6-astra.json)
+
+- **Agent:** `openrouter/meta/muse-spark-open`, thinking medium, through OpenRouter
+- **Judge:** `openai-codex/gpt-6-astra`, thinking medium, three grades per answer
+- **Commit:** `7d5198c`
+- **Scores:** total 60.2 · integrity 26.7 · judged 35.3 · completed 100.0% · mean per-task σ 6.14
+- **Critical caps:** 12 of 36 answers (contradicted `time-and-motive` 3, `commercial-stage` 2,
+  `report-delivery` 2, `roc-not-inferred` 1, `pre-open-boundary` 1; missed `roc-not-inferred` 2,
+  `life-savings-guardrail` 1)
+- **Diagnostics:** tool argument errors 39 · fallback reports 0 · unverified report figures 454 ·
+  repaired 25
+- **Cost:** $2.54 per run · per million tokens: input $1.25, cache read $0.15, output $4.25 ·
+  OpenRouter list price, 2026-10-16; Meta publishes no hosted price for the open-weight model
+
+| Task | Evidence | Figures | Contracts | Intent | Financial | Grounding | Clarity | Total (σ) | Capped | Run time | Output tokens |
+| :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| `retail-01-nvda-beat-and-drop` | 9.9 | 9.8 | 0.0 | 15.0 | 10.0 | 7.5 | 5.0 | 57.2 (3.4) | 0 | 214 s | 7,782 |
+| `retail-02-nike-moat-erosion` | 8.0 | 10.9 | 0.0 | 7.5 | 10.0 | 7.5 | 5.0 | 48.9 (3.0) | 0 | 295 s | 9,374 |
+| `retail-03-nuclear-thematic-purity` | 7.2 | 10.4 | 8.0 | 10.0 | 13.3 | 7.5 | 5.0 | 57.3 (11.8) | 2 | 293 s | 8,094 |
+| `retail-04-dividend-yield-trap` | 6.1 | 8.6 | 0.0 | 15.0 | 10.0 | 2.5 | 6.7 | 48.9 (2.7) | 3 | 160 s | 7,674 |
+| `retail-05-intel-value-trap` | 7.2 | 10.4 | 0.0 | 12.5 | 10.0 | 7.5 | 6.7 | 54.2 (5.0) | 1 | 144 s | 7,849 |
+| `retail-06-mstr-proxy-leverage` | 7.5 | 9.1 | 10.7 | 15.0 | 6.7 | 7.5 | 5.0 | 61.4 (7.3) | 0 | 103 s | 8,530 |
+| `retail-09-narrative-factcheck-apple` | 4.3 | 10.6 | 0.0 | 10.0 | 0.0 | 5.0 | 5.0 | 34.8 (8.7) | 3 | 87 s | 9,098 |
+| `retail-10-smci-accounting-red-flag` | 10.7 | 11.0 | 13.3 | 15.0 | 13.3 | 15.0 | 6.7 | 85.0 (3.4) | 0 | 89 s | 6,502 |
+| `retail-11-nike-earnings-review-report` | 12.0 | 11.1 | 16.0 | 7.5 | 10.0 | 7.5 | 5.0 | 55.6 (9.3) | 2 | 77 s | 8,249 |
+| `retail-12-concentration-profile-fit` | 10.0 | 11.2 | 8.0 | 15.0 | 20.0 | 7.5 | 10.0 | 81.7 (9.2) | 0 | 63 s | 6,283 |
+| `retail-13-semis-figure-survival` | 12.0 | 11.7 | 16.0 | 7.5 | 10.0 | 7.5 | 10.0 | 74.7 (0.3) | 0 | 106 s | 7,202 |
+| `retail-14-apple-pre-open-timing` | 12.0 | 11.3 | 16.0 | 7.5 | 10.0 | 7.5 | 3.3 | 62.5 (9.6) | 1 | 74 s | 6,952 |
+
+The three runs scored 60.6, 57.2 and 62.7. Seven answers (the third Concentration run and every
+Semis figures and Apple pre-open run) were run again with `--resume` from the same commit after the
+OpenRouter key's spending limit stopped the first session. Partway through, OpenRouter's requests
+stopped reading from the prompt cache: the first 17 answers read 76% of their input from it, 19
+answers read none, 36% overall. At the earlier rate the cost would be about $1.42 per run.
 
 ## Claude Sonnet 5.5 avg@3
 

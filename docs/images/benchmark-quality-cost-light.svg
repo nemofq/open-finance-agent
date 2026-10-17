@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1000" height="600" viewBox="0 0 1000 600" role="img" aria-labelledby="t d">
 <title id="t">Benchmark quality against cost</title>
-<desc id="d">Total score out of 100 against the agent's average cost per run in US dollars on a log scale. GPT-6.1 Sol medium: 74.1 at $2.13; GPT-5.6 Sol medium: 71.5 at $4.46; DeepSeek V4.1 Flash high: 67.0 at $1.05; GPT-5.6 Terra medium: 63.2 at $2.15; GPT-5.6 Luna medium: 62.8 at $0.27; GPT-6 Luna medium: 57.7 at $0.07; Qwen 3.8 27B medium: 56.6 at $0.84; Qwen 3.8 27B off: 50.9 at $0.44; Claude Opus 5.5 medium: 67.7 at $6.84; Grok 4.7 medium: 64.9 at $6.05; Kimi K3 high: 63.5 at $13.54; Gemini 3.8 Flash medium: 62.5 at $2.95; GLM 5.3 Flash high: 61.5 at $0.56; Claude Haiku 5.5 medium: 58.2 at $0.18; Claude Sonnet 5.5 medium: 58.3 at $2.94; Gemini 4 Argon medium: 73.6 at $10.86; Claude Fable 5.1 medium: 68.0 at $20.54.</desc>
+<desc id="d">Total score out of 100 against the agent's average cost per run in US dollars on a log scale. GPT-6.1 Sol medium: 74.1 at $2.13; GPT-5.6 Sol medium: 71.5 at $4.46; DeepSeek V4.1 Flash high: 67.0 at $1.05; GPT-5.6 Terra medium: 63.2 at $2.15; GPT-5.6 Luna medium: 62.8 at $0.27; GPT-6 Luna medium: 57.7 at $0.07; Qwen 3.8 27B medium: 56.6 at $0.84; Qwen 3.8 27B off: 50.9 at $0.44; Claude Opus 5.5 medium: 67.7 at $6.84; Grok 4.7 medium: 64.9 at $6.05; Kimi K3 high: 63.5 at $13.54; Gemini 3.8 Flash medium: 62.5 at $2.95; GLM 5.3 Flash high: 61.5 at $0.56; Claude Haiku 5.5 medium: 58.2 at $0.18; Claude Sonnet 5.5 medium: 58.3 at $2.94; Gemini 4 Argon medium: 73.6 at $10.86; Claude Fable 5.1 medium: 68.0 at $20.54; Muse Spark Open medium: 60.2 at $2.54.</desc>
 <rect width="1000" height="600" fill="#ffffff"/>
 <g font-family="system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
 <text x="64" y="30" font-size="17" font-weight="600" fill="#0b0b0b">Quality against cost</text>
@@ -56,6 +56,7 @@
 <line x1="639.6525802308367" x2="639.6525802308367" y1="339.07249999999993" y2="302.2087499999999" stroke="#2a78d6" stroke-width="2" stroke-linecap="round" opacity="0.45"/>
 <line x1="824.4119296993808" x2="824.4119296993808" y1="151.09624999999994" y2="145.41750000000002" stroke="#2a78d6" stroke-width="2" stroke-linecap="round" opacity="0.45"/>
 <line x1="914.4676075551262" x2="914.4676075551262" y1="269.48375000000004" y2="176.50624999999997" stroke="#2a78d6" stroke-width="2" stroke-linecap="round" opacity="0.45"/>
+<line x1="618.8589325915698" x2="618.8589325915698" y1="337.05125" y2="274.10374999999993" stroke="#2a78d6" stroke-width="2" stroke-linecap="round" opacity="0.45"/>
 <circle cx="593.8716520787699" cy="142.1450000000001" r="6" fill="#2a78d6" stroke="#ffffff" stroke-width="2"/>
 <circle cx="698.6414105828612" cy="172.175" r="6" fill="#2a78d6" stroke="#ffffff" stroke-width="2"/>
 <circle cx="494.24520075154373" cy="224.14999999999998" r="6" fill="#2a78d6" stroke="#ffffff" stroke-width="2"/>
@@ -73,6 +74,7 @@
 <circle cx="639.6525802308367" cy="324.63500000000005" r="6" fill="#2a78d6" stroke="#ffffff" stroke-width="2"/>
 <circle cx="824.4119296993808" cy="147.92000000000002" r="6" fill="#2a78d6" stroke="#ffffff" stroke-width="2"/>
 <circle cx="914.4676075551262" cy="212.59999999999997" r="6" fill="#2a78d6" stroke="#ffffff" stroke-width="2"/>
+<circle cx="618.8589325915698" cy="302.68999999999994" r="6" fill="#2a78d6" stroke="#ffffff" stroke-width="2"/>
 <text x="581.8716520787699" y="126.1450000000001" font-size="13" font-weight="600" text-anchor="end" fill="#0b0b0b" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" paint-order="stroke">GPT-6.1 Sol · medium</text>
 <text x="581.8716520787699" y="142.1450000000001" font-size="12" text-anchor="end" fill="#52514e" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" paint-order="stroke" style="font-variant-numeric: tabular-nums">74.1 · $2.13</text>
 <text x="686.6414105828612" y="170.175" font-size="13" font-weight="600" text-anchor="end" fill="#0b0b0b" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" paint-order="stroke">GPT-5.6 Sol · medium</text>
@@ -97,8 +99,8 @@
 <text x="867.5747525798553" y="290.575" font-size="12" text-anchor="start" fill="#52514e" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" paint-order="stroke" style="font-variant-numeric: tabular-nums">63.5 · $13.54</text>
 <text x="652.2286046533399" y="288.125" font-size="13" font-weight="600" text-anchor="start" fill="#0b0b0b" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" paint-order="stroke">Gemini 3.8 Flash · medium</text>
 <text x="652.2286046533399" y="304.125" font-size="12" text-anchor="start" fill="#52514e" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" paint-order="stroke" style="font-variant-numeric: tabular-nums">62.5 · $2.95</text>
-<text x="417.4116104596047" y="289.675" font-size="13" font-weight="600" text-anchor="start" fill="#0b0b0b" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" paint-order="stroke">GLM 5.3 Flash · high</text>
-<text x="417.4116104596047" y="305.675" font-size="12" text-anchor="start" fill="#52514e" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" paint-order="stroke" style="font-variant-numeric: tabular-nums">61.5 · $0.56</text>
+<text x="393.4116104596047" y="289.675" font-size="13" font-weight="600" text-anchor="end" fill="#0b0b0b" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" paint-order="stroke">GLM 5.3 Flash · high</text>
+<text x="393.4116104596047" y="305.675" font-size="12" text-anchor="end" fill="#52514e" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" paint-order="stroke" style="font-variant-numeric: tabular-nums">61.5 · $0.56</text>
 <text x="260.7531451681669" y="337.78999999999996" font-size="13" font-weight="600" text-anchor="start" fill="#0b0b0b" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" paint-order="stroke">Claude Haiku 5.5 · medium</text>
 <text x="260.7531451681669" y="353.78999999999996" font-size="12" text-anchor="start" fill="#52514e" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" paint-order="stroke" style="font-variant-numeric: tabular-nums">58.2 · $0.18</text>
 <text x="651.6525802308367" y="322.63500000000005" font-size="13" font-weight="600" text-anchor="start" fill="#0b0b0b" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" paint-order="stroke">Claude Sonnet 5.5 · medium</text>
@@ -107,4 +109,6 @@
 <text x="824.4119296993808" y="133.92000000000002" font-size="12" text-anchor="middle" fill="#52514e" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" paint-order="stroke" style="font-variant-numeric: tabular-nums">73.6 · $10.86</text>
 <text x="902.4676075551262" y="182.59999999999997" font-size="13" font-weight="600" text-anchor="end" fill="#0b0b0b" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" paint-order="stroke">Claude Fable 5.1 · medium</text>
 <text x="902.4676075551262" y="198.59999999999997" font-size="12" text-anchor="end" fill="#52514e" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" paint-order="stroke" style="font-variant-numeric: tabular-nums">68.0 · $20.54</text>
+<text x="606.8589325915698" y="300.68999999999994" font-size="13" font-weight="600" text-anchor="end" fill="#0b0b0b" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" paint-order="stroke">Muse Spark Open · medium</text>
+<text x="606.8589325915698" y="316.68999999999994" font-size="12" text-anchor="end" fill="#52514e" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" paint-order="stroke" style="font-variant-numeric: tabular-nums">60.2 · $2.54</text>
 </g></svg>
