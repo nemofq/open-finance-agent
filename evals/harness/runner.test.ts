@@ -1,4 +1,5 @@
 import { existsSync, mkdtempSync, readdirSync, rmSync } from "node:fs";
+import { createServer, type Server } from "node:http";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
@@ -48,7 +49,7 @@ afterEach(() => {
   rmSync(home, { recursive: true, force: true });
 });
 
-function testConfig(): AppConfig {
+function testConfig(baseUrl = "http://127.0.0.1:9999/v1"): AppConfig {
   const config = defaultConfig();
   config.llm.providers = [
     {
@@ -56,7 +57,7 @@ function testConfig(): AppConfig {
       type: "openai-compatible",
       name: "Test Provider",
       apiKey: "test-key-not-a-real-secret",
-      baseUrl: "http://127.0.0.1:9999/v1",
+      baseUrl,
       models: [{ id: "test-model" }],
     },
   ];
@@ -100,6 +101,56 @@ describe("runTask", () => {
     expect(summary.agentSummaries[0].infrastructureErrors).toBe(1);
     expect(summary.agentSummaries[0].perTask[0].runs).toBe(0);
   }, 60_000);
+
+  it("scores a provider refusing the account as infrastructure, without retrying it", async () => {
+    // OpenRouter's reply once a key's spending limit is spent: the model never ran.
+    const server: Server = createServer((_request, response) => {
+      response.writeHead(403, { "content-type": "application/json" });
+      response.end(JSON.stringify({ error: { message: "Key limit exceeded (total limit). $15.01 of $15.00 used; does not reset.", code: 403 } }));
+    });
+    await new Promise<void>((resolve) => server.listen(0, "127.0.0.1", resolve));
+    const { port } = server.address() as { port: number };
+    try {
+      const agent = { provider: "test-provider", model: "test-model" };
+      const summary = await runBenchmark({
+        config: testConfig(`http://127.0.0.1:${port}/v1`),
+        agents: [agent],
+        judge: agent,
+        tasks: [RETAIL_EVAL_TASKS[0]],
+        repeat: 1,
+        fixtureMode: "offline",
+        policyMode: "enforce",
+      });
+
+      const outcome = summary.results[0];
+      expect(outcome.error).toMatch(/Key limit exceeded/);
+      expect(outcome.status).toBe("infra_error");
+      expect(outcome.valid).toBe(false);
+      expect(outcome.providerRetries).toBeUndefined();
+      expect(outcome.totalScore).toBeUndefined();
+      expect(summary.agentSummaries[0].infrastructureErrors).toBe(1);
+      expect(summary.agentSummaries[0].agentFailures).toBe(0);
+    } finally {
+      await new Promise<void>((resolve) => server.close(() => resolve()));
+    }
+  }, 60_000);
+
+  it("runs an infrastructure failure again on resume", async () => {
+    const config = testConfig();
+    const agent = { provider: "test-provider", model: "test-model" };
+    const options = { config, agents: [agent], judge: agent, tasks: [RETAIL_EVAL_TASKS[0]], repeat: 1, fixtureMode: "offline" as const, policyMode: "enforce" as const };
+    const checkpoint = path.join(home, "checkpoint.json");
+    const first = await runBenchmark({ ...options, checkpointPath: checkpoint });
+    expect(first.results[0].status).toBe("infra_error");
+
+    const started: string[] = [];
+    const resumed = await runBenchmark({ ...options, resumePath: checkpoint, onProgress: (event) => {
+      if (event.type === "task_start") started.push(event.task.id);
+    } });
+
+    expect(started).toEqual(["retail-01-nvda-beat-and-drop"]);
+    expect(resumed.results).toHaveLength(1);
+  }, 120_000);
 
   it("keeps the run inside the temporary data folder", async () => {
     const config = testConfig();

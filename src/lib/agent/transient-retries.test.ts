@@ -1,7 +1,7 @@
 import type { AgentMessage } from "@earendil-works/pi-agent-core";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { assistant, failed } from "@/lib/context/testing";
-import { promptWithTransientRetries } from "./transient-retries";
+import { isAccountError, promptWithTransientRetries } from "./transient-retries";
 
 afterEach(() => { vi.useRealTimers(); });
 
@@ -108,5 +108,26 @@ describe("promptWithTransientRetries", () => {
 
     expect(calls).toBe(0);
     expect(result).toEqual({ retries: 0, infrastructureError: false, errors: [] });
+  });
+});
+
+describe("isAccountError", () => {
+  it("recognises a provider refusing the account: key, credit, quota or permission", () => {
+    for (const message of [
+      '403: {"message":"Key limit exceeded (total limit). $15.01 of $15.00 used; does not reset.","code":403}',
+      "401 Unauthorized: invalid api key",
+      '402: {"error":{"message":"Insufficient credits"}}',
+      "429 You exceeded your current quota, please check your plan and billing details.",
+      '403: {"error":{"code":403,"message":"Request rejected in accordance with our terms of use and policies.","status":"PERMISSION_DENIED"}}',
+    ]) {
+      expect(isAccountError(failed(message)), message).toBe(true);
+    }
+  });
+
+  it("leaves outages, bad requests and answers to the model or the retry loop", () => {
+    for (const message of ["503 upstream connect error", "400 Invalid tool arguments", "context length exceeded", "The assistant run stopped with an error"]) {
+      expect(isAccountError(failed(message)), message).toBe(false);
+    }
+    expect(isAccountError(assistant({ text: "403 is a status code" }))).toBe(false);
   });
 });

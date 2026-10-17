@@ -82,7 +82,7 @@ record run whose capture failed, never for a low score.
 | `--observe` | Run the policy rules in observe mode: verdicts are recorded, nothing is blocked. |
 | `--baseline <name>` | Also write the run's summary to `evals/baselines/<name>.json`; see [Comparing runs](#comparing-runs) for when it is refused and how to name it. |
 | `--checkpoint <path>` | Checkpoint written after every task cell. An offline run writes `offline-eval-checkpoint.json` in the `--out` folder unless told otherwise. |
-| `--resume <path>` | Skip the cells a checkpoint of the same run already holds; a cell saved with a harness or judge error runs again. |
+| `--resume <path>` | Skip the cells a checkpoint of the same run already holds; a cell saved with a harness, infrastructure or judge error runs again. |
 | `--judge-only <path>` | Finish a saved run JSON: judge the results whose judgement is missing or failed, with the run's own judge and judge thinking, so `--judge` and `--judge-thinking` are refused beside it. A run written before results recorded their diagnostics is refused. Takes `--baseline`. |
 | `--rescore <path>` | Recompute v2 integrity and semantic scores from a saved run's full traces, write a new file and leave the original untouched. Trace-stripped baselines cannot be rescored. |
 | `--compare <baseline>` | Compare the completed or rescored run with a same-version baseline using matched task/repeat pairs and regression gates. |
@@ -335,8 +335,9 @@ data folder.
   anything new or kept failing. The tool traces in the run file show which.
 - **`agent_timeout`**: the turn reached its deadline, usually a slow endpoint or long reasoning. A
   lower `--thinking` level can shorten each request.
-- **`infra_error`**: the provider kept failing through its retries. The result is invalid and
-  unscored.
+- **`infra_error`**: the provider kept failing through its retries, or refused the account: a
+  rejected key, exhausted credit or quota, or a spending limit (HTTP 401, 402 or 403). The result is
+  invalid and unscored, and `--resume` runs it again once the account is fixed.
 
 ## Maintaining the dataset
 

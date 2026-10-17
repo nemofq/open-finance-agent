@@ -18,7 +18,7 @@ import { buildAgent } from "./factory";
 import { assistantText, withoutSystemMessages } from "./messages";
 import { generateTitle as generateTitleWithModel, writeGeneratedTitle } from "./title";
 import { toSseEvents } from "./sse";
-import { promptWithTransientRetries } from "./transient-retries";
+import { isAccountError, promptWithTransientRetries } from "./transient-retries";
 import type { TurnInput, TurnResult, TurnUsage } from "./turn-types";
 
 /** Run one turn: build the agent, stream events, persist after every message, and summarise. `done` means on disk. */
@@ -158,7 +158,7 @@ export async function runTurn(input: TurnInput): Promise<TurnResult> {
 
   const messages = withoutSystemMessages(agent.state.messages).filter((item) => !existing.has(item));
   const last = messages.findLast((item) => item.role === "assistant");
-  if (!input.evalAbortSignal?.aborted && last?.role === "assistant" && isRetryableAssistantError(last)) {
+  if (!input.evalAbortSignal?.aborted && last?.role === "assistant" && (isRetryableAssistantError(last) || isAccountError(last))) {
     infrastructureError = true;
   }
 
