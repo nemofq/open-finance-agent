@@ -1,9 +1,9 @@
 /**
  * Draws the README's quality-against-cost chart, `docs/images/benchmark-quality-cost-{light,dark}.svg`,
  * from the README table: each row's name, thinking level, Total and cost. It also keeps two things in
- * the README in step with the rows: the chart's alt text, and the "−x capped" mark beside each Total,
- * the points critical caps took off that row, read from the baseline evals/baselines/README.md names
- * for it.
+ * the README in step with the rows' baselines, which evals/baselines/README.md names for each row:
+ * every row's Total, Integrity and Judged, with the "−x capped" mark beside a Total for the points
+ * critical caps took off it, the table's order by Total, and the chart's alt text.
  *
  *   node scripts/benchmark-chart.mjs
  *
@@ -24,19 +24,22 @@ const read = (file) => readFileSync(path.join(root, file), "utf8");
 const isRow = (line) => /^\| .+ avg@\d+ \|/.test(line);
 const sections = [...read("evals/baselines/README.md").matchAll(/^## (.+?) avg@\d+(?:, (\w+))?\n\n\[`([^`]+\.json)`\]/gm)];
 
-/** Points critical caps took off a row: per answer, its integrity plus judged score less its total, averaged over all answers. */
-function capCost(name, level) {
+/**
+ * A row's scores from its baseline: Total, Integrity and Judged as the table shows them, and the points
+ * critical caps took off it (per answer, integrity plus judged score less total, averaged over all answers).
+ */
+function baselineScores(name, level) {
   const section = sections.find(([, title, sectionLevel]) => title === name && (!sectionLevel || sectionLevel === level));
   if (!section) throw new Error(`No baselines section for ${name} (${level})`);
-  const { results } = JSON.parse(read(path.join("evals/baselines", section[3])));
+  const { results, agentSummaries: [summary] } = JSON.parse(read(path.join("evals/baselines", section[3])));
   const lost = results.reduce((sum, r) => sum + (r.judgeResult ? Math.max(0, r.integrityScore + r.qualityScore - r.totalScore) : 0), 0);
-  return lost / results.length;
+  return { total: summary.expectedUserScore, integrity: summary.averageIntegrityScore, judged: summary.averageSemanticScore, capped: lost / results.length };
 }
 
 const rows = read("README.md").split("\n").filter(isRow).map((line) => {
-  const [model, level, , total, , , cost] = line.split("|").slice(1, -1).map((cell) => cell.trim());
+  const [model, level, , , , , cost] = line.split("|").slice(1, -1).map((cell) => cell.trim());
   const name = model.replace(/ avg@\d+$/, ""), levelKey = level.toLowerCase();
-  return { name, level: levelKey, total: Number.parseFloat(total), cost: Number(cost.replace("$", "")), capped: capCost(name, levelKey) };
+  return { name, level: levelKey, cost: Number(cost.replace("$", "")), ...baselineScores(name, levelKey) };
 });
 
 // --- Geometry: cost on a log scale from $0.05 to $30, Total from 40 to 80.
@@ -267,15 +270,20 @@ const alt = "Scatter of total benchmark score against the agent's average cost p
   `; a dotted Pareto line joins ${pareto.map((p) => p.name).join(", ").replace(/, ([^,]+)$/, " and $1")}`;
 // Each Total carries the points critical caps took off it, so the cap shows where the score is read.
 const capMark = (capped) => (capped >= 0.05 ? ` <sub>−${capped.toFixed(1)} capped</sub>` : "");
-const readmeRows = read("README.md").split("\n").map((line) => {
-  if (!isRow(line)) return line;
+const lines = read("README.md").split("\n");
+const tableRows = lines.filter(isRow).map((line) => {
   const cells = line.split("|");
   const name = cells[1].trim().replace(/ avg@\d+$/, ""), level = cells[2].trim().toLowerCase();
   const row = rows.find((r) => r.name === name && r.level === level);
   cells[4] = ` ${row.total.toFixed(1)}${capMark(row.capped)} `;
-  return cells.join("|");
-}).join("\n");
-const readme = readmeRows;
+  cells[5] = ` ${row.integrity.toFixed(1)} `;
+  cells[6] = ` ${row.judged.toFixed(1)} `;
+  return { line: cells.join("|"), total: row.total };
+});
+// The table is ordered by Total, highest first; rows that tie keep their order.
+const sorted = tableRows.map((row, index) => ({ ...row, index })).sort((a, b) => b.total - a.total || a.index - b.index);
+let next = 0;
+const readme = lines.map((line) => (isRow(line) ? sorted[next++].line : line)).join("\n");
 const withAlt = readme.replace(/(<img src="docs\/images\/benchmark-quality-cost-light\.svg" alt=")[^"]*(")/, (_, head, tail) => head + alt.replace(/"/g, "&quot;") + tail);
 if (!withAlt.includes(alt.replace(/"/g, "&quot;"))) throw new Error("README has no benchmark chart image to describe");
 writeFileSync(path.join(root, "README.md"), withAlt);
