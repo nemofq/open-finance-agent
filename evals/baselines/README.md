@@ -7,11 +7,12 @@ each row down by task; how a run is made and promoted is in
 is added, in the same order as the README's table.
 
 All rows are benchmark v2: judge prompt v9 with three grades per answer, policy enforced, offline
-dataset, twelve tasks × 3 repeats. The GPT, DeepSeek and Qwen rows were rescored with `--rescore`
-from their saved runs when v2 landed, so each agent answer, run time and token count is the original
-run's. The Claude Opus and Sonnet, Grok, Gemini 3.8 Flash and 4 Argon, GLM and Kimi rows were run on
-v2 through a custom OpenAI-compatible endpoint, Claude Haiku 5.5 and Fable 5.1 through Anthropic's API, and
-Muse Spark Open through OpenRouter. The commit below is the run's. Benchmark v1 scores are not comparable and are kept only in
+dataset, twelve tasks × 3 repeats. The GPT, DeepSeek V4.1 Flash and Qwen rows were rescored with
+`--rescore` from their saved runs when v2 landed, so each agent answer, run time and token count is
+the original run's. The Claude Opus and Sonnet, Grok, Gemini 3.8 Flash and 4 Argon, GLM and Kimi rows
+were run on v2 through a custom OpenAI-compatible endpoint, Claude Haiku 5.5 and Fable 5.1 through
+Anthropic's API, DeepSeek V4.1 Flash 1017 through DeepSeek's API, and Muse Spark Open through
+OpenRouter. The commit below is the run's. Benchmark v1 scores are not comparable and are kept only in
 git history.
 
 Each per-task value is over the task's three runs, from the baseline's `results`:
@@ -196,6 +197,42 @@ two thirds of its cost.
 Two answers, one each of the nuclear and covered-call tasks, lost their grades to a dropped judge
 connection; they were graded afterwards with `--judge-only` from the saved answers, without
 re-running the agent.
+
+## DeepSeek V4.1 Flash 1017 avg@3
+
+[`2026-10-17-deepseek-deepseek-flash-1017-openai-codex-gpt-6-astra.json`](2026-10-17-deepseek-deepseek-flash-1017-openai-codex-gpt-6-astra.json)
+
+- **Agent:** `deepseek/deepseek-flash`, thinking high, through DeepSeek's API, which serves
+  DeepSeek-V4.1-Flash-1017 under that id since 2026-10-17
+- **Judge:** `openai-codex/gpt-6-astra`, thinking medium, three grades per answer
+- **Commit:** `fb42f3d`
+- **Scores:** total 67.3 · integrity 33.0 · judged 34.7 · completed 100.0% · mean per-task σ 4.61
+- **Critical caps:** 5 of 36 answers (contradicted `roc-not-inferred` 3, `time-and-motive` 1; missed
+  `life-savings-guardrail` 1)
+- **Diagnostics:** tool argument errors 18 · fallback reports 1 · unverified report figures 346 ·
+  repaired 12
+- **Cost:** $0.91 per run · per million tokens: input (cache miss) $0.30, cache hit $0.006,
+  output $1.20 · DeepSeek API peak pricing, 2026-10-17; off-peak hours are half
+
+| Task | Evidence | Figures | Contracts | Intent | Financial | Grounding | Clarity | Total (σ) | Capped | Run time | Output tokens |
+| :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| `retail-01-nvda-beat-and-drop` | 12.0 | 11.1 | 0.0 | 15.0 | 13.3 | 7.5 | 5.0 | 63.9 (5.1) | 0 | 118 s | 22,396 |
+| `retail-02-nike-moat-erosion` | 10.4 | 10.8 | 10.7 | 7.5 | 10.0 | 7.5 | 5.0 | 61.9 (6.7) | 0 | 217 s | 46,255 |
+| `retail-03-nuclear-thematic-purity` | 12.0 | 11.5 | 13.3 | 15.0 | 10.0 | 10.0 | 6.7 | 78.5 (2.5) | 0 | 156 s | 27,369 |
+| `retail-04-dividend-yield-trap` | 12.0 | 11.2 | 0.0 | 12.5 | 10.0 | 0.0 | 5.0 | 47.8 (1.6) | 3 | 176 s | 34,682 |
+| `retail-05-intel-value-trap` | 12.0 | 11.0 | 5.3 | 10.0 | 10.0 | 7.5 | 6.7 | 62.5 (9.4) | 1 | 167 s | 33,537 |
+| `retail-06-mstr-proxy-leverage` | 12.0 | 11.0 | 5.3 | 12.5 | 6.7 | 10.0 | 6.7 | 64.1 (2.6) | 0 | 205 s | 41,293 |
+| `retail-09-narrative-factcheck-apple` | 9.2 | 11.4 | 16.0 | 7.5 | 6.7 | 7.5 | 5.0 | 60.9 (8.7) | 1 | 121 s | 24,984 |
+| `retail-10-smci-accounting-red-flag` | 12.0 | 10.9 | 16.0 | 12.5 | 10.0 | 12.5 | 5.0 | 78.9 (2.9) | 0 | 156 s | 30,744 |
+| `retail-11-nike-earnings-review-report` | 12.0 | 10.4 | 16.0 | 7.5 | 10.0 | 7.5 | 5.0 | 68.4 (0.6) | 0 | 121 s | 24,262 |
+| `retail-12-concentration-profile-fit` | 12.0 | 11.1 | 8.0 | 15.0 | 16.7 | 7.5 | 10.0 | 80.3 (4.8) | 0 | 70 s | 14,140 |
+| `retail-13-semis-figure-survival` | 12.0 | 11.7 | 16.0 | 7.5 | 16.7 | 7.5 | 6.7 | 78.0 (6.2) | 0 | 164 s | 38,864 |
+| `retail-14-apple-pre-open-timing` | 12.0 | 11.7 | 16.0 | 7.5 | 10.0 | 0.0 | 5.0 | 62.2 (4.1) | 0 | 113 s | 23,300 |
+
+The three runs scored 66.8, 68.4 and 66.7. Against the V4.1 Flash row below, the same id before
+the 1017 update, the total is 0.3 higher on 20% fewer output tokens and 16% less run time: Nuclear
+thematic purity (+20.8) and the Apple fact-check (+10.9) improved most, MSTR (−12.1) and SMCI
+(−13.3) fell most. That row can no longer be reproduced, since `deepseek-flash` now serves 1017.
 
 ## DeepSeek V4.1 Flash avg@3
 
