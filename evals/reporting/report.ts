@@ -169,8 +169,12 @@ function resultSection(result: TaskEvalResult): string[] {
     lines.push(`- Provider retries: ${result.providerRetries}${result.providerRetryErrors?.length ? ` (${result.providerRetryErrors.join("; ")})` : ""}`);
   }
 
+  // A result rescored from a baseline beside ones that were not keeps no traces, so its tools are unknown here.
+  const tools = Array.isArray(result.toolCalls)
+    ? `- Tools (${result.toolCalls.length}): ${result.toolCalls.map((call) => `\`${call.toolName}\`${call.offlineOutcome === "not_captured" ? " (corpus not captured)" : call.offlineOutcome === "out_of_scope" ? " (out of scope)" : call.offlineOutcome === "not_available_as_of" ? " (future-blocked)" : ""}`).join(", ") || "none"}`
+    : "- Tools: not kept (baseline result)";
   lines.push(
-    `- Tools (${result.toolCalls.length}): ${result.toolCalls.map((call) => `\`${call.toolName}\`${call.offlineOutcome === "not_captured" ? " (corpus not captured)" : call.offlineOutcome === "out_of_scope" ? " (out of scope)" : call.offlineOutcome === "not_available_as_of" ? " (future-blocked)" : ""}`).join(", ") || "none"}`,
+    tools,
     `- Check notes:`,
     ...result.deterministicCheck.details.map((detail) => `  - ${detail}`),
   );
