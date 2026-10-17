@@ -54,7 +54,7 @@ OFA_HOME=/tmp/ofa-dev pnpm dev      # http://localhost:3000, against throwaway d
 | Benchmark | `evals/` | [evals/README.md](evals/README.md) |
 
 Also: `scripts/` (install and build helpers, the offline dataset compiler, the pi-ai catalog
-diff), `sandbox/` (the Deno and Pyodide runtime, its boundary checks), `e2e/` (the browser test)
+diff, the benchmark chart and baselines-section generators), `sandbox/` (the Deno and Pyodide runtime, its boundary checks), `e2e/` (the browser test)
 and `docs/`.
 
 ## Checks
