@@ -31,6 +31,7 @@ import {
   type EvalTask,
   type FixtureMode,
   type TaskEvalResult,
+  type TaskResultStatus,
   type ToolCallTrace,
   type OfflineAudit,
 } from "../types";
@@ -41,6 +42,9 @@ import {
  * Sessions, the profile, the holdings ledger and evidence payloads land in the run's temporary data
  * folder, never the developer's.
  */
+
+/** Cells a resume runs again: what failed around the model, not the model's own result. */
+const RETRIED_ON_RESUME: ReadonlySet<TaskResultStatus> = new Set(["harness_error", "infra_error", "judge_error"]);
 
 export type ProgressEvent =
   | { type: "task_start"; agent: string; task: EvalTask; repeat: number; index: number; total: number }
@@ -378,10 +382,11 @@ export async function runBenchmark(options: RunnerOptions): Promise<EvalRunSumma
       for (let attempt = 1; attempt <= repeat; attempt++) {
         const key = `${modelRefKey(agent)}:${task.id}:${attempt}`;
         const checkpointed = results.find((existing) => `${existing.agent}:${existing.task.id}:${existing.repeat}` === key);
-        // A completed/model-error cell is durable benchmark output.  Harness
-        // and judge errors are retried on resume because the environment or
-        // contract may have been repaired after the checkpoint was written.
-        if (checkpointed && checkpointed.status !== "harness_error" && checkpointed.status !== "judge_error") continue;
+        // A completed/model-error cell is durable benchmark output.  Harness,
+        // infrastructure and judge errors are retried on resume because the
+        // environment, the provider account or the contract may have been
+        // repaired after the checkpoint was written.
+        if (checkpointed && !RETRIED_ON_RESUME.has(checkpointed.status)) continue;
         if (checkpointed) {
           const indexToReplace = results.indexOf(checkpointed);
           results.splice(indexToReplace, 1);

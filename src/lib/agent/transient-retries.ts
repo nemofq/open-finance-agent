@@ -21,6 +21,20 @@ export interface TransientPromptRetryOptions {
   signal?: AbortSignal;
 }
 
+/**
+ * A provider refusing the account rather than the request: a rejected or missing key, exhausted
+ * credit or quota, a spending limit, or a model the account may not use. Nothing the model did
+ * causes it and no retry can fix it, so the benchmark scores it as infrastructure, like an outage.
+ */
+const ACCOUNT_STATUS = /^\s*(?:error:?\s*)?(?:401|402|403)\b/i;
+const ACCOUNT_TEXT = /key limit exceeded|insufficient[_ ](?:credits?|quota|balance)|quota exceeded|exceeded your current quota|billing|invalid (?:api )?key|incorrect api key|unauthori[sz]ed|permission[_ ]denied/i;
+
+export function isAccountError(message: AssistantMessage): boolean {
+  if (message.stopReason !== "error") return false;
+  const text = message.errorMessage ?? "";
+  return ACCOUNT_STATUS.test(text) || ACCOUNT_TEXT.test(text);
+}
+
 /** What pi's retry loop is handed for a run that did not end on a reply: settled, so never retried. */
 const SETTLED: AssistantMessage = {
   role: "assistant", content: [], api: "openai-completions", provider: "", model: "", usage: NO_USAGE, stopReason: "stop", timestamp: 0,
