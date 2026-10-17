@@ -265,7 +265,9 @@ followed by `avg@<repeats>`, Thinking effort is the agent's thinking level, and 
 the judge followed by its thinking level when one was set; policy mode and benchmark version go in
 the note under the table. Each row is one run, promoted with `--baseline`, and also gets a section
 in [evals/baselines/README.md](baselines/README.md) with its per-task scores, taken from the
-baseline's `results`:
+baseline's `results` (`node scripts/baseline-section.mjs <baseline.json>` prints its Scores, Critical
+caps and Diagnostics lines and per-task table; the Agent, Judge, Commit and Cost lines are written by
+hand):
 
 ```bash
 pnpm eval --agent <provider/model> --judge <provider/model> --thinking <level> \
@@ -276,7 +278,7 @@ Each column comes from the agent's entry in `agentSummaries` of the run or basel
 
 | README column | Run JSON |
 | :--- | :--- |
-| Total (/100) | `expectedUserScore` |
+| Total (/100) | `expectedUserScore`, with the points critical caps took off it as "−x capped": per answer, `integrityScore` + `qualityScore` − `totalScore`, averaged over all answers |
 | Integrity (/40) | `averageIntegrityScore` |
 | Judged (/60) | `averageSemanticScore` |
 | Avg. cost per run | each of `results[].metrics.tokens` at the provider's list prices, summed, ÷ repeats; see below |
@@ -310,9 +312,11 @@ one host, or a provider with peak and off-peak rates, charges. Output tokens are
 reports, so a provider that reports little of its reasoning also shows a low cost.
 
 The quality-against-cost chart above the table (`docs/images/benchmark-quality-cost-light.svg` and
-`-dark.svg`) plots each row's Total against its average cost per run, with a bar spanning its runs'
-totals and a dotted Pareto line joining the rows no other row beats on both, so it is redrawn with
-every row added.
+`-dark.svg`) plots each row's Total against its average cost per run, with a dotted Pareto line
+joining the rows no other row beats on both. It is drawn from the README table by
+`node scripts/benchmark-chart.mjs`, run after each row is added: the script places every label clear
+of the others, ties a label it has to move away from its point back with a leader line, and rewrites
+the image's alt text and each Total's "−x capped" mark in the README to match.
 
 ### Calibrating a policy rule
 
