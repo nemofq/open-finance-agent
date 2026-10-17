@@ -7,8 +7,8 @@
  *
  * Each per-task value is over the task's runs, as the baselines doc describes: integrity and judge
  * columns average the completed answers, Total is the task's mean `totalScore` with its population
- * standard deviation, Capped counts the answers a critical cap actually lowered, and run time and
- * output tokens are means per run. Long lines are wrapped at 100 columns, as the doc is.
+ * standard deviation, Capped counts the answers a critical cap actually lowered and the points the
+ * caps took off the task's mean Total, and run time and output tokens are means per run. Long lines are wrapped at 100 columns, as the doc is.
  * Dependency-free ESM, Node >= 24.
  */
 
@@ -33,6 +33,13 @@ const flagged = (result) => {
 const capCost = (result) => (flagged(result) ? Math.max(0, result.integrityScore + result.qualityScore - result.totalScore) : 0);
 const capped = (result) => capCost(result) > 0.05;
 
+/** Capped answers on a task and, when any, the points the caps took off its mean Total: "2 (−9.2)". */
+function cappedCell(results) {
+  const lowered = results.filter(capped);
+  if (lowered.length === 0) return "0";
+  return `${lowered.length} (−${one(lowered.reduce((sum, result) => sum + capCost(result), 0) / results.length)})`;
+}
+
 const rows = summary.perTask.map((task) => {
   const results = baseline.results.filter((result) => result.task.id === task.taskId);
   const judged = results.filter((result) => result.status === "completed" && result.judgeResult);
@@ -40,7 +47,7 @@ const rows = summary.perTask.map((task) => {
   const dimension = (key) => one(mean(judged.map((result) => result.judgeResult.dimensionScores[key])));
   return `| \`${task.taskId}\` | ${check("evidenceScore")} | ${check("figureSupportScore")} | ${check("contractScore")} | ` +
     `${dimension("intent")} | ${dimension("financial")} | ${dimension("grounding")} | ${dimension("clarity")} | ` +
-    `${one(task.meanTotal)} (${one(task.sdTotal)}) | ${results.filter(capped).length} | ` +
+    `${one(task.meanTotal)} (${one(task.sdTotal)}) | ${cappedCell(results)} | ` +
     `${whole(mean(results.map((result) => result.durationMs)) / 1000)} s | ${whole(mean(results.map((result) => result.metrics.tokens.output)))} |`;
 });
 

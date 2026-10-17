@@ -24,8 +24,9 @@ Each per-task value is over the task's three runs, from the baseline's `results`
   points by dimension, `judgeResult.dimensionScores`, which add up to Judged (/60).
 - **Total** (/100): the task's mean `totalScore` with its population standard deviation (σ). A
   failed run counts as zero; the integrity and judge columns average the completed answers only.
-- **Capped**: answers a critical rubric item's cap actually lowered: capped at 49 when the item was
-  contradicted and at 69 when it was missed. An answer already below its cap is not counted.
+- **Capped**: answers a critical rubric item's cap actually lowered, capped at 49 when the item was
+  contradicted and at 69 when it was missed, with the points the caps took off the task's mean Total:
+  `2 (−9.2)`. An answer already below its cap is not counted.
 - **Run time**: the task's turn, `metrics.latencyMs`, judging excluded.
 - **Output tokens**: `metrics.tokens.output`, as the provider reports it. DeepSeek and Qwen count
   their thinking in it, so their figures are not comparable with the OpenAI models'.
@@ -84,10 +85,10 @@ out as in [evals/README.md › Reproducing the README table](../README.md#reprod
 | `retail-01-nvda-beat-and-drop` | 12.0 | 11.5 | 5.3 | 15.0 | 10.0 | 7.5 | 5.0 | 66.4 (7.5) | 0 | 469 s | 34,496 |
 | `retail-02-nike-moat-erosion` | 10.9 | 11.4 | 16.0 | 12.5 | 20.0 | 7.5 | 5.0 | 83.3 (3.1) | 0 | 445 s | 39,823 |
 | `retail-03-nuclear-thematic-purity` | 12.0 | 11.6 | 16.0 | 15.0 | 10.0 | 7.5 | 5.0 | 77.1 (0.3) | 0 | 262 s | 22,954 |
-| `retail-04-dividend-yield-trap` | 12.0 | 10.6 | 16.0 | 12.5 | 10.0 | 2.5 | 5.0 | 49.0 (0.0) | 3 | 370 s | 36,975 |
+| `retail-04-dividend-yield-trap` | 12.0 | 10.6 | 16.0 | 12.5 | 10.0 | 2.5 | 5.0 | 49.0 (0.0) | 3 (−19.6) | 370 s | 36,975 |
 | `retail-05-intel-value-trap` | 12.0 | 11.7 | 16.0 | 15.0 | 10.0 | 7.5 | 10.0 | 82.2 (0.1) | 0 | 271 s | 22,512 |
 | `retail-06-mstr-proxy-leverage` | 12.0 | 10.9 | 16.0 | 15.0 | 16.7 | 10.0 | 6.7 | 87.2 (9.2) | 0 | 270 s | 23,613 |
-| `retail-09-narrative-factcheck-apple` | 12.0 | 11.6 | 16.0 | 7.5 | 0.0 | 7.5 | 5.0 | 49.0 (0.0) | 3 | 289 s | 28,240 |
+| `retail-09-narrative-factcheck-apple` | 12.0 | 11.6 | 16.0 | 7.5 | 0.0 | 7.5 | 5.0 | 49.0 (0.0) | 3 (−10.6) | 289 s | 28,240 |
 | `retail-10-smci-accounting-red-flag` | 12.0 | 11.8 | 16.0 | 15.0 | 16.7 | 15.0 | 8.3 | 94.8 (4.2) | 0 | 134 s | 12,402 |
 | `retail-11-nike-earnings-review-report` | 12.0 | 11.3 | 16.0 | 7.5 | 10.0 | 7.5 | 5.0 | 69.3 (0.2) | 0 | 418 s | 32,254 |
 | `retail-12-concentration-profile-fit` | 12.0 | 11.5 | 8.0 | 15.0 | 20.0 | 7.5 | 10.0 | 84.0 (0.1) | 0 | 152 s | 11,457 |
@@ -120,7 +121,7 @@ report figures are the most of any row, though integrity stays the highest of an
 | `retail-01-nvda-beat-and-drop` | 9.9 | 11.8 | 5.3 | 15.0 | 10.0 | 7.5 | 6.7 | 66.1 (4.0) | 0 | 150 s | 6,029 |
 | `retail-02-nike-moat-erosion` | 9.6 | 11.4 | 10.7 | 10.0 | 13.3 | 7.5 | 5.0 | 67.5 (15.5) | 0 | 216 s | 7,798 |
 | `retail-03-nuclear-thematic-purity` | 12.0 | 11.7 | 16.0 | 15.0 | 10.0 | 12.5 | 6.7 | 83.9 (5.5) | 0 | 123 s | 5,473 |
-| `retail-04-dividend-yield-trap` | 8.0 | 11.8 | 10.7 | 15.0 | 10.0 | 7.5 | 5.0 | 65.3 (11.7) | 1 | 139 s | 5,795 |
+| `retail-04-dividend-yield-trap` | 8.0 | 11.8 | 10.7 | 15.0 | 10.0 | 7.5 | 5.0 | 65.3 (11.7) | 1 (−2.6) | 139 s | 5,795 |
 | `retail-05-intel-value-trap` | 11.1 | 11.6 | 0.0 | 12.5 | 10.0 | 7.5 | 10.0 | 62.6 (3.4) | 0 | 171 s | 7,537 |
 | `retail-06-mstr-proxy-leverage` | 10.4 | 11.3 | 10.7 | 15.0 | 10.0 | 7.5 | 5.0 | 69.8 (9.0) | 0 | 181 s | 7,633 |
 | `retail-09-narrative-factcheck-apple` | 8.9 | 12.0 | 5.3 | 10.0 | 13.3 | 7.5 | 10.0 | 67.1 (7.7) | 0 | 123 s | 5,439 |
@@ -150,8 +151,8 @@ report figures are the most of any row, though integrity stays the highest of an
 | :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
 | `retail-01-nvda-beat-and-drop` | 7.7 | 11.6 | 0.0 | 15.0 | 10.0 | 7.5 | 5.0 | 56.8 (3.0) | 0 | 129 s | 10,623 |
 | `retail-02-nike-moat-erosion` | 12.0 | 11.7 | 0.0 | 10.0 | 10.0 | 7.5 | 5.0 | 56.2 (3.6) | 0 | 174 s | 13,424 |
-| `retail-03-nuclear-thematic-purity` | 12.0 | 11.6 | 16.0 | 15.0 | 10.0 | 7.5 | 5.0 | 67.6 (13.2) | 1 | 169 s | 11,599 |
-| `retail-04-dividend-yield-trap` | 12.0 | 10.6 | 5.3 | 15.0 | 10.0 | 0.0 | 6.7 | 49.0 (0.0) | 3 | 155 s | 11,789 |
+| `retail-03-nuclear-thematic-purity` | 12.0 | 11.6 | 16.0 | 15.0 | 10.0 | 7.5 | 5.0 | 67.6 (13.2) | 1 (−9.4) | 169 s | 11,599 |
+| `retail-04-dividend-yield-trap` | 12.0 | 10.6 | 5.3 | 15.0 | 10.0 | 0.0 | 6.7 | 49.0 (0.0) | 3 (−10.6) | 155 s | 11,789 |
 | `retail-05-intel-value-trap` | 12.0 | 11.3 | 5.3 | 15.0 | 10.0 | 7.5 | 10.0 | 71.2 (7.6) | 0 | 117 s | 8,897 |
 | `retail-06-mstr-proxy-leverage` | 12.0 | 10.4 | 16.0 | 15.0 | 10.0 | 7.5 | 6.7 | 77.6 (2.1) | 0 | 128 s | 9,337 |
 | `retail-09-narrative-factcheck-apple` | 6.4 | 11.9 | 0.0 | 7.5 | 6.7 | 7.5 | 5.0 | 45.0 (4.6) | 0 | 115 s | 8,689 |
@@ -159,7 +160,7 @@ report figures are the most of any row, though integrity stays the highest of an
 | `retail-11-nike-earnings-review-report` | 12.0 | 11.3 | 16.0 | 7.5 | 10.0 | 7.5 | 5.0 | 69.3 (0.4) | 0 | 155 s | 12,134 |
 | `retail-12-concentration-profile-fit` | 12.0 | 10.9 | 8.0 | 15.0 | 16.7 | 7.5 | 10.0 | 80.1 (4.4) | 0 | 72 s | 5,713 |
 | `retail-13-semis-figure-survival` | 12.0 | 11.0 | 16.0 | 7.5 | 20.0 | 7.5 | 8.3 | 82.3 (2.8) | 0 | 142 s | 11,817 |
-| `retail-14-apple-pre-open-timing` | 12.0 | 11.5 | 16.0 | 7.5 | 10.0 | 2.5 | 8.3 | 66.1 (12.1) | 1 | 77 s | 5,735 |
+| `retail-14-apple-pre-open-timing` | 12.0 | 11.5 | 16.0 | 7.5 | 10.0 | 2.5 | 8.3 | 66.1 (12.1) | 1 (−1.8) | 77 s | 5,735 |
 
 The three runs scored 69.6, 63.1 and 71.1. Most of the gap to the top rows is in Contracts (9.6 of
 16 on average): on NVIDIA every run typed the release's revenue and guidance into the calculator
@@ -188,7 +189,7 @@ two thirds of its cost.
 | `retail-01-nvda-beat-and-drop` | 5.6 | 11.8 | 0.0 | 15.0 | 10.0 | 7.5 | 5.0 | 54.9 (0.1) | 0 | 87 s | 7,235 |
 | `retail-02-nike-moat-erosion` | 10.9 | 11.6 | 10.7 | 7.5 | 13.3 | 7.5 | 5.0 | 66.6 (9.3) | 0 | 125 s | 8,374 |
 | `retail-03-nuclear-thematic-purity` | 12.0 | 11.8 | 16.0 | 15.0 | 10.0 | 7.5 | 5.0 | 77.3 (0.2) | 0 | 61 s | 5,009 |
-| `retail-04-dividend-yield-trap` | 12.0 | 11.0 | 0.0 | 12.5 | 10.0 | 2.5 | 5.0 | 47.6 (1.9) | 2 | 111 s | 7,038 |
+| `retail-04-dividend-yield-trap` | 12.0 | 11.0 | 0.0 | 12.5 | 10.0 | 2.5 | 5.0 | 47.6 (1.9) | 2 (−5.4) | 111 s | 7,038 |
 | `retail-05-intel-value-trap` | 4.0 | 11.8 | 0.0 | 12.5 | 10.0 | 7.5 | 8.3 | 54.1 (2.4) | 0 | 75 s | 5,791 |
 | `retail-06-mstr-proxy-leverage` | 12.0 | 11.1 | 5.3 | 15.0 | 10.0 | 7.5 | 8.3 | 69.3 (5.8) | 0 | 130 s | 8,531 |
 | `retail-09-narrative-factcheck-apple` | 6.4 | 11.9 | 0.0 | 7.5 | 10.0 | 7.5 | 10.0 | 53.3 (0.1) | 0 | 94 s | 6,822 |
@@ -223,10 +224,10 @@ re-running the agent.
 | `retail-01-nvda-beat-and-drop` | 12.0 | 11.1 | 0.0 | 15.0 | 13.3 | 7.5 | 5.0 | 63.9 (5.1) | 0 | 118 s | 22,396 |
 | `retail-02-nike-moat-erosion` | 10.4 | 10.8 | 10.7 | 7.5 | 10.0 | 7.5 | 5.0 | 61.9 (6.7) | 0 | 217 s | 46,255 |
 | `retail-03-nuclear-thematic-purity` | 12.0 | 11.5 | 13.3 | 15.0 | 10.0 | 10.0 | 6.7 | 78.5 (2.5) | 0 | 156 s | 27,369 |
-| `retail-04-dividend-yield-trap` | 12.0 | 11.2 | 0.0 | 12.5 | 10.0 | 0.0 | 5.0 | 47.8 (1.6) | 2 | 176 s | 34,682 |
+| `retail-04-dividend-yield-trap` | 12.0 | 11.2 | 0.0 | 12.5 | 10.0 | 0.0 | 5.0 | 47.8 (1.6) | 2 (−2.9) | 176 s | 34,682 |
 | `retail-05-intel-value-trap` | 12.0 | 11.0 | 5.3 | 10.0 | 10.0 | 7.5 | 6.7 | 62.5 (9.4) | 0 | 167 s | 33,537 |
 | `retail-06-mstr-proxy-leverage` | 12.0 | 11.0 | 5.3 | 12.5 | 6.7 | 10.0 | 6.7 | 64.1 (2.6) | 0 | 205 s | 41,293 |
-| `retail-09-narrative-factcheck-apple` | 9.2 | 11.4 | 16.0 | 7.5 | 6.7 | 7.5 | 5.0 | 60.9 (8.7) | 1 | 121 s | 24,984 |
+| `retail-09-narrative-factcheck-apple` | 9.2 | 11.4 | 16.0 | 7.5 | 6.7 | 7.5 | 5.0 | 60.9 (8.7) | 1 (−2.4) | 121 s | 24,984 |
 | `retail-10-smci-accounting-red-flag` | 12.0 | 10.9 | 16.0 | 12.5 | 10.0 | 12.5 | 5.0 | 78.9 (2.9) | 0 | 156 s | 30,744 |
 | `retail-11-nike-earnings-review-report` | 12.0 | 10.4 | 16.0 | 7.5 | 10.0 | 7.5 | 5.0 | 68.4 (0.6) | 0 | 121 s | 24,262 |
 | `retail-12-concentration-profile-fit` | 12.0 | 11.1 | 8.0 | 15.0 | 16.7 | 7.5 | 10.0 | 80.3 (4.8) | 0 | 70 s | 14,140 |
@@ -258,9 +259,9 @@ thematic purity (+20.8) and the Apple fact-check (+10.9) improved most, MSTR (�
 | :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
 | `retail-01-nvda-beat-and-drop` | 12.0 | 11.1 | 0.0 | 15.0 | 10.0 | 7.5 | 5.0 | 60.6 (0.2) | 0 | 156 s | 32,696 |
 | `retail-02-nike-moat-erosion` | 12.0 | 10.9 | 10.7 | 10.0 | 10.0 | 7.5 | 5.0 | 66.1 (10.0) | 0 | 221 s | 49,293 |
-| `retail-03-nuclear-thematic-purity` | 12.0 | 10.6 | 16.0 | 15.0 | 10.0 | 7.5 | 5.0 | 57.7 (12.3) | 2 | 191 s | 39,615 |
-| `retail-04-dividend-yield-trap` | 12.0 | 10.9 | 5.3 | 12.5 | 10.0 | 2.5 | 5.0 | 51.7 (6.5) | 1 | 215 s | 43,871 |
-| `retail-05-intel-value-trap` | 12.0 | 11.0 | 5.3 | 12.5 | 10.0 | 10.0 | 5.0 | 63.4 (4.0) | 1 | 178 s | 38,013 |
+| `retail-03-nuclear-thematic-purity` | 12.0 | 10.6 | 16.0 | 15.0 | 10.0 | 7.5 | 5.0 | 57.7 (12.3) | 2 (−18.4) | 191 s | 39,615 |
+| `retail-04-dividend-yield-trap` | 12.0 | 10.9 | 5.3 | 12.5 | 10.0 | 2.5 | 5.0 | 51.7 (6.5) | 1 (−6.6) | 215 s | 43,871 |
+| `retail-05-intel-value-trap` | 12.0 | 11.0 | 5.3 | 12.5 | 10.0 | 10.0 | 5.0 | 63.4 (4.0) | 1 (−2.4) | 178 s | 38,013 |
 | `retail-06-mstr-proxy-leverage` | 12.0 | 10.7 | 16.0 | 15.0 | 10.0 | 7.5 | 5.0 | 76.2 (0.6) | 0 | 215 s | 44,955 |
 | `retail-09-narrative-factcheck-apple` | 11.1 | 10.6 | 0.0 | 7.5 | 6.7 | 7.5 | 6.7 | 50.0 (5.2) | 0 | 178 s | 39,034 |
 | `retail-10-smci-accounting-red-flag` | 12.0 | 10.9 | 16.0 | 15.0 | 13.3 | 15.0 | 10.0 | 92.2 (4.2) | 0 | 162 s | 35,520 |
@@ -290,10 +291,10 @@ thematic purity (+20.8) and the Apple fact-check (+10.9) improved most, MSTR (�
 | `retail-01-nvda-beat-and-drop` | 9.9 | 11.2 | 0.0 | 15.0 | 10.0 | 7.5 | 5.0 | 58.6 (2.8) | 0 | 187 s | 12,101 |
 | `retail-02-nike-moat-erosion` | 12.0 | 11.3 | 5.3 | 10.0 | 10.0 | 7.5 | 5.0 | 61.1 (6.8) | 0 | 150 s | 12,208 |
 | `retail-03-nuclear-thematic-purity` | 9.2 | 11.6 | 10.7 | 15.0 | 10.0 | 7.5 | 5.0 | 68.9 (5.3) | 0 | 168 s | 10,891 |
-| `retail-04-dividend-yield-trap` | 12.0 | 11.0 | 0.0 | 7.5 | 10.0 | 7.5 | 5.0 | 51.8 (2.0) | 1 | 176 s | 12,631 |
+| `retail-04-dividend-yield-trap` | 12.0 | 11.0 | 0.0 | 7.5 | 10.0 | 7.5 | 5.0 | 51.8 (2.0) | 1 (−1.2) | 176 s | 12,631 |
 | `retail-05-intel-value-trap` | 9.3 | 11.0 | 5.3 | 7.5 | 10.0 | 10.0 | 6.7 | 59.8 (10.3) | 0 | 193 s | 13,668 |
 | `retail-06-mstr-proxy-leverage` | 10.4 | 11.3 | 10.7 | 15.0 | 10.0 | 7.5 | 5.0 | 69.9 (7.6) | 0 | 179 s | 12,195 |
-| `retail-09-narrative-factcheck-apple` | 11.1 | 11.5 | 5.3 | 0.0 | 6.7 | 7.5 | 5.0 | 46.0 (2.5) | 1 | 355 s | 12,998 |
+| `retail-09-narrative-factcheck-apple` | 11.1 | 11.5 | 5.3 | 0.0 | 6.7 | 7.5 | 5.0 | 46.0 (2.5) | 1 (−1.0) | 355 s | 12,998 |
 | `retail-10-smci-accounting-red-flag` | 11.3 | 11.2 | 16.0 | 15.0 | 20.0 | 7.5 | 8.3 | 89.4 (2.3) | 0 | 203 s | 10,596 |
 | `retail-11-nike-earnings-review-report` | 12.0 | 10.7 | 0.0 | 7.5 | 3.3 | 7.5 | 5.0 | 46.0 (4.0) | 0 | 242 s | 9,215 |
 | `retail-12-concentration-profile-fit` | 10.1 | 11.8 | 2.7 | 15.0 | 16.7 | 7.5 | 8.3 | 72.1 (8.8) | 0 | 63 s | 4,510 |
@@ -327,7 +328,7 @@ which adds to its run time rather than costing points directly.
 | `retail-04-dividend-yield-trap` | 10.1 | 10.9 | 0.0 | 7.5 | 10.0 | 0.0 | 5.0 | 43.5 (2.1) | 0 | 217 s | 7,422 |
 | `retail-05-intel-value-trap` | 8.8 | 11.1 | 0.0 | 15.0 | 10.0 | 7.5 | 8.3 | 60.8 (2.2) | 0 | 383 s | 12,384 |
 | `retail-06-mstr-proxy-leverage` | 12.0 | 9.2 | 10.7 | 10.0 | 10.0 | 7.5 | 5.0 | 64.4 (10.3) | 0 | 458 s | 14,204 |
-| `retail-09-narrative-factcheck-apple` | 8.0 | 11.3 | 0.0 | 10.0 | 3.3 | 7.5 | 6.7 | 44.7 (9.5) | 1 | 355 s | 12,277 |
+| `retail-09-narrative-factcheck-apple` | 8.0 | 11.3 | 0.0 | 10.0 | 3.3 | 7.5 | 6.7 | 44.7 (9.5) | 1 (−2.1) | 355 s | 12,277 |
 | `retail-10-smci-accounting-red-flag` | 9.3 | 10.5 | 10.7 | 15.0 | 16.7 | 15.0 | 6.7 | 83.9 (1.4) | 0 | 222 s | 7,795 |
 | `retail-11-nike-earnings-review-report` | 12.0 | 11.1 | 10.7 | 7.5 | 10.0 | 7.5 | 5.0 | 63.7 (7.2) | 0 | 349 s | 12,739 |
 | `retail-12-concentration-profile-fit` | 10.1 | 10.4 | 2.7 | 15.0 | 13.3 | 7.5 | 5.0 | 64.0 (8.5) | 0 | 99 s | 3,975 |
@@ -358,7 +359,7 @@ Nike report, used up the 32-call turn budget and ended with a fallback report.
 | `retail-01-nvda-beat-and-drop` | 12.0 | 11.8 | 0.0 | 15.0 | 10.0 | 7.5 | 10.0 | 66.3 (0.1) | 0 | 91 s | 3,952 |
 | `retail-02-nike-moat-erosion` | 8.0 | 7.5 | 5.3 | 7.5 | 6.7 | 5.0 | 3.3 | 43.4 (32.0) | 0 | 67 s | 2,934 |
 | `retail-03-nuclear-thematic-purity` | 12.0 | 11.4 | 16.0 | 10.0 | 10.0 | 7.5 | 5.0 | 71.9 (3.5) | 0 | 79 s | 3,562 |
-| `retail-04-dividend-yield-trap` | 12.0 | 11.8 | 5.3 | 12.5 | 10.0 | 7.5 | 5.0 | 61.3 (6.1) | 1 | 94 s | 3,877 |
+| `retail-04-dividend-yield-trap` | 12.0 | 11.8 | 5.3 | 12.5 | 10.0 | 7.5 | 5.0 | 61.3 (6.1) | 1 (−2.8) | 94 s | 3,877 |
 | `retail-05-intel-value-trap` | 8.9 | 10.7 | 0.0 | 7.5 | 10.0 | 10.0 | 5.0 | 52.2 (3.1) | 0 | 89 s | 3,758 |
 | `retail-06-mstr-proxy-leverage` | 8.8 | 10.5 | 16.0 | 15.0 | 10.0 | 7.5 | 5.0 | 72.8 (0.4) | 0 | 109 s | 5,104 |
 | `retail-09-narrative-factcheck-apple` | 5.1 | 12.0 | 0.0 | 7.5 | 10.0 | 2.5 | 6.7 | 43.7 (9.2) | 0 | 86 s | 3,784 |
@@ -425,16 +426,16 @@ ticker in 2 of 10 runs.
 | :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
 | `retail-01-nvda-beat-and-drop` | 8.8 | 11.3 | 0.0 | 15.0 | 10.0 | 7.5 | 5.0 | 57.6 (3.5) | 0 | 155 s | 7,776 |
 | `retail-02-nike-moat-erosion` | 12.0 | 10.0 | 0.0 | 7.5 | 10.0 | 7.5 | 5.0 | 52.0 (0.1) | 0 | 137 s | 7,465 |
-| `retail-03-nuclear-thematic-purity` | 12.0 | 9.1 | 16.0 | 15.0 | 10.0 | 7.5 | 6.7 | 67.6 (13.3) | 1 | 173 s | 12,952 |
+| `retail-03-nuclear-thematic-purity` | 12.0 | 9.1 | 16.0 | 15.0 | 10.0 | 7.5 | 6.7 | 67.6 (13.3) | 1 (−8.7) | 173 s | 12,952 |
 | `retail-04-dividend-yield-trap` | 10.1 | 10.0 | 0.0 | 7.5 | 0.0 | 2.5 | 5.0 | 35.1 (1.2) | 0 | 151 s | 13,338 |
 | `retail-05-intel-value-trap` | 8.3 | 11.2 | 5.3 | 12.5 | 10.0 | 7.5 | 6.7 | 61.5 (10.5) | 0 | 130 s | 8,541 |
 | `retail-06-mstr-proxy-leverage` | 9.9 | 11.7 | 16.0 | 15.0 | 10.0 | 7.5 | 5.0 | 75.1 (1.2) | 0 | 91 s | 5,198 |
-| `retail-09-narrative-factcheck-apple` | 9.2 | 9.5 | 0.0 | 15.0 | 0.0 | 7.5 | 5.0 | 45.9 (2.2) | 1 | 182 s | 14,059 |
+| `retail-09-narrative-factcheck-apple` | 9.2 | 9.5 | 0.0 | 15.0 | 0.0 | 7.5 | 5.0 | 45.9 (2.2) | 1 (−0.2) | 182 s | 14,059 |
 | `retail-10-smci-accounting-red-flag` | 12.0 | 11.4 | 16.0 | 15.0 | 10.0 | 15.0 | 5.0 | 84.4 (0.3) | 0 | 192 s | 15,672 |
 | `retail-11-nike-earnings-review-report` | 12.0 | 11.7 | 0.0 | 7.5 | 6.7 | 7.5 | 5.0 | 50.4 (4.7) | 0 | 155 s | 10,090 |
 | `retail-12-concentration-profile-fit` | 12.0 | 11.1 | 8.0 | 15.0 | 20.0 | 7.5 | 8.3 | 82.0 (3.0) | 0 | 132 s | 13,491 |
 | `retail-13-semis-figure-survival` | 12.0 | 10.7 | 16.0 | 15.0 | 13.3 | 7.5 | 10.0 | 84.6 (4.8) | 0 | 188 s | 27,459 |
-| `retail-14-apple-pre-open-timing` | 12.0 | 10.9 | 16.0 | 7.5 | 10.0 | 2.5 | 0.0 | 54.0 (7.1) | 2 | 204 s | 21,208 |
+| `retail-14-apple-pre-open-timing` | 12.0 | 10.9 | 16.0 | 7.5 | 10.0 | 2.5 | 0.0 | 54.0 (7.1) | 2 (−4.9) | 204 s | 21,208 |
 
 14 of the 36 runs used up the 32-call turn budget and ended with a fallback report, among them
 all three runs of NVIDIA, Nike moat erosion, MSTR and the Nike report.
@@ -459,7 +460,7 @@ all three runs of NVIDIA, Nike moat erosion, MSTR and the Nike report.
 | :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
 | `retail-01-nvda-beat-and-drop` | 9.9 | 11.1 | 0.0 | 15.0 | 10.0 | 7.5 | 5.0 | 58.4 (2.5) | 0 | 207 s | 21,526 |
 | `retail-02-nike-moat-erosion` | 12.0 | 10.3 | 0.0 | 12.5 | 10.0 | 7.5 | 5.0 | 57.3 (4.6) | 0 | 428 s | 24,386 |
-| `retail-03-nuclear-thematic-purity` | 8.0 | 11.1 | 10.7 | 12.5 | 10.0 | 7.5 | 6.7 | 55.4 (15.0) | 1 | 124 s | 14,300 |
+| `retail-03-nuclear-thematic-purity` | 8.0 | 11.1 | 10.7 | 12.5 | 10.0 | 7.5 | 6.7 | 55.4 (15.0) | 1 (−11.0) | 124 s | 14,300 |
 | `retail-04-dividend-yield-trap` | 12.0 | 10.6 | 0.0 | 7.5 | 10.0 | 0.0 | 5.0 | 45.1 (0.3) | 0 | 425 s | 21,213 |
 | `retail-05-intel-value-trap` | 6.9 | 9.6 | 0.0 | 12.5 | 10.0 | 7.5 | 6.7 | 53.2 (6.2) | 0 | 353 s | 30,827 |
 | `retail-06-mstr-proxy-leverage` | 9.3 | 8.4 | 16.0 | 12.5 | 10.0 | 7.5 | 5.0 | 68.7 (3.6) | 0 | 625 s | 18,564 |
@@ -494,16 +495,16 @@ outputs and slow generation, though none timed out.
 | :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
 | `retail-01-nvda-beat-and-drop` | 9.9 | 9.8 | 0.0 | 15.0 | 10.0 | 7.5 | 5.0 | 57.2 (3.4) | 0 | 214 s | 7,782 |
 | `retail-02-nike-moat-erosion` | 8.0 | 10.9 | 0.0 | 7.5 | 10.0 | 7.5 | 5.0 | 48.9 (3.0) | 0 | 295 s | 9,374 |
-| `retail-03-nuclear-thematic-purity` | 7.2 | 10.4 | 8.0 | 10.0 | 13.3 | 7.5 | 5.0 | 57.3 (11.8) | 2 | 293 s | 8,094 |
+| `retail-03-nuclear-thematic-purity` | 7.2 | 10.4 | 8.0 | 10.0 | 13.3 | 7.5 | 5.0 | 57.3 (11.8) | 2 (−4.1) | 293 s | 8,094 |
 | `retail-04-dividend-yield-trap` | 6.1 | 8.6 | 0.0 | 15.0 | 10.0 | 2.5 | 6.7 | 48.9 (2.7) | 0 | 160 s | 7,674 |
 | `retail-05-intel-value-trap` | 7.2 | 10.4 | 0.0 | 12.5 | 10.0 | 7.5 | 6.7 | 54.2 (5.0) | 0 | 144 s | 7,849 |
 | `retail-06-mstr-proxy-leverage` | 7.5 | 9.1 | 10.7 | 15.0 | 6.7 | 7.5 | 5.0 | 61.4 (7.3) | 0 | 103 s | 8,530 |
 | `retail-09-narrative-factcheck-apple` | 4.3 | 10.6 | 0.0 | 10.0 | 0.0 | 5.0 | 5.0 | 34.8 (8.7) | 0 | 87 s | 9,098 |
 | `retail-10-smci-accounting-red-flag` | 10.7 | 11.0 | 13.3 | 15.0 | 13.3 | 15.0 | 6.7 | 85.0 (3.4) | 0 | 89 s | 6,502 |
-| `retail-11-nike-earnings-review-report` | 12.0 | 11.1 | 16.0 | 7.5 | 10.0 | 7.5 | 5.0 | 55.6 (9.3) | 2 | 77 s | 8,249 |
+| `retail-11-nike-earnings-review-report` | 12.0 | 11.1 | 16.0 | 7.5 | 10.0 | 7.5 | 5.0 | 55.6 (9.3) | 2 (−13.5) | 77 s | 8,249 |
 | `retail-12-concentration-profile-fit` | 10.0 | 11.2 | 8.0 | 15.0 | 20.0 | 7.5 | 10.0 | 81.7 (9.2) | 0 | 63 s | 6,283 |
 | `retail-13-semis-figure-survival` | 12.0 | 11.7 | 16.0 | 7.5 | 10.0 | 7.5 | 10.0 | 74.7 (0.3) | 0 | 106 s | 7,202 |
-| `retail-14-apple-pre-open-timing` | 12.0 | 11.3 | 16.0 | 7.5 | 10.0 | 7.5 | 3.3 | 62.5 (9.6) | 1 | 74 s | 6,952 |
+| `retail-14-apple-pre-open-timing` | 12.0 | 11.3 | 16.0 | 7.5 | 10.0 | 7.5 | 3.3 | 62.5 (9.6) | 1 (−5.1) | 74 s | 6,952 |
 
 The three runs scored 60.6, 57.2 and 62.7. Seven answers (the third Concentration run and every
 Semis figures and Apple pre-open run) were run again with `--resume` from the same commit after the
@@ -531,7 +532,7 @@ answers read none, 36% overall. At the earlier rate the cost would be about $1.4
 | :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
 | `retail-01-nvda-beat-and-drop` | 5.9 | 11.9 | 0.0 | 12.5 | 10.0 | 7.5 | 5.0 | 52.7 (3.1) | 0 | 46 s | 4,525 |
 | `retail-02-nike-moat-erosion` | 12.0 | 11.6 | 5.3 | 7.5 | 10.0 | 7.5 | 5.0 | 58.9 (7.8) | 0 | 67 s | 7,112 |
-| `retail-03-nuclear-thematic-purity` | 2.4 | 11.9 | 2.7 | 10.0 | 10.0 | 7.5 | 5.0 | 46.7 (3.6) | 1 | 45 s | 4,966 |
+| `retail-03-nuclear-thematic-purity` | 2.4 | 11.9 | 2.7 | 10.0 | 10.0 | 7.5 | 5.0 | 46.7 (3.6) | 1 (−2.7) | 45 s | 4,966 |
 | `retail-04-dividend-yield-trap` | 10.1 | 10.2 | 0.0 | 7.5 | 10.0 | 7.5 | 5.0 | 50.3 (3.0) | 0 | 50 s | 5,084 |
 | `retail-05-intel-value-trap` | 4.3 | 11.9 | 0.0 | 12.5 | 10.0 | 7.5 | 8.3 | 54.5 (4.3) | 0 | 43 s | 4,343 |
 | `retail-06-mstr-proxy-leverage` | 7.5 | 11.8 | 5.3 | 10.0 | 10.0 | 5.0 | 5.0 | 54.6 (11.7) | 0 | 49 s | 5,347 |
@@ -563,8 +564,8 @@ answers read none, 36% overall. At the earlier rate the cost would be about $1.4
 | :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
 | `retail-01-nvda-beat-and-drop` | 5.6 | 11.8 | 0.0 | 15.0 | 10.0 | 7.5 | 5.0 | 54.9 (0.1) | 0 | 48 s | 9,006 |
 | `retail-02-nike-moat-erosion` | 5.6 | 11.8 | 0.0 | 7.5 | 10.0 | 7.5 | 5.0 | 47.4 (1.7) | 0 | 58 s | 11,266 |
-| `retail-03-nuclear-thematic-purity` | 8.8 | 11.5 | 10.7 | 10.0 | 10.0 | 7.5 | 5.0 | 54.0 (3.6) | 1 | 65 s | 13,640 |
-| `retail-04-dividend-yield-trap` | 12.0 | 9.3 | 0.0 | 7.5 | 10.0 | 5.0 | 5.0 | 47.8 (4.0) | 1 | 57 s | 11,948 |
+| `retail-03-nuclear-thematic-purity` | 8.8 | 11.5 | 10.7 | 10.0 | 10.0 | 7.5 | 5.0 | 54.0 (3.6) | 1 (−9.5) | 65 s | 13,640 |
+| `retail-04-dividend-yield-trap` | 12.0 | 9.3 | 0.0 | 7.5 | 10.0 | 5.0 | 5.0 | 47.8 (4.0) | 1 (−1.0) | 57 s | 11,948 |
 | `retail-05-intel-value-trap` | 0.0 | 11.5 | 0.0 | 12.5 | 10.0 | 0.0 | 5.0 | 39.0 (3.3) | 0 | 59 s | 11,340 |
 | `retail-06-mstr-proxy-leverage` | 10.9 | 10.6 | 16.0 | 7.5 | 10.0 | 7.5 | 5.0 | 67.6 (1.5) | 0 | 85 s | 17,164 |
 | `retail-09-narrative-factcheck-apple` | 8.0 | 11.9 | 5.3 | 5.0 | 10.0 | 5.0 | 5.0 | 50.2 (13.2) | 0 | 60 s | 11,860 |
@@ -572,7 +573,7 @@ answers read none, 36% overall. At the earlier rate the cost would be about $1.4
 | `retail-11-nike-earnings-review-report` | 12.0 | 10.7 | 16.0 | 7.5 | 10.0 | 7.5 | 5.0 | 68.7 (0.8) | 0 | 75 s | 14,360 |
 | `retail-12-concentration-profile-fit` | 12.0 | 10.9 | 8.0 | 15.0 | 10.0 | 7.5 | 10.0 | 73.4 (0.6) | 0 | 40 s | 7,960 |
 | `retail-13-semis-figure-survival` | 12.0 | 11.6 | 16.0 | 7.5 | 10.0 | 7.5 | 10.0 | 74.6 (0.3) | 0 | 54 s | 11,902 |
-| `retail-14-apple-pre-open-timing` | 12.0 | 12.0 | 16.0 | 7.5 | 10.0 | 7.5 | 3.3 | 63.0 (9.9) | 1 | 32 s | 3,730 |
+| `retail-14-apple-pre-open-timing` | 12.0 | 12.0 | 16.0 | 7.5 | 10.0 | 7.5 | 3.3 | 63.0 (9.9) | 1 (−5.3) | 32 s | 3,730 |
 
 The first row run on pi-ai 1.1.0, whose token estimator counts 3.5 characters to a token instead
 of 4. That changes only when a chat compacts, and no run here compacted. One covered-call run
@@ -603,7 +604,7 @@ used up the 32-call turn budget and ended with a fallback report.
 | `retail-06-mstr-proxy-leverage` | 7.2 | 12.0 | 5.3 | 10.0 | 10.0 | 7.5 | 5.0 | 57.0 (5.6) | 0 | 44 s | 1,716 |
 | `retail-09-narrative-factcheck-apple` | 6.4 | 11.7 | 0.0 | 5.0 | 10.0 | 7.5 | 10.0 | 50.6 (3.9) | 0 | 44 s | 1,707 |
 | `retail-10-smci-accounting-red-flag` | 4.0 | 11.1 | 8.0 | 10.0 | 10.0 | 0.0 | 5.0 | 48.1 (4.3) | 0 | 39 s | 1,603 |
-| `retail-11-nike-earnings-review-report` | 12.0 | 11.4 | 16.0 | 7.5 | 10.0 | 7.5 | 6.7 | 64.2 (10.9) | 1 | 81 s | 2,632 |
+| `retail-11-nike-earnings-review-report` | 12.0 | 11.4 | 16.0 | 7.5 | 10.0 | 7.5 | 6.7 | 64.2 (10.9) | 1 (−6.9) | 81 s | 2,632 |
 | `retail-12-concentration-profile-fit` | 9.2 | 11.8 | 0.0 | 12.5 | 16.7 | 7.5 | 10.0 | 67.7 (4.4) | 0 | 36 s | 1,532 |
 | `retail-13-semis-figure-survival` | 12.0 | 11.9 | 16.0 | 7.5 | 10.0 | 10.0 | 10.0 | 77.4 (3.5) | 0 | 37 s | 1,551 |
 | `retail-14-apple-pre-open-timing` | 12.0 | 9.0 | 16.0 | 7.5 | 6.7 | 7.5 | 5.0 | 63.7 (5.3) | 0 | 25 s | 807 |
@@ -632,13 +633,13 @@ file was not kept; this one was run at the same commit as the GPT-5.6 rows.
 | :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
 | `retail-01-nvda-beat-and-drop` | 8.0 | 11.2 | 0.0 | 15.0 | 10.0 | 7.5 | 5.0 | 56.7 (3.0) | 0 | 171 s | 24,436 |
 | `retail-02-nike-moat-erosion` | 12.0 | 10.0 | 5.3 | 7.5 | 10.0 | 7.5 | 6.7 | 59.0 (6.7) | 0 | 212 s | 27,926 |
-| `retail-03-nuclear-thematic-purity` | 7.2 | 9.6 | 8.0 | 10.0 | 10.0 | 7.5 | 5.0 | 53.7 (6.7) | 2 | 126 s | 14,254 |
-| `retail-04-dividend-yield-trap` | 12.0 | 11.3 | 0.0 | 10.0 | 6.7 | 0.0 | 5.0 | 43.3 (5.6) | 1 | 117 s | 15,824 |
+| `retail-03-nuclear-thematic-purity` | 7.2 | 9.6 | 8.0 | 10.0 | 10.0 | 7.5 | 5.0 | 53.7 (6.7) | 2 (−3.5) | 126 s | 14,254 |
+| `retail-04-dividend-yield-trap` | 12.0 | 11.3 | 0.0 | 10.0 | 6.7 | 0.0 | 5.0 | 43.3 (5.6) | 1 (−1.6) | 117 s | 15,824 |
 | `retail-05-intel-value-trap` | 6.1 | 10.6 | 0.0 | 15.0 | 10.0 | 7.5 | 10.0 | 59.2 (0.9) | 0 | 139 s | 17,097 |
 | `retail-06-mstr-proxy-leverage` | 8.5 | 9.9 | 10.7 | 7.5 | 10.0 | 7.5 | 5.0 | 59.1 (10.9) | 0 | 157 s | 24,283 |
 | `retail-09-narrative-factcheck-apple` | 7.7 | 10.2 | 5.3 | 0.0 | 10.0 | 5.0 | 5.0 | 43.3 (5.6) | 0 | 138 s | 23,174 |
 | `retail-10-smci-accounting-red-flag` | 2.7 | 10.4 | 5.3 | 10.0 | 10.0 | 0.0 | 5.0 | 43.4 (7.1) | 0 | 152 s | 21,882 |
-| `retail-11-nike-earnings-review-report` | 12.0 | 10.1 | 16.0 | 7.5 | 6.7 | 7.5 | 5.0 | 49.0 (0.0) | 3 | 139 s | 19,335 |
+| `retail-11-nike-earnings-review-report` | 12.0 | 10.1 | 16.0 | 7.5 | 6.7 | 7.5 | 5.0 | 49.0 (0.0) | 3 (−15.8) | 139 s | 19,335 |
 | `retail-12-concentration-profile-fit` | 10.9 | 10.7 | 8.0 | 15.0 | 13.3 | 7.5 | 8.3 | 73.8 (1.0) | 0 | 64 s | 9,445 |
 | `retail-13-semis-figure-survival` | 12.0 | 11.6 | 16.0 | 10.0 | 10.0 | 7.5 | 10.0 | 77.1 (3.5) | 0 | 137 s | 22,808 |
 | `retail-14-apple-pre-open-timing` | 12.0 | 10.6 | 16.0 | 7.5 | 10.0 | 2.5 | 3.3 | 61.9 (4.4) | 0 | 133 s | 18,562 |
@@ -664,14 +665,14 @@ file was not kept; this one was run at the same commit as the GPT-5.6 rows.
 | :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
 | `retail-01-nvda-beat-and-drop` | 8.8 | 10.8 | 0.0 | 7.5 | 5.0 | 7.5 | 5.0 | 29.7 (21.1) | 0 | 46 s | 4,699 |
 | `retail-02-nike-moat-erosion` | 6.1 | 9.4 | 0.0 | 7.5 | 10.0 | 7.5 | 5.0 | 45.5 (1.2) | 0 | 131 s | 12,380 |
-| `retail-03-nuclear-thematic-purity` | 9.2 | 11.5 | 8.0 | 12.5 | 10.0 | 7.5 | 5.0 | 63.6 (11.5) | 1 | 64 s | 6,108 |
-| `retail-04-dividend-yield-trap` | 10.1 | 8.9 | 0.0 | 10.0 | 10.0 | 0.0 | 5.0 | 43.4 (5.0) | 1 | 69 s | 7,962 |
+| `retail-03-nuclear-thematic-purity` | 9.2 | 11.5 | 8.0 | 12.5 | 10.0 | 7.5 | 5.0 | 63.6 (11.5) | 1 (−0.1) | 64 s | 6,108 |
+| `retail-04-dividend-yield-trap` | 10.1 | 8.9 | 0.0 | 10.0 | 10.0 | 0.0 | 5.0 | 43.4 (5.0) | 1 (−0.7) | 69 s | 7,962 |
 | `retail-05-intel-value-trap` | 2.1 | 10.1 | 0.0 | 15.0 | 10.0 | 2.5 | 8.3 | 48.0 (6.9) | 0 | 107 s | 15,182 |
 | `retail-06-mstr-proxy-leverage` | 8.8 | 9.4 | 10.7 | 7.5 | 10.0 | 7.5 | 5.0 | 58.9 (6.8) | 0 | 80 s | 11,284 |
 | `retail-09-narrative-factcheck-apple` | 12.0 | 10.7 | 0.0 | 0.0 | 10.0 | 5.0 | 5.0 | 42.7 (3.8) | 0 | 63 s | 8,601 |
 | `retail-10-smci-accounting-red-flag` | 6.7 | 8.3 | 8.0 | 7.5 | 10.0 | 7.5 | 5.0 | 53.0 (6.8) | 0 | 40 s | 4,110 |
 | `retail-11-nike-earnings-review-report` | 12.0 | 9.1 | 8.0 | 7.5 | 5.0 | 7.5 | 5.0 | 36.1 (25.6) | 0 | 78 s | 7,042 |
-| `retail-12-concentration-profile-fit` | 12.0 | 9.3 | 8.0 | 12.5 | 10.0 | 7.5 | 5.0 | 60.6 (9.9) | 1 | 39 s | 5,004 |
+| `retail-12-concentration-profile-fit` | 12.0 | 9.3 | 8.0 | 12.5 | 10.0 | 7.5 | 5.0 | 60.6 (9.9) | 1 (−3.7) | 39 s | 5,004 |
 | `retail-13-semis-figure-survival` | 12.0 | 11.3 | 16.0 | 12.5 | 10.0 | 7.5 | 10.0 | 79.3 (3.8) | 0 | 64 s | 11,750 |
 | `retail-14-apple-pre-open-timing` | 12.0 | 10.9 | 16.0 | 2.5 | 6.7 | 2.5 | 0.0 | 50.5 (9.9) | 0 | 55 s | 6,592 |
 

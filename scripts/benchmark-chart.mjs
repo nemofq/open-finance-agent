@@ -1,6 +1,9 @@
 /**
  * Draws the README's quality-against-cost chart, `docs/images/benchmark-quality-cost-{light,dark}.svg`,
- * from the README table: each row's name, thinking level, Total and cost.
+ * from the README table: each row's name, thinking level, Total and cost. It also keeps two things in
+ * the README in step with the rows: the chart's alt text, and the "−x capped" mark beside each Total,
+ * the points critical caps took off that row, read from the baseline evals/baselines/README.md names
+ * for it.
  *
  *   node scripts/benchmark-chart.mjs
  *
@@ -16,11 +19,24 @@ import { fileURLToPath } from "node:url";
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const read = (file) => readFileSync(path.join(root, file), "utf8");
 
-// --- Data: the README table.
+// --- Data: the README table, and each row's baseline from the baselines doc.
 
-const rows = read("README.md").split("\n").filter((line) => /^\| .+ avg@\d+ \|/.test(line)).map((line) => {
+const isRow = (line) => /^\| .+ avg@\d+ \|/.test(line);
+const sections = [...read("evals/baselines/README.md").matchAll(/^## (.+?) avg@\d+(?:, (\w+))?\n\n\[`([^`]+\.json)`\]/gm)];
+
+/** Points critical caps took off a row: per answer, its integrity plus judged score less its total, averaged over all answers. */
+function capCost(name, level) {
+  const section = sections.find(([, title, sectionLevel]) => title === name && (!sectionLevel || sectionLevel === level));
+  if (!section) throw new Error(`No baselines section for ${name} (${level})`);
+  const { results } = JSON.parse(read(path.join("evals/baselines", section[3])));
+  const lost = results.reduce((sum, r) => sum + (r.judgeResult ? Math.max(0, r.integrityScore + r.qualityScore - r.totalScore) : 0), 0);
+  return lost / results.length;
+}
+
+const rows = read("README.md").split("\n").filter(isRow).map((line) => {
   const [model, level, , total, , , cost] = line.split("|").slice(1, -1).map((cell) => cell.trim());
-  return { name: model.replace(/ avg@\d+$/, ""), level: level.toLowerCase(), total: Number(total), cost: Number(cost.replace("$", "")) };
+  const name = model.replace(/ avg@\d+$/, ""), levelKey = level.toLowerCase();
+  return { name, level: levelKey, total: Number.parseFloat(total), cost: Number(cost.replace("$", "")), capped: capCost(name, levelKey) };
 });
 
 // --- Geometry: cost on a log scale from $0.05 to $30, Total from 40 to 80.
@@ -249,9 +265,19 @@ for (const theme of Object.keys(THEMES)) {
 const alt = "Scatter of total benchmark score against the agent's average cost per run, log scale: " +
   [...points].sort((a, b) => b.total - a.total).map((p) => `${p.name} ${p.level} ${p.total.toFixed(1)} at ${money(p.cost)}`).join(", ") +
   `; a dotted Pareto line joins ${pareto.map((p) => p.name).join(", ").replace(/, ([^,]+)$/, " and $1")}`;
-const readme = read("README.md");
+// Each Total carries the points critical caps took off it, so the cap shows where the score is read.
+const capMark = (capped) => (capped >= 0.05 ? ` <sub>−${capped.toFixed(1)} capped</sub>` : "");
+const readmeRows = read("README.md").split("\n").map((line) => {
+  if (!isRow(line)) return line;
+  const cells = line.split("|");
+  const name = cells[1].trim().replace(/ avg@\d+$/, ""), level = cells[2].trim().toLowerCase();
+  const row = rows.find((r) => r.name === name && r.level === level);
+  cells[4] = ` ${row.total.toFixed(1)}${capMark(row.capped)} `;
+  return cells.join("|");
+}).join("\n");
+const readme = readmeRows;
 const withAlt = readme.replace(/(<img src="docs\/images\/benchmark-quality-cost-light\.svg" alt=")[^"]*(")/, (_, head, tail) => head + alt.replace(/"/g, "&quot;") + tail);
-if (withAlt === readme && !readme.includes(alt)) throw new Error("README has no benchmark chart image to describe");
+if (!withAlt.includes(alt.replace(/"/g, "&quot;"))) throw new Error("README has no benchmark chart image to describe");
 writeFileSync(path.join(root, "README.md"), withAlt);
 const leaders = points.filter((p) => p.leader).map((p) => p.name);
 console.log(`${points.length} rows · Pareto: ${pareto.map((p) => p.name).join(" → ")} · leader lines: ${leaders.join(", ") || "none"}`);

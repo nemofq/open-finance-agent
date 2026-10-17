@@ -278,7 +278,7 @@ Each column comes from the agent's entry in `agentSummaries` of the run or basel
 
 | README column | Run JSON |
 | :--- | :--- |
-| Total (/100) | `expectedUserScore` |
+| Total (/100) | `expectedUserScore`, with the points critical caps took off it as "−x capped": per answer, `integrityScore` + `qualityScore` − `totalScore`, averaged over all answers |
 | Integrity (/40) | `averageIntegrityScore` |
 | Judged (/60) | `averageSemanticScore` |
 | Avg. cost per run | each of `results[].metrics.tokens` at the provider's list prices, summed, ÷ repeats; see below |
@@ -316,7 +316,7 @@ The quality-against-cost chart above the table (`docs/images/benchmark-quality-c
 joining the rows no other row beats on both. It is drawn from the README table by
 `node scripts/benchmark-chart.mjs`, run after each row is added: the script places every label clear
 of the others, ties a label it has to move away from its point back with a leader line, and rewrites
-the image's alt text in the README to match.
+the image's alt text and each Total's "−x capped" mark in the README to match.
 
 ### Calibrating a policy rule
 
