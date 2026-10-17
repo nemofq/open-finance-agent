@@ -182,8 +182,10 @@ total at 69 or 49.
 ↑ higher is better, ↓ lower is better. Benchmark version 2, judge prompt v9 with three grades per
 answer, policy enforced. `avg@3` is three runs of the twelve tasks. Total is the expected score: the
 mean over tasks with a failed run counted as zero; Integrity and Judged average the completed
-answers only. Every run completed except two of Qwen 3.8 27B off's 36, which is why its Total is
-below what its Integrity and Judged suggest. In the chart, the dotted Pareto line joins the rows no
+answers only. Total also applies the critical caps: an answer that contradicts a task's critical
+rubric item is capped at 49, and one that misses it at 69, so Total can sit below Integrity plus
+Judged; each row's capped answers are listed in the baselines doc. Every run completed except two of
+Qwen 3.8 27B off's 36, which also lowers its Total. In the chart, the dotted Pareto line joins the rows no
 other row beats on both cost and Total. The GPT, DeepSeek V4.1 Flash and Qwen rows were rescored
 from their saved runs when v2 landed, so the agents' answers, run time, tokens and cost are those of the
 original runs; the Claude Opus and Sonnet, Grok, Gemini, GLM and Kimi rows were run on v2 through a
