@@ -125,6 +125,13 @@ describe("parseArgs", () => {
     expect(parseArgs(["--rescore", "run.json", "--judge", "p/j"])).toMatchObject({ ok: false });
   });
 
+  it("rescores named tasks of a baseline with traces from the run it came from", () => {
+    expect(options(["--rescore", "base.json", "--task", "retail-04-dividend-yield-trap", "--traces", "run.json", "--judge-repeat", "3"])).toMatchObject({
+      rescore: "base.json", traces: "run.json", taskIds: ["retail-04-dividend-yield-trap"], judgeRepeat: 3,
+    });
+    expect(parseArgs(["--traces", "run.json", "--agent", "p/a", "--judge", "p/j"])).toMatchObject({ ok: false });
+  });
+
   it("recognises --list, --list-models and --help without any model", () => {
     expect(options(["--list"]).list).toBe(true);
     expect(options(["--list-models"]).listModels).toBe(true);

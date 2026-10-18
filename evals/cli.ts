@@ -45,6 +45,7 @@ export interface CliOptions {
   resumePath?: string;
   judgeOnly?: string;
   rescore?: string;
+  traces?: string;
   compare?: string;
   thinking?: ThinkingLevel;
   /** The judge's reasoning level; unset sends the judge none, as every run before the flag did. */
@@ -86,6 +87,10 @@ Options:
                            or failed, with the run's own judge (no --judge); takes --baseline
   --rescore <run.json>     Recompute v2 integrity and judge scores from a saved run's traces;
                            writes a new run and never overwrites the source
+                           With --task, only those tasks are rescored and every other
+                           result keeps its grades; the run must already be benchmark v2
+  --traces <run.json>      With --rescore on a baseline: the run it came from, whose traces
+                           the rescored tasks take (the answers must match)
   --compare <baseline>     Compare the resulting run with a baseline using paired bootstrap
   --observe                Run the enforcement rules in observe mode
   --keep                   Keep the temporary data folder for inspection
@@ -229,6 +234,12 @@ export function parseArgs(argv: string[]): ParseResult {
         options.judgeOnly = value;
         break;
       }
+      case "--traces": {
+        const value = needsValue();
+        if (!value) return { ok: false, error: "--traces needs a run JSON path." };
+        options.traces = value;
+        break;
+      }
       case "--rescore": {
         const value = needsValue();
         if (!value) return { ok: false, error: "--rescore needs a run JSON path." };
@@ -262,6 +273,7 @@ export function parseArgs(argv: string[]): ParseResult {
   }
   if (options.rescore && options.judge) return { ok: false, error: "--rescore grades with the judge recorded in the run; leave out --judge." };
   if (options.judgeOnly && options.rescore) return { ok: false, error: "Use only one of --judge-only and --rescore." };
+  if (options.traces && !options.rescore) return { ok: false, error: "--traces supplies traces to --rescore; use it with --rescore." };
   if ((options.judgeOnly || options.rescore) && options.agents.length > 0) {
     return { ok: false, error: "Saved-run modes use the agents recorded in the file; leave out --agent." };
   }
@@ -440,7 +452,8 @@ async function main(): Promise<number> {
         return 1;
       }
       const { rescoreRun } = await import("./harness/rescore");
-      const summary = await rescoreRun(saved, config, judge.ref, options.judgeRepeat);
+      const traces = options.traces ? JSON.parse(readFileSync(path.resolve(process.cwd(), options.traces), "utf8")) as EvalRunSummary : undefined;
+      const summary = await rescoreRun(saved, config, judge.ref, options.judgeRepeat, { taskIds: options.taskIds, traces });
       const files = writeRunFiles(summary, outDir);
       printFinalTable(summary.results);
       console.log(`\nRescored v${summary.benchmarkVersion} run: ${files.jsonPath}\nSummary: ${files.mdPath}`);

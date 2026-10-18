@@ -75,6 +75,13 @@ describe("v2 reports", () => {
     expect(markdown).toContain("Semantic: 52 / 60");
   });
 
+  it("renders a result rescored from a baseline, which keeps no traces", () => {
+    const report = summary();
+    const { toolCalls: _dropped, ...withoutTraces } = report.results[0];
+    report.results = [withoutTraces as typeof report.results[0]];
+    expect(renderSummaryMarkdown(report)).toContain("- Tools: not kept (baseline result)");
+  });
+
   it("shows timeout quality as N/A-like partial progress while expected score is zero", () => {
     const report = summary();
     const timedOut = result();

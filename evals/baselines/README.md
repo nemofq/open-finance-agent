@@ -34,6 +34,22 @@ Each per-task value is over the task's three runs, from the baseline's `results`
 Each section's **Cost** is the agent's average cost per run at the list prices it gives, worked
 out as in [evals/README.md › Reproducing the README table](../README.md#reproducing-the-readme-table).
 
+**Known issues.** An audit of the three critical items that cap most often (2026-10-17) found the
+judge applying them as written, with two flaws in the items themselves, left in place so every row
+stays graded by one rubric:
+
+- `roc-not-inferred` (dividend trap) also requires saying that the June distribution's tax character
+  is unavailable, so an answer that makes no forbidden inference but leaves that out is capped at 69.
+  This lowered two answers, GPT-5.6 Sol's and GPT-5.6 Terra's, by about 8 points each, about 0.2 on
+  each row's Total.
+- `time-and-motive` (Apple fact-check) asks the answer to treat Berkshire's large Q2 sale as real,
+  but the offline record ends at the March 2024 13F, so the item is almost never fully met. Its caps
+  on answers that denied the sale lowered no score: those answers already scored below 49.
+
+A revision of both items, with these two tasks regraded for every row, moved Totals by −0.6 to +1.0.
+That is within run-to-run spread and could not be told apart from judge variation, so it was not
+applied.
+
 ## GPT-6.1 Sol avg@3
 
 [`2026-10-02-openai-codex-gpt-6-1-sol-openai-codex-gpt-6-astra.json`](2026-10-02-openai-codex-gpt-6-1-sol-openai-codex-gpt-6-astra.json)

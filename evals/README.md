@@ -84,7 +84,8 @@ record run whose capture failed, never for a low score.
 | `--checkpoint <path>` | Checkpoint written after every task cell. An offline run writes `offline-eval-checkpoint.json` in the `--out` folder unless told otherwise. |
 | `--resume <path>` | Skip the cells a checkpoint of the same run already holds; a cell saved with a harness, infrastructure or judge error runs again. |
 | `--judge-only <path>` | Finish a saved run JSON: judge the results whose judgement is missing or failed, with the run's own judge and judge thinking, so `--judge` and `--judge-thinking` are refused beside it. A run written before results recorded their diagnostics is refused. Takes `--baseline`. |
-| `--rescore <path>` | Recompute v2 integrity and semantic scores from a saved run's full traces, write a new file and leave the original untouched. Trace-stripped baselines cannot be rescored. |
+| `--rescore <path>` | Recompute v2 integrity and semantic scores from a saved run's full traces, write a new file and leave the original untouched. With `--task`, only those tasks are rescored and every other result keeps its grades, which is how a rubric change to one task reaches the committed rows; that needs a v2 run graded at the same `--judge-repeat`. |
+| `--traces <path>` | With `--rescore` on a trace-stripped baseline: the run it came from. Each rescored task takes its traces from the same agent, task and repeat there, and the answers must match. |
 | `--compare <baseline>` | Compare the completed or rescored run with a same-version baseline using matched task/repeat pairs and regression gates. |
 | `--out <dir>` | Where results go (default `evals/results/`). |
 | `--config <path>` | The `config.json` to copy into the run (default: your data folder's). |
