@@ -8,4 +8,4 @@ allowBuilds:
   unrs-resolver: false
 # rehype-katex 7 pins katex ^0.16, whose markup the 0.18 stylesheet no longer styles; keep one copy.
 overrides:
-  katex: ^0.18.2
+  katex: ^0.18.11
