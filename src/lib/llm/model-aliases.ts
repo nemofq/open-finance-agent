@@ -26,7 +26,6 @@ export const modelAliases: readonly ModelAlias[] = [
   { type: "deepseek", from: "deepseek-v4-flash", name: "DeepSeek V4 Flash", pricing: { input: 0.14, output: 0.28 }, to: "deepseek-flash" },
   { type: "deepseek", from: "deepseek-v4-flash-vision-exp", name: "DeepSeek V4 Flash Vision Exp", pricing: { input: 0.14, output: 0.28 }, to: "deepseek-flash" },
   { type: "opencode", from: "mimo-v2.5-free", name: "MiMo V2.5 Free", pricing: { input: 0, output: 0 }, to: "mimo-v2.6-flash-free" },
-  { type: "opencode", from: "muse-spark-1.2-contributor-free", name: "Muse Spark 1.2 Free", pricing: { input: 0, output: 0 }, to: "muse-spark-1.3-contributor-free" },
   // pi-ai 0.99.1 → 1.1.0. Cloudflare AI Gateway's Claude ids moved from dots to dashes. Retired
   // without a successor: together gemma-4-31B-it and gpt-oss-20b, opencode-go space-bunny-free
   // (the paid space-bunny is a different tier), and vercel-ai-gateway deepseek-v3.1-terminus,
@@ -55,6 +54,37 @@ export const modelAliases: readonly ModelAlias[] = [
   { type: "opencode-go", from: "deepseek-v4-flash-vision-exp", name: "DeepSeek V4 Flash Vision Exp", pricing: { input: 0.15, output: 0.6 }, to: "deepseek-v4.1-flash" },
   { type: "opencode-go", from: "minimax-m2.7", name: "MiniMax-M2.7", pricing: { input: 0.3, output: 1.2 }, to: "minimax-m3" },
   { type: "opencode-go", from: "grok-4.6", name: "Grok 4.6", pricing: { input: 2, output: 6 }, to: "grok-4.7" },
+  // pi-ai 1.3.0 → 1.4.0. Retired without a successor: azure and openai gpt-5.2-chat-latest and
+  // gpt-5.3-chat-latest (moving aliases); baseten Kimi K2.5, K2.6 and K2.7 Code (Kimi K3 is a
+  // different tier), Nemotron Super, inkling, inkling-small and GLM-4.7; github-copilot
+  // kimi-k2.7-code, gpt-5-mini, gpt-5.4, gpt-5.4-mini and gpt-5.5; mistral open-mistral-7b,
+  // open-mixtral-8x7b and open-mixtral-8x22b; openai-codex gpt-5.5 and gpt-5.3-codex-spark, which
+  // the Codex backend rejects for ChatGPT accounts; opencode claude-sonnet-4, cat-jam-free,
+  // space-bunny-free, step-5-preview-free and muse-spark-1.3-contributor-free, so the
+  // muse-spark-1.2 row above it went too; opencode-go cat-jam-free, space-bunny and
+  // step-5-preview-free (the paid step-5-preview is a different tier); together Llama 3.3 70B,
+  // nemotron-3-ultra-550b-a55b and Qwen 2.5 7B; and vercel-ai-gateway anthropic/claude-sonnet-4
+  // and stealth/cat-jam.
+  { type: "baseten", from: "deepseek-ai/DeepSeek-V4-Pro", name: "DeepSeek V4 Pro", pricing: { input: 1.74, output: 3.48 }, to: "deepseek-ai/DeepSeek-V4-Pro-0813" },
+  { type: "baseten", from: "zai-org/GLM-5", name: "GLM 5", pricing: { input: 0.95, output: 3.15 }, to: "zai-org/GLM-5.3" },
+  { type: "baseten", from: "zai-org/GLM-5.1", name: "GLM 5.1", pricing: { input: 1.3, output: 4.3 }, to: "zai-org/GLM-5.3" },
+  { type: "github-copilot", from: "claude-opus-4.7", name: "Claude Opus 4.7", pricing: { input: 5, output: 25 }, to: "claude-opus-4.8" },
+  { type: "github-copilot", from: "gemini-3.5-flash", name: "Gemini 3.5 Flash", pricing: { input: 1.5, output: 9 }, to: "gemini-3.8-flash" },
+  { type: "github-copilot", from: "gemini-3.6-flash", name: "Gemini 3.6 Flash", pricing: { input: 0.75, output: 3.75 }, to: "gemini-3.8-flash" },
+  { type: "github-copilot", from: "gemini-3.7-flash", name: "Gemini 3.7 Flash", pricing: { input: 0.75, output: 3.75 }, to: "gemini-3.8-flash" },
+  { type: "github-copilot", from: "mai-code-1-flash-picker", name: "MAI-Code-1-Flash", pricing: { input: 0.75, output: 4.5 }, to: "mai-code-1.1-flash" },
+  { type: "opencode", from: "deepseek-v4-flash-vision-exp", name: "DeepSeek V4 Flash Vision Exp", pricing: { input: 0.14, output: 0.28 }, to: "deepseek-v4-flash" },
+  { type: "together", from: "deepseek-ai/DeepSeek-V4-Flash-0731", name: "DeepSeek V4 Flash 0731", pricing: { input: 0.14, output: 0.28 }, to: "deepseek-ai/DeepSeek-V4.1-Flash" },
+  { type: "together", from: "MiniMaxAI/MiniMax-M2.7", name: "MiniMax-M2.7", pricing: { input: 0.3, output: 1.2 }, to: "MiniMaxAI/MiniMax-M3" },
+  { type: "xiaomi", from: "mimo-v2.5", name: "MiMo-V2.5", pricing: { input: 0.14, output: 0.28 }, to: "mimo-v2.6-flash" },
+  { type: "xiaomi", from: "mimo-v2.5-pro", name: "MiMo-V2.5-Pro", pricing: { input: 0.435, output: 0.87 }, to: "mimo-v2.6-pro" },
+  { type: "xiaomi", from: "mimo-v2.5-pro-ultraspeed", name: "MiMo-V2.5-Pro-UltraSpeed", pricing: { input: 1.305, output: 2.61 }, to: "mimo-v2.6-pro-ultraspeed" },
+  { type: "xiaomi-token-plan-ams", from: "mimo-v2.5", name: "MiMo-V2.5", pricing: { input: 0, output: 0 }, to: "mimo-v2.6-flash" },
+  { type: "xiaomi-token-plan-ams", from: "mimo-v2.5-pro", name: "MiMo-V2.5-Pro", pricing: { input: 0, output: 0 }, to: "mimo-v2.6-pro" },
+  { type: "xiaomi-token-plan-cn", from: "mimo-v2.5", name: "MiMo-V2.5", pricing: { input: 0, output: 0 }, to: "mimo-v2.6-flash" },
+  { type: "xiaomi-token-plan-cn", from: "mimo-v2.5-pro", name: "MiMo-V2.5-Pro", pricing: { input: 0, output: 0 }, to: "mimo-v2.6-pro" },
+  { type: "xiaomi-token-plan-sgp", from: "mimo-v2.5", name: "MiMo-V2.5", pricing: { input: 0, output: 0 }, to: "mimo-v2.6-flash" },
+  { type: "xiaomi-token-plan-sgp", from: "mimo-v2.5-pro", name: "MiMo-V2.5-Pro", pricing: { input: 0, output: 0 }, to: "mimo-v2.6-pro" },
 ];
 
 export function modelAlias(type: LlmProviderType, id: string): ModelAlias | undefined {

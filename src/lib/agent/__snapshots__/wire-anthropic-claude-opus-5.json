@@ -8,7 +8,7 @@
         "anthropic-dangerous-direct-browser-access": "true",
         "anthropic-version": "2023-06-01",
         "content-type": "application/json",
-        "user-agent": "pi (<platform>)",
+        "user-agent": "pi/<version> (<platform>)",
         "x-api-key": "sk-ant-test"
       },
       "body": {
@@ -879,7 +879,7 @@
         "anthropic-dangerous-direct-browser-access": "true",
         "anthropic-version": "2023-06-01",
         "content-type": "application/json",
-        "user-agent": "pi (<platform>)",
+        "user-agent": "pi/<version> (<platform>)",
         "x-api-key": "sk-ant-test"
       },
       "body": {
@@ -968,7 +968,7 @@
         "anthropic-dangerous-direct-browser-access": "true",
         "anthropic-version": "2023-06-01",
         "content-type": "application/json",
-        "user-agent": "pi (<platform>)",
+        "user-agent": "pi/<version> (<platform>)",
         "x-api-key": "sk-ant-test"
       },
       "body": {
@@ -1082,7 +1082,7 @@
         "anthropic-dangerous-direct-browser-access": "true",
         "anthropic-version": "2023-06-01",
         "content-type": "application/json",
-        "user-agent": "pi (<platform>)",
+        "user-agent": "pi/<version> (<platform>)",
         "x-api-key": "sk-ant-test"
       },
       "body": {

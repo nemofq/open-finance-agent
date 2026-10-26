@@ -373,10 +373,5 @@
   "required": [
     "title",
     "sections"
-  ],
-  "~standard": {
-    "vendor": "zod",
-    "version": 1,
-    "jsonSchema": {}
-  }
+  ]
 }

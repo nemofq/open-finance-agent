@@ -6,7 +6,7 @@
         "accept": "application/json",
         "authorization": "Bearer sk-test",
         "content-type": "application/json",
-        "user-agent": "pi (<platform>)"
+        "user-agent": "pi/<version> (<platform>)"
       },
       "body": {
         "model": "test-model",
@@ -524,12 +524,7 @@
                 "required": [
                   "title",
                   "sections"
-                ],
-                "~standard": {
-                  "vendor": "zod",
-                  "version": 1,
-                  "jsonSchema": {}
-                }
+                ]
               }
             }
           },
@@ -873,7 +868,7 @@
         "accept": "application/json",
         "authorization": "Bearer sk-test",
         "content-type": "application/json",
-        "user-agent": "pi (<platform>)"
+        "user-agent": "pi/<version> (<platform>)"
       },
       "body": {
         "model": "test-model",
@@ -926,7 +921,7 @@
         "accept": "application/json",
         "authorization": "Bearer sk-test",
         "content-type": "application/json",
-        "user-agent": "pi (<platform>)"
+        "user-agent": "pi/<version> (<platform>)"
       },
       "body": {
         "model": "test-model",
@@ -992,7 +987,7 @@
         "accept": "application/json",
         "authorization": "Bearer sk-test",
         "content-type": "application/json",
-        "user-agent": "pi (<platform>)"
+        "user-agent": "pi/<version> (<platform>)"
       },
       "body": {
         "model": "test-model",

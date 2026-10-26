@@ -6,9 +6,10 @@ import { type Api, type ChatTemplateKwargValue, clampThinkingLevel, type Model }
  * where Anthropic manages the effort), a switch that turns thinking off (`disabled`), the lowest
  * level a Gemini model accepts, or nothing at all (`not sent`).
  *
- * This follows pi-ai 1.3's request builders, deciding as they do by API and model fields and never
- * by a model's name; `thinking-off.test.ts` checks it against the request pi builds for every model
- * in its catalogs, so a pi upgrade that changes one fails there.
+ * This follows pi-ai 1.4's request builders, deciding as they do by API and model fields, and by a
+ * model's id only where pi does (Gemini's level or budget control); `thinking-off.test.ts` checks it
+ * against the request pi builds for every model in its catalogs, so a pi upgrade that changes one
+ * fails there.
  */
 export function hostedOff(model: Model<Api>): string {
   const off = model.thinkingLevelMap?.off;
@@ -29,10 +30,10 @@ export function hostedOff(model: Model<Api>): string {
       return off ? `"${off}"` : "not sent";
     case "google-generative-ai":
     case "google-vertex": {
-      // A Gemini model that cannot turn thinking off is sent the lowest level it accepts. pi picks
-      // level or budget control by model id, and in its catalogs every such model takes levels.
+      // A Gemini model that cannot turn thinking off is sent the lowest level it accepts, unless pi
+      // drives it by budget, which Off sets to zero.
       const floor = clampThinkingLevel(model, "off");
-      if (floor === "off") return "disabled";
+      if (floor === "off" || !usesGoogleThinkingLevel(model.id)) return "disabled";
       const value = model.thinkingLevelMap?.[floor];
       return value ? `${floor} → "${value}"` : floor;
     }
@@ -41,6 +42,16 @@ export function hostedOff(model: Model<Api>): string {
     default:
       return "not sent";
   }
+}
+
+/**
+ * Whether pi drives a Gemini model by `thinkingLevel` rather than `thinkingBudget`: a copy of
+ * `usesGoogleThinkingLevel` in pi-ai's `api/google-shared`, which loads the Google SDK with it.
+ */
+function usesGoogleThinkingLevel(modelId: string): boolean {
+  const id = modelId.toLowerCase();
+  return /gemini-3(?:\.\d+)?-(?:pro|flash)/.test(id) || /gemini-(?:[4-9]|[1-9]\d)/.test(id) ||
+    id === "gemini-flash-latest" || id === "gemini-flash-lite-latest" || /gemma-?4/.test(id);
 }
 
 /** Chat Completions encodes Off by the model's thinking format, which pi detects when none is set. */
