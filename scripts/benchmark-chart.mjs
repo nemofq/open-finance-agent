@@ -21,7 +21,17 @@ const read = (file) => readFileSync(path.join(root, file), "utf8");
 
 // --- Data: the README table, and each row's baseline from the baselines doc.
 
-const isRow = (line) => /^\| .+ avg@\d+ \|/.test(line);
+/** Where the table's rows sit among the README's lines: after its header, `| Model (avg@<repeats>) |`, and alignment row. */
+function tableRows(lines) {
+  const header = lines.findIndex((line) => /^\| Model \(avg@\d+\) \|/.test(line));
+  if (header < 0) throw new Error("README has no benchmark table");
+  let end = header + 2;
+  while (lines[end]?.startsWith("| ")) end++;
+  return { start: header + 2, end };
+}
+
+const lines = read("README.md").split("\n");
+const table = tableRows(lines);
 const sections = [...read("evals/baselines/README.md").matchAll(/^## (.+?) avg@\d+(?:, (\w+))?\n\n\[`([^`]+\.json)`\]/gm)];
 
 /**
@@ -36,9 +46,9 @@ function baselineScores(name, level) {
   return { total: summary.expectedUserScore, integrity: summary.averageIntegrityScore, judged: summary.averageSemanticScore, capped: lost / results.length };
 }
 
-const rows = read("README.md").split("\n").filter(isRow).map((line) => {
-  const [model, level, , , , , cost] = line.split("|").slice(1, -1).map((cell) => cell.trim());
-  const name = model.replace(/ avg@\d+$/, ""), levelKey = level.toLowerCase();
+const rows = lines.slice(table.start, table.end).map((line) => {
+  const [name, level, , , , , cost] = line.split("|").slice(1, -1).map((cell) => cell.trim());
+  const levelKey = level.toLowerCase();
   return { name, level: levelKey, cost: Number(cost.replace("$", "")), ...baselineScores(name, levelKey) };
 });
 
@@ -270,10 +280,9 @@ const alt = "Scatter of total benchmark score against the agent's average cost p
   `; a dotted Pareto line joins ${pareto.map((p) => p.name).join(", ").replace(/, ([^,]+)$/, " and $1")}`;
 // Each Total carries the points critical caps took off it, so the cap shows where the score is read.
 const capMark = (capped) => (capped >= 0.05 ? ` <sub>−${capped.toFixed(1)} capped</sub>` : "");
-const lines = read("README.md").split("\n");
-const tableRows = lines.filter(isRow).map((line) => {
+const scored = lines.slice(table.start, table.end).map((line) => {
   const cells = line.split("|");
-  const name = cells[1].trim().replace(/ avg@\d+$/, ""), level = cells[2].trim().toLowerCase();
+  const name = cells[1].trim(), level = cells[2].trim().toLowerCase();
   const row = rows.find((r) => r.name === name && r.level === level);
   cells[4] = ` ${row.total.toFixed(1)}${capMark(row.capped)} `;
   cells[5] = ` ${row.integrity.toFixed(1)} `;
@@ -281,9 +290,8 @@ const tableRows = lines.filter(isRow).map((line) => {
   return { line: cells.join("|"), total: row.total };
 });
 // The table is ordered by Total, highest first; rows that tie keep their order.
-const sorted = tableRows.map((row, index) => ({ ...row, index })).sort((a, b) => b.total - a.total || a.index - b.index);
-let next = 0;
-const readme = lines.map((line) => (isRow(line) ? sorted[next++].line : line)).join("\n");
+const sorted = scored.map((row, index) => ({ ...row, index })).sort((a, b) => b.total - a.total || a.index - b.index);
+const readme = [...lines.slice(0, table.start), ...sorted.map((row) => row.line), ...lines.slice(table.end)].join("\n");
 const withAlt = readme.replace(/(<img src="docs\/images\/benchmark-quality-cost-light\.svg" alt=")[^"]*(")/, (_, head, tail) => head + alt.replace(/"/g, "&quot;") + tail);
 if (!withAlt.includes(alt.replace(/"/g, "&quot;"))) throw new Error("README has no benchmark chart image to describe");
 writeFileSync(path.join(root, "README.md"), withAlt);

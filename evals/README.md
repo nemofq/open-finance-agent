@@ -261,8 +261,9 @@ published reference**, so every row must state the settings it was run with: age
 thinking level, judge thinking when set, policy mode, repeats and benchmark version.
 The summary's header prints all of them (`Thinking`, `Judge thinking`, `Policy`,
 `Tasks: <n> × <repeats>`, `Benchmark version`), and the run JSON holds them as `thinking`,
-`judgeThinking`, `policyMode`, `repeat` and `benchmarkVersion`. The Model column names the agent
-followed by `avg@<repeats>`, Thinking effort is the agent's thinking level, and Judge model names
+`judgeThinking`, `policyMode`, `repeat` and `benchmarkVersion`. The Model column names the agent,
+and its header, `Model (avg@<repeats>)`, the repeats every row shares; Thinking effort is the
+agent's thinking level, and Judge model names
 the judge followed by its thinking level when one was set; policy mode and benchmark version go in
 the note under the table. Each row is one run, promoted with `--baseline`, and also gets a section
 in [evals/baselines/README.md](baselines/README.md) with its per-task scores, taken from the
