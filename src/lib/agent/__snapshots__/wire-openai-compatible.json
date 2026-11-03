@@ -1137,7 +1137,8 @@
             "output": 0,
             "cacheRead": 0,
             "cacheWrite": 0,
-            "total": 0
+            "total": 0,
+            "totalFromProvider": false
           }
         },
         "stopReason": "toolUse",
@@ -1193,7 +1194,8 @@
             "output": 0,
             "cacheRead": 0,
             "cacheWrite": 0,
-            "total": 0
+            "total": 0,
+            "totalFromProvider": false
           }
         },
         "stopReason": "stop",
@@ -1254,7 +1256,8 @@
             "output": 0,
             "cacheRead": 0,
             "cacheWrite": 0,
-            "total": 0
+            "total": 0,
+            "totalFromProvider": false
           }
         },
         "stopReason": "stop",
@@ -1305,7 +1308,8 @@
             "output": 0,
             "cacheRead": 0,
             "cacheWrite": 0,
-            "total": 0
+            "total": 0,
+            "totalFromProvider": false
           }
         },
         "stopReason": "stop",

@@ -867,7 +867,7 @@
           }
         },
         "output_config": {
-          "effort": "high"
+          "effort": "low"
         }
       }
     },
@@ -956,7 +956,7 @@
           }
         },
         "output_config": {
-          "effort": "high"
+          "effort": "low"
         }
       }
     },
@@ -1070,7 +1070,7 @@
           }
         },
         "output_config": {
-          "effort": "high"
+          "effort": "low"
         }
       }
     },
@@ -1184,7 +1184,7 @@
           }
         },
         "output_config": {
-          "effort": "high"
+          "effort": "low"
         }
       }
     }
@@ -1277,7 +1277,8 @@
             "output": 0.00025,
             "cacheRead": 0,
             "cacheWrite": 0,
-            "total": 0.00075
+            "total": 0.00075,
+            "totalFromProvider": false
           },
           "cacheWrite1h": 0
         },
@@ -1334,7 +1335,8 @@
             "output": 0.00025,
             "cacheRead": 0,
             "cacheWrite": 0,
-            "total": 0.00075
+            "total": 0.00075,
+            "totalFromProvider": false
           },
           "cacheWrite1h": 0
         },
@@ -1396,7 +1398,8 @@
             "output": 0.00025,
             "cacheRead": 0,
             "cacheWrite": 0,
-            "total": 0.00075
+            "total": 0.00075,
+            "totalFromProvider": false
           },
           "cacheWrite1h": 0
         },
@@ -1448,7 +1451,8 @@
             "output": 0.00025,
             "cacheRead": 0,
             "cacheWrite": 0,
-            "total": 0.00075
+            "total": 0.00075,
+            "totalFromProvider": false
           },
           "cacheWrite1h": 0
         },

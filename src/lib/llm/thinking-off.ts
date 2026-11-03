@@ -6,7 +6,7 @@ import { type Api, type ChatTemplateKwargValue, clampThinkingLevel, type Model }
  * where Anthropic manages the effort), a switch that turns thinking off (`disabled`), the lowest
  * level a Gemini model accepts, or nothing at all (`not sent`).
  *
- * This follows pi-ai 1.4's request builders, deciding as they do by API and model fields, and by a
+ * This follows pi-ai 1.5's request builders, deciding as they do by API and model fields, and by a
  * model's id only where pi does (Gemini's level or budget control); `thinking-off.test.ts` checks it
  * against the request pi builds for every model in its catalogs, so a pi upgrade that changes one
  * fails there.

@@ -73,7 +73,7 @@ export const modelAliases: readonly ModelAlias[] = [
   { type: "github-copilot", from: "gemini-3.6-flash", name: "Gemini 3.6 Flash", pricing: { input: 0.75, output: 3.75 }, to: "gemini-3.8-flash" },
   { type: "github-copilot", from: "gemini-3.7-flash", name: "Gemini 3.7 Flash", pricing: { input: 0.75, output: 3.75 }, to: "gemini-3.8-flash" },
   { type: "github-copilot", from: "mai-code-1-flash-picker", name: "MAI-Code-1-Flash", pricing: { input: 0.75, output: 4.5 }, to: "mai-code-1.1-flash" },
-  { type: "opencode", from: "deepseek-v4-flash-vision-exp", name: "DeepSeek V4 Flash Vision Exp", pricing: { input: 0.14, output: 0.28 }, to: "deepseek-v4-flash" },
+  { type: "opencode", from: "deepseek-v4-flash-vision-exp", name: "DeepSeek V4 Flash Vision Exp", pricing: { input: 0.14, output: 0.28 }, to: "deepseek-v4.1-flash" },
   { type: "together", from: "deepseek-ai/DeepSeek-V4-Flash-0731", name: "DeepSeek V4 Flash 0731", pricing: { input: 0.14, output: 0.28 }, to: "deepseek-ai/DeepSeek-V4.1-Flash" },
   { type: "together", from: "MiniMaxAI/MiniMax-M2.7", name: "MiniMax-M2.7", pricing: { input: 0.3, output: 1.2 }, to: "MiniMaxAI/MiniMax-M3" },
   { type: "xiaomi", from: "mimo-v2.5", name: "MiMo-V2.5", pricing: { input: 0.14, output: 0.28 }, to: "mimo-v2.6-flash" },
@@ -85,6 +85,23 @@ export const modelAliases: readonly ModelAlias[] = [
   { type: "xiaomi-token-plan-cn", from: "mimo-v2.5-pro", name: "MiMo-V2.5-Pro", pricing: { input: 0, output: 0 }, to: "mimo-v2.6-pro" },
   { type: "xiaomi-token-plan-sgp", from: "mimo-v2.5", name: "MiMo-V2.5", pricing: { input: 0, output: 0 }, to: "mimo-v2.6-flash" },
   { type: "xiaomi-token-plan-sgp", from: "mimo-v2.5-pro", name: "MiMo-V2.5-Pro", pricing: { input: 0, output: 0 }, to: "mimo-v2.6-pro" },
+  // pi-ai 1.4.0 → 1.5.0. Retired without a successor: azure and openai gpt-realtime-2.1; google and
+  // google-vertex gemini-3.1-flash-lite-image, and google gemini-3.1-flash-live-preview; huggingface
+  // Qwen3-Next-80B-A3B-Thinking and MiMo-V2-Flash; mistral pixtral-large-latest (a moving alias);
+  // nvidia z-ai/glm-5.3 (GLM-5.3-Flash is a different tier); opencode longcat-2.5-preview-free,
+  // minimax-m3.1-flash-free and nemotron-3-ultra-free; opencode-go longcat-2.5-preview-free and
+  // minimax-m3.1-flash-free (the paid M3.1 Flash is a different tier); and vercel-ai-gateway
+  // arcee-ai/trinity-large-thinking, openai/gpt-3.5-turbo, gpt-4-turbo, gpt-4.1-nano-batch,
+  // gpt-4.1-nano-fast and o4-mini-fast, poolside/laguna-s-2.1-free, and
+  // spacexai/grok-4.1-fast-non-reasoning and grok-4.1-fast-reasoning.
+  { type: "huggingface", from: "zai-org/GLM-4.5", name: "GLM-4.5", pricing: { input: 0.6, output: 2.2 }, to: "zai-org/GLM-4.7" },
+  { type: "mistral", from: "devstral-medium-2507", name: "Devstral Medium", pricing: { input: 0.4, output: 2 }, to: "devstral-2512" },
+  { type: "mistral", from: "devstral-small-2505", name: "Devstral Small 2505", pricing: { input: 0.1, output: 0.3 }, to: "labs-devstral-small-2512" },
+  { type: "mistral", from: "devstral-small-2507", name: "Devstral Small", pricing: { input: 0.1, output: 0.3 }, to: "labs-devstral-small-2512" },
+  { type: "mistral", from: "mistral-large-2411", name: "Mistral Large 2.1", pricing: { input: 2, output: 6 }, to: "mistral-large-2512" },
+  { type: "mistral", from: "mistral-nemo", name: "Mistral Nemo", pricing: { input: 0.15, output: 0.15 }, to: "open-mistral-nemo" },
+  { type: "opencode", from: "deepseek-v4-flash", name: "DeepSeek V4 Flash", pricing: { input: 0.14, output: 0.28 }, to: "deepseek-v4.1-flash" },
+  { type: "opencode-go", from: "gemini-4-argon-contributor", name: "Gemini 4 Argon Contributor", pricing: { input: 4, output: 20 }, to: "gemini-4-argon" },
 ];
 
 export function modelAlias(type: LlmProviderType, id: string): ModelAlias | undefined {
