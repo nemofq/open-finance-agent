@@ -7,12 +7,12 @@ each row down by task; how a run is made and promoted is in
 is added, in the same order as the README's table.
 
 All rows are benchmark v2: judge prompt v9 with three grades per answer, policy enforced, offline
-dataset, twelve tasks × 3 repeats. The GPT, DeepSeek V4.1 Flash and Qwen rows were rescored with
-`--rescore` from their saved runs when v2 landed, so each agent answer, run time and token count is
-the original run's. The Claude Opus and Sonnet, Grok, Gemini 3.8 Flash and 4 Argon, GLM and Kimi rows
-were run on v2 through a custom OpenAI-compatible endpoint, Claude Haiku 5.5 and Fable 5.1 through
-Anthropic's API, DeepSeek V4.1 Flash 1017 through DeepSeek's API, and Muse Spark Open through
-OpenRouter. The commit below is the run's. Benchmark v1 scores are not comparable and are kept only in
+dataset, twelve tasks × 3 repeats. The GPT rows except GPT-6.1 Terra and the DeepSeek V4.1 Flash and
+Qwen rows were rescored with `--rescore` from their saved runs when v2 landed, so each agent answer,
+run time and token count is the original run's. The Claude Opus and Sonnet, Grok, Gemini 3.8 Flash and
+4 Argon, GLM and Kimi rows were run on v2 through a custom OpenAI-compatible endpoint, Claude Haiku 5.5
+and Fable 5.1 through Anthropic's API, DeepSeek V4.1 Flash 1017 through DeepSeek's API, GPT-6.1 Terra
+through a ChatGPT sign-in, and Muse Spark Open through OpenRouter. The commit below is the run's. Benchmark v1 scores are not comparable and are kept only in
 git history.
 
 Each per-task value is over the task's three runs, from the baseline's `results`:
@@ -41,7 +41,8 @@ stays graded by one rubric:
 - `roc-not-inferred` (dividend trap) also requires saying that the June distribution's tax character
   is unavailable, so an answer that makes no forbidden inference but leaves that out is capped at 69.
   This lowered two answers, GPT-5.6 Sol's and GPT-5.6 Terra's, by about 8 points each, about 0.2 on
-  each row's Total.
+  each row's Total, and one of GPT-6.1 Terra's, a row added after the audit, by 6.5 points, also about
+  0.2.
 - `time-and-motive` (Apple fact-check) asks the answer to treat Berkshire's large Q2 sale as real,
   but the offline record ends at the March 2024 13F, so the item is almost never fully met. Its caps
   on answers that denied the sale lowered no score: those answers already scored below 49.
@@ -146,6 +147,36 @@ report figures are the most of any row, though integrity stays the highest of an
 | `retail-12-concentration-profile-fit` | 11.1 | 11.8 | 5.3 | 15.0 | 20.0 | 7.5 | 10.0 | 80.7 (5.2) | 0 | 91 s | 3,922 |
 | `retail-13-semis-figure-survival` | 12.0 | 11.9 | 16.0 | 7.5 | 16.7 | 7.5 | 10.0 | 81.6 (4.8) | 0 | 154 s | 7,052 |
 | `retail-14-apple-pre-open-timing` | 12.0 | 11.8 | 16.0 | 7.5 | 10.0 | 7.5 | 10.0 | 74.8 (0.3) | 0 | 157 s | 6,913 |
+
+## GPT-6.1 Terra avg@3
+
+[`2026-11-03-openai-codex-gpt-6-1-terra-openai-codex-gpt-6-astra.json`](2026-11-03-openai-codex-gpt-6-1-terra-openai-codex-gpt-6-astra.json)
+
+- **Agent:** `openai-codex/gpt-6.1-terra`, thinking medium
+- **Judge:** `openai-codex/gpt-6-astra`, thinking medium, three grades per answer
+- **Commit:** `81dc362`
+- **Scores:** total 70.1 · integrity 33.0 · judged 37.2 · completed 100.0% · mean per-task σ 4.25
+- **Critical caps:** 1 of 36 answers missed or contradicted a critical item, 1 lowered by 6.5 points
+  (missed `roc-not-inferred` 1)
+- **Diagnostics:** tool argument errors 0 · fallback reports 0 · unverified report figures 35 ·
+  repaired 2
+- **Cost:** $0.90 per run · per million tokens: input $1.00, cache read $0.05, cache write
+  $1.25, output $5.00 · OpenAI API standard tier, 2026-11-03
+
+| Task | Evidence | Figures | Contracts | Intent | Financial | Grounding | Clarity | Total (σ) | Capped | Run time | Output tokens |
+| :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| `retail-01-nvda-beat-and-drop` | 7.7 | 12.0 | 0.0 | 15.0 | 10.0 | 7.5 | 10.0 | 62.2 (3.0) | 0 | 37 s | 1,777 |
+| `retail-02-nike-moat-erosion` | 10.7 | 12.0 | 5.3 | 12.5 | 10.0 | 7.5 | 5.0 | 63.0 (5.0) | 0 | 49 s | 2,590 |
+| `retail-03-nuclear-thematic-purity` | 8.8 | 8.6 | 10.7 | 10.0 | 10.0 | 7.5 | 3.3 | 58.9 (11.1) | 0 | 44 s | 1,698 |
+| `retail-04-dividend-yield-trap` | 12.0 | 10.5 | 16.0 | 15.0 | 10.0 | 7.5 | 6.7 | 75.5 (5.2) | 1 (−2.2) | 26 s | 1,616 |
+| `retail-05-intel-value-trap` | 10.9 | 9.0 | 10.7 | 7.5 | 10.0 | 7.5 | 5.0 | 60.6 (10.3) | 0 | 45 s | 2,070 |
+| `retail-06-mstr-proxy-leverage` | 8.0 | 12.0 | 16.0 | 15.0 | 10.0 | 7.5 | 5.0 | 73.5 (0.0) | 0 | 42 s | 1,995 |
+| `retail-09-narrative-factcheck-apple` | 3.2 | 12.0 | 16.0 | 7.5 | 13.3 | 7.5 | 8.3 | 67.9 (2.4) | 0 | 28 s | 1,485 |
+| `retail-10-smci-accounting-red-flag` | 6.0 | 12.0 | 16.0 | 7.5 | 20.0 | 5.0 | 10.0 | 76.5 (3.5) | 0 | 45 s | 2,135 |
+| `retail-11-nike-earnings-review-report` | 12.0 | 10.1 | 16.0 | 7.5 | 3.3 | 7.5 | 5.0 | 61.4 (5.7) | 0 | 42 s | 2,292 |
+| `retail-12-concentration-profile-fit` | 12.0 | 12.0 | 8.0 | 15.0 | 16.7 | 7.5 | 10.0 | 81.2 (4.7) | 0 | 22 s | 1,116 |
+| `retail-13-semis-figure-survival` | 12.0 | 11.9 | 16.0 | 7.5 | 10.0 | 7.5 | 10.0 | 74.9 (0.1) | 0 | 36 s | 2,338 |
+| `retail-14-apple-pre-open-timing` | 12.0 | 12.0 | 16.0 | 7.5 | 20.0 | 7.5 | 10.0 | 85.0 (0.0) | 0 | 42 s | 2,147 |
 
 ## Claude Fable 5.1 avg@3
 

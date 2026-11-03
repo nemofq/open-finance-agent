@@ -170,8 +170,8 @@ function layout(sequence) {
       const margin = option.ring === 0 ? own + 6 : 28;
       if (points.some((other) => other !== point && distanceTo(other, option.spot) < margin)) continue;
       const line = option.ring > 0 ? leaderBoxes(point, option.spot) : [];
-      const isOwn = (o) => Math.abs(o.x + o.w / 2 - point.x) < 10 && Math.abs(o.y + o.h / 2 - point.y) < 10;
-      if (line.some((segment) => labels.some((l) => overlaps(segment, l)) || obstacles.some((o) => !isOwn(o) && o.w <= 18 && overlaps(segment, o)))) continue;
+      // A leader line keeps clear of labels and other points; it may cross the dotted Pareto line.
+      if (line.some((segment) => labels.some((l) => overlaps(segment, l)) || points.some((other) => other !== point && overlaps(segment, box(other.x - 9, other.y - 9, 18, 18))))) continue;
       if (!chosen || option.cost < chosen.cost) chosen = { ...option, line };
     }
     if (!chosen) return undefined;
