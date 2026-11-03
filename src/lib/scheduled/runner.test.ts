@@ -95,7 +95,8 @@ describe("a standalone task's model", () => {
     });
 
     expect(run).toMatchObject({ trigger: "catch_up", status: "failed", error: expect.stringContaining("Edit the task") });
-    expect(await getScheduledTask(task.id)).toMatchObject({ status: "completed", lastRunStatus: "failed" });
+    // The run is recorded before its task, so the task's own record may still be on its way.
+    await vi.waitFor(async () => expect(await getScheduledTask(task.id)).toMatchObject({ status: "completed", lastRunStatus: "failed" }));
     expect(runTurn).not.toHaveBeenCalled();
   });
 
