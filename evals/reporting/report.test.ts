@@ -77,7 +77,8 @@ describe("v2 reports", () => {
 
   it("renders a result rescored from a baseline, which keeps no traces", () => {
     const report = summary();
-    const { toolCalls: _dropped, ...withoutTraces } = report.results[0];
+    const withoutTraces: Partial<typeof report.results[0]> = { ...report.results[0] };
+    delete withoutTraces.toolCalls;
     report.results = [withoutTraces as typeof report.results[0]];
     expect(renderSummaryMarkdown(report)).toContain("- Tools: not kept (baseline result)");
   });
