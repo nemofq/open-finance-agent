@@ -7,7 +7,7 @@
         "anthropic-dangerous-direct-browser-access": "true",
         "anthropic-version": "2023-06-01",
         "content-type": "application/json",
-        "user-agent": "pi (<platform>)",
+        "user-agent": "pi/<version> (<platform>)",
         "x-api-key": "sk-ant-test"
       },
       "body": {
@@ -867,7 +867,7 @@
         "anthropic-dangerous-direct-browser-access": "true",
         "anthropic-version": "2023-06-01",
         "content-type": "application/json",
-        "user-agent": "pi (<platform>)",
+        "user-agent": "pi/<version> (<platform>)",
         "x-api-key": "sk-ant-test"
       },
       "body": {
@@ -938,7 +938,7 @@
         "anthropic-dangerous-direct-browser-access": "true",
         "anthropic-version": "2023-06-01",
         "content-type": "application/json",
-        "user-agent": "pi (<platform>)",
+        "user-agent": "pi/<version> (<platform>)",
         "x-api-key": "sk-ant-test"
       },
       "body": {
@@ -1027,7 +1027,7 @@
         "anthropic-dangerous-direct-browser-access": "true",
         "anthropic-version": "2023-06-01",
         "content-type": "application/json",
-        "user-agent": "pi (<platform>)",
+        "user-agent": "pi/<version> (<platform>)",
         "x-api-key": "sk-ant-test"
       },
       "body": {
@@ -1198,7 +1198,8 @@
             "output": 0.0001,
             "cacheRead": 0,
             "cacheWrite": 0,
-            "total": 0.0003
+            "total": 0.0003,
+            "totalFromProvider": false
           },
           "cacheWrite1h": 0
         },
@@ -1254,7 +1255,8 @@
             "output": 0.0001,
             "cacheRead": 0,
             "cacheWrite": 0,
-            "total": 0.0003
+            "total": 0.0003,
+            "totalFromProvider": false
           },
           "cacheWrite1h": 0
         },
@@ -1315,7 +1317,8 @@
             "output": 0.0001,
             "cacheRead": 0,
             "cacheWrite": 0,
-            "total": 0.0003
+            "total": 0.0003,
+            "totalFromProvider": false
           },
           "cacheWrite1h": 0
         },
@@ -1366,7 +1369,8 @@
             "output": 0.0001,
             "cacheRead": 0,
             "cacheWrite": 0,
-            "total": 0.0003
+            "total": 0.0003,
+            "totalFromProvider": false
           },
           "cacheWrite1h": 0
         },

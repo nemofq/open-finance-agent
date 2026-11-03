@@ -8,7 +8,7 @@
         "anthropic-dangerous-direct-browser-access": "true",
         "anthropic-version": "2023-06-01",
         "content-type": "application/json",
-        "user-agent": "pi (<platform>)",
+        "user-agent": "pi/<version> (<platform>)",
         "x-api-key": "sk-ant-test"
       },
       "body": {
@@ -867,7 +867,7 @@
           }
         },
         "output_config": {
-          "effort": "high"
+          "effort": "low"
         }
       }
     },
@@ -879,7 +879,7 @@
         "anthropic-dangerous-direct-browser-access": "true",
         "anthropic-version": "2023-06-01",
         "content-type": "application/json",
-        "user-agent": "pi (<platform>)",
+        "user-agent": "pi/<version> (<platform>)",
         "x-api-key": "sk-ant-test"
       },
       "body": {
@@ -956,7 +956,7 @@
           }
         },
         "output_config": {
-          "effort": "high"
+          "effort": "low"
         }
       }
     },
@@ -968,7 +968,7 @@
         "anthropic-dangerous-direct-browser-access": "true",
         "anthropic-version": "2023-06-01",
         "content-type": "application/json",
-        "user-agent": "pi (<platform>)",
+        "user-agent": "pi/<version> (<platform>)",
         "x-api-key": "sk-ant-test"
       },
       "body": {
@@ -1070,7 +1070,7 @@
           }
         },
         "output_config": {
-          "effort": "high"
+          "effort": "low"
         }
       }
     },
@@ -1082,7 +1082,7 @@
         "anthropic-dangerous-direct-browser-access": "true",
         "anthropic-version": "2023-06-01",
         "content-type": "application/json",
-        "user-agent": "pi (<platform>)",
+        "user-agent": "pi/<version> (<platform>)",
         "x-api-key": "sk-ant-test"
       },
       "body": {
@@ -1184,7 +1184,7 @@
           }
         },
         "output_config": {
-          "effort": "high"
+          "effort": "low"
         }
       }
     }
@@ -1277,7 +1277,8 @@
             "output": 0.00025,
             "cacheRead": 0,
             "cacheWrite": 0,
-            "total": 0.00075
+            "total": 0.00075,
+            "totalFromProvider": false
           },
           "cacheWrite1h": 0
         },
@@ -1334,7 +1335,8 @@
             "output": 0.00025,
             "cacheRead": 0,
             "cacheWrite": 0,
-            "total": 0.00075
+            "total": 0.00075,
+            "totalFromProvider": false
           },
           "cacheWrite1h": 0
         },
@@ -1396,7 +1398,8 @@
             "output": 0.00025,
             "cacheRead": 0,
             "cacheWrite": 0,
-            "total": 0.00075
+            "total": 0.00075,
+            "totalFromProvider": false
           },
           "cacheWrite1h": 0
         },
@@ -1448,7 +1451,8 @@
             "output": 0.00025,
             "cacheRead": 0,
             "cacheWrite": 0,
-            "total": 0.00075
+            "total": 0.00075,
+            "totalFromProvider": false
           },
           "cacheWrite1h": 0
         },

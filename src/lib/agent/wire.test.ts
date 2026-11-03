@@ -112,8 +112,8 @@ function stubProvider(replies: string[]): CapturedRequest[] {
     // The SDKs' own telemetry headers name the runtime, OS and architecture of the machine.
     new Headers(init?.headers).forEach((value, key) => {
       if (key.startsWith("x-stainless-")) return;
-      // pi's own user agent does too, in parentheses after its name.
-      headers[key] = key === "user-agent" ? value.replace(/\(.*\)/, "(<platform>)") : value;
+      // pi's own user agent does too, in parentheses after its name and version.
+      headers[key] = key === "user-agent" ? value.replace(/^pi\/[\w.-]+ /, "pi/<version> ").replace(/\(.*\)/, "(<platform>)") : value;
     });
     requests.push({ url: String(url), headers, body: JSON.parse(String(init?.body)) });
     const reply = replies.shift();

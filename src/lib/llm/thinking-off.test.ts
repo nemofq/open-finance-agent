@@ -35,9 +35,15 @@ async function offRequest(model: Model<Api>): Promise<Record<string, unknown>> {
 type Json = Record<string, unknown> | undefined;
 const field = (value: unknown, key: string): unknown => (value && typeof value === "object" ? (value as Record<string, unknown>)[key] : undefined);
 
-/** How a built request encodes Off, read off its fields: an effort, a Gemini level, a switch, or nothing. */
+/**
+ * How a built request encodes Off, read off its fields: an effort, a Gemini level, a switch, or nothing.
+ * Where Anthropic manages the effort, the last message's marker sets it; the top-level one stays "low".
+ */
 function offIn(request: Record<string, unknown>): string {
-  const effort = field(request.reasoning, "effort") ?? request.reasoning_effort ?? request.reasoningEffort ??
+  const marker = Array.isArray(request.messages)
+    ? field(field(request.messages.findLast((message) => field(message, "output_config")), "output_config"), "effort")
+    : undefined;
+  const effort = marker ?? field(request.reasoning, "effort") ?? request.reasoning_effort ?? request.reasoningEffort ??
     field(request.output_config, "effort") ?? (typeof request.thinking === "string" ? request.thinking : undefined);
   if (typeof effort === "string") return `"${effort}"`;
   const gemini = field(request.config, "thinkingConfig") as Json;
