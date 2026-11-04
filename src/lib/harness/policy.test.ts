@@ -1,5 +1,5 @@
 import type { AfterToolCallContext, Agent, AgentEvent, AgentMessage } from "@earendil-works/pi-agent-core";
-import { normalizeContext, type ToolCall } from "@earendil-works/pi-ai";
+import type { ToolCall } from "@earendil-works/pi-ai";
 import { describe, expect, it } from "vitest";
 import { evidenceTag } from "@/lib/evidence/tags";
 import type { EvidenceEntry } from "@/lib/evidence/types";
@@ -250,39 +250,45 @@ describe("the policy hooks on pi's Agent", () => {
 });
 
 describe("the calculator the P8 correction offers", () => {
-  it("does not request calculator work when a completed report leaves no tools available", async () => {
+  const afterReport = (calculatorAvailable: boolean, execute: () => void = () => {}) => {
     const turn = testTurn({ skill: { name: "valuation", output: "valuation" } });
-    const context = testRules(turn, { calculatorAvailable: true });
-    const rules = policy(context);
-    const h = scriptedHarness([delivery, rules], turn, [
+    const base = generalTool("financial_calculator");
+    const calculator = { ...base, execute: (...args: Parameters<typeof base.execute>) => { execute(); return base.execute(...args); } };
+    const finished = "The margin is unverified; the report contains the sourced findings.";
+    const h = scriptedHarness([delivery, policy(testRules(turn, { calculatorAvailable }))], turn, [
       assistant({ calls: [toolCall("report", "create_report", {})] }),
-      answer("The margin was 74.6%."), answer("The margin is unverified; the report contains the sourced findings."),
-    ], { tools: [generalTool("create_report"), generalTool("financial_calculator")], skillsIndex: [] });
+      answer("The margin was 74.6%."),
+      ...(calculatorAvailable ? [assistant({ calls: [toolCall("calc", "financial_calculator", {})] })] : []),
+      answer(finished),
+    ], { tools: [generalTool("create_report"), calculatorAvailable ? calculator : generalTool("lookup")], skillsIndex: [] });
+    return { h, turn, finished };
+  };
+
+  it("offers the calculator its correction asks for, once a report is created", async () => {
+    let calculated = 0;
+    const { h, turn, finished } = afterReport(true, () => { calculated += 1; });
     await h.run();
-    expect(h.seen[1].tools).toEqual([]);
     expect(turn.checks[0]).toMatchObject({ rule: "P8", kind: "follow_up", figures: ["74.6%"] });
+    expect(turn.checks[0].text).toContain("compute it with financial_calculator");
+    expect(turn.checks[0].text).not.toContain("calculator is unavailable");
+    // The report's own close offers nothing; only the correction's round brings the calculator back.
+    expect(h.seen[1].tools).toEqual([]);
+    expect(h.seen[2].tools?.map((tool) => tool.name)).toEqual(["financial_calculator"]);
+    expect(h.seen[2].systemPrompt).toContain("financial_calculator is the only tool available");
+    expect(calculated).toBe(1);
+    expect(h.composed.answer.accepted?.content).toEqual([{ type: "text", text: finished }]);
+  });
+
+  it("keeps the old wording, and offers nothing, when the calculator is truly disabled", async () => {
+    const { h, turn } = afterReport(false);
+    await h.run();
     expect(turn.checks[0].text).toContain("calculator is unavailable");
     expect(turn.checks[0].text).not.toContain("compute it with financial_calculator");
-    expect(h.composed.answer.accepted?.content).toEqual([{ type: "text", text: "The margin is unverified; the report contains the sourced findings." }]);
-    // A new request may calculate again; completing one report does not disable the sandbox.
-    await h.composed.beforeTurn(h.agent.state.messages);
-    h.composed.requestContext(normalizeContext({ messages: [] }));
-    expect(rules.beforeRunEnd!("The margin was 72.4%.", turn)).toMatchObject({ text: expect.stringContaining("compute it with financial_calculator") });
+    expect(h.seen[2].tools).toEqual([]);
+    expect(h.seen[2].systemPrompt).toContain("no tool is available this turn");
   });
 
-  it.each([false, true])("uses the final tool view for corrections, even with a later filter: %s", async (filterLast) => {
-    const turn = testTurn();
-    const context = testRules(turn, { calculatorAvailable: true });
-    const filter: Concern = { name: "read-only", tools: () => [] };
-    const rules = policy(context);
-    const h = scriptedHarness(filterLast ? [rules, filter] : [filter, rules], turn,
-      [answer("The margin was 74.6%."), answer("That margin is unverified.")],
-      { tools: [generalTool("financial_calculator")], skillsIndex: [] });
-    await h.run();
-    expect(turn.checks[0].text).toContain("calculator is unavailable");
-  });
-
-  it.each([true, false])("requires both a working sandbox and an offered calculator: %s", async (calculatorAvailable) => {
+  it.each([true, false])("words the fix from the turn's availability: %s", async (calculatorAvailable) => {
     const turn = testTurn();
     const context = testRules(turn, { calculatorAvailable });
     const h = scriptedHarness([policy(context)], turn,
@@ -292,15 +298,17 @@ describe("the calculator the P8 correction offers", () => {
     expect(turn.checks[0].text?.includes("compute it with financial_calculator")).toBe(calculatorAvailable);
   });
 
-  it("removes tools and calculator guidance for a reserved completion", async () => {
-    const turn = testTurn({ final: true });
-    const context = testRules(turn, { calculatorAvailable: true });
-    const h = scriptedHarness([policy(context)], turn,
-      [answer("The margin was 74.6%."), answer("That margin is unverified.")],
+  it("sends no correction in a reserved completion, which has no round to follow one", async () => {
+    // `afterRun` sets both together: the reserved completion is the turn's last request.
+    const turn = testTurn({ final: true, followUpsLeft: 0 });
+    const h = scriptedHarness([policy(testRules(turn, { calculatorAvailable: true }))], turn,
+      [answer("The margin was 74.6%.")],
       { tools: [generalTool("financial_calculator")], skillsIndex: [] });
     await h.run();
-    expect(h.seen.every((request) => request.tools?.length === 0)).toBe(true);
-    expect(turn.checks[0].text).toContain("calculator is unavailable");
+    expect(h.seen).toHaveLength(1);
+    expect(h.seen[0].tools).toEqual([]);
+    expect(turn.checks[0]).toMatchObject({ rule: "P8", kind: "flag" });
+    expect(turn.checks[0].text).toBeUndefined();
   });
 });
 

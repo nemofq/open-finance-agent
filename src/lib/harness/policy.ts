@@ -3,7 +3,6 @@ import type { ImageContent, TextContent } from "@earendil-works/pi-ai";
 import { evidenceOf } from "@/lib/evidence/ids";
 import { evidenceTag } from "@/lib/evidence/tags";
 import type { EvidenceEntry } from "@/lib/evidence/types";
-import { CALCULATOR_TOOL } from "@/lib/calculator/tool-name";
 import { createEngine } from "@/lib/policy/engine";
 import type { RuleContext } from "@/lib/policy/events";
 import { rebuildState, recordConnectionAttempt, recordToolIssued, recordToolResult } from "@/lib/policy/state";
@@ -11,22 +10,16 @@ import { blockText } from "@/lib/text/blocks";
 import { recordCheck, type Concern, type TurnState } from "./concern";
 
 /** What the rules read that is fixed when the agent is built; the rest comes from the turn. */
-export type RuleFacts = Pick<RuleContext, "tools" | "profile" | "privacy" | "tickers" | "now"> & {
-  /** Whether the sandbox runs at all; a request may still not offer the calculator. */
-  calculatorAvailable: boolean;
-};
+export type RuleFacts = Pick<RuleContext, "tools" | "profile" | "privacy" | "tickers" | "now" | "calculatorAvailable">;
 
 /**
- * The rules' view of a turn. The checks, the follow-up budget and whether the calculator can be
- * offered are read live from the turn, so the rules never see a stale copy; connections tried in
- * this chat are rebuilt from its transcript.
+ * The rules' view of a turn. The checks and the follow-up budget are read live from the turn, so the
+ * rules never see a stale copy; connections tried in this chat are rebuilt from its transcript.
  */
 export function ruleContext(turn: TurnState, facts: RuleFacts, messages: AgentMessage[]): RuleContext {
-  const { calculatorAvailable, ...fixed } = facts;
-  return { ...fixed, ledger: turn.ledger, time: turn.time, state: rebuildState(messages, facts.tools),
+  return { ...facts, ledger: turn.ledger, time: turn.time, state: rebuildState(messages, facts.tools),
     get checks() { return turn.checks; },
     get followUpsLeft() { return turn.followUpsLeft; },
-    get calculatorAvailable() { return calculatorAvailable && !turn.final && (turn.availableTools?.includes(CALCULATOR_TOOL) ?? true); },
   };
 }
 

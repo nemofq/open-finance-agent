@@ -1,4 +1,5 @@
 import { assistantText } from "@/lib/agent/messages";
+import { CALCULATOR_TOOL } from "@/lib/calculator/tool-name";
 import { currentTurnStart } from "@/lib/context/stubs";
 import { specFromAnswer } from "@/lib/reports/from-answer";
 import { publishReport, reportDetails } from "@/lib/reports/publish";
@@ -7,6 +8,13 @@ import { REPORT_TOOL } from "@/lib/reports/tool-name";
 import { nextCheckId, recordCheck, type Concern, type TurnState } from "../concern";
 import { resolveProse } from "@/lib/reports/references";
 import { looksLikeAnalysis, resolveDelivery } from "./resolve";
+
+const CLOSE_AFTER_REPORT = "Close with a self-contained conclusion of at most 200 words: the decisive findings, why they matter for the user's question, and remaining uncertainty, reusing the report's verified claims without new analysis.";
+
+/** A correction since the report told the model to compute a figure, so the calculator stays offered. */
+const calculatorAsked = ({ delivery: d, final, checks }: TurnState): boolean =>
+  !final && d?.stage === "created" &&
+  checks.slice(d.checksAtReport).some((check) => check.kind === "follow_up" && check.text?.includes(CALCULATOR_TOOL));
 
 /**
  * Delivery owns intent, progress and the available report actions. A promised report is asked
@@ -27,24 +35,30 @@ export const delivery: Concern = {
     }
     return messages;
   },
-  turnNote: ({ delivery: d, final }) => {
+  turnNote: (turn) => {
+    const { delivery: d, final } = turn;
     if (!d) return undefined;
     if (final && d.stage !== "created") return "Finish in chat from the verified evidence already gathered. Report delivery cannot continue.";
-    if (d.stage === "created") return "The report is final and no tool is available this turn; qualify any figure listed under its Verification notes in prose, never recompute it or send it again. Close with a self-contained conclusion of at most 200 words: the decisive findings, why they matter for the user's question, and remaining uncertainty, reusing the report's verified claims without new analysis.";
+    if (calculatorAsked(turn)) return `The report is final; do not send it again. ${CALCULATOR_TOOL} is the only tool available this turn, for a missing figure the correction names. ${CLOSE_AFTER_REPORT}`;
+    if (d.stage === "created") return `The report is final and no tool is available this turn; qualify any figure listed under its Verification notes in prose, never recompute it or send it again. ${CLOSE_AFTER_REPORT}`;
     if (d.mode === "report") return `Report pending: this turn ends with ${REPORT_TOOL}${d.template ? `(template: ${d.template})` : ""}; write no analysis in chat before it.`;
     if (d.mode === "auto") return `Choose before writing: a comparison, table or substantive analysis goes directly into ${REPORT_TOOL}; a quick fact or clarification stays in chat. Do not write an analysis twice.`;
     return "The user requested chat. Answer this turn's question briefly with evidence ids, keeping its requested scope and length.";
   },
-  tools: (tools, { delivery: d }) =>
-    d?.stage === "created" ? [] : d?.mode === "chat" ? tools.filter((t) => t.name !== REPORT_TOOL) : tools,
-  beforeTool: (call, { delivery: d }) => {
-    if (d?.stage === "created") return { block: true, reason: "The report is complete. Finish in chat from its verified findings; no further tools are available this turn." };
+  tools: (tools, turn) => {
+    const d = turn.delivery;
+    if (d?.stage === "created") return calculatorAsked(turn) ? tools.filter((t) => t.name === CALCULATOR_TOOL) : [];
+    return d?.mode === "chat" ? tools.filter((t) => t.name !== REPORT_TOOL) : tools;
+  },
+  beforeTool: (call, turn) => {
+    const d = turn.delivery;
+    if (d?.stage === "created" && !(call.name === CALCULATOR_TOOL && calculatorAsked(turn))) return { block: true, reason: "The report is complete. Finish in chat from its verified findings; no further tools are available this turn." };
     if (call.name === REPORT_TOOL && d?.mode === "chat") return { block: true, reason: "Finish this answer in chat; no further report is needed." };
   },
-  toolResult: (call, result, { delivery: d }) => {
+  toolResult: (call, result, { delivery: d, checks }) => {
     if (call.name !== REPORT_TOOL || !d) return;
     if (d.mode === "auto") { d.mode = "report"; d.why = "The agent started a report."; }
-    if (!result.isError) d.stage = "created";
+    if (!result.isError) { d.stage = "created"; d.checksAtReport = checks.length; }
   },
   beforeRunEnd: (answer, { delivery: d, ledger }) => {
     // References the ledger resolves are rewritten at turn end; only unresolvable ones need the model.
