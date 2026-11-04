@@ -8,7 +8,7 @@ import { stubBefore } from "@/lib/context/stubs";
 import { createLedger } from "@/lib/evidence/ledger";
 import { delivery } from ".";
 import { resolveDelivery, looksLikeAnalysis } from "./resolve";
-import type { ToolCall, ToolOutcome } from "../concern";
+import { recordCheck, type ToolCall, type ToolOutcome } from "../concern";
 import { summarizeChecks } from "@/lib/policy/summary";
 import { publishReport } from "@/lib/reports/publish";
 import { answer, scriptedHarness, testTurn } from "../testing";
@@ -229,6 +229,32 @@ describe("delivery", () => {
     turn.delivery!.stage = "created";
     expect(delivery.tools!(tools, turn)).toEqual([]);
     expect(delivery.tools!(tools, start({ request: "no report" })).map((t) => t.name)).toEqual(["lookup"]);
+  });
+
+  it("brings back only the calculator, for a correction since the report that asks for it", () => {
+    const tools = [{ name: "financial_calculator", description: "calculate", parameters: {} }, { name: "lookup", description: "lookup", parameters: {} }];
+    const calculate: ToolCall = { name: "financial_calculator", id: "c1", args: {} };
+    const asked = { rule: "P8", kind: "follow_up", reason: "unsourced", text: "compute it with financial_calculator" } as const;
+    const offered = (turn: ReturnType<typeof start>) => delivery.tools!(tools, turn).map((t) => t.name);
+
+    const before = start({ skill });
+    recordCheck(before, asked, "before_stop");
+    delivery.toolResult!(call, result(false), before);
+    expect(offered(before)).toEqual([]);
+    expect(delivery.beforeTool!(calculate, before)).toMatchObject({ block: true });
+
+    const after = start({ skill });
+    delivery.toolResult!(call, result(false), after);
+    recordCheck(after, { ...asked, text: "cite the evidence id it comes from — the calculator is unavailable" }, "before_stop");
+    expect(offered(after)).toEqual([]);
+    recordCheck(after, asked, "before_stop");
+    expect(offered(after)).toEqual(["financial_calculator"]);
+    expect(delivery.beforeTool!(calculate, after)).toBeUndefined();
+    expect(delivery.beforeTool!({ ...call, name: "lookup" }, after)).toMatchObject({ block: true });
+
+    after.final = true;
+    expect(delivery.beforeTool!(calculate, after)).toMatchObject({ block: true });
+    expect(delivery.turnNote!(after)).toContain("no tool is available");
   });
 
   it("does not execute a queued lookup after the report has been created", async () => {

@@ -10,6 +10,8 @@ import { extractFigures } from "@/lib/evidence/figures";
 export interface Delivery {
   mode: "auto" | "chat" | "report";
   stage: "pending" | "created";
+  /** How many checks the turn had when the report was created, so later ones can be told apart. */
+  checksAtReport?: number;
   /** The template a skill promised, when it did. */
   template?: string;
   /** One sentence for the footer and the developer. */

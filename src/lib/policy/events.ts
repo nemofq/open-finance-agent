@@ -60,7 +60,7 @@ export interface RuleContext {
   readonly checks: readonly CheckRecord[];
   /** Shared correction budget, read from the harness turn. */
   readonly followUpsLeft: number;
-  /** False when the sandbox is unavailable or the current request cannot use its tool. */
+  /** Whether this turn can calculate at all: the module is enabled and the sandbox runs. */
   readonly calculatorAvailable: boolean;
   /** Tickers this chat's messages name; P1 adds those of the ledger's entities. */
   tickers: string[];
