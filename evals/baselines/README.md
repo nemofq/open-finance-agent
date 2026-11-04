@@ -12,8 +12,12 @@ Qwen rows were rescored with `--rescore` from their saved runs when v2 landed, s
 run time and token count is the original run's. The Claude Opus and Sonnet, Grok, Gemini 3.8 Flash and
 4 Argon, GLM and Kimi rows were run on v2 through a custom OpenAI-compatible endpoint, Claude Haiku 5.5
 and Fable 5.1 through Anthropic's API, DeepSeek V4.1 Flash 1017 through DeepSeek's API, GPT-6.1 Terra
-through a ChatGPT sign-in, and Muse Spark Open through OpenRouter. The commit below is the run's. Benchmark v1 scores are not comparable and are kept only in
+through a ChatGPT sign-in, and Muse Spark Open and Tencent Hy4 through OpenRouter. The commit below is the run's. Benchmark v1 scores are not comparable and are kept only in
 git history.
+
+Tencent Hy4 is the one row run after P8 stopped telling the model the calculator was unavailable
+(#29). That false sentence was sent in more than half of the earlier answers checked, so its
+comparison with them is not strict.
 
 Each per-task value is over the task's three runs, from the baseline's `results`:
 
@@ -28,8 +32,8 @@ Each per-task value is over the task's three runs, from the baseline's `results`
   contradicted and at 69 when it was missed, with the points the caps took off the task's mean Total:
   `2 (−9.2)`. An answer already below its cap is not counted.
 - **Run time**: the task's turn, `metrics.latencyMs`, judging excluded.
-- **Output tokens**: `metrics.tokens.output`, as the provider reports it. DeepSeek and Qwen count
-  their thinking in it, so their figures are not comparable with the OpenAI models'.
+- **Output tokens**: `metrics.tokens.output`, as the provider reports it. DeepSeek, Qwen and Tencent
+  Hy4 count their thinking in it, so their figures are not comparable with the OpenAI models'.
 
 Each section's **Cost** is the agent's average cost per run at the list prices it gives, worked
 out as in [evals/README.md › Reproducing the README table](../README.md#reproducing-the-readme-table).
@@ -350,6 +354,42 @@ thematic purity (+20.8) and the Apple fact-check (+10.9) improved most, MSTR (�
 
 Grok passed malformed tool arguments 143 times across the 36 runs; each was rejected and retried,
 which adds to its run time rather than costing points directly.
+
+## Tencent Hy4 avg@3
+
+[`2026-11-04-openrouter-tencent-hy4-openai-codex-gpt-6-astra.json`](2026-11-04-openrouter-tencent-hy4-openai-codex-gpt-6-astra.json)
+
+- **Agent:** `openrouter/tencent/hy4`, thinking high, through OpenRouter, served by Tencent
+- **Judge:** `openai-codex/gpt-6-astra`, thinking medium, three grades per answer
+- **Commit:** `b17a8ff`
+- **Scores:** total 64.8 · integrity 35.2 · judged 35.5 · completed 91.7% · mean per-task σ 13.49
+- **Critical caps:** 1 of 36 answers missed or contradicted a critical item, none lowered (missed
+  `risk-not-proof` 1)
+- **Diagnostics:** tool argument errors 8 · fallback reports 1 · unverified report figures 176 ·
+  repaired 17
+- **Cost:** $2.07 per run · per million tokens: input $0.417, cache read $0.021, output $1.2505 ·
+  Tencent's rate on OpenRouter, 2026-11-04, listed as a 50% launch discount with no end date; twice
+  this, $4.14 per run, without it
+
+| Task | Evidence | Figures | Contracts | Intent | Financial | Grounding | Clarity | Total (σ) | Capped | Run time | Output tokens |
+| :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| `retail-01-nvda-beat-and-drop` | 12.0 | 11.8 | 5.3 | 15.0 | 10.0 | 7.5 | 5.0 | 66.6 (7.5) | 0 | 574 s | 57,216 |
+| `retail-02-nike-moat-erosion` | 12.0 | 11.6 | 16.0 | 10.0 | 10.0 | 7.5 | 5.0 | 72.1 (3.8) | 0 | 502 s | 53,739 |
+| `retail-03-nuclear-thematic-purity` | 12.0 | 11.7 | 16.0 | 15.0 | 10.0 | 10.0 | 5.0 | 79.7 (3.4) | 0 | 352 s | 36,086 |
+| `retail-04-dividend-yield-trap` | 12.0 | 11.3 | 10.7 | 15.0 | 10.0 | 7.5 | 5.0 | 71.5 (7.1) | 0 | 492 s | 51,542 |
+| `retail-05-intel-value-trap` | 12.0 | 11.0 | 8.0 | 11.3 | 10.0 | 7.5 | 5.0 | 43.2 (32.0) | 0 | 422 s | 45,882 |
+| `retail-06-mstr-proxy-leverage` | 10.7 | 10.8 | 16.0 | 15.0 | 10.0 | 7.5 | 5.0 | 74.9 (1.9) | 0 | 582 s | 58,565 |
+| `retail-09-narrative-factcheck-apple` | 12.0 | 12.0 | 10.7 | 7.5 | 10.0 | 7.5 | 8.3 | 68.0 (9.9) | 0 | 399 s | 40,254 |
+| `retail-10-smci-accounting-red-flag` | 9.0 | 5.8 | 8.0 | 3.8 | 5.0 | 3.8 | 5.0 | 26.9 (33.9) | 0 | 559 s | 58,637 |
+| `retail-11-nike-earnings-review-report` | 12.0 | 11.3 | 16.0 | 11.3 | 10.0 | 7.5 | 5.0 | 48.7 (34.6) | 0 | 461 s | 47,962 |
+| `retail-12-concentration-profile-fit` | 11.1 | 11.9 | 8.0 | 15.0 | 13.3 | 7.5 | 10.0 | 76.8 (11.9) | 0 | 285 s | 28,555 |
+| `retail-13-semis-figure-survival` | 12.0 | 11.8 | 16.0 | 10.0 | 13.3 | 12.5 | 8.3 | 84.0 (12.2) | 0 | 407 s | 44,269 |
+| `retail-14-apple-pre-open-timing` | 12.0 | 11.7 | 16.0 | 7.5 | 10.0 | 2.5 | 5.0 | 64.7 (3.7) | 0 | 361 s | 37,573 |
+
+Three of the 36 runs failed and score zero, and a fourth gave only a disclaimer and scored 6. In each,
+a request ended with no answer, having spent its output on reasoning or run past its deadline, and
+Tencent Hy4 then spent all of the turn's reserved closing request on reasoning too. They are Intel
+run 3, SMCI runs 1 and 2, and the Nike report run 1, which is why those three tasks have a σ above 30.
 
 ## Kimi K3 avg@3
 
