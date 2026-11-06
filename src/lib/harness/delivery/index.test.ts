@@ -81,6 +81,7 @@ describe("delivery", () => {
     expect(delivery.beforeRunEnd!(table, turn)).toBeUndefined();
     const note = delivery.turnNote!(turn)!;
     expect(note).toContain("The report is final and no tool is available this turn");
+    expect(note).toContain("in any answer format the user asked for.");
     expect(note).toMatch(/Verification notes in prose, never recompute it or send it again/);
     expect(note.split(/(?<=\.)\s+/)).toHaveLength(2);
   });
@@ -173,9 +174,50 @@ describe("delivery", () => {
     expect(delivery.beforeRunEnd!("Revenue was $30,040M [E7], up 122.4% [C3].", turn)).toBeUndefined();
   });
 
-  it.each([table, many, `${"Alphabet accelerated while Microsoft held its band. ".repeat(60)} 16.0%, 12.3%, 11.8%.`])("moves substantive chat answers into a report", (text) => {
+  it.each([table, many, `${"Alphabet accelerated while Microsoft held its band. ".repeat(60)} 16.0%, 12.3%, 11.8%.`])("asks an automatic turn whether a substantive answer should be a report", (text) => {
     expect(looksLikeAnalysis(text)).toBeDefined();
-    expect(delivery.beforeRunEnd!(text, start())).toMatchObject({ text: expect.stringContaining("do not write it out again in chat") });
+    const verdict = delivery.beforeRunEnd!(text, start());
+    expect(verdict).toMatchObject({ rule: "delivery", kind: "follow_up", reason: expect.stringMatching(/^Asked to choose report or chat: /) });
+    expect(verdict?.text).toContain("Decide how to deliver it from what the user asked");
+    expect(verdict?.text).toContain("If they asked for a specific value or a short answer, keep the answer in chat instead, in the format they asked for");
+    expect(verdict?.text).toContain("keeping any answer format the user asked for (such as a required final line)");
+  });
+
+  it("lets the model's choice stand once an automatic turn was asked", async () => {
+    const h = scriptedHarness([delivery], testTurn({ ledger: ledgerWith(), request: "What was the 3-year revenue CAGR?" }), [answer(many), answer(many)]);
+    await h.run();
+    expect(h.turn.checks.map((c) => [c.rule, c.kind, c.resolved])).toEqual([["delivery", "follow_up", true]]);
+    expect(h.turn.delivery).toMatchObject({ mode: "auto", stage: "pending" });
+    // The draft that prompted the question does not switch the turn to report mode either.
+    expect(h.seen[1].systemPrompt).not.toContain("Report pending");
+    expect(delivery.beforeRunEnd!(many, h.turn)).toBeUndefined();
+    const before = h.agent.state.messages.length;
+    await h.composed.afterTurn(h.agent.state.messages);
+    expect(h.agent.state.messages).toHaveLength(before);
+    expect(h.turn.delivery?.stage).toBe("pending");
+  });
+
+  it("still sends a model that chose a report and then failed back to it", () => {
+    const turn = start();
+    recordCheck(turn, { rule: "delivery", kind: "follow_up", reason: "Asked to choose report or chat: 8 figures", text: "choose" }, "before_stop");
+    delivery.toolResult!(call, result(true), turn);
+    expect(delivery.beforeRunEnd!(many, turn)).toMatchObject({ reason: "No report was created: The agent started a report.",
+      text: expect.stringContaining("keeping any answer format the user asked for") });
+  });
+
+  it("keeps the rendered fallback when the shared budget left no room to ask", async () => {
+    const turn = start({ ledger: ledgerWith(), request: "Compare the businesses." });
+    turn.followUpsLeft = 0;
+    const messages: AgentMessage[] = [{ role: "user", content: turn.request, timestamp: 0 }, answer(`# Comparison\n\n${table}`)];
+    await delivery.afterTurn!(messages, turn);
+    expect(turn.delivery?.stage).toBe("created");
+  });
+
+  it("does not count an observed question as asked", () => {
+    const turn = start({ mode: "observe" });
+    recordCheck(turn, { rule: "delivery", kind: "follow_up", reason: "Asked to choose report or chat: 8 figures", text: "choose" }, "before_stop");
+    expect(turn.checks[0].enforced).toBe(false);
+    expect(delivery.beforeRunEnd!(many, turn)).toMatchObject({ reason: expect.stringMatching(/^Asked to choose/) });
   });
 
   it.each(["in chat please", "in the chat", "no report", "without a report", "just tell me", "briefly", "quick answer", "quick reply", "quick version", "quick summary", "quick take", "quickly", "short answer", "one-liner", "one liner", "tldr", "tl;dr", "don't make a report", "dont build a report", "don't create a report"])("keeps a plain turn in chat for %s", (request) => {
