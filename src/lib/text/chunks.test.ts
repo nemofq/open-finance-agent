@@ -62,3 +62,16 @@ describe("chunkSections and bestPassages", () => {
     expect(bestPassages(chunks, "revenue", 1)).toMatch(/\[Slide 2 · chunk \d+\/\d+\]/);
   });
 });
+
+describe("table rows in the score", () => {
+  it("ranks a chunk with a labelled table row above prose that repeats the words", () => {
+    const prose = "Management reviews organic revenue growth, which excludes acquisitions, each quarter.";
+    const table = "Key metrics\nOrganic revenue growth | 2.4 % | 3.1 %\nOperating margin | 18.0 % | 17.2 %";
+    const text = [prose, "x".repeat(1_600), table].join("\n");
+    expect(bestChunks(text, "organic revenue growth", 1)).toContain("Organic revenue growth | 2.4 %");
+  });
+
+  it("never counts a row for a query term made only of digits", () => {
+    expect(bestChunks("Revenue | 2024 | 2023", "2024", 1)).toContain("[chunk 1/1]");
+  });
+});

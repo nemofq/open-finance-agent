@@ -52,7 +52,8 @@ export function htmlToText(html: string): string {
   return decodeEntities(
     html
       .replace(/<!--[\s\S]*?-->/g, " ")
-      .replace(/<(script|style|head)\b[^>]*>[\s\S]*?<\/\1>/gi, " ")
+      // Inline XBRL keeps its hidden facts and contexts in ix:header, which no reader sees.
+      .replace(/<(script|style|head|ix:header)\b[^>]*>[\s\S]*?<\/\1>/gi, " ")
       .replace(new RegExp(`</?(?:${blockTags})\\b[^>]*>`, "gi"), "\n")
       .replace(/<\/?(?:td|th)\b[^>]*>/gi, " | ")
       .replace(/<[^>]+>/g, " "),

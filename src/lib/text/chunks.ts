@@ -48,7 +48,28 @@ function terms(query: string): string[] {
   return [...new Set(query.toLowerCase().match(/[a-z0-9$%.]{3,}/g) ?? [])];
 }
 
-/** Term overlap, with a strong bonus when the whole phrase appears verbatim. */
+/**
+ * Table rows whose label names a query term and that carry a figure: `Organic revenue growth | 2.4 %`.
+ * The label is the text before the first cell break; a term made only of digits and symbols never
+ * counts, since every row has one.
+ */
+function tableRowHits(chunk: string, queryTerms: string[]): number {
+  const words = queryTerms.filter((term) => !/^[\d$%.]+$/.test(term));
+  if (words.length === 0) return 0;
+  let hits = 0;
+  for (const line of chunk.split("\n")) {
+    const cut = line.indexOf(" | ");
+    if (cut === -1 || !/\d/.test(line)) continue;
+    const label = line.slice(0, cut).toLowerCase();
+    if (words.some((term) => label.includes(term))) hits += 1;
+  }
+  return hits;
+}
+
+/**
+ * Term overlap, with a strong bonus when the whole phrase appears verbatim, and a small one for
+ * table rows labelled by the query, so a filing's figures beat prose that only repeats the words.
+ */
 function scoreChunk(chunk: string, query: string, queryTerms: string[]): number {
   const haystack = chunk.toLowerCase();
   let score = 0;
@@ -58,7 +79,7 @@ function scoreChunk(chunk: string, query: string, queryTerms: string[]): number 
   }
   const phrase = query.trim().toLowerCase();
   if (phrase.length > 4 && haystack.includes(phrase)) score += 5;
-  return score;
+  return score > 0 ? score + Math.min(3, tableRowHits(chunk, queryTerms)) : 0;
 }
 
 /** The best `count` chunks of a flat document, returned in document order. */
