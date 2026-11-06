@@ -116,7 +116,7 @@ unless noted.
 | `user` | Bring in the investor profile and memory, and note a request the profile does not fit (P12) | `promptSection`, `beforeTurn`, `turnNote` |
 | `attachments` | Register a message's documents as evidence, and put their content back on the way to the model | `beforeTurn`, `toLlm` |
 | `conduct` | Who the agent is and how it works: research not advice, citation style, method; prompt text only | `promptSection` |
-| `evidence` | Every tool result and user figure becomes a ledger entry with a tag the model can cite | `beforeTurn`, `turnNote`, `afterTool` |
+| `evidence` | Every tool result and user figure becomes a ledger entry with a tag the model can cite, and the SEC filers the chat already identified are named on every request, with their CIK and former name | `beforeTurn`, `turnNote`, `afterTool` |
 | `delivery` | The turn answers the way it promised, in chat or as a report, and a missing report is rendered from the answer | `promptSection`, `beforeTurn`, `transformContext`, `turnNote`, `tools`, `beforeTool`, `toolResult`, `beforeRunEnd`, `afterTurn` |
 | `policy` | Run [the rules](#the-rules) at their stages and record every verdict | `beforeTurn`, `toolIssued`, `beforeTool`, `afterTool`, `beforeRunEnd` |
 | `compaction` | Keep a long chat inside the window with a checkpoint whose figures the ledger holds | `beforeTurn`, `transformContext`, `prepareNextTurn`, `afterRun` |
