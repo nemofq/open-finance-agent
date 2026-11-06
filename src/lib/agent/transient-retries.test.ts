@@ -119,13 +119,16 @@ describe("isAccountError", () => {
       '402: {"error":{"message":"Insufficient credits"}}',
       "429 You exceeded your current quota, please check your plan and billing details.",
       '403: {"error":{"code":403,"message":"Request rejected in accordance with our terms of use and policies.","status":"PERMISSION_DENIED"}}',
+      "Codex error: The usage limit has been reached",
+      "You have hit your ChatGPT usage limit (plus plan). Try again in ~142 min.",
     ]) {
       expect(isAccountError(failed(message)), message).toBe(true);
     }
   });
 
   it("leaves outages, bad requests and answers to the model or the retry loop", () => {
-    for (const message of ["503 upstream connect error", "400 Invalid tool arguments", "context length exceeded", "The assistant run stopped with an error"]) {
+    for (const message of ["503 upstream connect error", "400 Invalid tool arguments", "context length exceeded", "The assistant run stopped with an error",
+      "Codex error: rate limit reached for requests, retry shortly"]) {
       expect(isAccountError(failed(message)), message).toBe(false);
     }
     expect(isAccountError(assistant({ text: "403 is a status code" }))).toBe(false);

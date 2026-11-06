@@ -342,8 +342,9 @@ data folder.
 - **`agent_timeout`**: the turn reached its deadline, usually a slow endpoint or long reasoning. A
   lower `--thinking` level can shorten each request.
 - **`infra_error`**: the provider kept failing through its retries, or refused the account: a
-  rejected key, exhausted credit or quota, or a spending limit (HTTP 401, 402 or 403). The result is
-  invalid and unscored, and `--resume` runs it again once the account is fixed.
+  rejected key, exhausted credit or quota, a spending limit (HTTP 401, 402 or 403), or a ChatGPT
+  sign-in's usage limit. The result is invalid and unscored, and `--resume` runs it again once the
+  account is fixed or the usage window resets.
 
 ## Maintaining the dataset
 
