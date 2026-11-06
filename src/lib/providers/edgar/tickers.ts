@@ -34,22 +34,30 @@ function normalise(symbol: string): string {
   return symbol.trim().toUpperCase().replace(/\./g, "-");
 }
 
-/** Exact ticker first, then ticker prefixes, then companies whose name contains the query. */
+/**
+ * Exact ticker first, then ticker prefixes, then companies whose name starts with the query, then
+ * those with a later word that does. A name only matches at a word start, so "apple" finds Apple Inc.
+ * and not Maui Land & Pineapple, whose shorter ticker would otherwise rank it first.
+ */
 export function searchTickers(query: string, map: TickerEntry[], limit = 8): TickerEntry[] {
   const symbol = normalise(query);
   if (!symbol) return [];
   const text = query.trim().toLowerCase();
+  const atWordStart = new RegExp(`(?:^|[^a-z0-9])${text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`);
 
   const scored: { entry: TickerEntry; rank: number }[] = [];
   for (const entry of map) {
+    const name = entry.name.toLowerCase();
     const rank =
       entry.ticker === symbol
         ? 0
         : entry.ticker.startsWith(symbol)
           ? 1
-          : entry.name.toLowerCase().includes(text)
+          : name.startsWith(text)
             ? 2
-            : -1;
+            : atWordStart.test(name)
+              ? 3
+              : -1;
     if (rank >= 0) scored.push({ entry, rank });
   }
 
