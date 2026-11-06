@@ -27,7 +27,9 @@ export interface TransientPromptRetryOptions {
  * causes it and no retry can fix it, so the benchmark scores it as infrastructure, like an outage.
  */
 const ACCOUNT_STATUS = /^\s*(?:error:?\s*)?(?:401|402|403)\b/i;
-const ACCOUNT_TEXT = /key limit exceeded|insufficient[_ ](?:credits?|quota|balance)|quota exceeded|exceeded your current quota|billing|invalid (?:api )?key|incorrect api key|unauthori[sz]ed|permission[_ ]denied/i;
+// A ChatGPT sign-in reports its plan's usage window running out as "The usage limit has been
+// reached" (Codex stream) or "You have hit your ChatGPT usage limit" (HTTP); it resets in hours.
+const ACCOUNT_TEXT = /key limit exceeded|insufficient[_ ](?:credits?|quota|balance)|quota exceeded|exceeded your current quota|billing|invalid (?:api )?key|incorrect api key|unauthori[sz]ed|permission[_ ]denied|usage limit has been reached|hit your chatgpt usage limit/i;
 
 export function isAccountError(message: AssistantMessage): boolean {
   if (message.stopReason !== "error") return false;

@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { lookupTicker, searchTickers, type TickerEntry } from "./tickers";
+import { lookupTicker, parseCik, searchTickers, type TickerEntry } from "./tickers";
 
 const map: TickerEntry[] = [
+  { ticker: "MLP", cik: "0000063330", name: "MAUI LAND & PINEAPPLE CO INC" },
   { ticker: "AAPL", cik: "0000320193", name: "Apple Inc." },
   { ticker: "APP", cik: "0001751008", name: "AppLovin Corp" },
   { ticker: "APLE", cik: "0001418121", name: "Apple Hospitality REIT, Inc." },
@@ -45,5 +46,29 @@ describe("lookupTicker", () => {
 
   it("returns null rather than a near miss", () => {
     expect(lookupTicker("APPL", map)).toBeNull();
+  });
+});
+
+describe("searchTickers by name", () => {
+  it("matches a name only at a word start, so apple is not pineapple", () => {
+    expect(searchTickers("apple", map).map((hit) => hit.ticker)).toEqual(["AAPL", "APLE"]);
+  });
+
+  it("ranks a name that starts with the query above one with a later word that does", () => {
+    const named: TickerEntry[] = [
+      { ticker: "PSH", cik: "0000000001", name: "Pershing Square Holdings" },
+      { ticker: "SQRE", cik: "0000000002", name: "Square Pharmaceuticals" },
+    ];
+    expect(searchTickers("square", named).map((hit) => hit.ticker)).toEqual(["SQRE", "PSH"]);
+  });
+});
+
+describe("parseCik", () => {
+  it.each(["1355096", "CIK 0001355096", "cik#1355096", " CIK #1355096 "])("reads %s as a zero-padded CIK", (symbol) => {
+    expect(parseCik(symbol)).toBe("0001355096");
+  });
+
+  it.each(["NVDA", "BRK.B", "CIK", "12345678901"])("leaves %s to the ticker map", (symbol) => {
+    expect(parseCik(symbol)).toBeUndefined();
   });
 });

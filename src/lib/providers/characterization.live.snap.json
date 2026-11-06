@@ -5,6 +5,9 @@
     "entry": {
       "entity": {
         "cik": "0001234567",
+        "formerNames": [
+          "Old Fixture Inc (until 2019-03-01)"
+        ],
         "name": "Fixture Corp",
         "ticker": "FIXT"
       },
@@ -66,7 +69,95 @@
         "name": "SEC EDGAR",
         "tier": 1
       },
-      "summary": "SEC EDGAR — No SEC filer matches \"zzzz\". Only companies with a listed ticker are in EDGAR's ticker map; try a shorter part of the na"
+      "summary": "SEC EDGAR — No SEC filer matches \"zzzz\", by listed ticker, current name or former name; try a shorter part of the name."
+    }
+  },
+  {
+    "label": "edgar lookup, former name in the company index",
+    "tool": "edgar_lookup_company",
+    "entry": {
+      "entity": {
+        "cik": "0001234567",
+        "formerNames": [
+          "Old Fixture Inc (until 2019-03-01)"
+        ],
+        "name": "Fixture Corp",
+        "ticker": "FIXT"
+      },
+      "numbers": [
+        {
+          "context": "- CIK: 0001234567 (archives use 1234567)",
+          "value": 1234567
+        },
+        {
+          "context": "- Industry (SIC): Semiconductors & Related Devices (3674)",
+          "value": 3674
+        },
+        {
+          "context": "- Fiscal year end: 12-31 (MM-DD)",
+          "value": 12
+        },
+        {
+          "context": "- Fiscal year end: 12-31 (MM-DD)",
+          "value": 31
+        }
+      ],
+      "source": {
+        "id": "edgar",
+        "name": "SEC EDGAR",
+        "tier": 1
+      },
+      "summary": "SEC EDGAR — No listed ticker matches \"Old Fixture\". EDGAR's company index, which also matches former names and filers with no listed"
+    }
+  },
+  {
+    "label": "edgar filings, by CIK",
+    "tool": "edgar_filings",
+    "entry": {
+      "asOf": "2025-02-15",
+      "availableAt": "2025-02-15",
+      "entity": {
+        "cik": "0001234567",
+        "formerNames": [
+          "Old Fixture Inc (until 2019-03-01)"
+        ],
+        "name": "Fixture Corp",
+        "ticker": "FIXT"
+      },
+      "numbers": [
+        {
+          "context": "| 10-K | 2025-02-15 | 2024-12-31 | — | https://www.sec.gov/Archives/edgar/data/1234567/000000000025000010/fixt-20241231.htm | https://www.sec.gov/Archives/edgar",
+          "value": 1234567
+        },
+        {
+          "context": "1 | — | https://www.sec.gov/Archives/edgar/data/1234567/000000000025000010/fixt-20241231.htm | https://www.sec.gov/Archives/edgar/data/1234567/00000000002500001",
+          "value": 20241231
+        }
+      ],
+      "source": {
+        "id": "edgar",
+        "name": "SEC EDGAR",
+        "tier": 1
+      },
+      "summary": "SEC EDGAR — Fixture Corp (FIXT) — 1 filings",
+      "table": {
+        "columns": [
+          "form",
+          "filed",
+          "reportDate",
+          "accession",
+          "url"
+        ],
+        "rows": [
+          [
+            "10-K",
+            "2025-02-15",
+            "2024-12-31",
+            "0000000000-25-000010",
+            "https://www.sec.gov/Archives/edgar/data/1234567/000000000025000010/fixt-20241231.htm"
+          ]
+        ]
+      }
     }
   },
   {
@@ -77,6 +168,9 @@
       "availableAt": "2025-08-12",
       "entity": {
         "cik": "0001234567",
+        "formerNames": [
+          "Old Fixture Inc (until 2019-03-01)"
+        ],
         "name": "Fixture Corp",
         "ticker": "FIXT"
       },
@@ -165,6 +259,9 @@
       "availableAt": "2025-07-30",
       "entity": {
         "cik": "0001234567",
+        "formerNames": [
+          "Old Fixture Inc (until 2019-03-01)"
+        ],
         "name": "Fixture Corp",
         "ticker": "FIXT"
       },
@@ -220,6 +317,9 @@
       "availableAt": "2025-05-01",
       "entity": {
         "cik": "0001234567",
+        "formerNames": [
+          "Old Fixture Inc (until 2019-03-01)"
+        ],
         "name": "Fixture Corp",
         "ticker": "FIXT"
       },
@@ -276,6 +376,9 @@
     "entry": {
       "entity": {
         "cik": "0001234567",
+        "formerNames": [
+          "Old Fixture Inc (until 2019-03-01)"
+        ],
         "name": "Fixture Corp",
         "ticker": "FIXT"
       },

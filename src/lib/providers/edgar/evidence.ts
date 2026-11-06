@@ -6,11 +6,11 @@
  */
 
 import { latestDate, publishedDate } from "@/lib/evidence/normalizers/text";
-import type { EvidenceFact, EvidenceSource, EvidenceTable, StructuredDetails } from "@/lib/evidence/types";
+import type { EvidenceEntity, EvidenceFact, EvidenceSource, EvidenceTable, StructuredDetails } from "@/lib/evidence/types";
 import { padCik } from "./client";
 import type { FilingRead } from "./filing";
 import type { FilingHit } from "./search";
-import type { Filing, Submissions } from "./submissions";
+import { type Filing, formerNameLabels, type Submissions } from "./submissions";
 import type { StatementId } from "./xbrl/metrics";
 import { type Statement, statementTitles } from "./xbrl/statements";
 
@@ -31,14 +31,16 @@ export function proseDetails(text: string, asOf?: string): Pick<StructuredDetail
 
 /* ------------------------------------------------------ edgar_lookup_company */
 
+/** The filer as the ledger keeps it; a filer with no listed ticker is known by its CIK alone. */
+function filerEntity(ticker: string, submissions: Submissions): EvidenceEntity {
+  const former = formerNameLabels(submissions);
+  return { ...(ticker ? { ticker } : {}), cik: padCik(submissions.cik), name: submissions.name, ...(former.length ? { formerNames: former } : {}) };
+}
+
 export function lookupDetails(text: string, filer?: { ticker: string; submissions: Submissions }): StructuredDetails {
   const prose = proseDetails(text);
   if (!filer) return { ...prose, source: edgarSource };
-  return {
-    ...prose,
-    source: edgarSource,
-    entity: { ticker: filer.ticker, cik: padCik(filer.submissions.cik), name: filer.submissions.name },
-  };
+  return { ...prose, source: edgarSource, entity: filerEntity(filer.ticker, filer.submissions) };
 }
 
 /* ------------------------------------------------------------ edgar_filings */
@@ -51,7 +53,7 @@ export function filingsDetails(text: string, ticker: string, submissions: Submis
   const filed = latestDate(filings.map((filing) => filing.filed));
   return {
     ...proseDetails(text, filed),
-    entity: { ticker, cik: padCik(submissions.cik), name: submissions.name },
+    entity: filerEntity(ticker, submissions),
     availableAt: filed,
     table,
   };
@@ -103,7 +105,7 @@ export function statementDetails(statement: Statement, ticker: string, text: str
   const latest = columns.reduce((max, column) => (column > max ? column : max));
   const title = statementTitles[statement.statement].toLowerCase();
   return {
-    summary: `EDGAR ${title}, ${period}, $${ticker}, ${columns.length} period${columns.length === 1 ? "" : "s"} (latest ${latest})`,
+    summary: `EDGAR ${title}, ${period}, ${ticker ? `$${ticker}` : "unlisted filer"}, ${columns.length} period${columns.length === 1 ? "" : "s"} (latest ${latest})`,
     asOf: statement.latestFiled ?? latest,
   };
 }
@@ -116,7 +118,7 @@ export function financialsDetails(
   return {
     ...statementDetails(statement, filer.ticker, text),
     statement: statement.statement,
-    entity: { ticker: filer.ticker, cik: padCik(filer.cik), name: statement.entity },
+    entity: { ...(filer.ticker ? { ticker: filer.ticker } : {}), cik: padCik(filer.cik), name: statement.entity },
     availableAt: statement.latestFiled,
     periods: statement.columns,
     unit: currency,

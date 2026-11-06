@@ -9,7 +9,18 @@ import { nextCheckId, recordCheck, type Concern, type TurnState } from "../conce
 import { resolveProse } from "@/lib/reports/references";
 import { looksLikeAnalysis, resolveDelivery } from "./resolve";
 
-const CLOSE_AFTER_REPORT = "Close with a self-contained conclusion of at most 200 words: the decisive findings, why they matter for the user's question, and remaining uncertainty, reusing the report's verified claims without new analysis.";
+const CLOSE_AFTER_REPORT = "Close with a self-contained conclusion of at most 200 words: the decisive findings, why they matter for the user's question, and remaining uncertainty, reusing the report's verified claims without new analysis, in any answer format the user asked for.";
+
+/** How the check that asks an automatic turn to choose its channel names itself; the record is the state. */
+const CHOICE_REASON = "Asked to choose report or chat:";
+
+/**
+ * An automatic turn whose draft read like an analysis was asked, once, whether the user wanted a
+ * report or an answer in chat. The model knows which the user asked for better than a figure count
+ * does, so whatever it answers then stands: no second ask, no switch to report mode, no rendering.
+ */
+const choiceAsked = ({ delivery: d, checks }: TurnState): boolean =>
+  d?.mode === "auto" && checks.some((check) => check.rule === "delivery" && check.kind === "follow_up" && check.enforced && check.reason.startsWith(CHOICE_REASON));
 
 /** A correction since the report told the model to compute a figure, so the calculator stays offered. */
 const calculatorAsked = ({ delivery: d, final, checks }: TurnState): boolean =>
@@ -28,7 +39,7 @@ export const delivery: Concern = {
   beforeTurn: (turn) => { turn.delivery = resolveDelivery({ request: turn.request, skill: turn.skill }); },
   transformContext: (messages, turn) => {
     const d = turn.delivery;
-    if (d?.mode === "auto" && d.stage === "pending" && !turn.final && turn.availableTools?.includes(REPORT_TOOL) !== false) {
+    if (d?.mode === "auto" && d.stage === "pending" && !turn.final && !choiceAsked(turn) && turn.availableTools?.includes(REPORT_TOOL) !== false) {
       const draft = messages.slice(currentTurnStart(messages)).findLast((message) => message.role === "assistant");
       const shape = looksLikeAnalysis(assistantText(draft));
       if (shape) { d.mode = "report"; d.why = `Analysis was already drafted: ${shape}`; }
@@ -60,15 +71,21 @@ export const delivery: Concern = {
     if (d.mode === "auto") { d.mode = "report"; d.why = "The agent started a report."; }
     if (!result.isError) { d.stage = "created"; d.checksAtReport = checks.length; }
   },
-  beforeRunEnd: (answer, { delivery: d, ledger }) => {
+  beforeRunEnd: (answer, turn) => {
+    const { delivery: d, ledger } = turn;
     // References the ledger resolves are rewritten at turn end; only unresolvable ones need the model.
     const { problems } = resolveProse(answer, ledger);
     if (problems.length) return { rule: "delivery", kind: "follow_up", reason: "The chat answer contains evidence placeholders",
       text: problems.map((p) => p.message).join("\n") + "\nWrite the answer with actual values and [id] citations. Where a value is already written, cite it without repeating it. State unavailable values as unavailable. Preserve the user's scope and length; omit correction commentary and reference placeholders." };
-    const shape = missedReport(answer, d);
+    const shape = missedReport(answer, turn);
     if (!shape) return undefined;
+    const conclude = "Then give a concise conclusion with the decisive evidence and its citations, keeping any answer format the user asked for (such as a required final line).";
+    if (d?.mode === "auto") {
+      return { rule: "delivery", kind: "follow_up", reason: `${CHOICE_REASON} ${shape}`,
+        text: `Your draft reads like an analysis (${shape}). Decide how to deliver it from what the user asked. If they asked for an analysis, a comparison or a report, deliver it with ${REPORT_TOOL}: move the draft into sections and blocks with evidence references, without writing it out again in chat. ${conclude} If they asked for a specific value or a short answer, keep the answer in chat instead, in the format they asked for. Do not mention this check.` };
+    }
     return { rule: "delivery", kind: "follow_up", reason: `No report was created: ${shape}`,
-      text: `Deliver this analysis with ${REPORT_TOOL}${d?.template ? ` (template ${d.template})` : ""}. Move the draft into sections and blocks with evidence references; do not write it out again in chat. Then give a concise conclusion with the decisive evidence and its citations.` };
+      text: `Deliver this analysis with ${REPORT_TOOL}${d?.template ? ` (template ${d.template})` : ""}. Move the draft into sections and blocks with evidence references; do not write it out again in chat. ${conclude}` };
   },
   afterTurn: async (messages, turn) => {
     const d = turn.delivery;
@@ -88,7 +105,7 @@ export const delivery: Concern = {
       }
     }
     // Only an answer with a report's substance is worth rendering; an apology or a short reply is not.
-    const shape = index === -1 || answer.role !== "assistant" || !missedReport(assistantText(answer), d) ? undefined : looksLikeAnalysis(assistantText(answer));
+    const shape = index === -1 || answer.role !== "assistant" || !missedReport(assistantText(answer), turn) ? undefined : looksLikeAnalysis(assistantText(answer));
     if (!shape || !d || answer?.role !== "assistant") return;
     // The call id names the check that explains it; the R entry carries it so later turns stub the spec.
     const id = `harness-${nextCheckId(turn)}`;
@@ -109,8 +126,12 @@ export const delivery: Concern = {
   },
 };
 
-/** The shape of an analysis that should have been a report, or nothing when delivery is satisfied. */
-function missedReport(answer: string, d: TurnState["delivery"]): string | undefined {
-  if (!d || d.mode === "chat" || d.stage === "created") return undefined;
+/**
+ * The shape of an analysis that should have been a report, or nothing when delivery is satisfied.
+ * An automatic turn already asked to choose is satisfied by whatever the model chose.
+ */
+function missedReport(answer: string, turn: TurnState): string | undefined {
+  const d = turn.delivery;
+  if (!d || d.mode === "chat" || d.stage === "created" || choiceAsked(turn)) return undefined;
   return d.mode === "report" ? d.why : looksLikeAnalysis(answer);
 }

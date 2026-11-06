@@ -115,12 +115,17 @@ function stringField(record: Record<string, unknown>, keys: readonly string[]): 
   return undefined;
 }
 
+/** A CIK passed where a ticker goes (`1355096`, `CIK 0001355096`): it names a filer, not a symbol. */
+const CIK_AS_TICKER = /^\s*(?:cik\s*#?\s*)?(\d{1,10})\s*$/i;
+
 /** What the call was about, taken from the arguments the model passed. */
 export function entityFromArgs(args: unknown): EvidenceEntity | undefined {
   if (!args || typeof args !== "object") return undefined;
   const record = args as Record<string, unknown>;
-  const ticker = stringField(record, TICKER_ARGUMENTS);
-  const cik = stringField(record, CIK_KEYS);
+  const symbol = stringField(record, TICKER_ARGUMENTS);
+  const cikInTicker = symbol ? CIK_AS_TICKER.exec(symbol)?.[1] : undefined;
+  const ticker = cikInTicker ? undefined : symbol;
+  const cik = stringField(record, CIK_KEYS) ?? cikInTicker?.padStart(10, "0");
   if (!ticker && !cik) return undefined;
   const entity: EvidenceEntity = {};
   if (ticker) entity.ticker = ticker.replace(/^\$/, "").toUpperCase();
@@ -134,6 +139,7 @@ export function mergeEntities(...parts: (EvidenceEntity | undefined)[]): Evidenc
     if (part?.ticker && !merged.ticker) merged.ticker = part.ticker;
     if (part?.cik && !merged.cik) merged.cik = part.cik;
     if (part?.name && !merged.name) merged.name = part.name;
+    if (part?.formerNames?.length && !merged.formerNames) merged.formerNames = part.formerNames;
   }
   return merged.ticker || merged.cik || merged.name ? merged : undefined;
 }

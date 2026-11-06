@@ -27,12 +27,36 @@ export async function replayEvidence(sessionId: string, ledger: EvidenceLedger, 
   return registerUserMessages(ledger, messages, { documents: (d) => registerAttachment(ledger, d, parses.get(d.attachment)) });
 }
 
+/** How many confirmed companies the turn note names, most recently seen last. */
+const CONFIRMED_SHOWN = 8;
+
+/**
+ * The SEC filers this chat's evidence already identified, by CIK: the company each earlier lookup
+ * or filing settled on, so later calls reuse it rather than guess a ticker again. A filer with no
+ * listed ticker can only be reached by its CIK, and a renamed one is easy to confuse with whoever
+ * holds its old name now, so both are spelled out.
+ */
+export function confirmedCompanies(ledger: EvidenceLedger): string | undefined {
+  const byCik = new Map<string, string>();
+  for (const entry of ledger.list()) {
+    const entity = entry.entity;
+    if (!entity?.cik || !entity.name) continue;
+    const former = entity.formerNames?.[0];
+    const label = `${entity.ticker ? `$${entity.ticker}` : "no listed ticker"} = ${entity.name} (CIK ${entity.cik}${former ? `; formerly ${former}` : ""})`;
+    byCik.delete(entity.cik);
+    byCik.set(entity.cik, label);
+  }
+  const shown = [...byCik.values()].slice(-CONFIRMED_SHOWN);
+  return shown.length ? `SEC filers identified in this chat: ${shown.join("; ")}. Reuse these rather than looking them up again, and pass the CIK for a filer with no listed ticker.` : undefined;
+}
+
 export const evidence: Concern = {
   name: "evidence",
   beforeTurn: (turn) => { registerUserFigures(turn.ledger, turn.request, "message"); },
   turnNote: ({ ledger }) => {
     const inputs = ledger.list("U").filter((entry) => typeof entry.value === "number").slice(-20);
-    return inputs.length ? `Recent user-provided inputs (not independently verified): ${inputs.map((entry) => `[${entry.id}] ${entry.summary}`).join("; ")}. Cite these ids and preload them in the calculator when needed.` : undefined;
+    const userInputs = inputs.length ? `Recent user-provided inputs (not independently verified): ${inputs.map((entry) => `[${entry.id}] ${entry.summary}`).join("; ")}. Cite these ids and preload them in the calculator when needed.` : undefined;
+    return [userInputs, confirmedCompanies(ledger)].filter(Boolean).join("\n") || undefined;
   },
   afterTool: async (call, result, turn) => {
     const registered = await registerToolResult({ ledger: turn.ledger,

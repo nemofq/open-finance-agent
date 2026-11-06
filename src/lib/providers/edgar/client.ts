@@ -12,6 +12,7 @@ const ttlSeconds = {
   companyfacts: 24 * 60 * 60,
   document: 7 * 24 * 60 * 60,
   search: 60 * 60,
+  companies: 24 * 60 * 60,
 } as const;
 
 export type EdgarResource = keyof typeof ttlSeconds;
@@ -22,6 +23,7 @@ export function resourceOf(url: string): EdgarResource {
   if (url.includes("/submissions/")) return "submissions";
   if (url.includes("/companyfacts/")) return "companyfacts";
   if (new URL(url).hostname === "efts.sec.gov") return "search";
+  if (url.includes("/cgi-bin/browse-edgar")) return "companies";
   return "document";
 }
 

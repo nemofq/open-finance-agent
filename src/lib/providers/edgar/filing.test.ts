@@ -38,6 +38,16 @@ describe("htmlToText", () => {
   it("collapses runs of whitespace and blank lines", () => {
     expect(htmlToText("<p>  a   b  </p>\n\n\n<p>c</p>")).toBe("a b\nc");
   });
+
+  it("drops inline XBRL's hidden header and keeps the visible table", () => {
+    const html = `<html><body><div style="display:none"><ix:header><ix:hidden><ix:nonNumeric name="dei:AmendmentFlag">false</ix:nonNumeric></ix:hidden>`
+      + `<ix:resources><xbrli:context id="c-1"><xbrli:segment><xbrldi:explicitMember>us-gaap:ProductMember</xbrldi:explicitMember></xbrli:segment></xbrli:context></ix:resources></ix:header></div>`
+      + `<table><tr><td>Net sales</td><td>$94,930</td></tr></table></body></html>`;
+    const text = htmlToText(html);
+    expect(text).toBe("Net sales | $94,930");
+    expect(text).not.toContain("us-gaap:ProductMember");
+    expect(text).not.toContain("false");
+  });
 });
 
 describe("isFilingIndexUrl", () => {

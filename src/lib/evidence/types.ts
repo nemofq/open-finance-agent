@@ -21,6 +21,8 @@ export type EvidenceEntity = {
   ticker?: string;
   cik?: string;
   name?: string;
+  /** Names the entity filed or traded under before, newest first, e.g. `Liberty Interactive Corp (until 2018-04-09)`. */
+  formerNames?: string[];
 };
 
 /** A number found in a result's text, with enough context to tell what it is. */

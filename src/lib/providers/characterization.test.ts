@@ -69,6 +69,8 @@ async function liveCases(): Promise<Case[]> {
     run("edgar lookup, one match", edgar, "edgar_lookup_company", { query: "FIXT" }),
     run("edgar lookup, several matches", edgar, "edgar_lookup_company", { query: "fixture" }),
     run("edgar lookup, no match", edgar, "edgar_lookup_company", { query: "zzzz" }),
+    run("edgar lookup, former name in the company index", edgar, "edgar_lookup_company", { query: "Old Fixture" }),
+    run("edgar filings, by CIK", edgar, "edgar_filings", { ticker: "CIK 1234567", forms: ["10-K"] }),
     run("edgar filings", edgar, "edgar_filings", { ticker: "FIXT" }),
     run("edgar filings, 8-K", edgar, "edgar_filings", { ticker: "fixt", forms: ["8-K"] }),
     run("edgar filings, as of", edgarAsOf, "edgar_filings", { ticker: "FIXT", limit: 5 }),

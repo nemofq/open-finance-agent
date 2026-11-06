@@ -5,6 +5,7 @@ import { settingString } from "@/lib/tools/config";
 import type { CoverageDomain, FinanceTool, Module, ToolMeta } from "@/lib/tools/contracts";
 import { errorMessage } from "@/lib/utils";
 import { edgarJson, padCik } from "./client";
+import { type CompanyMatch, searchCompanies } from "./companies";
 import {
   type FinancialsDetails,
   filingsDetails,
@@ -16,8 +17,8 @@ import {
 } from "./evidence";
 import { readFiling } from "./filing";
 import { capSearchToAsOf, formatFilingHits, searchFilings } from "./search";
-import { formatFilings, formatProfile, loadSubmissions, recentFilings } from "./submissions";
-import { loadTickerMap, requireCik, searchTickers, toSymbolHit } from "./tickers";
+import { formatFilings, formatProfile, loadSubmissions, recentFilings, type Submissions } from "./submissions";
+import { loadTickerMap, requireCik, searchTickers, type TickerEntry, toSymbolHit } from "./tickers";
 import type { CompanyFacts } from "./xbrl/metrics";
 import { renderStatement } from "./xbrl/render";
 import { buildStatementData, statementCatalog } from "./xbrl/statements";
@@ -39,6 +40,49 @@ function edgarMeta(coverage: CoverageDomain[], supportsAsOf: boolean): ToolMeta 
   };
 }
 
+/** How a filer is named in tool text: its ticker, or its CIK when it has no listed ticker. */
+const filerLabel = (entry: TickerEntry): string => entry.ticker || `CIK ${entry.cik}`;
+
+/** Registrants whose profiles the company-index fallback loads; the rest are listed by name. */
+const PROFILED_MATCHES = 2;
+const LISTED_MATCHES = 6;
+
+/**
+ * The fallback when no listed ticker matches: EDGAR's company index, which also finds former
+ * names and filers with no ticker. Operating companies (those with a SIC code) come first, since a
+ * name search also returns shells, trusts and individual filers. A failed search says so, rather
+ * than claiming no such filer exists.
+ */
+async function lookupInCompanyIndex(query: string, contact: string, signal?: AbortSignal) {
+  let found: CompanyMatch[];
+  try {
+    found = await searchCompanies(query, contact, signal);
+  } catch (err) {
+    if (signal?.aborted) throw err;
+    const text = `No listed ticker matches "${query}", and EDGAR's company index could not be searched (${errorMessage(err)}). Try again, or try a shorter part of the name.`;
+    return { content: [{ type: "text" as const, text }], details: lookupDetails(text) };
+  }
+  if (found.length === 0) {
+    const text = `No SEC filer matches "${query}", by listed ticker, current name or former name; try a shorter part of the name.`;
+    return { content: [{ type: "text" as const, text }], details: lookupDetails(text) };
+  }
+  const ranked = [...found.filter((match) => match.sic), ...found.filter((match) => !match.sic)];
+  const profiled = (await Promise.all(ranked.slice(0, PROFILED_MATCHES).map((match) =>
+    loadSubmissions(match.cik, contact, signal).catch((): Submissions | undefined => undefined)))).filter((s): s is Submissions => s !== undefined);
+  const shown = new Set(profiled.map((submissions) => padCik(submissions.cik)));
+  const others = ranked.filter((match) => !shown.has(match.cik)).slice(0, LISTED_MATCHES)
+    .map((match) => `- ${match.name} (CIK ${match.cik})${match.sic ? `, SIC ${match.sic}` : ""}`);
+  const text = [
+    `No listed ticker matches "${query}". EDGAR's company index, which also matches former names and filers with no listed ticker, finds:`,
+    ...profiled.map(formatProfile),
+    ...(others.length ? [`Also matching:\n${others.join("\n")}`] : []),
+    "Pass a CIK to edgar_filings or edgar_financials for a filer with no listed ticker.",
+  ].join("\n\n");
+  const first = profiled[0];
+  return { content: [{ type: "text" as const, text }],
+    details: lookupDetails(text, first ? { ticker: first.tickers?.[0] ?? "", submissions: first } : undefined) };
+}
+
 /* -------------------------------------------------------------- the tools */
 
 const lookupParameters = Type.Object({
@@ -52,14 +96,11 @@ function lookupTool(contact: string): FinanceTool<typeof lookupParameters, Struc
     meta: edgarMeta(["filings"], false),
     label: "Look up a company on EDGAR",
     description:
-      "Resolve a ticker or company name to the SEC filer behind it: legal name, CIK, tickers, exchanges and industry. Use this first when the company is ambiguous, or when a later tool reports an unknown ticker.",
+      "Resolve a ticker or company name to the SEC filer behind it: legal name, CIK, tickers, exchanges, industry and former names. A name no listed ticker matches is also searched among former names and filers with no listed ticker. Use this first when the company is ambiguous, or when a later tool reports an unknown ticker.",
     parameters: lookupParameters,
     async execute(_id, params, signal) {
       const matches = searchTickers(params.query, await loadTickerMap(contact, signal), 8);
-      if (matches.length === 0) {
-        const text = `No SEC filer matches "${params.query}". Only companies with a listed ticker are in EDGAR's ticker map; try a shorter part of the name.`;
-        return { content: [{ type: "text", text }], details: lookupDetails(text) };
-      }
+      if (matches.length === 0) return lookupInCompanyIndex(params.query, contact, signal);
       const submissions = await loadSubmissions(matches[0].cik, contact, signal);
       const profile = formatProfile(submissions);
       const others = matches
@@ -75,7 +116,7 @@ function lookupTool(contact: string): FinanceTool<typeof lookupParameters, Struc
 }
 
 const filingsParameters = Type.Object({
-  ticker: Type.String({ description: "Ticker symbol of the filer, e.g. NVDA." }),
+  ticker: Type.String({ description: "Ticker symbol of the filer, e.g. NVDA, or its CIK when it has no listed ticker." }),
   forms: Type.Optional(
     Type.Array(Type.String(), {
       description:
@@ -98,14 +139,14 @@ To find an earnings press release: call this with forms ['8-K'], pick the filing
       const entry = await requireCik(params.ticker, contact, signal);
       const submissions = await loadSubmissions(entry.cik, contact, signal);
       const filings = recentFilings(submissions, { forms: params.forms, limit: params.limit ?? 15, asOf });
-      const text = formatFilings(entry.ticker, submissions, filings, { asOf });
+      const text = formatFilings(filerLabel(entry), submissions, filings, { asOf });
       return { content: [{ type: "text", text }], details: filingsDetails(text, entry.ticker, submissions, filings) };
     },
   };
 }
 
 const financialsParameters = Type.Object({
-  ticker: Type.String({ description: "Ticker symbol of the filer, e.g. AAPL." }),
+  ticker: Type.String({ description: "Ticker symbol of the filer, e.g. AAPL, or its CIK when it has no listed ticker." }),
   statement: Type.Union(
     [
       Type.Literal("income"),
@@ -141,7 +182,7 @@ Fiscal periods, not calendar ones, and no restatement smoothing, except that per
       const entry = await requireCik(params.ticker, contact, signal);
       const facts = await loadFacts(entry.cik, contact, signal);
       const statement = buildStatementData(facts, params.statement, params.period, params.limit ?? 8, { asOf });
-      const text = `${entry.ticker}\n\n${renderStatement(statement)}`;
+      const text = `${filerLabel(entry)}\n\n${renderStatement(statement)}`;
       return { content: [{ type: "text", text }], details: financialsDetails(text, statement, entry) };
     },
   };
