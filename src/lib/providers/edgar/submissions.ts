@@ -21,7 +21,21 @@ export interface Submissions {
   fiscalYearEnd?: string;
   category?: string;
   stateOfIncorporationDescription?: string;
+  /** Names the filer used before, each with the dates it was in use (ISO timestamps). */
+  formerNames?: { name: string; from?: string; to?: string }[];
   filings: { recent: RecentFilings };
+}
+
+/** How many former names a profile lists, newest first. */
+const FORMER_NAMES_SHOWN = 3;
+
+/** `Liberty Interactive Corp (until 2018-04-09)`, newest first: the names a filer reported under before. */
+export function formerNameLabels(submissions: Submissions, limit = FORMER_NAMES_SHOWN): string[] {
+  return [...(submissions.formerNames ?? [])]
+    .filter((former) => former.name?.trim())
+    .sort((a, b) => (b.to ?? "").localeCompare(a.to ?? ""))
+    .slice(0, limit)
+    .map((former) => `${former.name.trim()}${former.to ? ` (until ${former.to.slice(0, 10)})` : ""}`);
 }
 
 export interface Filing {
@@ -141,5 +155,7 @@ export function formatProfile(submissions: Submissions): string {
   if (submissions.stateOfIncorporationDescription) {
     lines.push(`- Incorporated in: ${submissions.stateOfIncorporationDescription}`);
   }
+  const former = formerNameLabels(submissions);
+  if (former.length) lines.push(`- Former names: ${former.join("; ")}`);
   return lines.join("\n");
 }

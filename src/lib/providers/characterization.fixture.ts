@@ -33,6 +33,7 @@ const submissions = {
   fiscalYearEnd: "1231",
   category: "Large accelerated filer",
   website: "https://www.fixture.example",
+  formerNames: [{ name: "Old Fixture Inc", from: "2010-01-04T00:00:00.000Z", to: "2019-03-01T00:00:00.000Z" }],
   filings: {
     recent: {
       accessionNumber: ["0000000000-25-000031", "0000000000-25-000030", "0000000000-25-000020", "0000000000-25-000010"],
@@ -76,6 +77,14 @@ const search = {
     ],
   },
 };
+
+/** EDGAR's company search, trimmed from the real pages: no match, and a list of registrants. */
+const companiesNoMatch = `<html><body><h1>EDGAR Company Search Results</h1><div class="noCompanyMatch">No matching companies.</div></body></html>`;
+const companiesList = `<html><body><table class="tableFile2" summary="Results">
+<tr><th scope="col"><acronym title="Central Index Key">CIK</acronym></th><th scope="col">Company</th><th scope="col">State/Country</th></tr>
+<tr><td valign="top" scope="row"><a href="/cgi-bin/browse-edgar?action=getcompany&amp;CIK=0009999999&amp;owner=include&amp;count=40">0009999999</a></td><td scope="row">Fixture Holdings Trust</td><td valign="top" scope="row">DE</td></tr>
+<tr class="evenRow"><td valign="top" scope="row"><a href="/cgi-bin/browse-edgar?action=getcompany&amp;CIK=0001234567&amp;owner=include&amp;count=40">0001234567</a></td><td scope="row">Fixture Corp<br /><acronym title="Standard Industrial Code">SIC</acronym>: <a href="/cgi-bin/browse-edgar?action=getcompany&amp;SIC=3674&amp;owner=include&amp;count=40">3674</a> - SEMICONDUCTORS &amp; RELATED DEVICES<br />formerly: Old Fixture Inc (filings through 2019-03-01)</td><td valign="top" scope="row">CA</td></tr>
+</table></body></html>`;
 
 const indexHtml = `<html><body>
 <div class="formGrouping"><div class="infoHead">Filing Date</div><div class="info">2025-07-30</div></div>
@@ -258,6 +267,9 @@ export function respond(request: SourceRequest): unknown {
     }
     if (url === edgarUrls.facts) return JSON.stringify(fixtureFacts);
     if (url.startsWith("https://efts.sec.gov/")) return JSON.stringify(search);
+    if (url.startsWith("https://www.sec.gov/cgi-bin/browse-edgar")) {
+      return new URL(url).searchParams.get("company") === "Old Fixture" ? companiesList : companiesNoMatch;
+    }
     if (url === edgarUrls.index) return indexHtml;
     if (url === edgarUrls.document) return documentHtml;
     return undefined;

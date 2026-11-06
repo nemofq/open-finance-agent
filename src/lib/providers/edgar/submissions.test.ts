@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { formatFilings, matchesForm, recentFilings, type Submissions } from "./submissions";
+import { formatProfile, formatFilings, formerNameLabels, matchesForm, recentFilings, type Submissions } from "./submissions";
 
 const submissions: Submissions = {
   cik: "0001045810",
@@ -103,5 +103,25 @@ describe("formatFilings", () => {
     );
     expect(formatFilings("NVDA", submissions, filings)).not.toContain("Point in time");
     expect(formatFilings("NVDA", submissions, [], { asOf: "2020-01-01" })).toContain("Point in time");
+  });
+});
+
+describe("former names", () => {
+  const renamed: Submissions = { ...submissions, cik: "0001355096", name: "Old QVC Group, Inc.", formerNames: [
+    { name: "LIBERTY MEDIA CORP", from: "2006-03-03T00:00:00.000Z", to: "2011-09-22T00:00:00.000Z" },
+    { name: "Qurate Retail, Inc.", from: "2018-04-09T00:00:00.000Z", to: "2025-02-24T00:00:00.000Z" },
+    { name: "Liberty Interactive Corp", from: "2011-09-22T00:00:00.000Z", to: "2018-04-09T00:00:00.000Z" },
+    { name: "LIBERTY MEDIA HOLDING CORP", from: "2006-01-01T00:00:00.000Z", to: "2006-03-03T00:00:00.000Z" },
+  ] };
+
+  it("lists the three most recent, newest first, each with its last day", () => {
+    expect(formerNameLabels(renamed)).toEqual([
+      "Qurate Retail, Inc. (until 2025-02-24)", "Liberty Interactive Corp (until 2018-04-09)", "LIBERTY MEDIA CORP (until 2011-09-22)"]);
+    expect(formatProfile(renamed)).toContain("- Former names: Qurate Retail, Inc. (until 2025-02-24); Liberty Interactive Corp (until 2018-04-09); LIBERTY MEDIA CORP (until 2011-09-22)");
+  });
+
+  it("says nothing for a filer that was never renamed", () => {
+    expect(formerNameLabels(submissions)).toEqual([]);
+    expect(formatProfile(submissions)).not.toContain("Former names");
   });
 });

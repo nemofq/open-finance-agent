@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { lookupTicker, searchTickers, type TickerEntry } from "./tickers";
+import { lookupTicker, parseCik, searchTickers, type TickerEntry } from "./tickers";
 
 const map: TickerEntry[] = [
   { ticker: "AAPL", cik: "0000320193", name: "Apple Inc." },
@@ -45,5 +45,15 @@ describe("lookupTicker", () => {
 
   it("returns null rather than a near miss", () => {
     expect(lookupTicker("APPL", map)).toBeNull();
+  });
+});
+
+describe("parseCik", () => {
+  it.each(["1355096", "CIK 0001355096", "cik#1355096", " CIK #1355096 "])("reads %s as a zero-padded CIK", (symbol) => {
+    expect(parseCik(symbol)).toBe("0001355096");
+  });
+
+  it.each(["NVDA", "BRK.B", "CIK", "12345678901"])("leaves %s to the ticker map", (symbol) => {
+    expect(parseCik(symbol)).toBeUndefined();
   });
 });

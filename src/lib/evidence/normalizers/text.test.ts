@@ -17,4 +17,10 @@ describe("entityFromArgs", () => {
     expect(entityFromArgs({ ticker: "NVDA", cik: "0001045810" })).toEqual({ ticker: "NVDA", cik: "0001045810" });
     expect(entityFromArgs({ query: "NVDA" })).toBeUndefined();
   });
+
+  it("reads a CIK passed in place of a ticker as the filer's CIK", () => {
+    expect(entityFromArgs({ ticker: "CIK 1254699" })).toEqual({ cik: "0001254699" });
+    expect(entityFromArgs({ ticker: "1254699" })).toEqual({ cik: "0001254699" });
+    expect(entityFromArgs({ ticker: "BRK.B" })).toEqual({ ticker: "BRK.B" });
+  });
 });
