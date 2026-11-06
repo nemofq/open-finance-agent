@@ -98,6 +98,7 @@ export function coerceReportInput(input: Record<string, unknown>): Record<string
       if (!block || typeof block !== "object") return block;
       const b = block as Record<string, unknown>;
       if (b.type === "table" && Array.isArray(b.rows)) return { ...b, rows: b.rows.map((row) => Array.isArray(row) ? row.map((c) => cell(c, false)) : row) };
+      if (b.type === "list" && Array.isArray(b.items)) return { ...b, items: b.items.map((item) => typeof item === "string" ? item : cell(item, false)) };
       if (b.type === "kpis" && Array.isArray(b.items)) return { ...b, items: b.items.map((item) => item && typeof item === "object" ? { ...item, cell: cell((item as { cell?: unknown }).cell, true) } : item) };
       if (b.type === "chart" && Array.isArray(b.series)) return { ...b, series: b.series.map((series) => series && typeof series === "object" && Array.isArray((series as { points?: unknown }).points)
         ? { ...series, points: (series as { points: unknown[] }).points.map((point) => point && typeof point === "object" ? { ...point, y: cell((point as { y?: unknown }).y, true) } : point) } : series) };

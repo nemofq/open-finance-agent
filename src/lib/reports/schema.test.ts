@@ -2,7 +2,7 @@ import { type JsonObject, type JsonValue, validateToolArguments } from "@earendi
 import { Compile } from "typebox/compile";
 import { describe, expect, it } from "vitest";
 import { z } from "zod";
-import { blockSchema, reportParameters, reportSpecSchema } from "./schema";
+import { blockSchema, coerceReportInput, reportParameters, reportSpecSchema } from "./schema";
 
 describe("create_report parameters", () => {
   // The model sees this JSON Schema, and recorded benchmark transcripts were made against it; any
@@ -259,5 +259,14 @@ describe("create_report parameters as a projection of the spec schema", () => {
   it.each(valid)("the tool-call check passes %s through unchanged", (_name, spec) => {
     const checked = validateToolArguments({ name: "create_report", description: "", parameters: reportParameters }, { type: "toolCall", id: "call-1", name: "create_report", arguments: spec });
     expect(checked).toEqual(spec);
+  });
+});
+
+describe("coerceReportInput", () => {
+  it("settles list items a model sent as arrays or numbers into text", () => {
+    const input = { title: "T", sections: [{ heading: "H", blocks: [{ type: "list", items: ["Kept", ["Revenue", "$4.1B", "[E1]"], 12] }] }] };
+    const coerced = coerceReportInput(input);
+    expect(coerced.sections).toEqual([{ heading: "H", blocks: [{ type: "list", items: ["Kept", "Revenue $4.1B [E1]", "12"] }] }]);
+    expect(reportSpecSchema.safeParse(coerced).success).toBe(true);
   });
 });
