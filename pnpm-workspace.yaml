@@ -9,3 +9,9 @@ allowBuilds:
 # rehype-katex 7 pins katex ^0.16, whose markup the 0.19 stylesheet no longer styles; keep one copy.
 overrides:
   katex: ^0.19.1
+  # Security overrides; drop each once its parent ships a patched range.
+  # exceljs 4.4.0 pins uuid ^8.3.0 (GHSA-w5hq-g745-h8pq). It only calls v4(), so 11's API is unchanged for it.
+  'exceljs>uuid': ^11.1.1
+  # typescript-eslint and ts-morph (dev only) pin minimatch ^10 (GHSA-g3hv-75wg-m249). 11.0.5 also
+  # holds the follow-up hardening of the same **/.. and brace-expansion paths.
+  'minimatch@>=7.0.0 <11.0.1': ^11.0.5
