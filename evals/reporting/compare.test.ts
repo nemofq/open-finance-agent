@@ -1,3 +1,4 @@
+import { JUDGE_PROMPT_VERSION } from "../scoring/judge";
 import { describe, expect, it } from "vitest";
 import { compareRuns } from "./compare";
 import { RETAIL_EVAL_TASKS } from "../tasks";
@@ -9,14 +10,14 @@ function cell(agent: string, taskIndex: number, repeat: number, totalScore: numb
     agent, task: RETAIL_EVAL_TASKS[taskIndex], repeat, totalScore, valid: true,
     status: completed ? "completed" : "agent_timeout",
     finalAssistantText: completed ? "answer" : "",
-    ...(completed ? { judgeResult: { error: undefined, criticalContradictions: options.contradiction ? ["critical"] : [] } } : {}),
+    ...(completed ? { judgeResult: { promptVersion: JUDGE_PROMPT_VERSION, error: undefined, criticalContradictions: options.contradiction ? ["critical"] : [] } } : {}),
   } as unknown as TaskEvalResult;
 }
 
 function run(version: string, agent: string, scores: number[], options: { completed?: boolean[]; contradictions?: boolean[] } = {}): EvalRunSummary {
   const taskIds = [RETAIL_EVAL_TASKS[0].id, RETAIL_EVAL_TASKS[1].id];
   return {
-    benchmarkVersion: version, judgePromptVersion: "9", agents: [agent], repeat: 3, taskIds,
+    benchmarkVersion: version, judgePromptVersion: JUDGE_PROMPT_VERSION, agents: [agent], repeat: 3, taskIds,
     results: scores.map((score, index) => cell(agent, Math.floor(index / 3), index % 3 + 1, score, {
       completed: options.completed?.[index], contradiction: options.contradictions?.[index],
     })),
@@ -57,6 +58,14 @@ describe("paired v2 comparison", () => {
   it("refuses to compare interim v2 scores made with the old judge rubric", () => {
     const current = run("2", "new/model", [80, 80, 80, 70, 70, 70]);
     const interim = { ...run("2", "old/model", [80, 80, 80, 70, 70, 70]), judgePromptVersion: "7" };
-    expect(() => compareRuns(current, interim)).toThrow("Cannot compare judge prompt v9 with v7");
+    expect(() => compareRuns(current, interim)).toThrow(`Cannot compare judge prompt v${JUDGE_PROMPT_VERSION} with v7`);
+  });
+
+  it("rejects mixed per-result judge versions even with matching current run headers", () => {
+    const baseline = run("2", "old/model", [80, 80, 80, 70, 70, 70]);
+    const candidate = run("2", "new/model", [80, 80, 80, 70, 70, 70]);
+    if (!candidate.results[0].judgeResult) throw new Error("Missing test grade");
+    candidate.results[0].judgeResult.promptVersion = "9";
+    expect(() => compareRuns(candidate, baseline)).toThrow("Cannot compare mixed judge versions");
   });
 });

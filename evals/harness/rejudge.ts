@@ -3,6 +3,7 @@ import { modelRefKey } from "@/lib/llm/catalog";
 import { evaluateWithJudge, JUDGE_PROMPT_VERSION } from "../scoring/judge";
 import { parseModelSpec } from "../models";
 import { sumDiagnostics, summariseAgent } from "../reporting/summary";
+import { judgeVersionIssues } from "../reporting/judge-versions";
 import { budgetExhausted } from "./turn-bounds";
 import { BENCHMARK_VERSION, type EvalRunSummary, type EvalTask, type JudgeEvaluationResult, type TaskEvalResult } from "../types";
 
@@ -64,6 +65,8 @@ export async function judgeRun(
   if (summary.benchmarkVersion !== BENCHMARK_VERSION || summary.judgePromptVersion !== JUDGE_PROMPT_VERSION) {
     throw new Error(`Cannot judge benchmark v${summary.benchmarkVersion} / prompt v${summary.judgePromptVersion} with prompt v${JUDGE_PROMPT_VERSION}; use --rescore on a trace-bearing run.`);
   }
+  const mixedVersions = judgeVersionIssues(summary);
+  if (mixedVersions.length) throw new Error(`Cannot reuse mixed judge versions: ${mixedVersions.join("; ")}`);
   delete summary.calibration;
   const agents = summary.agents.map((spec) => {
     const agent = parseModelSpec(spec);

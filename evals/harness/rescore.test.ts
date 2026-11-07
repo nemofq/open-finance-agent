@@ -1,3 +1,4 @@
+import { JUDGE_PROMPT_VERSION } from "../scoring/judge";
 import { describe, expect, it } from "vitest";
 import { defaultConfig } from "@/lib/config/schema";
 import { rescoreRun } from "./rescore";
@@ -62,12 +63,12 @@ describe("rescoring some tasks", () => {
   const traces = { toolCalls: [], evidence: [], checks: [], figureMatches: [], transcript: [] };
   // A judged answer on one task, and a timeout on another that rescoring settles without a judge.
   const graded = { task: nike, agent: "p/model", repeat: 1, status: "completed", valid: true, finalAssistantText: "An answer.", sessionTickers: [],
-    deterministicCheck: { version: "2", maxScore: 40, score: 30, evidenceAvailable: true }, judgeResult: { totalJudgeScore: 40, promptVersion: "9" },
+    deterministicCheck: { version: "2", maxScore: 40, score: 30, evidenceAvailable: true }, judgeResult: { totalJudgeScore: 40, promptVersion: JUDGE_PROMPT_VERSION },
     integrityScore: 30, qualityScore: 40, totalScore: 70, diagnostics, metrics } as unknown as TaskEvalResult;
   const timedOut = { task: nvda, agent: "p/model", repeat: 1, status: "agent_timeout", valid: true, totalScore: 0, finalAssistantText: "", sessionTickers: [],
     deterministicCheck: { evidenceAvailable: false }, diagnostics, metrics } as unknown as TaskEvalResult;
   const baseline = (results: TaskEvalResult[]) => ({
-    timestamp: "2024-01-01T00:00:00Z", benchmarkVersion: "2", judgePromptVersion: "9", agents: ["p/model"], judge: "q/judge", judgeRepeat: 3,
+    timestamp: "2024-01-01T00:00:00Z", benchmarkVersion: "2", judgePromptVersion: JUDGE_PROMPT_VERSION, agents: ["p/model"], judge: "q/judge", judgeRepeat: 3,
     fixtureMode: "offline", policyMode: "enforce", configHash: "x", repeat: 1, taskIds: [nvda.id, nike.id], results, agentSummaries: [], diagnostics,
   }) as unknown as EvalRunSummary;
   const judge = { provider: "q", model: "judge" };
@@ -97,5 +98,16 @@ describe("rescoring some tasks", () => {
       .rejects.toThrow("needs a benchmark v2 run");
     await expect(rescoreRun(baseline([graded]), defaultConfig(), judge, 1, { taskIds: [nike.id] }))
       .rejects.toThrow("same --judge-repeat");
+  });
+
+  it("refuses to relabel untouched v9 grades as v10, including a mismatched result header", async () => {
+    const saved = baseline([{ ...timedOut, ...traces }, graded]);
+    await expect(rescoreRun({ ...saved, judgePromptVersion: "9" }, defaultConfig(), judge, 3, { taskIds: [nvda.id] }))
+      .rejects.toThrow("cannot mix judge prompt versions");
+    const mixed = structuredClone(saved);
+    if (!mixed.results[1].judgeResult) throw new Error("Missing test grade");
+    mixed.results[1].judgeResult.promptVersion = "9";
+    await expect(rescoreRun(mixed, defaultConfig(), judge, 3, { taskIds: [nvda.id] }))
+      .rejects.toThrow("cannot mix judge prompt versions");
   });
 });

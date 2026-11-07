@@ -208,6 +208,34 @@ caps it at 49. The judge never sees the deterministic score. Its packet contains
 visible answer and report prose, relevant evidence excerpts, policy checks, time boundary and data
 gaps instead of a dump of every tool output.
 
+Judge prompt **v10** keeps the first 6,000 characters and tail evidence-tag lines from each
+selected output. Figures in the final answer and successfully delivered reports select additional
+original-source windows (220 characters of context on either side, overlapping windows merged),
+capped at 2,400 characters including window markers per output. Numeric selection recognises
+English number words through hundreds, scale words, rounding and table-unit changes using the
+shared figure matcher. Matching a number selects context; the judge must still check entity,
+metric, period and units. Middle calls outside the first/last eight can contribute windows for
+figures still missing, capped at 6,000 supplementary characters across those calls. These budgets
+can leave evidence unseen; absence from a truncated packet alone does not establish invention.
+
+Audit saved traces without model calls:
+
+```bash
+node --import tsx scripts/audit-judge-evidence.ts \
+  --output evals/results/judge-evidence-audit.json /path/to/saved/results
+```
+
+The audit reconstructs v9 versus v10 visibility, includes delivered report prose, and records
+candidate figures hidden by head truncation or call filtering, recovered figures and budget
+misses, plus per-task totals and evidence character counts. It excludes unversioned summary-only
+files explicitly and counts identical answer/trace records once. This measures candidate evidence
+visibility, not the rate of historical judge errors; a matching value can describe another metric.
+
+Published v9 baselines retain their original scores and version. New runs use v10. A partial
+`--rescore --task` cannot retain grades from an older judge version under a v10 header. Use a
+separate task-only validation run for a small study, or rescore the whole trace-bearing run before
+publishing a v10 baseline; stripped baselines cannot supply the missing traces themselves.
+
 With `--judge-repeat 3`, each item uses repeated votes and a median aggregation. A baseline still
 requires three task repeats and three judge votes per answer; there is no anchor-calibration gate.
 

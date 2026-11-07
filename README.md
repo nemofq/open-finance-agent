@@ -181,6 +181,9 @@ total at 69 or 49.
 | Qwen 3.8 27B | Medium | GPT-6 Astra, medium | 56.6 <sub>−1.7 capped</sub> | 27.3 | 31.0 | $0.84 | 1,685 s | 239,026 | 202 |
 | Qwen 3.8 27B | Off | GPT-6 Astra, medium | 50.9 <sub>−0.4 capped</sub> | 25.6 | 28.8 | $0.44 | 835 s | 100,714 | 216 |
 
+These published rows retain judge prompt v9. New evaluations use [v10 evidence windows](evals/README.md#semantic-quality-60-points);
+scores across the two judge versions are not directly comparable.
+
 ↑ higher is better, ↓ lower is better. Benchmark version 2, judge prompt v9 with three grades per
 answer, policy enforced. `avg@3` is three runs of the twelve tasks. Total is the expected score: the
 mean over tasks with a failed run counted as zero; Integrity and Judged average the completed

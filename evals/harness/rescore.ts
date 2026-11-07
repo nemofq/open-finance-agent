@@ -61,6 +61,11 @@ export async function rescoreRun(
 ): Promise<EvalRunSummary> {
   const selected = options.taskIds?.length ? new Set(options.taskIds) : undefined;
   if (selected) {
+    const unselected = saved.results.filter((result) => !selected.has(result.task.id));
+    if (unselected.length && (saved.judgePromptVersion !== JUDGE_PROMPT_VERSION ||
+      unselected.some((result) => result.judgeResult && result.judgeResult.promptVersion !== JUDGE_PROMPT_VERSION))) {
+      throw new Error(`Partial rescoring cannot mix judge prompt versions; rescore the whole run with v${JUDGE_PROMPT_VERSION}, or isolate the selected tasks in a separate validation run.`);
+    }
     if (saved.benchmarkVersion !== BENCHMARK_VERSION) {
       throw new Error(`Rescoring some tasks needs a benchmark v${BENCHMARK_VERSION} run, not v${saved.benchmarkVersion}: the other tasks keep their grades. Rescore the whole run instead.`);
     }

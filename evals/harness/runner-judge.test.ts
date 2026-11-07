@@ -1,3 +1,4 @@
+import { JUDGE_PROMPT_VERSION } from "../scoring/judge";
 import { existsSync, mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
@@ -20,7 +21,7 @@ vi.mock("../scoring/judge", async (original) => ({
       rubricItems: [], dimensionScores: { intent: 1, financial: 1, grounding: 1, clarity: 1 },
       intentScore: 1, intentFeedback: "x", financialScore: 1, financialFeedback: "x", groundingScore: 1, groundingFeedback: "x",
       retailClarityScore: 1, retailClarityFeedback: "x", totalJudgeScore: 4, maxJudgeScore: 60,
-      criticalMisses: [], criticalContradictions: [], overallVerdict: "x", judgeModel: "p/judge", promptVersion: "9",
+      criticalMisses: [], criticalContradictions: [], overallVerdict: "x", judgeModel: "p/judge", promptVersion: JUDGE_PROMPT_VERSION,
     };
   }),
 }));
@@ -55,7 +56,7 @@ describe("threading the offline audit to the judge", () => {
       diagnostics: emptyDiagnostics(),
       offlineAudit: audit,
     } as unknown as TaskEvalResult;
-    const summary = { benchmarkVersion: BENCHMARK_VERSION, judgePromptVersion: "9", agents: ["p/agent"], judge: "p/judge", taskIds: [result.task.id], results: [result] } as unknown as EvalRunSummary;
+    const summary = { benchmarkVersion: BENCHMARK_VERSION, judgePromptVersion: JUDGE_PROMPT_VERSION, agents: ["p/agent"], judge: "p/judge", taskIds: [result.task.id], results: [result] } as unknown as EvalRunSummary;
 
     await judgeRun(summary, defaultConfig(), JUDGE);
 
@@ -83,7 +84,7 @@ function savedRun(): EvalRunSummary {
   const agents = ["p/agent", "local/Qwen/Qwen3-32B"];
   const results = agents.flatMap((agent) => [0, 1].flatMap((task) => [1, 2].map((repeat) => unjudged(agent, task, repeat))));
   return {
-    timestamp: "2026-09-20T10:02:03.456Z", benchmarkVersion: BENCHMARK_VERSION, judgePromptVersion: "9", agents, judge: "p/judge", judgeRepeat: 3,
+    timestamp: "2026-09-20T10:02:03.456Z", benchmarkVersion: BENCHMARK_VERSION, judgePromptVersion: JUDGE_PROMPT_VERSION, agents, judge: "p/judge", judgeRepeat: 3,
     fixtureMode: "offline", policyMode: "enforce", configHash: "abc", repeat: 3,
     taskIds: [RETAIL_EVAL_TASKS[0].id, RETAIL_EVAL_TASKS[1].id],
     agentSummaries: agents.map((agent) => ({ agent, selfJudged: false })), results,

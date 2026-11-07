@@ -1,3 +1,4 @@
+import { JUDGE_PROMPT_VERSION } from "../scoring/judge";
 import { mkdtempSync, readFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
@@ -43,7 +44,7 @@ const verdict: JudgeEvaluationResult = {
   criticalContradictions: [],
   overallVerdict: "ok",
   judgeModel: "offline/test",
-  promptVersion: "9",
+  promptVersion: JUDGE_PROMPT_VERSION,
 };
 
 let home: string;

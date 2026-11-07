@@ -2,7 +2,6 @@ import type { Context } from "@earendil-works/pi-ai";
 import { jsonrepair } from "jsonrepair";
 import { z } from "zod";
 import type { AppConfig, ModelRef, ThinkingLevel } from "@/lib/config/schema";
-import { KIND_CLASS } from "@/lib/evidence/ids";
 import type { EvidenceEntry } from "@/lib/evidence/types";
 import { resolveModel } from "@/lib/llm";
 import { modelRefKey } from "@/lib/llm/catalog";
@@ -19,18 +18,13 @@ import type {
   ToolCallTrace,
 } from "../types";
 import { deliveredReportProse } from "./report-content";
+import { judgeEvidenceOutputs } from "./judge-evidence";
 
 /** Versioned judge prompt configuration for evaluation runs. */
-export const JUDGE_PROMPT_VERSION = "9";
+export const JUDGE_PROMPT_VERSION = "10";
 
 /** Boundary lines the judge sees; the rest are counted, not listed. */
 const BOUNDARY_LINES = 15;
-
-/** Characters of each tool output the judge sees. Long filings are truncated, tags are not. */
-const OUTPUT_BUDGET = 6_000;
-
-/** `[E7]`, `[C3, E1]`: an evidence tag line must survive truncation, wherever it sits. */
-export const EVIDENCE_TAG = new RegExp(String.raw`\[${KIND_CLASS}\d+(?:\s*,\s*${KIND_CLASS}\d+)*\]`);
 
 const JUDGE_SYSTEM_PROMPT = `You are a Senior Financial Analyst and Rigorous Evaluator assessing an AI Financial Research Agent for retail investors.
 Your job is to evaluate the agent's response to an ambiguous, complex retail investor query against the data its tools actually returned, the user's latent intent, and task-specific rubric items.
@@ -59,49 +53,6 @@ const JUDGE_REPAIR_SYSTEM_PROMPT = `You repair the shape of a financial-evaluati
 Do not re-evaluate the answer and do not change any valid verdict or existing feedback.
 Map semantically equivalent fields to the required rubric-item structure. If overallVerdict is
 missing, write a concise summary of the existing item feedback. Return only the complete JSON object.`;
-
-/**
- * Keep the head of an output, and append any evidence-tag lines the head cut off, so the judge can
- * always see which entries a result registered even when the body is long.
- */
-export function truncateToolOutput(text: string, budget: number = OUTPUT_BUDGET): string {
-  if (text.length <= budget) return text;
-
-  const head = text.slice(0, budget);
-  const tail = text.slice(budget);
-  const tagLines = tail
-    .split("\n")
-    .filter((line) => EVIDENCE_TAG.test(line))
-    .slice(0, 20);
-
-  const omitted = `… [${text.length - budget} more characters omitted]`;
-  return [head, omitted, ...tagLines].join("\n");
-}
-
-function renderToolCalls(toolCalls: ToolCallTrace[]): string {
-  if (toolCalls.length === 0) return "(No tools called)";
-  return toolCalls
-    .map((call, index) => {
-      const failure = call.isError ? " — FAILED" : "";
-      const header = `#${index + 1} ${call.toolName}(${JSON.stringify(call.args)})${failure}`;
-      return `${header}\nOutput:\n${truncateToolOutput(call.output) || "(empty)"}`;
-    })
-    .join("\n\n");
-}
-
-/** Refused and empty calls are represented by the boundary block; repeated noise is not evidence. */
-function relevantToolCalls(toolCalls: ToolCallTrace[]): ToolCallTrace[] {
-  const candidates = toolCalls.filter((call) =>
-    call.toolName !== "create_report" &&
-    !call.isError &&
-    call.offlineOutcome !== "not_captured" &&
-    call.offlineOutcome !== "out_of_scope" &&
-    call.offlineOutcome !== "not_available_as_of" &&
-    call.output.trim() !== "",
-  );
-  if (candidates.length <= 16) return candidates;
-  return [...candidates.slice(0, 8), ...candidates.slice(-8)];
-}
 
 /** One line per ledger entry: what it is, where it came from and when it was true. */
 export function renderEvidenceIndex(entries: EvidenceEntry[]): string {
@@ -174,8 +125,8 @@ export interface JudgeInput {
 export function buildJudgePrompt(input: JudgeInput): string {
   const { task } = input;
   const prompts = [task.prompt, ...(task.followUpPrompts ?? [])];
-  const relevant = relevantToolCalls(input.toolCalls);
   const report = deliveredReportProse(input.toolCalls);
+  const outputs = judgeEvidenceOutputs(input.toolCalls, `${input.finalAssistantText}\n${report}`);
   const boundary = renderDataBoundary(input.offlineAudit);
   const boundaryBlock = boundary === undefined ? "" : `### Offline Data Boundary
 The agent ran against a closed offline dataset. These requests were refused because the data was outside the task's corpus, was never captured, or is dated after the as-of date:
@@ -194,8 +145,9 @@ ${prompts.map((prompt, index) => `${index + 1}. ${JSON.stringify(prompt)}`).join
 ### Rubric Items
 ${task.rubricItems.map((item) => `- ${item.id} · ${item.dimension} · weight ${item.weight}${item.critical ? " · CRITICAL" : ""}: ${item.requirement}`).join("\n")}
 
-### Relevant Successful Tool Calls (${relevant.length} of ${input.toolCalls.length})
-${renderToolCalls(relevant)}
+### Relevant Successful Tool Calls (${outputs.length} of ${input.toolCalls.length})
+Outputs retain their heads and bounded original-source windows selected by numeric overlap with the answer/report. Matching values alone do not prove support: verify the entity, metric, period, units and context. Omitted source text is unavailable to you, not proof that the agent invented a claim.
+${outputs.map(({ call, output, supplementary }) => `#${input.toolCalls.indexOf(call) + 1} ${call.toolName}(${JSON.stringify(call.args)})${supplementary ? " — supplementary source windows" : ""}\nOutput:\n${output}`).join("\n\n") || "(No tools called)"}
 
 ### Evidence Index (${input.evidence.length} entries)
 ${renderEvidenceIndex(input.evidence)}
