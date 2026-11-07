@@ -98,6 +98,7 @@ them or pass them inline:
 | :--- | :--- |
 | `OFA_LIVE_TESTS=1` | Turns on every networked test, such as MCP connectivity |
 | `OPENROUTER_API_KEY_TEST` | An OpenRouter key: the agent end to end with EDGAR tools and a skill |
+| `STOCKFIT_API_KEY_TEST` | A StockFit key, free plan or paid: the StockFit connection against the real server |
 | `CUSTOM_LLM_URL` | An OpenAI-compatible base URL, including `/v1`: Validate, Test and the agent end to end |
 | `CUSTOM_LLM_API_KEY` | That endpoint's key, if it has one |
 | `CUSTOM_LLM_AVAILABLE` | Comma-separated model ids it serves; the first must be tool-capable |

@@ -22,9 +22,9 @@ We believe what sets one harness apart from another is what it **ENFORCES** and 
 hold:
 
 - **Trusted sources come first.** Research draws on professional data such as SEC EDGAR filings,
-  Alpha Vantage and any MCP server, and every source carries a trust tier, from 1 for filings to 4
-  for the open web. The open web is only a fallback, and a number backed by the web alone is
-  flagged as unverified.
+  Alpha Vantage, StockFit and any MCP server, and every source carries a trust tier, from 1 for
+  filings to 4 for the open web. The open web is only a fallback, and a number backed by the web
+  alone is flagged as unverified.
 - **The model does no mental math.** It writes Python against a purpose-built finance library, and
   an isolated sandbox runs it, so every derived number is computed, not predicted token by token.
 - **Every number traces back to its source.** Each number in an answer or report is recorded in a
@@ -80,7 +80,7 @@ Open http://localhost:3000 and:
    endpoint. Validate, Test, Save, then choose a default model.
 2. **Settings › Data connections.** Enable the connections you need and give each what it asks
    for. SEC EDGAR and Market Quotes are on by default; EDGAR needs a contact string, which the SEC
-   requires, and Alpha Vantage needs an API key.
+   requires, and Alpha Vantage and StockFit need an API key.
 3. **Settings › General tools.** Optionally add a Tavily key for web search.
 
 Then start a chat and ask your first question, or type `/` to pick a skill.
@@ -211,7 +211,7 @@ scoring, how cost is calculated and how to reproduce a run are in
 | Area | In this version |
 | :--- | :--- |
 | **Models** | Anthropic (API key, or Claude Pro/Max sign-in, experimental), OpenAI (API key, or ChatGPT sign-in), GitHub Copilot, Google Gemini, xAI, DeepSeek, OpenRouter, OpenCode Zen and Go, any OpenAI-compatible endpoint; about 25 more from pi-ai under More providers, from Mistral and Groq to Bedrock, Vertex AI and Azure |
-| **Data** | SEC EDGAR, Market Quotes, Alpha Vantage, any MCP server; Tavily web search as a fallback |
+| **Data** | SEC EDGAR, Market Quotes, Alpha Vantage, StockFit, any MCP server; Tavily web search as a fallback |
 | **Calculator** | Python sandbox with numpy, pandas, scipy and a finance library (DCF, WACC, IRR, risk, options) |
 | **Reports** | HTML documents and slide decks, eight finance templates |
 | **Skills** | Eight bundled research workflows; add your own as a `SKILL.md` |

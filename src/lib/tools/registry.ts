@@ -11,6 +11,7 @@ import { quotesModule } from "@/lib/quotes/tool";
 import { reportsModule } from "@/lib/reports/tool";
 import { skillsModule } from "@/lib/skills/tool";
 import { scheduledModule } from "@/lib/scheduled/tool";
+import { stockfitModule } from "@/lib/providers/stockfit/module";
 import { tavilyModule } from "@/lib/providers/tavily/module";
 
 /**
@@ -26,6 +27,7 @@ import { tavilyModule } from "@/lib/providers/tavily/module";
 export const builtinModules: Module[] = [
   edgarModule,
   alphaVantageModule,
+  stockfitModule,
   tavilyModule,
   quotesModule,
   pythonModule,
