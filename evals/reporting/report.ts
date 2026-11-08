@@ -2,6 +2,8 @@ import { mkdirSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { LIMITS } from "@/lib/agent/execution";
 import { writeFileAtomicSync } from "@/lib/atomic-write";
+import { JUDGE_PROMPT_VERSION } from "../scoring/judge";
+import { judgeVersionIssues } from "./judge-versions";
 import {
   BENCHMARK_VERSION,
   type AgentSummary,
@@ -278,7 +280,7 @@ export function benchmarkValidityIssues(
   summary: EvalRunSummary,
   options: { baseline?: boolean } = {},
 ): string[] {
-  const issues: string[] = [];
+  const issues: string[] = judgeVersionIssues(summary);
   if (summary.fixtureMode !== "offline") issues.push(`fixture mode is ${summary.fixtureMode}, not offline`);
   const integrityErrors = summary.dataset?.integrityErrors ?? 0;
   if (integrityErrors > 0) issues.push(`${integrityErrors} offline dataset integrity error(s)`);
@@ -287,6 +289,7 @@ export function benchmarkValidityIssues(
   const judgeFailures = summary.results.filter((result) => result.judgeResult?.error);
   if (judgeFailures.length > 0) issues.push(`${judgeFailures.length} judge failure(s)`);
   if (options.baseline) {
+    if (summary.judgePromptVersion !== JUDGE_PROMPT_VERSION) issues.push(`baseline promotion requires judge prompt v${JUDGE_PROMPT_VERSION}; retain historical baselines or rescore the full run first`);
     if (summary.benchmarkVersion !== BENCHMARK_VERSION) issues.push(`baseline promotion requires benchmark v${BENCHMARK_VERSION}, not v${summary.benchmarkVersion}; rescore the full run first`);
     const refusal = baselineRefusal({ repeat: summary.repeat, judgeRepeat: summary.judgeRepeat, selfJudged: summary.agentSummaries.some((agent) => agent.selfJudged) });
     if (refusal) issues.push(refusal);

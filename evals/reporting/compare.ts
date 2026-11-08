@@ -1,5 +1,6 @@
 import { JUDGE_PROMPT_VERSION } from "../scoring/judge";
 import type { EvalRunSummary, TaskEvalResult } from "../types";
+import { judgeVersionIssues } from "./judge-versions";
 
 export interface TaskDelta {
   taskId: string;
@@ -139,6 +140,8 @@ export function compareRuns(candidate: EvalRunSummary, baseline: EvalRunSummary)
   if (candidate.taskIds.join("\0") !== baseline.taskIds.join("\0") || candidate.repeat !== baseline.repeat) {
     throw new Error("Candidate and baseline must contain the same tasks in the same order and the same repeat count.");
   }
+  const mixedVersions = [...judgeVersionIssues(candidate), ...judgeVersionIssues(baseline)];
+  if (mixedVersions.length) throw new Error(`Cannot compare mixed judge versions: ${mixedVersions.join("; ")}`);
   const oneToOne = candidate.agents.length === 1 && baseline.agents.length === 1;
   const comparisons = candidate.agents.map((agent) => {
     const baselineAgent = baseline.agents.includes(agent) ? agent : oneToOne ? baseline.agents[0] : undefined;

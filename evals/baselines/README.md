@@ -6,7 +6,10 @@ each row down by task; how a run is made and promoted is in
 [evals/README.md › Comparing runs](../README.md#comparing-runs). Add a section here when a baseline
 is added, in the same order as the README's table.
 
-All rows are benchmark v2: judge prompt v9 with three grades per answer, policy enforced, offline
+These published scores retain judge prompt v9. New runs use v10's bounded evidence windows;
+they require a separate baseline and must not be compared directly with the v9 rows.
+
+All rows below are benchmark v2: judge prompt v9 with three grades per answer, policy enforced, offline
 dataset, twelve tasks × 3 repeats. The GPT rows except GPT-6.1 Terra and the DeepSeek V4.1 Flash and
 Qwen rows were rescored with `--rescore` from their saved runs when v2 landed, so each agent answer,
 run time and token count is the original run's. The Claude Opus and Sonnet, Grok, Gemini 3.8 Flash and

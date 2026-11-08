@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { EVIDENCE_TAG_LINE } from "./checks";
-import { EVIDENCE_TAG } from "./judge";
+import { EVIDENCE_TAG } from "./judge-evidence";
 
 /**
  * The scorer and the judge read evidence tags with patterns built from the ledger's own kind

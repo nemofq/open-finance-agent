@@ -10,8 +10,8 @@ import {
   renderChecks,
   renderDataBoundary,
   renderEvidenceIndex,
-  truncateToolOutput,
 } from "./judge";
+import { truncateToolOutput } from "./judge-evidence";
 import { RETAIL_EVAL_TASKS } from "../tasks";
 import type { EvalTask, OfflineAudit, OfflineAuditEvent, RubricVerdict } from "../types";
 
@@ -147,6 +147,27 @@ describe("what the judge sees", () => {
     const prompt = buildJudgePrompt({ task: TASK, toolCalls: [], evidence: [], checks: [], finalAssistantText: "I cannot establish that." });
     expect(prompt).toContain("silence, refusal, insufficient detail");
     expect(prompt).toContain("Use contradicted only when the");
+  });
+
+  it("uses figures in a delivered report to recover source windows even without a chat figure", () => {
+    const prompt = buildJudgePrompt({ task: TASK, evidence: [], checks: [], finalAssistantText: "See the report.", toolCalls: [
+      { toolCallId: "source", toolName: "edgar_read_filing", args: {}, output: `${"filler ".repeat(1000)}Margin improved seven basis points.`, isError: false, durationMs: 1 },
+      { toolCallId: "report", toolName: "create_report", args: { title: "Findings", sections: [{ heading: "Margin", blocks: [{ type: "text", text: "Margin improved 7 basis points." }] }] }, output: "Created R1", isError: false, durationMs: 1 },
+    ] });
+    expect(prompt).toContain("Margin improved seven basis points.");
+    expect(prompt).toContain("source characters");
+    expect(prompt).toContain("Matching values alone do not prove support");
+  });
+
+  it.each(["answer", "report"])("recovers Costco direction-in-prose evidence for a signed %s figure", (surface) => {
+    const passage = "Costco gross margin was negatively impacted by seven basis points and one basis point.";
+    const claim = "Gross margin impacts: −7 basis points and −1 basis point.";
+    const toolCalls = [{ toolCallId: "source", toolName: "edgar_read_filing", args: {}, output: `Gross margin 10.57%. ${"filler ".repeat(1000)}${passage}`, isError: false, durationMs: 1 }];
+    if (surface === "report") toolCalls.push({ toolCallId: "report", toolName: "create_report", args: { title: "Costco", sections: [{ heading: "Margin", blocks: [{ type: "text", text: claim }] }] }, output: "Created R1", isError: false, durationMs: 1 });
+    const prompt = buildJudgePrompt({ task: TASK, evidence: [], checks: [], finalAssistantText: surface === "answer" ? claim : "See the report.", toolCalls });
+    expect(prompt).toContain(passage);
+    expect(prompt).toContain(claim);
+    expect(prompt).toContain("sign, direction and context");
   });
 });
 

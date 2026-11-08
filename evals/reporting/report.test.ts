@@ -1,3 +1,4 @@
+import { JUDGE_PROMPT_VERSION } from "../scoring/judge";
 import { mkdtempSync, readFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
@@ -40,7 +41,7 @@ function result(): TaskEvalResult {
       intentScore: 14, intentFeedback: "Good", financialScore: 17, financialFeedback: "Good",
       groundingScore: 12, groundingFeedback: "Good", retailClarityScore: 9, retailClarityFeedback: "Good",
       totalJudgeScore: 52, maxJudgeScore: 60, criticalMisses: [], criticalContradictions: [],
-      overallVerdict: "Strong", judgeModel: "p/judge", promptVersion: "9",
+      overallVerdict: "Strong", judgeModel: "p/judge", promptVersion: JUDGE_PROMPT_VERSION,
     },
     qualityScore: 52, integrityScore: 36, totalScore: 88, valid: true, metrics: METRICS, diagnostics: DIAGNOSTICS,
   };
@@ -48,7 +49,7 @@ function result(): TaskEvalResult {
 
 function summary(): EvalRunSummary {
   return {
-    timestamp: "2026-09-20T10:02:03.456Z", benchmarkVersion: BENCHMARK_VERSION, judgePromptVersion: "9",
+    timestamp: "2026-09-20T10:02:03.456Z", benchmarkVersion: BENCHMARK_VERSION, judgePromptVersion: JUDGE_PROMPT_VERSION,
     agents: ["local/model"], judge: "p/judge", judgeRepeat: 3, fixtureMode: "offline", policyMode: "enforce",
     configHash: "abc", repeat: 3, taskIds: [RETAIL_EVAL_TASKS[0].id],
     agentSummaries: [{
@@ -256,5 +257,18 @@ describe("baseline eligibility", () => {
     expect(benchmarkValidityIssues(invalid, { baseline: true }).join(" ")).toContain("judge repeat");
     const legacy = { ...summary(), benchmarkVersion: "1" };
     expect(() => writeBaseline(legacy, "legacy", out)).toThrow("requires benchmark v2");
+  });
+
+  it("refuses mixed versions and promotion of an old judge run", () => {
+    const mixed = summary();
+    const grade = mixed.results[0].judgeResult;
+    if (!grade) throw new Error("Missing test grade");
+    grade.promptVersion = "9";
+    expect(benchmarkValidityIssues(mixed).join(" ")).toContain("do not match run judge prompt");
+    expect(() => writeBaseline(mixed, "mixed", out)).toThrow("do not match run judge prompt");
+    const old = summary();
+    old.judgePromptVersion = "9";
+    for (const result of old.results) if (result.judgeResult) result.judgeResult.promptVersion = "9";
+    expect(() => writeBaseline(old, "old-judge", out)).toThrow("requires judge prompt v10");
   });
 });
