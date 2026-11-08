@@ -8,6 +8,59 @@ function call(output: string, id = "source", extra: Partial<ToolCallTrace> = {})
 const padding = "unrelated text ".repeat(500);
 
 describe("bounded judge evidence windows", () => {
+  it.each([
+    ["negatively impacted by seven basis points", "-7 basis points"],
+    ["negatively impacted by one basis point", "−1 basis point"],
+    ["decreased by seven basis points", "+7 basis points"],
+    ["increased by seven basis points", "−7 basis points"],
+  ])("recovers direction-in-prose context: %s versus %s", (source, claim) => {
+    const passage = `Costco gross margin was ${source}.`;
+    const calls = [call(`Costco gross margin was 10.57%. ${padding}${passage}`)];
+    const packet = judgeEvidenceOutputs(calls, `Gross margin impact: ${claim}.`)[0].output;
+    expect(packet).toContain(passage);
+    const hidden = auditJudgeEvidence(calls, `Gross margin impact: ${claim}.`);
+    expect(hidden).toHaveLength(1);
+    expect(hidden[0]).toMatchObject({ cause: "head_cut", recovered: true });
+    expect(hidden[0].figure.value).toBe(excerptFigures(claim)[0].value);
+    expect(hidden[0].sources[0].context).toContain(passage);
+  });
+
+  it("keeps singular basis-point units and original offsets", () => {
+    const source = "Costco was negatively impacted by one basis point.";
+    const figure = excerptFigures(source)[0];
+    expect(figure).toMatchObject({ value: 1, unit: "bps" });
+    expect(source.slice(figure.index - 2)).toContain("one basis point");
+  });
+
+  it("uses magnitude only for retrieval, leaving direction checking to the judge", () => {
+    const passage = "Costco gross margin increased by seven basis points.";
+    const claim = "Gross margin impact: −7 basis points.";
+    const calls = [call(`${padding}${passage}`)];
+    expect(judgeEvidenceOutputs(calls, claim)[0].output).toContain(passage);
+    const answerFigure = excerptFigures(claim)[0];
+    expect(answerFigure.value).toBe(-7);
+    expect(excerptFigures(passage)[0]).toMatchObject({ value: 7, unit: "bps" });
+    expect(answerFigure.raw).toBe("−7 basis points");
+    expect(auditJudgeEvidence(calls, "−7 USD")).toEqual([]);
+    expect(auditJudgeEvidence(calls, "−7 times")).toEqual([]);
+    expect(auditJudgeEvidence(calls, "−8 basis points")).toEqual([]);
+  });
+
+  it("recovers signed figures from an omitted middle call by magnitude", () => {
+    const passage = "Costco gross margin was negatively impacted by seven basis points.";
+    const calls = Array.from({ length: 17 }, (_, i) => call(i === 8 ? passage : "Unrelated observation.", `c${i}`));
+    const claim = "Gross margin impact: −7 basis points.";
+    expect(judgeEvidenceOutputs(calls, claim).find((item) => item.supplementary)?.output).toContain(passage);
+    expect(auditJudgeEvidence(calls, claim)[0]).toMatchObject({ cause: "call_filtered", recovered: true });
+  });
+
+  it("does not add windows when the magnitude and original direction are already visible", () => {
+    const calls = [call(`Costco was negatively impacted by seven basis points. ${padding}`)];
+    const claim = "Gross margin impact: −7 basis points.";
+    expect(judgeEvidenceOutputs(calls, claim)[0].output).toBe(truncateToolOutput(calls[0].output));
+    expect(auditJudgeEvidence(calls, claim)).toEqual([]);
+  });
+
   it("restores word-form basis points and scaled table amounts from original source text", () => {
     const output = `${padding}\nGross margin increased seven basis points. Membership income (in millions): 1,712.\n[E7]`;
     const claims = "Gross margin rose 7 basis points; membership income was $1.712 billion [E7].";

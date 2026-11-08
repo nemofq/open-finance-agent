@@ -213,9 +213,11 @@ selected output. Figures in the final answer and successfully delivered reports 
 original-source windows (220 characters of context on either side, overlapping windows merged),
 capped at 2,400 characters including window markers per output. Numeric selection recognises
 English number words through hundreds, scale words, rounding and table-unit changes using the
-shared figure matcher. Matching a number selects context; the judge must still check entity,
-metric, period and units. Middle calls outside the first/last eight can contribute windows for
-figures still missing, capped at 6,000 supplementary characters across those calls. These budgets
+shared figure matcher. Selection compares absolute values so a signed answer can retrieve a
+filing's direction-in-prose wording, including singular `basis point`. Matching a number selects
+context; the judge must still check entity, metric, period, units and direction. Middle calls outside
+the first/last eight can contribute windows for figures still missing, capped at 6,000 supplementary
+characters across those calls. These budgets
 can leave evidence unseen; absence from a truncated packet alone does not establish invention.
 
 Audit saved traces without model calls:

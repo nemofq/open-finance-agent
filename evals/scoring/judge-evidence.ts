@@ -16,19 +16,24 @@ const WORD_NUMBER = new RegExp(`\\b(?:${WORDS.slice(1, 10).join("|")}) hundred(?
 
 /** Padding before the digits preserves original offsets and keeps the unit next to the number. */
 export function excerptFigures(text: string): Figure[] {
-  const normalized = text.replace(/^… \[[^\n]*\]$/gm, (line) => " ".repeat(line.length)).replace(WORD_NUMBER, (phrase) => {
-    let value = 0;
-    for (const word of phrase.toLowerCase().split(/[ -]/)) {
-      if (word === "hundred") value *= 100;
-      else if (word !== "and") value += WORDS.includes(word) ? WORDS.indexOf(word) : (TENS.indexOf(word) + 2) * 10;
-    }
-    return String(value).padStart(phrase.length, " ");
-  });
+  const normalized = text.replace(/^… \[[^\n]*\]$/gm, (line) => " ".repeat(line.length))
+    .replace(/\bbasis point\b/gi, (unit) => "bp".padEnd(unit.length, " "))
+    .replace(WORD_NUMBER, (phrase) => {
+      let value = 0;
+      for (const word of phrase.toLowerCase().split(/[ -]/)) {
+        if (word === "hundred") value *= 100;
+        else if (word !== "and") value += WORDS.includes(word) ? WORDS.indexOf(word) : (TENS.indexOf(word) + 2) * 10;
+      }
+      return String(value).padStart(phrase.length, " ");
+    });
   return extractFigures(normalized).filter((figure) => !figure.exempt);
 }
 
 function matches(claim: Figure, source: Figure): boolean {
-  return figureEquals(claim, source.value, source.unit);
+  // Retrieval must find prose directions as well as signs; the judge checks the original text.
+  // Remove basis-point suffixes before precision parsing so their `b` is not read as billion.
+  const magnitude = { ...claim, value: Math.abs(claim.value), raw: claim.raw.replace(/\bbasis points?\b|\bbps?\b/gi, "") };
+  return figureEquals(magnitude, Math.abs(source.value), source.unit);
 }
 
 export function uniqueClaims(text: string): Figure[] {

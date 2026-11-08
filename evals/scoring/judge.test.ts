@@ -158,6 +158,17 @@ describe("what the judge sees", () => {
     expect(prompt).toContain("source characters");
     expect(prompt).toContain("Matching values alone do not prove support");
   });
+
+  it.each(["answer", "report"])("recovers Costco direction-in-prose evidence for a signed %s figure", (surface) => {
+    const passage = "Costco gross margin was negatively impacted by seven basis points and one basis point.";
+    const claim = "Gross margin impacts: −7 basis points and −1 basis point.";
+    const toolCalls = [{ toolCallId: "source", toolName: "edgar_read_filing", args: {}, output: `Gross margin 10.57%. ${"filler ".repeat(1000)}${passage}`, isError: false, durationMs: 1 }];
+    if (surface === "report") toolCalls.push({ toolCallId: "report", toolName: "create_report", args: { title: "Costco", sections: [{ heading: "Margin", blocks: [{ type: "text", text: claim }] }] }, output: "Created R1", isError: false, durationMs: 1 });
+    const prompt = buildJudgePrompt({ task: TASK, evidence: [], checks: [], finalAssistantText: surface === "answer" ? claim : "See the report.", toolCalls });
+    expect(prompt).toContain(passage);
+    expect(prompt).toContain(claim);
+    expect(prompt).toContain("sign, direction and context");
+  });
 });
 
 describe("the offline data boundary", () => {

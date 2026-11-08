@@ -146,7 +146,7 @@ ${prompts.map((prompt, index) => `${index + 1}. ${JSON.stringify(prompt)}`).join
 ${task.rubricItems.map((item) => `- ${item.id} · ${item.dimension} · weight ${item.weight}${item.critical ? " · CRITICAL" : ""}: ${item.requirement}`).join("\n")}
 
 ### Relevant Successful Tool Calls (${outputs.length} of ${input.toolCalls.length})
-Outputs retain their heads and bounded original-source windows selected by numeric overlap with the answer/report. Matching values alone do not prove support: verify the entity, metric, period, units and context. Omitted source text is unavailable to you, not proof that the agent invented a claim.
+Outputs retain their heads and bounded original-source windows selected by numeric magnitude and compatible units in the answer/report, regardless of sign. Matching values alone do not prove support: verify the entity, metric, period, units, sign, direction and context against the original text. Omitted source text is unavailable to you, not proof that the agent invented a claim.
 ${outputs.map(({ call, output, supplementary }) => `#${input.toolCalls.indexOf(call) + 1} ${call.toolName}(${JSON.stringify(call.args)})${supplementary ? " — supplementary source windows" : ""}\nOutput:\n${output}`).join("\n\n") || "(No tools called)"}
 
 ### Evidence Index (${input.evidence.length} entries)
