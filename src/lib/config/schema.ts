@@ -43,7 +43,7 @@ const piBuiltinProviders = {
   mistral: true, moonshotai: true, "moonshotai-cn": true, nvidia: true, openai: true,
   "openai-codex": true, opencode: true, "opencode-go": true, openrouter: true,
   "qwen-token-plan": true, "qwen-token-plan-cn": true, "qwen-token-plan-individual": true,
-  radius: true, together: true, typesafe: true, "vercel-ai-gateway": true, xai: true, xiaomi: true,
+  "qwen-token-plan-individual-cn": true, radius: true, together: true, typesafe: true, "vercel-ai-gateway": true, xai: true, xiaomi: true,
   "xiaomi-token-plan-ams": true, "xiaomi-token-plan-cn": true, "xiaomi-token-plan-sgp": true,
   zai: true, "zai-coding-cn": true,
 } satisfies Record<KnownProvider, true>;

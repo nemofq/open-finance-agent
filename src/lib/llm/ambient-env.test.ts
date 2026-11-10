@@ -279,11 +279,16 @@ describe("PI_CACHE_RETENTION", () => {
   it.each(cases)("does not change a request to $provider", async ({ config, model }) => {
     if (config.auth === "oauth") storeCredential(config.id, Date.now() + 3_600_000);
     const baseline = await send(config, model());
-    // What is sent is pi's default, as pi sends it with the variable unset.
-    expect(await sendThroughPi(config, model())).toEqual(baseline);
+    // What is sent is pi's default, as pi sends it with the variable unset. The app keeps
+    // Anthropic message threads off (`stream.ts`), so pi alone is asked without them too.
+    const alone = () => {
+      const sent = model();
+      return sent.api === "anthropic-messages" ? { ...sent, compat: { ...sent.compat, supportsMessageThreads: false } } : sent;
+    };
+    expect(await sendThroughPi(config, alone())).toEqual(baseline);
 
     vi.stubEnv("PI_CACHE_RETENTION", "long");
-    expect(await sendThroughPi(config, model()), "pi alone would ask for a longer cache").not.toEqual(baseline);
+    expect(await sendThroughPi(config, alone()), "pi alone would ask for a longer cache").not.toEqual(baseline);
     expect(await send(config, model())).toEqual(baseline);
   });
 

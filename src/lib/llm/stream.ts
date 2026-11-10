@@ -55,20 +55,26 @@ function stream(
 ): AssistantMessageEventStream {
   const clamped = options.reasoning ? clampThinkingLevel(model, options.reasoning) : undefined;
   const reasoning = clamped === "off" ? undefined : clamped;
-  const sent = withoutNativeToolChanges(requestModel(provider, model, reasoning));
+  const sent = withoutAnthropicExtras(requestModel(provider, model, reasoning));
   const cacheRetention = options.cacheRetention ?? CACHE_RETENTION;
   const routed = openCodeOptions(provider.type, options, conversationId);
   return models.streamSimple(sent, context, { ...routed, cacheRetention, reasoning, ...requestAuth(provider) });
 }
 
 /**
- * The harness never changes tools mid-conversation; left on, pi adds a hidden deferred placeholder
- * tool and a beta header on six first-party Claude models.
+ * Two Anthropic features pi turns on by itself are kept off, so every request states the whole
+ * conversation and nothing but it:
+ *
+ * - The harness never changes tools mid-conversation; left on, pi adds a hidden deferred
+ *   placeholder tool and a beta header on six first-party Claude models.
+ * - Message threads (a beta) send only the new messages and let the server continue from its own
+ *   copy of the conversation. Each request stays whole instead, so what a run sent can be read
+ *   from the request itself and does not depend on state held by the server.
  */
-function withoutNativeToolChanges(model: Model<Api>): Model<Api> {
+function withoutAnthropicExtras(model: Model<Api>): Model<Api> {
   if (model.api !== "anthropic-messages") return model;
   const anthropic = model as Model<"anthropic-messages">;
-  return { ...anthropic, compat: { ...anthropic.compat, supportsMidConvoToolChanges: false } };
+  return { ...anthropic, compat: { ...anthropic.compat, supportsMidConvoToolChanges: false, supportsMessageThreads: false } };
 }
 
 /** Stream one completion from a saved provider; the model carries the id of the provider it was built for. */
