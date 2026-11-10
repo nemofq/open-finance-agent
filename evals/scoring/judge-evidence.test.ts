@@ -61,6 +61,36 @@ describe("bounded judge evidence windows", () => {
     expect(auditJudgeEvidence(calls, claim)).toEqual([]);
   });
 
+  it("does not treat bare table cells or footnote markers as showing a figure with a unit", () => {
+    // Shaped like a real query read of Costco's FY2025 10-K: the head carries small bare numbers
+    // in table cells and a "(1)" footnote, and the gross-margin factors sit just past the cut.
+    const head = [
+      "Changes in net sales:", "U.S. | 9 | % | 4 | % | 7 | %", "Canada | 6 | % | 6 | % | 1 | %",
+      "Total Company | 8 | % | 5 | % | 7 | %", "Changes in comparable sales (1) :", "U.S. | 6 | % | 4 | % | 3 | %",
+      "(1) Comparable sales for the trailing periods exclude the impact of an extra week.",
+    ].join("\n");
+    const factors = "Gross margin percentage was negatively impacted by seven basis points due to a LIFO charge in 2025 for higher merchandise costs and one basis point in warehouse ancillary and other businesses.";
+    const calls = [call(`${head}\n${padding}\n${factors}`)];
+    const answer = "Management attributed the change to: −7 basis points from a LIFO charge, and −1 bp from warehouse ancillary businesses.";
+    const packet = judgeEvidenceOutputs(calls, answer)[0].output;
+    expect(packet).toContain("seven basis points");
+    expect(packet).toContain("one basis point");
+    expect(auditJudgeEvidence(calls, answer).map((hidden) => [hidden.figure.value, hidden.recovered])).toEqual([[-7, true], [-1, true]]);
+  });
+
+  it("does not count a percentage as showing the same number of basis points", () => {
+    const output = `Total Company | 7 | %\n${padding}Gross margin was negatively impacted by seven basis points.`;
+    expect(judgeEvidenceOutputs([call(output)], "Gross margin: −7 basis points.")[0].output).toContain("seven basis points");
+    const equivalent = `Margin rose 0.07%.\n${padding}`;
+    expect(judgeEvidenceOutputs([call(equivalent)], "Margin rose 7 basis points.")[0].output).toBe(truncateToolOutput(equivalent));
+  });
+
+  it("still recognises a scaled amount in a unitless table cell as visible", () => {
+    const output = `Net sales | 269,912 | 249,625 ${padding}Net sales were $269.9 billion.`;
+    expect(judgeEvidenceOutputs([call(output)], "Net sales were $269.9 billion.")[0].output).toBe(truncateToolOutput(output));
+    expect(auditJudgeEvidence([call(output)], "Net sales were $269.9 billion.")).toEqual([]);
+  });
+
   it("restores word-form basis points and scaled table amounts from original source text", () => {
     const output = `${padding}\nGross margin increased seven basis points. Membership income (in millions): 1,712.\n[E7]`;
     const claims = "Gross margin rose 7 basis points; membership income was $1.712 billion [E7].";

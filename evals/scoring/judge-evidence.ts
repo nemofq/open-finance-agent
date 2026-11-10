@@ -36,6 +36,25 @@ function matches(claim: Figure, source: Figure): boolean {
   return figureEquals(magnitude, Math.abs(source.value), source.unit);
 }
 
+/**
+ * Whether a figure already in the packet shows the claim. Stricter than finding where a claim's
+ * source sits: a bare number (a table cell, an item or footnote number) does not show a figure with
+ * a unit, so "U.S. | 7 | %" or "(1)" never hides "7 basis points" or "1 bp" from the windows. Only a
+ * figure with three or more significant digits, such as "$269.9 billion" against a table's
+ * "269,912", is recognised without its unit. A false match here withholds evidence, while a missed
+ * one only costs a window, so this errs toward showing more.
+ */
+function shows(claim: Figure, source: Figure): boolean {
+  if (!matches(claim, source)) return false;
+  // figureEquals equates "7 basis points" with "7%" before converting units; here they must agree.
+  if (claim.unit && source.unit && (claim.unit === "bps") !== (source.unit === "bps")) {
+    const percent = (figure: Figure) => Math.abs(figure.value) / (figure.unit === "bps" ? 100 : 1);
+    return Math.abs(percent(claim) - percent(source)) < 1e-9;
+  }
+  if (!claim.unit || source.unit) return true;
+  return (claim.raw.match(/\d/g) ?? []).length >= 3;
+}
+
 export function uniqueClaims(text: string): Figure[] {
   const seen = new Set<string>();
   return excerptFigures(text).filter((figure) => {
@@ -102,7 +121,7 @@ export function judgeEvidenceOutputs(calls: ToolCallTrace[], answerAndReport: st
   const outputs = selected.map((call) => {
     const head = truncateToolOutput(call.output);
     const visible = excerptFigures(head);
-    const missing = claims.filter((claim) => !visible.some((source) => matches(claim, source)));
+    const missing = claims.filter((claim) => !visible.some((source) => shows(claim, source)));
     const windows = figureWindows(call.output, missing);
     return { call, output: windows ? `${head}\n${windows}` : head, supplementary: false };
   });
@@ -110,7 +129,7 @@ export function judgeEvidenceOutputs(calls: ToolCallTrace[], answerAndReport: st
   let visible = outputs.flatMap(({ output }) => excerptFigures(output));
   for (const call of candidates) {
     if (selected.includes(call)) continue;
-    const missing = claims.filter((claim) => !visible.some((source) => matches(claim, source)));
+    const missing = claims.filter((claim) => !visible.some((source) => shows(claim, source)));
     const output = figureWindows(call.output, missing, 0, Math.min(WINDOW_BUDGET, remaining));
     if (!output) continue;
     outputs.push({ call, output, supplementary: true });
@@ -135,7 +154,7 @@ export function auditJudgeEvidence(calls: ToolCallTrace[], answerAndReport: stri
   const newFigures = judgeEvidenceOutputs(calls, answerAndReport).flatMap(({ output }) => excerptFigures(output));
   const sourceFigures = candidates.map((call) => ({ call, figures: excerptFigures(call.output) }));
   return uniqueClaims(answerAndReport).flatMap((figure) => {
-    if (oldFigures.some((source) => matches(figure, source))) return [];
+    if (oldFigures.some((source) => shows(figure, source))) return [];
     const sources = sourceFigures.flatMap(({ call, figures }) => figures.filter((source) => matches(figure, source)).map((source) => ({
       toolCallId: call.toolCallId, toolName: call.toolName, index: source.index,
       context: call.output.slice(Math.max(0, source.index - CONTEXT), source.index + source.raw.length + CONTEXT),
@@ -143,6 +162,6 @@ export function auditJudgeEvidence(calls: ToolCallTrace[], answerAndReport: stri
     if (!sources.length) return [];
     const inSelected = selected.some((call) => sources.some((source) => source.toolCallId === call.toolCallId));
     return [{ figure, cause: inSelected ? "head_cut" as const : "call_filtered" as const,
-      recovered: newFigures.some((source) => matches(figure, source)), sources }];
+      recovered: newFigures.some((source) => shows(figure, source)), sources }];
   });
 }
