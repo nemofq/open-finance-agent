@@ -102,6 +102,13 @@ export const modelAliases: readonly ModelAlias[] = [
   { type: "mistral", from: "mistral-nemo", name: "Mistral Nemo", pricing: { input: 0.15, output: 0.15 }, to: "open-mistral-nemo" },
   { type: "opencode", from: "deepseek-v4-flash", name: "DeepSeek V4 Flash", pricing: { input: 0.14, output: 0.28 }, to: "deepseek-v4.1-flash" },
   { type: "opencode-go", from: "gemini-4-argon-contributor", name: "Gemini 4 Argon Contributor", pricing: { input: 4, output: 20 }, to: "gemini-4-argon" },
+  // pi-ai 1.5.0 → 1.5.2 (all in 1.5.1). Retired without a successor: fireworks gpt-oss-120b, inkling,
+  // nemotron-3-ultra-nvfp4 and nemotron-lightning-3p5-30b-a3b; nvidia
+  // meta/llama-3.2-11b-vision-instruct (the 90B is a different tier); and vercel-ai-gateway
+  // google/gemini-3.5-flash-batch and gemini-3.7-flash-batch (no newer Flash has a batch id).
+  { type: "vercel-ai-gateway", from: "meituan/longcat-2.5-preview", name: "LongCat 2.5 Preview", pricing: { input: 0.3, output: 1.2 }, to: "meituan/longcat-2.5" },
+  { type: "vercel-ai-gateway", from: "xiaomi/mimo-v2.5", name: "MiMo M2.5", pricing: { input: 0.119, output: 0.238 }, to: "xiaomi/mimo-v2.6-flash" },
+  { type: "vercel-ai-gateway", from: "xiaomi/mimo-v2.5-pro", name: "MiMo V2.5 Pro", pricing: { input: 0.3045, output: 0.609 }, to: "xiaomi/mimo-v2.6-pro" },
 ];
 
 export function modelAlias(type: LlmProviderType, id: string): ModelAlias | undefined {
