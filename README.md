@@ -154,13 +154,13 @@ total at 69 or 49.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/images/benchmark-quality-cost-dark.svg" />
-  <img src="docs/images/benchmark-quality-cost-light.svg" alt="Scatter of total benchmark score against the agent's average cost per run, log scale: GPT-6.1 Sol medium 74.1 at $2.13, Gemini 4 Argon medium 73.6 at $10.86, GPT-5.6 Sol medium 71.5 at $4.46, GPT-6.1 Terra medium 70.1 at $0.90, Claude Fable 5.1 medium 68.0 at $20.54, Claude Opus 5.5 medium 67.7 at $6.84, DeepSeek V4.1 Flash 1017 high 67.3 at $0.91, DeepSeek V4.1 Flash high 67.0 at $1.05, Grok 4.7 medium 64.9 at $6.05, Tencent Hy4 high 64.8 at $2.07, Kimi K3 high 63.5 at $13.54, GPT-5.6 Terra medium 63.2 at $2.15, GPT-5.6 Luna medium 62.8 at $0.27, Gemini 3.8 Flash medium 62.5 at $2.95, GLM 5.3 Flash high 61.5 at $0.56, Muse Spark Open medium 60.2 at $2.54, Claude Sonnet 5.5 medium 58.3 at $2.94, Claude Haiku 5.5 medium 58.2 at $0.18, GPT-6 Luna medium 57.7 at $0.07, Qwen 3.8 27B medium 56.6 at $0.84, Qwen 3.8 27B off 50.9 at $0.44; a dotted Pareto line joins GPT-6 Luna, Claude Haiku 5.5, GPT-5.6 Luna, GPT-6.1 Terra and GPT-6.1 Sol" width="100%" />
+  <img src="docs/images/benchmark-quality-cost-light.svg" alt="Scatter of total benchmark score against the agent's average cost per run, log scale: GPT-6.1 Sol medium 74.1 at $2.13, Gemini 4 Argon medium 73.6 at $21.72, GPT-5.6 Sol medium 71.5 at $4.46, GPT-6.1 Terra medium 70.1 at $0.90, Claude Fable 5.1 medium 68.0 at $20.54, Claude Opus 5.5 medium 67.7 at $6.84, DeepSeek V4.1 Flash 1017 high 67.3 at $0.91, DeepSeek V4.1 Flash high 67.0 at $1.05, Grok 4.7 medium 64.9 at $6.05, Tencent Hy4 high 64.8 at $2.07, Kimi K3 high 63.5 at $13.54, GPT-5.6 Terra medium 63.2 at $2.15, GPT-5.6 Luna medium 62.8 at $0.27, Gemini 3.8 Flash medium 62.5 at $2.95, GLM 5.3 Flash high 61.5 at $0.56, Muse Spark Open medium 60.2 at $2.54, Claude Sonnet 5.5 medium 58.3 at $2.94, Claude Haiku 5.5 medium 58.2 at $0.18, GPT-6 Luna medium 57.7 at $0.07, Qwen 3.8 27B medium 56.6 at $0.84, Qwen 3.8 27B off 50.9 at $0.44; a dotted Pareto line joins GPT-6 Luna, Claude Haiku 5.5, GPT-5.6 Luna, GPT-6.1 Terra and GPT-6.1 Sol" width="100%" />
 </picture>
 
 | Model (avg@3) | Thinking effort | Judge model | Total (/100) ↑ | Integrity (/40) ↑ | Judged (/60) ↑ | Avg. cost per run ↓ | Avg. run time | Avg. output tokens per run | Avg. tool calls per run |
 | :--- | :--- | :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
 | GPT-6.1 Sol | Medium | GPT-6 Astra, medium | 74.1 | 34.5 | 39.6 | $2.13 | 1,696 s | 37,347 | 224 |
-| Gemini 4 Argon | Medium | GPT-6 Astra, medium | 73.6 <sub>−2.5 capped</sub> | 37.6 | 38.5 | $10.86 | 3,663 s | 309,709 | 592 |
+| Gemini 4 Argon | Medium | GPT-6 Astra, medium | 73.6 <sub>−2.5 capped</sub> | 37.6 | 38.5 | $21.72 | 3,663 s | 309,709 | 592 |
 | GPT-5.6 Sol | Medium | GPT-6 Astra, medium | 71.5 <sub>−0.2 capped</sub> | 32.3 | 39.4 | $4.46 | 1,835 s | 77,376 | 411 |
 | GPT-6.1 Terra | Medium | GPT-6 Astra, medium | 70.1 <sub>−0.2 capped</sub> | 33.0 | 37.2 | $0.90 | 460 s | 23,260 | 184 |
 | Claude Fable 5.1 | Medium | GPT-6 Astra, medium | 68.0 <sub>−1.8 capped</sub> | 32.0 | 37.8 | $20.54 | 1,540 s | 117,900 | 253 |
@@ -200,9 +200,9 @@ run after a fix to the unsourced-figure follow-up (#29), so its comparison with 
 strict. v1 scores are not comparable. Run time counts the model's turns, not judging. Cost is the agent's, not the judge's,
 from the tokens reported, at the provider's list prices on 2026-10-01 or, for rows added later, each
 model maker's official API price on the day the row was added. GPT-5.6 Sol's uses OpenAI's
-promotional price, offered through at least 2026-11-21, Gemini 3.8 Flash's Google's introductory
-price, which doubles on 2027-01-01, and Gemini 4 Argon's Google's launch price, which doubles on
-2026-12-01. Tencent Hy4's uses the launch discount Tencent offers through OpenRouter, half its usual
+promotional price, offered through at least 2026-11-21, and Gemini 3.8 Flash's Google's introductory
+price, which doubles on 2027-01-01. Gemini 4 Argon's uses Google's standard price, which applies
+from 2026-12-01; the run itself was made at the earlier, lower price, half of it. Tencent Hy4's uses the launch discount Tencent offers through OpenRouter, half its usual
 rate, with no published end date. Meta publishes no hosted price for the open-weight Muse Spark Open, so its row uses the
 price of the provider it ran through. Each row is a committed baseline, with its per-task scores and
 the prices used in [evals/baselines/README.md](evals/baselines/README.md), and the tasks, the

@@ -100,9 +100,10 @@ applied.
   points (contradicted `roc-not-inferred` 3, `time-and-motive` 3)
 - **Diagnostics:** tool argument errors 3 · fallback reports 2 · unverified report figures 475 ·
   repaired 12
-- **Cost:** $10.86 per run · per million tokens: input $2.00, cache read $0.10, output $10.00 ·
-  Gemini API paid tier, launch price through 2026-11-30 ($4.00, $0.20 and $20.00 from
-  2026-12-01, which would make it $21.72 per run), 2026-10-15
+- **Cost:** $21.72 per run · per million tokens: input $4.00, cache read $0.20, output $20.00 ·
+  Gemini API paid tier, standard price from 2026-12-01, read 2026-11-12. The run was made on
+  2026-10-14 at the earlier price through 2026-11-30 ($2.00, $0.10 and $10.00), at which it
+  cost $10.86 per run
 
 | Task | Evidence | Figures | Contracts | Intent | Financial | Grounding | Clarity | Total (σ) | Capped | Run time | Output tokens |
 | :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
