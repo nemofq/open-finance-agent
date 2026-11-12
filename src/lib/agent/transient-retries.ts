@@ -31,10 +31,14 @@ const ACCOUNT_STATUS = /^\s*(?:error:?\s*)?(?:401|402|403)\b/i;
 // reached" (Codex stream) or "You have hit your ChatGPT usage limit" (HTTP); it resets in hours.
 const ACCOUNT_TEXT = /key limit exceeded|insufficient[_ ](?:credits?|quota|balance)|quota exceeded|exceeded your current quota|billing|invalid (?:api )?key|incorrect api key|unauthori[sz]ed|permission[_ ]denied|usage limit has been reached|hit your chatgpt usage limit/i;
 
+/** The same test on a bare error text, for callers that hold a message's error and not the message. */
+export function isAccountErrorText(text: string): boolean {
+  return ACCOUNT_STATUS.test(text) || ACCOUNT_TEXT.test(text);
+}
+
 export function isAccountError(message: AssistantMessage): boolean {
   if (message.stopReason !== "error") return false;
-  const text = message.errorMessage ?? "";
-  return ACCOUNT_STATUS.test(text) || ACCOUNT_TEXT.test(text);
+  return isAccountErrorText(message.errorMessage ?? "");
 }
 
 /** What pi's retry loop is handed for a run that did not end on a reply: settled, so never retried. */

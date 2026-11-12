@@ -266,6 +266,12 @@ export function writeRunFiles(summary: EvalRunSummary, outDir: string): RunFiles
   }
 }
 
+/** Replace files `writeRunFiles` reserved with the run as it now stands, atomically. */
+export function rewriteRunFiles(summary: EvalRunSummary, files: RunFiles): void {
+  writeFileAtomicSync(files.jsonPath, `${JSON.stringify(summary, null, 2)}\n`);
+  writeFileAtomicSync(files.mdPath, `${renderSummaryMarkdown(summary)}\n`);
+}
+
 export function writeBaseline(summary: EvalRunSummary, name: string, dir: string): string {
   const issues = benchmarkValidityIssues(summary, { baseline: true });
   if (issues.length > 0) throw new Error(`Refusing to write an invalid baseline: ${issues.join("; ")}`);

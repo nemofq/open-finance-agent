@@ -7,7 +7,8 @@ import { clearProviderEnv } from "@/lib/llm/ambient-env";
 import { sameModelRef } from "@/lib/llm/catalog";
 import { createTempHome } from "./harness/home";
 import { resolveModelSpec } from "./models";
-import { baselineRefusal, benchmarkValidityIssues, type RunFiles, scoreLine, suggestBaselineName, writeBaseline, writeRunFiles } from "./reporting/report";
+import { baselineRefusal, benchmarkValidityIssues, rewriteRunFiles, type RunFiles, scoreLine, suggestBaselineName, writeBaseline, writeRunFiles } from "./reporting/report";
+import type { JudgeStageEvent } from "./harness/rejudge";
 import type { ProgressEvent } from "./harness/runner";
 import { RETAIL_EVAL_TASKS } from "./tasks";
 import { type EvalRunSummary, type EvalTask, type FixtureMode, type TaskEvalResult } from "./types";
@@ -44,6 +45,10 @@ export interface CliOptions {
   checkpointPath?: string;
   resumePath?: string;
   judgeOnly?: string;
+  /** Run the agents and save their answers ungraded, for `--judge-only` to grade later. */
+  deferJudge: boolean;
+  /** With `--judge-only`: grade at most this many answers in this stage. */
+  judgeLimit?: number;
   rescore?: string;
   traces?: string;
   compare?: string;
@@ -82,9 +87,15 @@ Options:
                            unless repeat=3+, judge-repeat=3+, and the run is valid
   --checkpoint <path>      Checkpoint written after every task cell (default for an offline run:
                            offline-eval-checkpoint.json in the --out folder)
-  --resume <path>          Resume completed cells from a checkpoint JSON
+  --resume <path>          Resume completed cells from a checkpoint JSON; an answer whose
+                           judgement is missing or failed is graded again, not run again
+  --defer-judge            Run the agents only and save their answers ungraded; --judge still
+                           names the judge that --judge-only will grade them with
   --judge-only <path>      Finish a saved run JSON: judge the results whose judgement is missing
-                           or failed, with the run's own judge (no --judge); takes --baseline
+                           or failed, with the run's own judge (no --judge); takes --baseline.
+                           The new run file is saved after every grade, and the stage stops
+                           when the judge's account refuses it (a usage limit, a spent key)
+  --judge-limit <n>        With --judge-only: grade at most n answers in this stage
   --rescore <run.json>     Recompute v2 integrity and judge scores from a saved run's traces;
                            writes a new run and never overwrites the source
                            With --task, only those tasks are rescored and every other
@@ -129,6 +140,7 @@ export function parseArgs(argv: string[]): ParseResult {
     fixtures: "offline",
     observe: false,
     keep: false,
+    deferJudge: false,
   };
 
   for (let index = 0; index < argv.length; index++) {
@@ -158,6 +170,16 @@ export function parseArgs(argv: string[]): ParseResult {
       case "--keep":
         options.keep = true;
         break;
+      case "--defer-judge":
+        options.deferJudge = true;
+        break;
+      case "--judge-limit": {
+        const value = needsValue();
+        const limit = Number(value);
+        if (!value || !Number.isInteger(limit) || limit < 1) return { ok: false, error: "--judge-limit needs a positive integer." };
+        options.judgeLimit = limit;
+        break;
+      }
       case "--agent": {
         const value = needsValue();
         if (!value) return { ok: false, error: "--agent needs a provider/model spec." };
@@ -273,6 +295,11 @@ export function parseArgs(argv: string[]): ParseResult {
   }
   if (options.rescore && options.judge) return { ok: false, error: "--rescore grades with the judge recorded in the run; leave out --judge." };
   if (options.judgeOnly && options.rescore) return { ok: false, error: "Use only one of --judge-only and --rescore." };
+  if (options.judgeLimit !== undefined && !options.judgeOnly) return { ok: false, error: "--judge-limit sets the size of a --judge-only stage; use it with --judge-only." };
+  if (options.deferJudge && (options.judgeOnly || options.rescore)) return { ok: false, error: "--defer-judge is for a run of the agents; a saved-run mode grades." };
+  if (options.deferJudge && (options.baseline || options.compare)) {
+    return { ok: false, error: "--defer-judge leaves the answers ungraded, so there is nothing to promote or compare yet; pass --baseline or --compare to the --judge-only stage that finishes the run." };
+  }
   if (options.traces && !options.rescore) return { ok: false, error: "--traces supplies traces to --rescore; use it with --rescore." };
   if ((options.judgeOnly || options.rescore) && options.agents.length > 0) {
     return { ok: false, error: "Saved-run modes use the agents recorded in the file; leave out --agent." };
@@ -293,12 +320,15 @@ export function baselinePreflight(options: CliOptions, agents: ModelRef[], judge
 
 export type JudgeOnlyOutcome =
   | { ok: false; error: string }
-  | { ok: true; summary: EvalRunSummary; files: RunFiles; baselinePath?: string };
+  /** `pending` answers still wait for a judgement: the stage stopped at its limit or on the judge's account. */
+  | { ok: true; summary: EvalRunSummary; files: RunFiles; baselinePath?: string; pending: number; stopped?: string };
 
 /**
  * `--judge-only`: finish judging a saved run with the judge it was graded by, so every result keeps
  * one judge, and write it out again, promoting it with `--baseline`. Refused before any judge call
- * when the run's judge is not configured or the run could never be a baseline.
+ * when the run's judge is not configured or the run could never be a baseline. The new run file is
+ * rewritten after every grade, so a stage that is killed or runs out of quota keeps what it graded;
+ * the next stage takes that file.
  */
 export async function judgeOnly(input: {
   saved: EvalRunSummary;
@@ -306,6 +336,8 @@ export async function judgeOnly(input: {
   baseline?: string;
   outDir: string;
   baselineDir: string;
+  limit?: number;
+  onEvent?: (event: JudgeStageEvent) => void;
 }): Promise<JudgeOnlyOutcome> {
   const { saved } = input;
   if (saved.results.some((result) => !result.diagnostics)) {
@@ -315,13 +347,30 @@ export async function judgeOnly(input: {
   if (!judge.ok) return { ok: false, error: judge.error };
   const refusal = input.baseline ? baselineRefusal({ repeat: saved.repeat, judgeRepeat: saved.judgeRepeat, selfJudged: saved.agentSummaries.some((agent) => agent.selfJudged) }) : undefined;
   if (refusal) return { ok: false, error: refusal };
-  const { judgeRun } = await import("./harness/rejudge");
-  const summary = await judgeRun(saved, input.config, judge.ref);
-  const files = writeRunFiles(summary, input.outDir);
-  if (!input.baseline) return { ok: true, summary, files };
+  const { awaitsJudgement, judgeRun } = await import("./harness/rejudge");
+  // Written at the first grade and replaced after each one, so an interrupted stage leaves a file
+  // to continue from.
+  let files: RunFiles | undefined;
+  const save = (current: EvalRunSummary): RunFiles => {
+    if (files) rewriteRunFiles(current, files);
+    else files = writeRunFiles(current, input.outDir);
+    return files;
+  };
+  let stopped: string | undefined;
+  const summary = await judgeRun(saved, input.config, judge.ref, {
+    limit: input.limit,
+    onEvent: (event) => {
+      if (event.type === "judged") save(event.summary);
+      if (event.type === "stopped") stopped = event.reason === "limit" ? "the stage reached its --judge-limit" : `the judge's account refused: ${event.detail}`;
+      input.onEvent?.(event);
+    },
+  });
+  const pending = summary.results.filter(awaitsJudgement).length;
+  const outcome = { ok: true as const, summary, files: save(summary), pending, ...(stopped ? { stopped } : {}) };
+  if (!input.baseline) return outcome;
   const issues = benchmarkValidityIssues(summary, { baseline: true });
-  if (issues.length > 0) return { ok: false, error: `Rejudged run written to ${files.jsonPath}, but not promoted: ${issues.join("; ")}` };
-  return { ok: true, summary, files, baselinePath: writeBaseline(summary, input.baseline, input.baselineDir) };
+  if (issues.length > 0) return { ok: false, error: `Rejudged run written to ${outcome.files.jsonPath}, but not promoted: ${issues.join("; ")}` };
+  return { ...outcome, baselinePath: writeBaseline(summary, input.baseline, input.baselineDir) };
 }
 
 /** Tasks left after `--task`; an id that matches nothing is an error. */
@@ -369,7 +418,10 @@ function progress(event: ProgressEvent): void {
   }
   const { result } = event;
   const audit = result.offlineAudit;
-  const score = result.totalScore === undefined
+  const deferred = result.totalScore === undefined && result.valid !== false && !result.judgeResult && Boolean(result.finalAssistantText.trim());
+  const score = deferred
+    ? `integrity ${result.deterministicCheck.score}/40 · judging deferred`
+    : result.totalScore === undefined
     ? "unscored"
     : `integrity ${result.deterministicCheck.score}/40 · semantic ${result.judgeResult ? `${result.judgeResult.totalJudgeScore}/60` : "N/A"} · expected ${result.totalScore}/100`;
   const { diagnostics } = result;
@@ -428,12 +480,20 @@ async function main(): Promise<number> {
 
     if (options.judgeOnly) {
       const saved = JSON.parse(readFileSync(path.resolve(process.cwd(), options.judgeOnly), "utf8")) as EvalRunSummary;
-      const outcome = await judgeOnly({ saved, config, baseline: options.baseline, outDir, baselineDir });
+      const outcome = await judgeOnly({
+        saved, config, baseline: options.baseline, outDir, baselineDir, limit: options.judgeLimit,
+        onEvent: (event) => {
+          if (event.type === "judge_start") console.log(`[${event.index}/${event.total}] judging ${event.result.agent} · ${event.result.task.id} (run ${event.result.repeat})`);
+          else if (event.type === "judged") console.log(event.result.totalScore === undefined ? `  ⛔ ${event.result.invalidReason ?? "unscored"}` : `  total ${event.result.totalScore}/100`);
+        },
+      });
       if (!outcome.ok) {
         console.error(`${outcome.error}\n`);
         return 1;
       }
-      console.log(`Rejudged run: ${outcome.files.jsonPath}\nSummary: ${outcome.files.mdPath}`);
+      console.log(`\nRejudged run: ${outcome.files.jsonPath}\nSummary: ${outcome.files.mdPath}`);
+      if (outcome.stopped) console.log(`Stopped early: ${outcome.stopped}`);
+      if (outcome.pending > 0) console.log(`${outcome.pending} answer(s) still await a judgement. Continue with: pnpm eval --judge-only ${path.relative(process.cwd(), outcome.files.jsonPath)}`);
       if (outcome.baselinePath) console.log(`Baseline: ${outcome.baselinePath}`);
       if (options.compare) {
         const baseline = JSON.parse(readFileSync(path.resolve(process.cwd(), options.compare), "utf8")) as EvalRunSummary;
@@ -503,7 +563,7 @@ async function main(): Promise<number> {
 
     const policyMode = options.observe ? "observe" : "enforce";
     console.log(
-      `Agents: ${options.agents.join(", ")}\nJudge: ${options.judge}${options.judgeThinking ? ` · thinking ${options.judgeThinking}` : ""}\n` +
+      `Agents: ${options.agents.join(", ")}\nJudge: ${options.judge}${options.judgeThinking ? ` · thinking ${options.judgeThinking}` : ""}${options.deferJudge ? " · deferred to --judge-only" : ""}\n` +
         `Tasks: ${selected.tasks.length} × ${options.repeat} · Fixtures: ${options.fixtures} · Policy: ${policyMode}\n` +
         `Turn budget: ${LIMITS.calls} model calls · ${LIMITS.turnMs / 60_000}m deadline\n` +
         `Data folder: ${home.dir}`,
@@ -521,6 +581,7 @@ async function main(): Promise<number> {
       judge: judge.ref,
       judgeThinking: options.judgeThinking,
       judgeRepeat: options.judgeRepeat,
+      deferJudge: options.deferJudge,
       tasks: selected.tasks,
       repeat: options.repeat,
       fixtureMode: options.fixtures,
@@ -547,6 +608,16 @@ async function main(): Promise<number> {
       console.log(`\n${renderComparison(compareRuns(summary, baseline))}`);
     }
 
+    const { awaitsJudgement } = await import("./harness/rejudge");
+    const pending = summary.results.filter(awaitsJudgement).length;
+    if (pending > 0) {
+      console.log(`\n${pending} answer(s) await a judgement. Grade them with: pnpm eval --judge-only ${path.relative(process.cwd(), files.jsonPath)}`);
+      // Ungraded is the expected end of a deferred run; only a result that is invalid in itself fails it.
+      if (options.deferJudge) {
+        if (options.keep) console.log(`Kept the run's data folder at ${home.dir}`);
+        return summary.results.some((result) => result.valid === false) ? 1 : 0;
+      }
+    }
     const validityIssues = benchmarkValidityIssues(summary);
     if (options.baseline) {
       console.log(`Baseline: ${writeBaseline(summary, options.baseline, baselineDir)}`);
