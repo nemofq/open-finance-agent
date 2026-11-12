@@ -1,7 +1,6 @@
 import type { AppConfig, ModelRef } from "@/lib/config/schema";
-import { isAccountErrorText } from "@/lib/agent/transient-retries";
 import { modelRefKey } from "@/lib/llm/catalog";
-import { evaluateWithJudge, JUDGE_PROMPT_VERSION } from "../scoring/judge";
+import { evaluateWithJudge, JUDGE_PROMPT_VERSION, judgeAccountRefusal } from "../scoring/judge";
 import { parseModelSpec } from "../models";
 import { sumDiagnostics, summariseAgent } from "../reporting/summary";
 import { judgeVersionIssues } from "../reporting/judge-versions";
@@ -52,16 +51,6 @@ export function applyJudgement(result: TaskEvalResult, judgeResult: JudgeEvaluat
     const uncapped = result.integrityScore + result.qualityScore;
     result.totalScore = Math.min(uncapped, judgeResult.scoreCap ?? 100);
   }
-}
-
-/**
- * A judge failure that is the judge's account refusing it (a sign-in's usage window, a key's
- * credit), not the answer or the request: every later grade would fail the same way.
- */
-export function judgeAccountRefusal(judgeResult: JudgeEvaluationResult): string | undefined {
-  if (!judgeResult.error) return undefined;
-  const text = judgeResult.error.replace(/^Judge execution error:\s*/, "");
-  return isAccountErrorText(text) ? text : undefined;
 }
 
 export type JudgeStageEvent =

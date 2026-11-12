@@ -63,3 +63,33 @@ describe("the judge's thinking level", () => {
     for (const options of sentOptions()) expect(options).not.toHaveProperty("reasoning");
   });
 });
+
+describe("repeated grades and the judge's account", () => {
+  const refusal = (): void => {
+    const message = { content: [], stopReason: "error", errorMessage: "Codex error: The usage limit has been reached" } as unknown as AssistantMessage;
+    vi.mocked(streamModel).mockReturnValueOnce({ result: async () => message } as ReturnType<typeof streamModel>);
+  };
+
+  it("fails the whole answer when the account refuses one of its votes, instead of scoring it from the rest", async () => {
+    replies(JSON.stringify(valid(input.task)), JSON.stringify(valid(input.task)));
+    refusal();
+    const result = await evaluateWithJudge(input, defaultConfig(), JUDGE, undefined, 3);
+    expect(result.error).toContain("usage limit has been reached");
+    expect(result.totalJudgeScore).toBe(0);
+  });
+
+  it("asks for no further votes once the account has refused", async () => {
+    refusal();
+    const result = await evaluateWithJudge(input, defaultConfig(), JUDGE, undefined, 3);
+    expect(result.error).toContain("usage limit");
+    expect(streamModel).toHaveBeenCalledTimes(1);
+  });
+
+  it("still scores an answer from a majority when a vote fails for a reason of its own", async () => {
+    replies(JSON.stringify(valid(input.task)), "not json", "still not json", JSON.stringify(valid(input.task)));
+    const result = await evaluateWithJudge(input, defaultConfig(), JUDGE, undefined, 3);
+    expect(result.error).toBeUndefined();
+    expect(result.totalJudgeScore).toBe(60);
+  });
+});
+
