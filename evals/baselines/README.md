@@ -6,14 +6,15 @@ each row down by task; how a run is made and promoted is in
 [evals/README.md › Comparing runs](../README.md#comparing-runs). Add a section here when a baseline
 is added, in the same order as the README's table.
 
-These published scores retain judge prompt v9. New runs use v10's bounded evidence windows;
-they require a separate baseline and must not be compared directly with the v9 rows.
+Rows were graded with judge prompt v9 unless their Judge line says prompt v10. New runs use v10's
+bounded evidence windows, and a v10 score is not strictly comparable with a v9 one: the README's
+table marks the v10 rows, and its chart keeps them off the Pareto line.
 
-All rows below are benchmark v2: judge prompt v9 with three grades per answer, policy enforced, offline
+All rows below are benchmark v2: three grades per answer, policy enforced, offline
 dataset, twelve tasks × 3 repeats. The GPT rows except GPT-6.1 Terra and the DeepSeek V4.1 Flash and
 Qwen rows were rescored with `--rescore` from their saved runs when v2 landed, so each agent answer,
-run time and token count is the original run's. The Claude Opus and Sonnet, Grok, Gemini 3.8 Flash and
-4 Argon, GLM and Kimi rows were run on v2 through a custom OpenAI-compatible endpoint, Claude Haiku 5.5
+run time and token count is the original run's. The Claude Opus and Sonnet, Grok, Gemini 3.8 Flash,
+4 Argon and 4 Carbon, GLM and Kimi rows were run on v2 through a custom OpenAI-compatible endpoint, Claude Haiku 5.5
 and Fable 5.1 through Anthropic's API, DeepSeek V4.1 Flash 1017 through DeepSeek's API, GPT-6.1 Terra
 through a ChatGPT sign-in, and Muse Spark Open and Tencent Hy4 through OpenRouter. The commit below is the run's. Benchmark v1 scores are not comparable and are kept only in
 git history.
@@ -57,6 +58,40 @@ stays graded by one rubric:
 A revision of both items, with these two tasks regraded for every row, moved Totals by −0.6 to +1.0.
 That is within run-to-run spread and could not be told apart from judge variation, so it was not
 applied.
+
+## Gemini 4 Carbon avg@3
+
+[`2026-11-12-custom-gemini-4-carbon-openai-codex-gpt-6-astra.json`](2026-11-12-custom-gemini-4-carbon-openai-codex-gpt-6-astra.json)
+
+- **Agent:** `custom-bsxs/gemini-4-carbon`, thinking medium, through a custom OpenAI-compatible
+  endpoint
+- **Judge:** `openai-codex/gpt-6-astra`, thinking medium, prompt v10, three grades per answer
+- **Commit:** `e910c16`
+- **Scores:** total 74.4 · integrity 36.1 · judged 38.5 · completed 100.0% · mean per-task σ 2.85
+- **Critical caps:** 7 of 36 answers missed or contradicted a critical item, 2 lowered by 11.1
+  points (contradicted `time-and-motive` 3; missed `report-delivery` 3, `roc-not-inferred` 1,
+  `total-return` 1)
+- **Diagnostics:** tool argument errors 0 · fallback reports 10 · unverified report figures 367 ·
+  repaired 8
+- **Cost:** $23.81 per run · per million tokens: input $4.00, cache read $0.20, output $20.00 ·
+  Gemini API paid tier, standard price from 2026-12-01, read 2026-11-12. The run was made on
+  2026-11-12 at the earlier price through 2026-11-30 ($2.00, $0.10 and $10.00), at which it
+  cost $11.91 per run
+
+| Task | Evidence | Figures | Contracts | Intent | Financial | Grounding | Clarity | Total (σ) | Capped | Run time | Output tokens |
+| :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| `retail-01-nvda-beat-and-drop` | 12.0 | 11.0 | 16.0 | 15.0 | 16.7 | 7.5 | 5.0 | 83.1 (4.5) | 0 | 459 s | 17,782 |
+| `retail-02-nike-moat-erosion` | 12.0 | 10.7 | 16.0 | 12.5 | 13.3 | 7.5 | 5.0 | 77.1 (7.2) | 0 | 624 s | 23,778 |
+| `retail-03-nuclear-thematic-purity` | 12.0 | 11.3 | 16.0 | 15.0 | 10.0 | 10.0 | 5.0 | 79.3 (3.7) | 0 | 433 s | 15,565 |
+| `retail-04-dividend-yield-trap` | 12.0 | 10.1 | 16.0 | 10.0 | 6.7 | 7.5 | 5.0 | 67.1 (1.3) | 1 (−0.1) | 477 s | 19,583 |
+| `retail-05-intel-value-trap` | 12.0 | 11.5 | 16.0 | 15.0 | 10.0 | 10.0 | 10.0 | 84.5 (3.5) | 0 | 445 s | 19,821 |
+| `retail-06-mstr-proxy-leverage` | 10.9 | 11.5 | 16.0 | 15.0 | 10.0 | 10.0 | 5.0 | 78.5 (3.9) | 0 | 394 s | 12,409 |
+| `retail-09-narrative-factcheck-apple` | 12.0 | 11.7 | 5.3 | 7.5 | 0.0 | 7.5 | 5.0 | 45.4 (2.5) | 1 (−3.6) | 408 s | 19,848 |
+| `retail-10-smci-accounting-red-flag` | 12.0 | 11.6 | 16.0 | 15.0 | 20.0 | 12.5 | 10.0 | 97.1 (3.5) | 0 | 386 s | 19,600 |
+| `retail-11-nike-earnings-review-report` | 12.0 | 11.0 | 0.0 | 7.5 | 10.0 | 7.5 | 5.0 | 53.0 (0.2) | 0 | 484 s | 12,980 |
+| `retail-12-concentration-profile-fit` | 12.0 | 10.9 | 8.0 | 15.0 | 20.0 | 7.5 | 10.0 | 83.4 (0.5) | 0 | 174 s | 7,904 |
+| `retail-13-semis-figure-survival` | 12.0 | 11.7 | 16.0 | 7.5 | 20.0 | 12.5 | 8.3 | 88.1 (3.1) | 0 | 377 s | 27,865 |
+| `retail-14-apple-pre-open-timing` | 12.0 | 10.3 | 16.0 | 7.5 | 10.0 | 0.0 | 0.0 | 55.8 (0.1) | 0 | 404 s | 17,753 |
 
 ## GPT-6.1 Sol avg@3
 

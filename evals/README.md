@@ -281,7 +281,8 @@ the primary ranking metric; timeout/error cells are excluded from conditional qu
 
 ## Comparing runs
 
-The committed baselines are benchmark v2, judge prompt v9 with three grades per answer. A v1 run
+The committed baselines are benchmark v2 with three grades per answer, on judge prompt v9 except the
+rows the README marks as prompt v10. A v1 run
 file stays readable, but v2 refuses to compare it directly: rescore a trace-bearing v1 run first.
 Committed baselines omit traces and therefore cannot be rescored. `--compare` requires the same benchmark and judge-prompt
 versions, task order and repeat count, then reports paired expected-score delta, a one-sided 95% bootstrap lower bound,
