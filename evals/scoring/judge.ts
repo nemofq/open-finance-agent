@@ -1,6 +1,7 @@
 import type { Context } from "@earendil-works/pi-ai";
 import { jsonrepair } from "jsonrepair";
 import { z } from "zod";
+import { isAccountErrorText } from "@/lib/agent/transient-retries";
 import type { AppConfig, ModelRef, ThinkingLevel } from "@/lib/config/schema";
 import type { EvidenceEntry } from "@/lib/evidence/types";
 import { resolveModel } from "@/lib/llm";
@@ -212,6 +213,16 @@ function failed(judgeModel: string, message: string, verdict = message): JudgeEv
  * repair request. Unset or off sends none, which is how every judge ran before the flag, so runs
  * without it stay comparable.
  */
+/**
+ * A judge failure that is the judge's account refusing it (a sign-in's usage window, a key's
+ * credit), not the answer or the request: every later grade would fail the same way.
+ */
+export function judgeAccountRefusal(judgeResult: JudgeEvaluationResult): string | undefined {
+  if (!judgeResult.error) return undefined;
+  const text = judgeResult.error.replace(/^Judge execution error:\s*/, "");
+  return isAccountErrorText(text) ? text : undefined;
+}
+
 export async function evaluateWithJudge(
   input: JudgeInput,
   config: AppConfig,
@@ -274,7 +285,13 @@ export async function evaluateWithJudge(
   };
 
   const evaluations: JudgeEvaluationResult[] = [];
-  for (let attempt = 0; attempt < repeat; attempt++) evaluations.push(await evaluateOnce());
+  for (let attempt = 0; attempt < repeat; attempt++) {
+    const evaluation = await evaluateOnce();
+    // The judge's account refusing a grade (a usage window, spent credit) fails the whole answer:
+    // the votes it did cast must not stand in for the full count, and no later vote can succeed.
+    if (judgeAccountRefusal(evaluation)) return evaluation;
+    evaluations.push(evaluation);
+  }
   const valid = evaluations.filter((evaluation) => !evaluation.error);
   if (valid.length < Math.ceil(repeat / 2)) {
     return evaluations.find((evaluation) => evaluation.error) ?? failed(label, "Judge repeat failed to produce a majority of valid grades");

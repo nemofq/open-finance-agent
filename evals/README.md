@@ -82,8 +82,10 @@ record run whose capture failed, never for a low score.
 | `--observe` | Run the policy rules in observe mode: verdicts are recorded, nothing is blocked. |
 | `--baseline <name>` | Also write the run's summary to `evals/baselines/<name>.json`; see [Comparing runs](#comparing-runs) for when it is refused and how to name it. |
 | `--checkpoint <path>` | Checkpoint written after every task cell. An offline run writes `offline-eval-checkpoint.json` in the `--out` folder unless told otherwise. |
-| `--resume <path>` | Skip the cells a checkpoint of the same run already holds; a cell saved with a harness, infrastructure or judge error runs again. |
-| `--judge-only <path>` | Finish a saved run JSON: judge the results whose judgement is missing or failed, with the run's own judge and judge thinking, so `--judge` and `--judge-thinking` are refused beside it. A run written before results recorded their diagnostics is refused. Takes `--baseline`. |
+| `--resume <path>` | Skip the cells a checkpoint of the same run already holds; a cell saved with a harness or infrastructure error runs again. A cell whose answer is saved but whose judgement is missing or failed is graded again from the checkpoint, without another agent turn. |
+| `--defer-judge` | Run the agents only and save their answers ungraded, for `--judge-only` to grade later; see [Running the agents and the judge separately](#running-the-agents-and-the-judge-separately). `--judge` is still required, and records the judge the answers will be graded with. Refuses `--baseline` and `--compare`, which belong to the stage that finishes the run. |
+| `--judge-only <path>` | Finish a saved run JSON: judge the results whose judgement is missing or failed, with the run's own judge and judge thinking, so `--judge` and `--judge-thinking` are refused beside it. The new run file is saved after every grade, and the stage stops when the judge's account refuses it (a usage limit, exhausted credit), leaving the rest waiting. A run written before results recorded their diagnostics is refused. Takes `--baseline`. |
+| `--judge-limit <n>` | With `--judge-only`: grade at most n answers in this stage, then stop. |
 | `--rescore <path>` | Recompute v2 integrity and semantic scores from a saved run's full traces, write a new file and leave the original untouched. With `--task`, only those tasks are rescored and every other result keeps its grades, which is how a rubric change to one task reaches the committed rows; that needs a v2 run graded at the same `--judge-repeat`. |
 | `--traces <path>` | With `--rescore` on a trace-stripped baseline: the run it came from. Each rescored task takes its traces from the same agent, task and repeat there, and the answers must match. |
 | `--compare <baseline>` | Compare the completed or rescored run with a same-version baseline using matched task/repeat pairs and regression gates. |
@@ -241,6 +243,31 @@ publishing a v10 baseline; stripped baselines cannot supply the missing traces t
 With `--judge-repeat 3`, each item uses repeated votes and a median aggregation. A baseline still
 requires three task repeats and three judge votes per answer; there is no anchor-calibration gate.
 
+### Running the agents and the judge separately
+
+A judge on a sign-in with a usage window may not be able to grade a whole run in one go, and an
+agent's price may be about to change. The two halves can be run apart:
+
+```bash
+# 1. The agents only. Answers and traces are saved; nothing is graded.
+pnpm eval --agent <provider/model> --judge <provider/model> --thinking <level> \
+  --judge-thinking <level> --repeat 3 --judge-repeat 3 --defer-judge
+
+# 2. Grade in stages, each taking the file the last one wrote.
+pnpm eval --judge-only evals/results/run-<timestamp>.json --judge-limit 36
+pnpm eval --judge-only evals/results/run-<timestamp>-<n>.json
+
+# 3. The stage that grades the last answer can promote the run.
+pnpm eval --judge-only evals/results/run-<timestamp>-<n>.json --baseline <name>
+```
+
+The deferred run records the judge, its thinking level and `--judge-repeat`, and every stage grades
+with exactly those, so the result is the same as a run graded inline. A stage never spends an agent
+turn. It writes a new run file, saved after every grade, and prints the command for the next stage
+while answers still wait. It stops on its own when the judge's account refuses a request; the
+refused answer is left as it was. An ungraded answer is unscored, not zero, and a deferred run exits
+with success when that is all that is missing.
+
 ### Result status
 
 `completed` results, and `agent_budget` results that still answered, are judged and scored. An
@@ -254,7 +281,8 @@ the primary ranking metric; timeout/error cells are excluded from conditional qu
 
 ## Comparing runs
 
-The committed baselines are benchmark v2, judge prompt v9 with three grades per answer. A v1 run
+The committed baselines are benchmark v2 with three grades per answer, on judge prompt v9 except the
+rows the README marks as prompt v10. A v1 run
 file stays readable, but v2 refuses to compare it directly: rescore a trace-bearing v1 run first.
 Committed baselines omit traces and therefore cannot be rescored. `--compare` requires the same benchmark and judge-prompt
 versions, task order and repeat count, then reports paired expected-score delta, a one-sided 95% bootstrap lower bound,
@@ -366,7 +394,8 @@ scores, deterministic notes and judge feedback) to `evals/results/`; `--keep` al
 data folder.
 
 - **`judge_error`**: judge the missing results again from the saved agent traces, with the run's
-  own judge: `pnpm eval --judge-only evals/results/run-<timestamp>.json`.
+  own judge: `pnpm eval --judge-only evals/results/run-<timestamp>.json`. `--resume` on the run's
+  checkpoint does the same for those cells while it runs the ones still missing.
 - **`agent_budget`**: the turn reached its model-call limit, or its research rounds stopped finding
   anything new or kept failing. The tool traces in the run file show which.
 - **`agent_timeout`**: the turn reached its deadline, usually a slow endpoint or long reasoning. A

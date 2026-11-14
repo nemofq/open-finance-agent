@@ -305,3 +305,44 @@ describe("judge thinking", () => {
     expect(summary).not.toHaveProperty("judgeThinking");
   });
 });
+
+describe("separating the agents' run from the judging", () => {
+  const run = () => ({ ...options(), agents: [options().agent], tasks: [TASK] });
+
+  it("saves answers ungraded with --defer-judge, and a resume without it grades them without an agent turn", async () => {
+    vi.mocked(evaluateWithJudge).mockResolvedValue(verdict);
+    vi.mocked(runTurn).mockResolvedValue(empty({ status: "complete", finalText: "An answer." }));
+    const checkpointPath = path.join(home, "checkpoint.json");
+
+    const deferred = await runBenchmark({ ...run(), deferJudge: true, checkpointPath });
+    expect(evaluateWithJudge).not.toHaveBeenCalled();
+    expect(deferred.results[0]).toMatchObject({ status: "completed", valid: true });
+    expect(deferred.results[0].judgeResult).toBeUndefined();
+    expect(deferred.results[0].totalScore).toBeUndefined();
+
+    const again = await runBenchmark({ ...run(), deferJudge: true, resumePath: checkpointPath, checkpointPath });
+    expect(runTurn).toHaveBeenCalledTimes(1);
+    expect(again.results[0].totalScore).toBeUndefined();
+
+    const graded = await runBenchmark({ ...run(), resumePath: checkpointPath, checkpointPath });
+    expect(runTurn).toHaveBeenCalledTimes(1);
+    expect(evaluateWithJudge).toHaveBeenCalledTimes(1);
+    expect(graded.results[0]).toMatchObject({ status: "completed", qualityScore: 35 });
+    expect(JSON.parse(readFileSync(checkpointPath, "utf8")).results[0]).toMatchObject({ qualityScore: 35 });
+  });
+
+  it("grades a failed judgement again on resume instead of running the agent again", async () => {
+    vi.mocked(runTurn).mockResolvedValue(empty({ status: "complete", finalText: "An answer." }));
+    vi.mocked(evaluateWithJudge).mockResolvedValueOnce({ ...verdict, error: "Judge execution error: The usage limit has been reached" });
+    const checkpointPath = path.join(home, "checkpoint.json");
+
+    const first = await runBenchmark({ ...run(), checkpointPath });
+    expect(first.results[0]).toMatchObject({ status: "judge_error", valid: false });
+
+    vi.mocked(evaluateWithJudge).mockResolvedValue(verdict);
+    const resumed = await runBenchmark({ ...run(), resumePath: checkpointPath, checkpointPath });
+    expect(runTurn).toHaveBeenCalledTimes(1);
+    expect(resumed.results).toHaveLength(1);
+    expect(resumed.results[0]).toMatchObject({ status: "completed", valid: true, qualityScore: 35 });
+  });
+});

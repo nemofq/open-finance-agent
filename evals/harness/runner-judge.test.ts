@@ -1,5 +1,5 @@
 import { JUDGE_PROMPT_VERSION } from "../scoring/judge";
-import { existsSync, mkdtempSync, rmSync } from "node:fs";
+import { existsSync, mkdtempSync, readdirSync, readFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
@@ -134,6 +134,58 @@ describe("--judge-only", () => {
     expect(judged.length).toBe(before);
     const finished = await judgeOnly({ saved: savedRun(), config: config(), outDir: dir, baselineDir: dir });
     expect(finished.ok && finished.summary.judge).toBe("p/judge");
+  });
+
+  it("grades in stages: a limit or the judge's account stops a stage and leaves the rest as they were", async () => {
+    const { evaluateWithJudge } = await import("../scoring/judge");
+    const run = savedRun();
+    const events: string[] = [];
+    const first = await judgeRun(run, defaultConfig(), JUDGE, { limit: 3, onEvent: (event) => events.push(event.type === "stopped" ? `stopped:${event.reason}:${event.pending}` : event.type) });
+    expect(first.results.filter((result) => result.totalScore === 14)).toHaveLength(3);
+    expect(first.results.filter((result) => result.status === "judge_error")).toHaveLength(5);
+    expect(events.at(-1)).toBe("stopped:limit:5");
+
+    vi.mocked(evaluateWithJudge).mockResolvedValueOnce({ error: "Judge execution error: The usage limit has been reached" } as never);
+    const before = judged.length;
+    const second = await judgeRun(first, defaultConfig(), JUDGE, { onEvent: (event) => events.push(event.type === "stopped" ? `stopped:${event.reason}:${event.pending}` : event.type) });
+    expect(judged.length).toBe(before);
+    expect(events.at(-1)).toBe("stopped:account:5");
+    expect(second.results.filter((result) => result.status === "judge_error" && !result.judgeResult)).toHaveLength(5);
+
+    const third = await judgeRun(second, defaultConfig(), JUDGE);
+    expect(third.results.every((result) => result.totalScore === 14)).toBe(true);
+  });
+
+  it("records a judge failure that is not the account's on the result and carries on", async () => {
+    const { evaluateWithJudge } = await import("../scoring/judge");
+    vi.mocked(evaluateWithJudge).mockResolvedValueOnce({ error: "Judge returned invalid JSON" } as never);
+    const rejudged = await judgeRun(savedRun(), defaultConfig(), JUDGE);
+    expect(rejudged.results[0]).toMatchObject({ status: "judge_error", invalidReason: expect.stringContaining("invalid JSON") });
+    expect(rejudged.results.slice(1).every((result) => result.totalScore === 14)).toBe(true);
+  });
+
+  it("saves the new run file after every grade and reports what still waits", async () => {
+    const seen: number[] = [];
+    let jsonPath = "";
+    const outcome = await judgeOnly({
+      saved: savedRun(), config: config(), outDir: dir, baselineDir: dir, limit: 2,
+      onEvent: (event) => {
+        if (event.type !== "judged") return;
+        jsonPath ||= path.join(dir, readdirSync(dir).find((name) => name.endsWith(".json")) ?? "");
+        seen.push((JSON.parse(readFileSync(jsonPath, "utf8")) as EvalRunSummary).results.filter((result) => result.totalScore !== undefined).length);
+      },
+    });
+    expect(seen).toEqual([1, 2]);
+    expect(outcome).toMatchObject({ ok: true, pending: 6, stopped: expect.stringContaining("--judge-limit") });
+    expect(outcome.ok && outcome.files.jsonPath).toBe(jsonPath);
+  });
+
+  it("keeps the staging flags to the modes they belong to", () => {
+    expect(parseArgs(["--judge-only", "run.json", "--judge-limit", "36"])).toMatchObject({ ok: true, options: { judgeLimit: 36 } });
+    expect(parseArgs(["--agent", "p/a", "--judge", "p/j", "--judge-limit", "36"])).toMatchObject({ ok: false });
+    expect(parseArgs(["--agent", "p/a", "--judge", "p/j", "--defer-judge"])).toMatchObject({ ok: true, options: { deferJudge: true } });
+    expect(parseArgs(["--agent", "p/a", "--judge", "p/j", "--defer-judge", "--baseline", "x"])).toMatchObject({ ok: false });
+    expect(parseArgs(["--judge-only", "run.json", "--defer-judge"])).toMatchObject({ ok: false });
   });
 
   it("promotes the finished run with --baseline", async () => {

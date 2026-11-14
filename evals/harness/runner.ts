@@ -43,7 +43,10 @@ import {
  * folder, never the developer's.
  */
 
-/** Cells a resume runs again: what failed around the model, not the model's own result. */
+/**
+ * Cells a resume runs again: what failed around the model, not the model's own result. A cell whose
+ * answer only lacks its judgement is graded again from the checkpoint instead, without an agent turn.
+ */
 const RETRIED_ON_RESUME: ReadonlySet<TaskResultStatus> = new Set(["harness_error", "infra_error", "judge_error"]);
 
 export type ProgressEvent =
@@ -60,6 +63,11 @@ export interface RunnerOptions {
   judgeThinking?: ThinkingLevel;
   /** Independent rubric-item grades per answer; baseline runs use three. */
   judgeRepeat?: number;
+  /**
+   * Run the agents only (`--defer-judge`): answers are saved ungraded, for `--judge-only` to grade
+   * later, in as many stages as the judge's quota needs.
+   */
+  deferJudge?: boolean;
   tasks: EvalTask[];
   repeat: number;
   fixtureMode: FixtureMode;
@@ -99,6 +107,7 @@ export interface RunTaskOptions {
   judge: ModelRef;
   judgeThinking?: ThinkingLevel;
   judgeRepeat?: number;
+  deferJudge?: boolean;
   repeat: number;
   fixtureMode: FixtureMode;
   captureDir?: string;
@@ -338,7 +347,7 @@ export async function runTask(options: RunTaskOptions): Promise<TaskEvalResult> 
     ...(turnStop ? { stop: turnStop } : {}),
   };
 
-  if (awaitsJudgement(result)) {
+  if (!options.deferJudge && awaitsJudgement(result)) {
     options.onProgress?.({ type: "judge_start", agent: modelRefKey(agent), task });
     applyJudgement(result, await evaluateWithJudge(result, config, judge, options.judgeThinking, options.judgeRepeat));
   }
@@ -386,6 +395,18 @@ export async function runBenchmark(options: RunnerOptions): Promise<EvalRunSumma
         // infrastructure and judge errors are retried on resume because the
         // environment, the provider account or the contract may have been
         // repaired after the checkpoint was written.
+        if (checkpointed && awaitsJudgement(checkpointed)) {
+          // The answer is saved and only its judgement is missing or failed: grade it where it
+          // stands. Running the agent again would pay for, and replace, a valid answer.
+          if (options.deferJudge) continue;
+          index += 1;
+          options.onProgress?.({ type: "task_start", agent: modelRefKey(agent), task, repeat: attempt, index, total });
+          options.onProgress?.({ type: "judge_start", agent: modelRefKey(agent), task });
+          applyJudgement(checkpointed, await evaluateWithJudge(checkpointed, config, judge, judgeThinking, judgeRepeat));
+          options.onProgress?.({ type: "task_end", result: checkpointed });
+          if (options.checkpointPath) writeCheckpoint(options.checkpointPath, { ...identity, results });
+          continue;
+        }
         if (checkpointed && !RETRIED_ON_RESUME.has(checkpointed.status)) continue;
         if (checkpointed) {
           const indexToReplace = results.indexOf(checkpointed);
@@ -402,6 +423,7 @@ export async function runBenchmark(options: RunnerOptions): Promise<EvalRunSumma
           judge,
           judgeThinking,
           judgeRepeat,
+          deferJudge: options.deferJudge,
           repeat: attempt,
           fixtureMode,
           captureDir: options.captureDir,

@@ -41,9 +41,9 @@ const sections = [...read("evals/baselines/README.md").matchAll(/^## (.+?) avg@\
 function baselineScores(name, level) {
   const section = sections.find(([, title, sectionLevel]) => title === name && (!sectionLevel || sectionLevel === level));
   if (!section) throw new Error(`No baselines section for ${name} (${level})`);
-  const { results, agentSummaries: [summary] } = JSON.parse(read(path.join("evals/baselines", section[3])));
+  const { results, judgePromptVersion, agentSummaries: [summary] } = JSON.parse(read(path.join("evals/baselines", section[3])));
   const lost = results.reduce((sum, r) => sum + (r.judgeResult ? Math.max(0, r.integrityScore + r.qualityScore - r.totalScore) : 0), 0);
-  return { total: summary.expectedUserScore, integrity: summary.averageIntegrityScore, judged: summary.averageSemanticScore, capped: lost / results.length };
+  return { total: summary.expectedUserScore, integrity: summary.averageIntegrityScore, judged: summary.averageSemanticScore, capped: lost / results.length, judgeVersion: judgePromptVersion };
 }
 
 const rows = lines.slice(table.start, table.end).map((line) => {
@@ -63,9 +63,18 @@ const money = (cost) => `$${cost.toFixed(2)}`;
 
 const points = rows.map((row) => ({ ...row, x: X(row.cost), y: Y(row.total) }));
 
+// Most rows were graded with one judge prompt version. A row graded with another is marked with a
+// dagger and kept off the Pareto line, because its Total is not strictly comparable with theirs.
+const versionCounts = new Map();
+for (const point of points) versionCounts.set(point.judgeVersion, (versionCounts.get(point.judgeVersion) ?? 0) + 1);
+const mainVersion = [...versionCounts].sort((a, b) => b[1] - a[1])[0][0];
+const otherVersions = [...versionCounts.keys()].filter((version) => version !== mainVersion).sort();
+for (const point of points) point.marked = point.judgeVersion !== mainVersion;
+const versionNote = otherVersions.length ? `† judge prompt v${otherVersions.join(", v")}, not on the Pareto line` : "";
+
 // The Pareto line: cheapest first, each row that scores above every cheaper one.
 const pareto = [];
-for (const point of [...points].sort((a, b) => a.cost - b.cost || b.total - a.total)) {
+for (const point of points.filter((p) => !p.marked).sort((a, b) => a.cost - b.cost || b.total - a.total)) {
   if (pareto.length === 0 || point.total > pareto[pareto.length - 1].total) pareto.push(point);
 }
 for (const point of points) point.onPareto = pareto.includes(point);
@@ -84,7 +93,7 @@ function textWidth(text, size, bold) {
 const NAME_SIZE = 13, VALUE_SIZE = 12, LINE = 16;
 for (const point of points) {
   // Most rows think at medium; a label names the level only where it differs, as the subtitle says.
-  point.title = point.level === "medium" ? point.name : `${point.name} · ${point.level}`;
+  point.title = (point.level === "medium" ? point.name : `${point.name} · ${point.level}`) + (point.marked ? " †" : "");
   point.value = `${point.total.toFixed(1)} · ${money(point.cost)}`;
   point.w = Math.max(textWidth(point.title, NAME_SIZE, true), textWidth(point.value, VALUE_SIZE, false));
   point.h = LINE * 2;
@@ -228,7 +237,7 @@ function render(theme) {
   const halo = `stroke="${t.surface}" stroke-width="4" stroke-linejoin="round" paint-order="stroke"`;
   const num = `style="font-variant-numeric: tabular-nums"`;
   const desc = "Total score out of 100 against the agent's average cost per run in US dollars on a log scale. " +
-    points.map((p) => `${p.name} ${p.level}: ${p.total.toFixed(1)} at ${money(p.cost)}`).join("; ") +
+    points.map((p) => `${p.name} ${p.level}${p.marked ? ` (judge prompt v${p.judgeVersion})` : ""}: ${p.total.toFixed(1)} at ${money(p.cost)}`).join("; ") +
     `. The Pareto line joins ${pareto.map((p) => p.name).join(", ")}.`;
   const out = [];
   out.push(`<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-labelledby="t d">`);
@@ -238,6 +247,7 @@ function render(theme) {
   out.push(`<g font-family="system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">`);
   out.push(`<text x="64" y="30" font-size="17" font-weight="600" fill="${t.ink}">Quality against cost</text>`);
   out.push(`<text x="64" y="52" font-size="13" fill="${t.sub}">Benchmark v2 total (avg@3) against the agent's average cost per run, log scale; thinking medium unless marked</text>`);
+  if (versionNote) out.push(`<text x="${plot.right}" y="30" font-size="12" text-anchor="end" fill="${t.muted}">${esc(versionNote)}</text>`);
   for (let score = SCORE_MIN; score <= SCORE_MAX; score += 10) {
     out.push(`<line x1="${plot.left}" x2="${plot.right}" y1="${n(Y(score))}" y2="${n(Y(score))}" stroke="${score === SCORE_MIN ? t.axis : t.grid}" stroke-width="1"/>`);
     out.push(`<text x="54" y="${n(Y(score) + 4)}" font-size="12" text-anchor="end" fill="${t.muted}" ${num}>${score}</text>`);
@@ -276,7 +286,7 @@ for (const theme of Object.keys(THEMES)) {
 
 // The README image's alt text says what the chart shows, so it follows the same rows.
 const alt = "Scatter of total benchmark score against the agent's average cost per run, log scale: " +
-  [...points].sort((a, b) => b.total - a.total).map((p) => `${p.name} ${p.level} ${p.total.toFixed(1)} at ${money(p.cost)}`).join(", ") +
+  [...points].sort((a, b) => b.total - a.total).map((p) => `${p.name} ${p.level}${p.marked ? ` (judge prompt v${p.judgeVersion})` : ""} ${p.total.toFixed(1)} at ${money(p.cost)}`).join(", ") +
   `; a dotted Pareto line joins ${pareto.map((p) => p.name).join(", ").replace(/, ([^,]+)$/, " and $1")}`;
 // Each Total carries the points critical caps took off it, so the cap shows where the score is read.
 const capMark = (capped) => (capped >= 0.05 ? ` <sub>−${capped.toFixed(1)} capped</sub>` : "");
