@@ -14,7 +14,7 @@ All rows below are benchmark v2: three grades per answer, policy enforced, offli
 dataset, twelve tasks × 3 repeats. The GPT rows except GPT-6.1 Terra and the DeepSeek V4.1 Flash and
 Qwen rows were rescored with `--rescore` from their saved runs when v2 landed, so each agent answer,
 run time and token count is the original run's. The Claude Opus and Sonnet, Grok, Gemini 3.8 Flash,
-4 Argon and 4 Carbon, GLM and Kimi rows were run on v2 through a custom OpenAI-compatible endpoint, Claude Haiku 5.5
+4 Argon, 4 Carbon and 4 Hydrogen, GLM and Kimi rows were run on v2 through a custom OpenAI-compatible endpoint, Claude Haiku 5.5
 and Fable 5.1 through Anthropic's API, DeepSeek V4.1 Flash 1017 through DeepSeek's API, GPT-6.1 Terra
 through a ChatGPT sign-in, and Muse Spark Open and Tencent Hy4 through OpenRouter. The commit below is the run's. Benchmark v1 scores are not comparable and are kept only in
 git history.
@@ -220,6 +220,38 @@ report figures are the most of any row, though integrity stays the highest of an
 | `retail-12-concentration-profile-fit` | 12.0 | 12.0 | 8.0 | 15.0 | 16.7 | 7.5 | 10.0 | 81.2 (4.7) | 0 | 22 s | 1,116 |
 | `retail-13-semis-figure-survival` | 12.0 | 11.9 | 16.0 | 7.5 | 10.0 | 7.5 | 10.0 | 74.9 (0.1) | 0 | 36 s | 2,338 |
 | `retail-14-apple-pre-open-timing` | 12.0 | 12.0 | 16.0 | 7.5 | 20.0 | 7.5 | 10.0 | 85.0 (0.0) | 0 | 42 s | 2,147 |
+
+## Gemini 4 Hydrogen avg@3
+
+[`2026-11-13-custom-gemini-4-hydrogen-openai-codex-gpt-6-astra.json`](2026-11-13-custom-gemini-4-hydrogen-openai-codex-gpt-6-astra.json)
+
+- **Agent:** `custom-bsxs/gemini-4-hydrogen`, thinking medium, through a custom OpenAI-compatible
+  endpoint
+- **Judge:** `openai-codex/gpt-6-astra`, thinking medium, prompt v10, three grades per answer
+- **Commit:** `43295a5`
+- **Scores:** total 69.9 · integrity 31.8 · judged 38.1 · completed 100.0% · mean per-task σ 4.40
+- **Critical caps:** 7 of 36 answers missed or contradicted a critical item, none lowered
+  (contradicted `time-and-motive` 2; missed `total-return` 2, `report-delivery` 2,
+  `roc-not-inferred` 1)
+- **Diagnostics:** tool argument errors 25 · fallback reports 2 · unverified report figures 152 ·
+  repaired 5
+- **Cost:** $6.53 per run · per million tokens: input $1.50, cache read $0.075, output $7.50 ·
+  Gemini API paid tier, 2026-11-12
+
+| Task | Evidence | Figures | Contracts | Intent | Financial | Grounding | Clarity | Total (σ) | Capped | Run time | Output tokens |
+| :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| `retail-01-nvda-beat-and-drop` | 12.0 | 11.7 | 0.0 | 15.0 | 10.0 | 7.5 | 5.0 | 61.2 (0.2) | 0 | 77 s | 8,725 |
+| `retail-02-nike-moat-erosion` | 12.0 | 11.5 | 5.3 | 15.0 | 13.3 | 7.5 | 5.0 | 69.7 (11.9) | 0 | 179 s | 20,830 |
+| `retail-03-nuclear-thematic-purity` | 12.0 | 11.7 | 10.7 | 15.0 | 10.0 | 12.5 | 5.0 | 76.9 (0.1) | 0 | 128 s | 16,101 |
+| `retail-04-dividend-yield-trap` | 12.0 | 10.4 | 0.0 | 7.5 | 10.0 | 7.5 | 5.0 | 52.4 (0.1) | 0 | 122 s | 15,342 |
+| `retail-05-intel-value-trap` | 12.0 | 11.7 | 10.7 | 15.0 | 10.0 | 7.5 | 10.0 | 76.8 (7.9) | 0 | 95 s | 13,326 |
+| `retail-06-mstr-proxy-leverage` | 12.0 | 11.2 | 16.0 | 15.0 | 13.3 | 10.0 | 10.0 | 87.5 (4.1) | 0 | 154 s | 21,565 |
+| `retail-09-narrative-factcheck-apple` | 8.3 | 11.7 | 0.0 | 7.5 | 3.3 | 7.5 | 10.0 | 48.3 (3.9) | 0 | 109 s | 14,757 |
+| `retail-10-smci-accounting-red-flag` | 12.0 | 12.0 | 16.0 | 15.0 | 10.0 | 5.0 | 8.3 | 78.3 (4.7) | 0 | 78 s | 10,934 |
+| `retail-11-nike-earnings-review-report` | 12.0 | 11.1 | 5.3 | 7.5 | 10.0 | 7.5 | 5.0 | 58.4 (7.5) | 0 | 236 s | 29,358 |
+| `retail-12-concentration-profile-fit` | 12.0 | 11.4 | 8.0 | 15.0 | 16.7 | 7.5 | 10.0 | 80.5 (4.6) | 0 | 55 s | 8,246 |
+| `retail-13-semis-figure-survival` | 12.0 | 11.7 | 16.0 | 10.0 | 20.0 | 7.5 | 10.0 | 87.2 (3.4) | 0 | 126 s | 18,341 |
+| `retail-14-apple-pre-open-timing` | 12.0 | 11.6 | 16.0 | 7.5 | 10.0 | 0.0 | 5.0 | 62.1 (4.1) | 0 | 131 s | 18,438 |
 
 ## Claude Fable 5.1 avg@3
 

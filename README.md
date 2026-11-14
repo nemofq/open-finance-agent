@@ -154,7 +154,7 @@ total at 69 or 49.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/images/benchmark-quality-cost-dark.svg" />
-  <img src="docs/images/benchmark-quality-cost-light.svg" alt="Scatter of total benchmark score against the agent's average cost per run, log scale: Gemini 4 Carbon medium (judge prompt v10) 74.4 at $23.81, GPT-6.1 Sol medium 74.1 at $2.13, Gemini 4 Argon medium 73.6 at $21.72, GPT-5.6 Sol medium 71.5 at $4.46, GPT-6.1 Terra medium 70.1 at $0.90, Claude Fable 5.1 medium 68.0 at $20.54, Claude Opus 5.5 medium 67.7 at $6.84, DeepSeek V4.1 Flash 1017 high 67.3 at $0.91, DeepSeek V4.1 Flash high 67.0 at $1.05, Grok 4.7 medium 64.9 at $6.05, Tencent Hy4 high 64.8 at $2.07, Kimi K3 high 63.5 at $13.54, GPT-5.6 Terra medium 63.2 at $2.15, GPT-5.6 Luna medium 62.8 at $0.27, Gemini 3.8 Flash medium 62.5 at $2.95, GLM 5.3 Flash high 61.5 at $0.56, Muse Spark Open medium 60.2 at $2.54, Claude Sonnet 5.5 medium 58.3 at $2.94, Claude Haiku 5.5 medium 58.2 at $0.18, GPT-6 Luna medium 57.7 at $0.07, Qwen 3.8 27B medium 56.6 at $0.84, Qwen 3.8 27B off 50.9 at $0.44; a dotted Pareto line joins GPT-6 Luna, Claude Haiku 5.5, GPT-5.6 Luna, GPT-6.1 Terra and GPT-6.1 Sol" width="100%" />
+  <img src="docs/images/benchmark-quality-cost-light.svg" alt="Scatter of total benchmark score against the agent's average cost per run, log scale: Gemini 4 Carbon medium (judge prompt v10) 74.4 at $23.81, GPT-6.1 Sol medium 74.1 at $2.13, Gemini 4 Argon medium 73.6 at $21.72, GPT-5.6 Sol medium 71.5 at $4.46, GPT-6.1 Terra medium 70.1 at $0.90, Gemini 4 Hydrogen medium (judge prompt v10) 69.9 at $6.53, Claude Fable 5.1 medium 68.0 at $20.54, Claude Opus 5.5 medium 67.7 at $6.84, DeepSeek V4.1 Flash 1017 high 67.3 at $0.91, DeepSeek V4.1 Flash high 67.0 at $1.05, Grok 4.7 medium 64.9 at $6.05, Tencent Hy4 high 64.8 at $2.07, Kimi K3 high 63.5 at $13.54, GPT-5.6 Terra medium 63.2 at $2.15, GPT-5.6 Luna medium 62.8 at $0.27, Gemini 3.8 Flash medium 62.5 at $2.95, GLM 5.3 Flash high 61.5 at $0.56, Muse Spark Open medium 60.2 at $2.54, Claude Sonnet 5.5 medium 58.3 at $2.94, Claude Haiku 5.5 medium 58.2 at $0.18, GPT-6 Luna medium 57.7 at $0.07, Qwen 3.8 27B medium 56.6 at $0.84, Qwen 3.8 27B off 50.9 at $0.44; a dotted Pareto line joins GPT-6 Luna, Claude Haiku 5.5, GPT-5.6 Luna, GPT-6.1 Terra and GPT-6.1 Sol" width="100%" />
 </picture>
 
 | Model (avg@3) | Thinking effort | Judge model | Total (/100) ↑ | Integrity (/40) ↑ | Judged (/60) ↑ | Avg. cost per run ↓ | Avg. run time | Avg. output tokens per run | Avg. tool calls per run |
@@ -164,6 +164,7 @@ total at 69 or 49.
 | Gemini 4 Argon | Medium | GPT-6 Astra, medium | 73.6 <sub>−2.5 capped</sub> | 37.6 | 38.5 | $21.72 | 3,663 s | 309,709 | 592 |
 | GPT-5.6 Sol | Medium | GPT-6 Astra, medium | 71.5 <sub>−0.2 capped</sub> | 32.3 | 39.4 | $4.46 | 1,835 s | 77,376 | 411 |
 | GPT-6.1 Terra | Medium | GPT-6 Astra, medium | 70.1 <sub>−0.2 capped</sub> | 33.0 | 37.2 | $0.90 | 460 s | 23,260 | 184 |
+| Gemini 4 Hydrogen | Medium | GPT-6 Astra, medium, prompt v10 | 69.9 | 31.8 | 38.1 | $6.53 | 1,490 s | 195,964 | 389 |
 | Claude Fable 5.1 | Medium | GPT-6 Astra, medium | 68.0 <sub>−1.8 capped</sub> | 32.0 | 37.8 | $20.54 | 1,540 s | 117,900 | 253 |
 | Claude Opus 5.5 | Medium | GPT-6 Astra, medium | 67.7 <sub>−0.5 capped</sub> | 30.9 | 37.2 | $6.84 | 1,215 s | 82,955 | 151 |
 | DeepSeek V4.1 Flash 1017 | High | GPT-6 Astra, medium | 67.3 <sub>−0.4 capped</sub> | 33.0 | 34.7 | $0.91 | 1,785 s | 361,825 | 389 |
@@ -194,7 +195,7 @@ task's critical rubric item is capped at 49, one that misses it at 69. Every run
 of Qwen 3.8 27B off's 36 and three of Tencent Hy4's 36, which also lowers their Totals. In the chart, the dotted Pareto line joins the rows no
 other row beats on both cost and Total; rows graded with prompt v10 are marked † and left off it. The GPT rows except GPT-6.1 Terra and the DeepSeek V4.1 Flash and Qwen rows were rescored
 from their saved runs when v2 landed, so the agents' answers, run time, tokens and cost are those of the
-original runs; the Claude Opus and Sonnet, Grok, Gemini 3.8 Flash and 4 Argon, GLM and Kimi rows were run on v2, and Gemini 4 Carbon on v2 with judge prompt v10, through a
+original runs; the Claude Opus and Sonnet, Grok, Gemini 3.8 Flash and 4 Argon, GLM and Kimi rows were run on v2, and Gemini 4 Carbon and Hydrogen on v2 with judge prompt v10, through a
 custom OpenAI-compatible endpoint, Claude Haiku 5.5 and Fable 5.1 through
 Anthropic's API, DeepSeek V4.1 Flash 1017 through DeepSeek's API, GPT-6.1 Terra through a ChatGPT
 sign-in, and Muse Spark Open and Tencent Hy4 through a hosted API provider. Tencent Hy4 is the one row
