@@ -118,7 +118,7 @@ move between partial, missed and contradicted on them.
   `life-savings-guardrail` 1)
 - **Diagnostics:** tool argument errors 22 · fallback reports 1 · unverified report figures 102 ·
   repaired 5
-- **Cost:** $0.19 per run · per million tokens: input $0.10, cache write $0.12, cache read $0.01, output $0.50 ·
+- **Cost:** $0.19 per run · per million tokens: input $0.10, cache write $0.125, cache read $0.01, output $0.50 ·
   Anthropic API list price, 2026-11-22; no request exceeded the 100,000-token prompt tier
 
 | Task | Evidence | Figures | Contracts | Intent | Financial | Grounding | Clarity | Total (σ) | Capped | Run time | Output tokens |
