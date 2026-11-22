@@ -105,6 +105,36 @@ move between partial, missed and contradicted on them.
 | `retail-13-semis-figure-survival` | 12.0 | 11.9 | 16.0 | 7.5 | 10.0 | 7.5 | 10.0 | 74.9 (0.1) | 0 | 31 s | 1,367 |
 | `retail-14-apple-pre-open-timing` | 12.0 | 12.0 | 16.0 | 7.5 | 10.0 | 7.5 | 10.0 | 75.0 (0.0) | 0 | 26 s | 1,016 |
 
+## Claude Sonnet 5.5 avg@3
+
+[`2026-11-22-anthropic-claude-sonnet-5-5-openai-codex-gpt-6-2-sol.json`](2026-11-22-anthropic-claude-sonnet-5-5-openai-codex-gpt-6-2-sol.json)
+
+- **Agent:** `anthropic/claude-sonnet-5-5`, thinking medium, through Anthropic's API
+- **Judge:** `openai-codex/gpt-6.2-sol`, thinking medium, three grades per answer
+- **Commit:** `364c949`
+- **Scores:** total 60.0 · integrity 25.7 · judged 34.6 · completed 100.0% · mean per-task σ 4.09
+- **Critical caps:** 4 of 36 answers missed or contradicted a critical item, 1 lowered by 11.4
+  points (contradicted `roc-not-inferred` 2, `commercial-stage` 1; missed `roc-not-inferred` 1)
+- **Diagnostics:** tool argument errors 8 · fallback reports 0 · unverified report figures 79 ·
+  repaired 5
+- **Cost:** $2.39 per run · per million tokens: input $2.00, cache write $2.50, cache read $0.10, output $10.00 ·
+  Anthropic API list price, 2026-11-22
+
+| Task | Evidence | Figures | Contracts | Intent | Financial | Grounding | Clarity | Total (σ) | Capped | Run time | Output tokens |
+| :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| `retail-01-nvda-beat-and-drop` | 9.9 | 12.0 | 0.0 | 7.5 | 10.0 | 7.5 | 8.3 | 55.2 (2.8) | 0 | 37 s | 4,511 |
+| `retail-02-nike-moat-erosion` | 7.5 | 11.5 | 0.0 | 10.0 | 10.0 | 7.5 | 5.0 | 51.4 (4.6) | 0 | 47 s | 5,965 |
+| `retail-03-nuclear-thematic-purity` | 2.4 | 11.9 | 2.7 | 10.0 | 10.0 | 7.5 | 5.0 | 49.4 (10.8) | 0 | 33 s | 4,524 |
+| `retail-04-dividend-yield-trap` | 10.1 | 11.1 | 0.0 | 12.5 | 10.0 | 7.5 | 5.0 | 52.5 (5.6) | 1 (−3.8) | 42 s | 5,316 |
+| `retail-05-intel-value-trap` | 4.3 | 12.0 | 0.0 | 12.5 | 10.0 | 7.5 | 10.0 | 56.3 (2.0) | 0 | 38 s | 4,928 |
+| `retail-06-mstr-proxy-leverage` | 8.8 | 11.1 | 10.7 | 12.5 | 10.0 | 7.5 | 5.0 | 65.5 (6.1) | 0 | 37 s | 5,112 |
+| `retail-09-narrative-factcheck-apple` | 2.1 | 10.9 | 0.0 | 7.5 | 10.0 | 0.0 | 6.7 | 37.2 (3.1) | 0 | 28 s | 3,574 |
+| `retail-10-smci-accounting-red-flag` | 8.0 | 12.0 | 8.0 | 15.0 | 10.0 | 5.0 | 10.0 | 68.0 (7.1) | 0 | 29 s | 3,274 |
+| `retail-11-nike-earnings-review-report` | 12.0 | 10.9 | 16.0 | 7.5 | 10.0 | 7.5 | 5.0 | 68.9 (0.2) | 0 | 45 s | 6,321 |
+| `retail-12-concentration-profile-fit` | 10.1 | 9.9 | 2.7 | 15.0 | 13.3 | 7.5 | 1.7 | 60.2 (6.6) | 0 | 32 s | 4,037 |
+| `retail-13-semis-figure-survival` | 12.0 | 11.9 | 16.0 | 7.5 | 20.0 | 7.5 | 10.0 | 84.9 (0.0) | 0 | 39 s | 5,367 |
+| `retail-14-apple-pre-open-timing` | 12.0 | 11.9 | 16.0 | 7.5 | 10.0 | 7.5 | 5.0 | 69.9 (0.1) | 0 | 48 s | 5,932 |
+
 ## Claude Haiku 5.5 avg@3
 
 [`2026-11-22-anthropic-claude-haiku-5-5-openai-codex-gpt-6-2-sol.json`](2026-11-22-anthropic-claude-haiku-5-5-openai-codex-gpt-6-2-sol.json)
