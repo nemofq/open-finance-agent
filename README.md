@@ -154,13 +154,14 @@ total at 69 or 49.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/images/benchmark-quality-cost-dark.svg" />
-  <img src="docs/images/benchmark-quality-cost-light.svg" alt="Scatter of total benchmark score against the agent's average cost per run, log scale: GPT-6.2 Astra medium 62.8 at $5.88, GPT-6.1 Terra medium 60.4 at $0.55; a dotted Pareto line joins GPT-6.1 Terra and GPT-6.2 Astra" width="100%" />
+  <img src="docs/images/benchmark-quality-cost-light.svg" alt="Scatter of total benchmark score against the agent's average cost per run, log scale: GPT-6.2 Astra medium 62.8 at $5.88, GPT-6.1 Terra medium 60.4 at $0.55, GPT-6 Luna medium 49.6 at $0.04; a dotted Pareto line joins GPT-6 Luna, GPT-6.1 Terra and GPT-6.2 Astra" width="100%" />
 </picture>
 
 | Model (avg@3) | Thinking effort | Judge model | Total (/100) ↑ | Integrity (/40) ↑ | Judged (/60) ↑ | Avg. cost per run ↓ | Avg. run time | Avg. output tokens per run | Avg. tool calls per run |
 | :--- | :--- | :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
 | GPT-6.2 Astra | Medium | GPT-6.2 Sol, medium | 62.8 <sub>−0.5 capped</sub> | 29.1 | 34.2 | $5.88 | 645 s | 17,775 | 153 |
 | GPT-6.1 Terra | Medium | GPT-6.2 Sol, medium | 60.4 <sub>−0.2 capped</sub> | 29.6 | 31.0 | $0.55 | 383 s | 15,776 | 124 |
+| GPT-6 Luna | Medium | GPT-6.2 Sol, medium | 49.6 | 19.8 | 29.7 | $0.04 | 265 s | 10,452 | 74 |
 
 ↑ higher is better, ↓ lower is better. Benchmark version 2, judge prompt v10, three grades per
 answer, policy enforced. `avg@3` is three runs of the twelve tasks. Total is the expected score: the
