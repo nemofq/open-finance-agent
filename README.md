@@ -154,11 +154,12 @@ total at 69 or 49.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/images/benchmark-quality-cost-dark.svg" />
-  <img src="docs/images/benchmark-quality-cost-light.svg" alt="Scatter of total benchmark score against the agent's average cost per run, log scale: GPT-6.2 Astra medium 62.8 at $5.88, GPT-6.1 Terra medium 60.4 at $0.55, Claude Sonnet 5.5 medium 60.0 at $2.39, Claude Haiku 5.5 medium 57.9 at $0.19, GPT-6 Luna medium 49.6 at $0.04; a dotted Pareto line joins GPT-6 Luna, Claude Haiku 5.5, GPT-6.1 Terra and GPT-6.2 Astra" width="100%" />
+  <img src="docs/images/benchmark-quality-cost-light.svg" alt="Scatter of total benchmark score against the agent's average cost per run, log scale: Claude Opus 5.5 medium 68.4 at $7.39, GPT-6.2 Astra medium 62.8 at $5.88, GPT-6.1 Terra medium 60.4 at $0.55, Claude Sonnet 5.5 medium 60.0 at $2.39, Claude Haiku 5.5 medium 57.9 at $0.19, GPT-6 Luna medium 49.6 at $0.04; a dotted Pareto line joins GPT-6 Luna, Claude Haiku 5.5, GPT-6.1 Terra, GPT-6.2 Astra and Claude Opus 5.5" width="100%" />
 </picture>
 
 | Model (avg@3) | Thinking effort | Judge model | Total (/100) ↑ | Integrity (/40) ↑ | Judged (/60) ↑ | Avg. cost per run ↓ | Avg. run time | Avg. output tokens per run | Avg. tool calls per run |
 | :--- | :--- | :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| Claude Opus 5.5 | Medium | GPT-6.2 Sol, medium | 68.4 <sub>−0.3 capped</sub> | 31.7 | 37.1 | $7.39 | 821 s | 83,651 | 160 |
 | GPT-6.2 Astra | Medium | GPT-6.2 Sol, medium | 62.8 <sub>−0.5 capped</sub> | 29.1 | 34.2 | $5.88 | 645 s | 17,775 | 153 |
 | GPT-6.1 Terra | Medium | GPT-6.2 Sol, medium | 60.4 <sub>−0.2 capped</sub> | 29.6 | 31.0 | $0.55 | 383 s | 15,776 | 124 |
 | Claude Sonnet 5.5 | Medium | GPT-6.2 Sol, medium | 60.0 <sub>−0.3 capped</sub> | 25.7 | 34.6 | $2.39 | 455 s | 58,862 | 109 |
