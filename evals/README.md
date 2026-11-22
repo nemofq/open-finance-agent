@@ -235,10 +235,10 @@ misses, plus per-task totals and evidence character counts. It excludes unversio
 files explicitly and counts identical answer/trace records once. This measures candidate evidence
 visibility, not the rate of historical judge errors; a matching value can describe another metric.
 
-Published v9 baselines retain their original scores and version. New runs use v10. A partial
-`--rescore --task` cannot retain grades from an older judge version under a v10 header. Use a
-separate task-only validation run for a small study, or rescore the whole trace-bearing run before
-publishing a v10 baseline; stripped baselines cannot supply the missing traces themselves.
+The committed baselines are all judge prompt v10. A run graded with an older prompt keeps its
+version, and a partial `--rescore --task` cannot retain those grades under a v10 header: use a
+separate task-only validation run for a small study, or rescore the whole trace-bearing run.
+Stripped baselines cannot supply the missing traces themselves.
 
 With `--judge-repeat 3`, each item uses repeated votes and a median aggregation. A baseline still
 requires three task repeats and three judge votes per answer; there is no anchor-calibration gate.
@@ -281,8 +281,8 @@ the primary ranking metric; timeout/error cells are excluded from conditional qu
 
 ## Comparing runs
 
-The committed baselines are benchmark v2 with three grades per answer, on judge prompt v9 except the
-rows the README marks as prompt v10. A v1 run
+The committed baselines are benchmark v2, judge prompt v10, with three grades per answer, all
+judged by the same model. A v1 run
 file stays readable, but v2 refuses to compare it directly: rescore a trace-bearing v1 run first.
 Committed baselines omit traces and therefore cannot be rescored. `--compare` requires the same benchmark and judge-prompt
 versions, task order and repeat count, then reports paired expected-score delta, a one-sided 95% bootstrap lower bound,
