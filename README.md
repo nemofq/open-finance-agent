@@ -154,63 +154,43 @@ total at 69 or 49.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/images/benchmark-quality-cost-dark.svg" />
-  <img src="docs/images/benchmark-quality-cost-light.svg" alt="Scatter of total benchmark score against the agent's average cost per run, log scale: Gemini 4 Carbon medium (judge prompt v10) 74.4 at $23.81, GPT-6.1 Sol medium 74.1 at $2.13, Gemini 4 Argon medium 73.6 at $21.72, GPT-5.6 Sol medium 71.5 at $4.46, GPT-6.1 Terra medium 70.1 at $0.90, Gemini 4 Hydrogen medium (judge prompt v10) 69.9 at $6.53, Claude Fable 5.1 medium 68.0 at $20.54, Claude Opus 5.5 medium 67.7 at $6.84, DeepSeek V4.1 Flash 1017 high 67.3 at $0.91, DeepSeek V4.1 Flash high 67.0 at $1.05, Grok 4.7 medium 64.9 at $6.05, Tencent Hy4 high 64.8 at $2.07, Kimi K3 high 63.5 at $13.54, GPT-5.6 Terra medium 63.2 at $2.15, GPT-5.6 Luna medium 62.8 at $0.27, Gemini 3.8 Flash medium 62.5 at $2.95, GLM 5.3 Flash high 61.5 at $0.56, Muse Spark Open medium 60.2 at $2.54, Claude Sonnet 5.5 medium 58.3 at $2.94, Claude Haiku 5.5 medium 58.2 at $0.18, GPT-6 Luna medium 57.7 at $0.07, Qwen 3.8 27B medium 56.6 at $0.84, Qwen 3.8 27B off 50.9 at $0.44; a dotted Pareto line joins GPT-6 Luna, Claude Haiku 5.5, GPT-5.6 Luna, GPT-6.1 Terra and GPT-6.1 Sol" width="100%" />
+  <img src="docs/images/benchmark-quality-cost-light.svg" alt="Scatter of total benchmark score against the agent's average cost per run, log scale: Gemini 4 Neon medium 75.1 at $11.37, Claude Fable 5.2 medium 71.4 at $22.37, DeepSeek V4.1 Flash 1017 high 71.1 at $1.21, Gemini 4 Hydrogen medium 69.2 at $6.74, Claude Opus 5.5 medium 68.4 at $7.39, Tencent Hy4 Flash on 67.6 at $0.28, GPT-6.2 Astra medium 62.8 at $5.88, GPT-6.1 Terra medium 60.4 at $0.55, Claude Sonnet 5.5 medium 60.0 at $2.39, Inkling 2 Small medium 59.9 at $0.45, Claude Haiku 5.5 medium 57.9 at $0.19, GPT-6 Luna medium 49.6 at $0.04; a dotted Pareto line joins GPT-6 Luna, Claude Haiku 5.5, Tencent Hy4 Flash, DeepSeek V4.1 Flash 1017 and Gemini 4 Neon" width="100%" />
 </picture>
 
 | Model (avg@3) | Thinking effort | Judge model | Total (/100) ↑ | Integrity (/40) ↑ | Judged (/60) ↑ | Avg. cost per run ↓ | Avg. run time | Avg. output tokens per run | Avg. tool calls per run |
 | :--- | :--- | :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| Gemini 4 Carbon | Medium | GPT-6 Astra, medium, prompt v10 | 74.4 <sub>−0.3 capped</sub> | 36.1 | 38.5 | $23.81 | 5,064 s | 214,887 | 963 |
-| GPT-6.1 Sol | Medium | GPT-6 Astra, medium | 74.1 | 34.5 | 39.6 | $2.13 | 1,696 s | 37,347 | 224 |
-| Gemini 4 Argon | Medium | GPT-6 Astra, medium | 73.6 <sub>−2.5 capped</sub> | 37.6 | 38.5 | $21.72 | 3,663 s | 309,709 | 592 |
-| GPT-5.6 Sol | Medium | GPT-6 Astra, medium | 71.5 <sub>−0.2 capped</sub> | 32.3 | 39.4 | $4.46 | 1,835 s | 77,376 | 411 |
-| GPT-6.1 Terra | Medium | GPT-6 Astra, medium | 70.1 <sub>−0.2 capped</sub> | 33.0 | 37.2 | $0.90 | 460 s | 23,260 | 184 |
-| Gemini 4 Hydrogen | Medium | GPT-6 Astra, medium, prompt v10 | 69.9 | 31.8 | 38.1 | $6.53 | 1,490 s | 195,964 | 389 |
-| Claude Fable 5.1 | Medium | GPT-6 Astra, medium | 68.0 <sub>−1.8 capped</sub> | 32.0 | 37.8 | $20.54 | 1,540 s | 117,900 | 253 |
-| Claude Opus 5.5 | Medium | GPT-6 Astra, medium | 67.7 <sub>−0.5 capped</sub> | 30.9 | 37.2 | $6.84 | 1,215 s | 82,955 | 151 |
-| DeepSeek V4.1 Flash 1017 | High | GPT-6 Astra, medium | 67.3 <sub>−0.4 capped</sub> | 33.0 | 34.7 | $0.91 | 1,785 s | 361,825 | 389 |
-| DeepSeek V4.1 Flash | High | GPT-6 Astra, medium | 67.0 <sub>−2.3 capped</sub> | 33.3 | 36.0 | $1.05 | 2,119 s | 453,144 | 452 |
-| Grok 4.7 | Medium | GPT-6 Astra, medium | 64.9 <sub>−0.2 capped</sub> | 29.6 | 35.5 | $6.05 | 2,130 s | 128,746 | 496 |
-| Tencent Hy4 | High | GPT-6 Astra, medium | 64.8 | 35.2 | 35.5 | $2.07 | 5,396 s | 560,280 | 655 |
-| Kimi K3 | High | GPT-6 Astra, medium | 63.5 <sub>−0.2 capped</sub> | 29.0 | 34.7 | $13.54 | 3,625 s | 128,375 | 278 |
-| GPT-5.6 Terra | Medium | GPT-6 Astra, medium | 63.2 <sub>−0.2 capped</sub> | 29.2 | 34.2 | $2.15 | 974 s | 42,264 | 241 |
-| GPT-5.6 Luna | Medium | GPT-6 Astra, medium | 62.8 | 27.3 | 35.5 | $0.27 | 1,368 s | 48,973 | 278 |
-| Gemini 3.8 Flash | Medium | GPT-6 Astra, medium | 62.5 <sub>−1.2 capped</sub> | 29.4 | 34.3 | $2.95 | 1,889 s | 157,249 | 344 |
-| GLM 5.3 Flash | High | GPT-6 Astra, medium | 61.5 <sub>−0.9 capped</sub> | 27.1 | 35.3 | $0.56 | 4,168 s | 238,929 | 313 |
-| Muse Spark Open | Medium | GPT-6 Astra, medium | 60.2 <sub>−1.9 capped</sub> | 26.7 | 35.3 | $2.54 | 1,704 s | 93,589 | 222 |
-| Claude Sonnet 5.5 | Medium | GPT-6 Astra, medium | 58.3 <sub>−0.2 capped</sub> | 25.2 | 33.4 | $2.94 | 573 s | 62,227 | 113 |
-| Claude Haiku 5.5 | Medium | GPT-6 Astra, medium | 58.2 <sub>−1.3 capped</sub> | 28.0 | 31.6 | $0.18 | 682 s | 132,425 | 172 |
-| GPT-6 Luna | Medium | GPT-6 Astra, medium | 57.7 <sub>−0.6 capped</sub> | 25.3 | 33.0 | $0.07 | 554 s | 20,268 | 149 |
-| Qwen 3.8 27B | Medium | GPT-6 Astra, medium | 56.6 <sub>−1.7 capped</sub> | 27.3 | 31.0 | $0.84 | 1,685 s | 239,026 | 202 |
-| Qwen 3.8 27B | Off | GPT-6 Astra, medium | 50.9 <sub>−0.4 capped</sub> | 25.6 | 28.8 | $0.44 | 835 s | 100,714 | 216 |
+| Gemini 4 Neon | Medium | GPT-6.2 Sol, medium | 75.1 | 35.6 | 39.5 | $11.37 | 2,399 s | 164,231 | 435 |
+| Claude Fable 5.2 | Medium | GPT-6.2 Sol, medium | 71.4 <sub>−1.1 capped</sub> | 33.3 | 39.3 | $22.37 | 1,163 s | 121,474 | 230 |
+| DeepSeek V4.1 Flash 1017 | High | GPT-6.2 Sol, medium | 71.1 <sub>−1.2 capped</sub> | 34.2 | 38.1 | $1.21 | 1,870 s | 327,566 | 380 |
+| Gemini 4 Hydrogen | Medium | GPT-6.2 Sol, medium | 69.2 <sub>−0.4 capped</sub> | 32.0 | 37.6 | $6.74 | 1,261 s | 201,689 | 460 |
+| Claude Opus 5.5 | Medium | GPT-6.2 Sol, medium | 68.4 <sub>−0.3 capped</sub> | 31.7 | 37.1 | $7.39 | 821 s | 83,651 | 160 |
+| Tencent Hy4 Flash | On | GPT-6.2 Sol, medium | 67.6 <sub>−1.6 capped</sub> | 34.8 | 34.4 | $0.28 | 1,967 s | 256,758 | 478 |
+| GPT-6.2 Astra | Medium | GPT-6.2 Sol, medium | 62.8 <sub>−0.5 capped</sub> | 29.1 | 34.2 | $5.88 | 645 s | 17,775 | 153 |
+| GPT-6.1 Terra | Medium | GPT-6.2 Sol, medium | 60.4 <sub>−0.2 capped</sub> | 29.6 | 31.0 | $0.55 | 383 s | 15,776 | 124 |
+| Claude Sonnet 5.5 | Medium | GPT-6.2 Sol, medium | 60.0 <sub>−0.3 capped</sub> | 25.7 | 34.6 | $2.39 | 455 s | 58,862 | 109 |
+| Inkling 2 Small | Medium | GPT-6.2 Sol, medium | 59.9 | 25.4 | 36.3 | $0.45 | 408 s | 68,769 | 185 |
+| Claude Haiku 5.5 | Medium | GPT-6.2 Sol, medium | 57.9 <sub>−0.1 capped</sub> | 26.8 | 31.3 | $0.19 | 577 s | 118,401 | 148 |
+| GPT-6 Luna | Medium | GPT-6.2 Sol, medium | 49.6 | 19.8 | 29.7 | $0.04 | 265 s | 10,452 | 74 |
 
-Rows are graded with judge prompt v9 unless their Judge model column says prompt v10. New evaluations use
-[v10 evidence windows](evals/README.md#semantic-quality-60-points), and scores across the two judge
-versions are not strictly comparable: read a v10 row's place among the v9 rows as indicative only.
-
-↑ higher is better, ↓ lower is better. Benchmark version 2, three grades per
+↑ higher is better, ↓ lower is better. Benchmark version 2, judge prompt v10, three grades per
 answer, policy enforced. `avg@3` is three runs of the twelve tasks. Total is the expected score: the
 mean over tasks with a failed run counted as zero; Integrity and Judged average the completed
 answers only. "−x capped" is what critical caps took off a Total: an answer that contradicts a
-task's critical rubric item is capped at 49, one that misses it at 69. Every run completed except two
-of Qwen 3.8 27B off's 36 and three of Tencent Hy4's 36, which also lowers their Totals. In the chart, the dotted Pareto line joins the rows no
-other row beats on both cost and Total; rows graded with prompt v10 are marked † and left off it. The GPT rows except GPT-6.1 Terra and the DeepSeek V4.1 Flash and Qwen rows were rescored
-from their saved runs when v2 landed, so the agents' answers, run time, tokens and cost are those of the
-original runs; the Claude Opus and Sonnet, Grok, Gemini 3.8 Flash and 4 Argon, GLM and Kimi rows were run on v2, and Gemini 4 Carbon and Hydrogen on v2 with judge prompt v10, through a
-custom OpenAI-compatible endpoint, Claude Haiku 5.5 and Fable 5.1 through
-Anthropic's API, DeepSeek V4.1 Flash 1017 through DeepSeek's API, GPT-6.1 Terra through a ChatGPT
-sign-in, and Muse Spark Open and Tencent Hy4 through a hosted API provider. Tencent Hy4 is the one row
-run after a fix to the unsourced-figure follow-up (#29), so its comparison with the others is not
-strict. v1 scores are not comparable. Run time counts the model's turns, not judging. Cost is the agent's, not the judge's,
-from the tokens reported, at the provider's list prices on 2026-10-01 or, for rows added later, each
-model maker's official API price on the day the row was added. GPT-5.6 Sol's uses OpenAI's
-promotional price, offered through at least 2026-11-21, and Gemini 3.8 Flash's Google's introductory
-price, which doubles on 2027-01-01. Gemini 4 Argon's and Carbon's use Google's standard price, which applies
-from 2026-12-01; the runs themselves were made at the earlier, lower price, half of it. Tencent Hy4's uses the launch discount Tencent offers through OpenRouter, half its usual
-rate, with no published end date. Meta publishes no hosted price for the open-weight Muse Spark Open, so its row uses the
-price of the provider it ran through. Each row is a committed baseline, with its per-task scores and
-the prices used in [evals/baselines/README.md](evals/baselines/README.md), and the tasks, the
-scoring, how cost is calculated and how to reproduce a run are in
-[evals/README.md](evals/README.md).
+task's critical rubric item is capped at 49, one that misses it at 69. In the chart, the dotted
+Pareto line joins the rows no other row beats on both cost and Total.
+
+Every row was run on the same release of the app and its model library, with no model-specific
+handling, and judged by the same model, so rows are directly comparable. Agents think at medium
+unless the model has no medium level: DeepSeek V4.1 Flash 1017 ran at High, and Tencent Hy4 Flash,
+which has no levels, with thinking on. Every run completed except one of Inkling 2 Small's 36,
+which ended without an answer and counts as zero in its Total.
+
+Cost is the agent's average per run (judging excluded) at each maker's standard list price on the
+day the row was added, not any time-limited promotional price; run time counts the model's turns
+only. Results published before 2026-11-21 used earlier code and another judge and are kept only in
+git history. Per-task scores and the prices used are in
+[evals/baselines/README.md](evals/baselines/README.md); the tasks, scoring and how to reproduce a
+run are in [evals/README.md](evals/README.md).
 
 ## Features
 

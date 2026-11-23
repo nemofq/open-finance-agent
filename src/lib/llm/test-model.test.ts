@@ -61,7 +61,8 @@ describe("testModel", () => {
     // A model with no declared `thinking` gets plain OpenAI Chat Completions, whatever it is called.
     expect(body).toMatchObject({ model: "qwen-27b", max_completion_tokens: 16384, reasoning_effort: "high" });
     expect(body).not.toHaveProperty("chat_template_kwargs");
-    expect(body.messages[0]).toMatchObject({ role: "developer" });
+    // pi keeps the developer role for OpenAI's own API; every other host gets the system role it is sure to accept.
+    expect(body.messages[0]).toMatchObject({ role: "system" });
     expect(body.tools).toEqual([expect.objectContaining({ function: expect.objectContaining({ name: "ping" }) })]);
   });
 

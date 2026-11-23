@@ -38,11 +38,17 @@ const field = (value: unknown, key: string): unknown => (value && typeof value =
 /**
  * How a built request encodes Off, read off its fields: an effort, a Gemini level, a switch, or nothing.
  * Where Anthropic manages the effort, the last message's marker sets it; the top-level one stays "low".
+ * Where Codex changes it mid-conversation, the last `configuration_update` item sets it; the top-level
+ * one stays "medium".
  */
 function offIn(request: Record<string, unknown>): string {
-  const marker = Array.isArray(request.messages)
+  const anthropicMarker = Array.isArray(request.messages)
     ? field(field(request.messages.findLast((message) => field(message, "output_config")), "output_config"), "effort")
     : undefined;
+  const codexUpdate = Array.isArray(request.input)
+    ? request.input.findLast((item) => field(item, "type") === "configuration_update")
+    : undefined;
+  const marker = anthropicMarker ?? field(field(codexUpdate, "reasoning"), "effort");
   const effort = marker ?? field(request.reasoning, "effort") ?? request.reasoning_effort ?? request.reasoningEffort ??
     field(request.output_config, "effort") ?? (typeof request.thinking === "string" ? request.thinking : undefined);
   if (typeof effort === "string") return `"${effort}"`;

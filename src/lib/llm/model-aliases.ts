@@ -94,7 +94,6 @@ export const modelAliases: readonly ModelAlias[] = [
   // arcee-ai/trinity-large-thinking, openai/gpt-3.5-turbo, gpt-4-turbo, gpt-4.1-nano-batch,
   // gpt-4.1-nano-fast and o4-mini-fast, poolside/laguna-s-2.1-free, and
   // spacexai/grok-4.1-fast-non-reasoning and grok-4.1-fast-reasoning.
-  { type: "huggingface", from: "zai-org/GLM-4.5", name: "GLM-4.5", pricing: { input: 0.6, output: 2.2 }, to: "zai-org/GLM-4.7" },
   { type: "mistral", from: "devstral-medium-2507", name: "Devstral Medium", pricing: { input: 0.4, output: 2 }, to: "devstral-2512" },
   { type: "mistral", from: "devstral-small-2505", name: "Devstral Small 2505", pricing: { input: 0.1, output: 0.3 }, to: "labs-devstral-small-2512" },
   { type: "mistral", from: "devstral-small-2507", name: "Devstral Small", pricing: { input: 0.1, output: 0.3 }, to: "labs-devstral-small-2512" },
@@ -109,6 +108,27 @@ export const modelAliases: readonly ModelAlias[] = [
   { type: "vercel-ai-gateway", from: "meituan/longcat-2.5-preview", name: "LongCat 2.5 Preview", pricing: { input: 0.3, output: 1.2 }, to: "meituan/longcat-2.5" },
   { type: "vercel-ai-gateway", from: "xiaomi/mimo-v2.5", name: "MiMo M2.5", pricing: { input: 0.119, output: 0.238 }, to: "xiaomi/mimo-v2.6-flash" },
   { type: "vercel-ai-gateway", from: "xiaomi/mimo-v2.5-pro", name: "MiMo V2.5 Pro", pricing: { input: 0.3045, output: 0.609 }, to: "xiaomi/mimo-v2.6-pro" },
+  // pi-ai 1.5.2 → 1.6.0. huggingface zai-org/GLM-4.5 is listed again, so its 1.5.0 alias is gone.
+  // Retired without a successor: nvidia deepseek-ai/deepseek-v4.1-flash, google/diffusiongemma-26b-a4b-it,
+  // meta/llama-3.2-90b-vision-instruct, mistralai/mistral-7b-instruct-v0.3, moonshotai/kimi-k2.6,
+  // nvidia/llama-3.1-nemotron-70b-instruct, nvidia/llama-3.1-nemotron-ultra-253b-v1 and
+  // openai/gpt-oss-20b (no model of those families is left there); opencode gemini-3.1-pro (no Pro is
+  // left; Gemini 4 is a different line), glm-5.3-flash-free, inkling-2-small-free and
+  // minimax-m3.1-flash-free; qwen-token-plan and qwen-token-plan-cn deepseek-v3.2; and
+  // vercel-ai-gateway alibaba/qwen-3-235b, qwen3-coder and qwen3-next-80b-a3b-thinking,
+  // bytedance/seed-1.6 and seed-1.8 (Seed 2.1 Turbo is a different tier), inception/mercury-coder-small,
+  // minimax/minimax-m2.1-lightning, minimax-m2.5-highspeed and minimax-m2.7-highspeed (no speed tier
+  // is left), nvidia/nemotron-3-nano-30b-a3b, poolside/laguna-s-2.1 and spacexai/grok-build-0.1.
+  { type: "opencode", from: "gemini-3-flash", name: "Gemini 3 Flash", pricing: { input: 0.5, output: 3 }, to: "gemini-3.8-flash" },
+  { type: "opencode", from: "glm-5", name: "GLM-5", pricing: { input: 1, output: 3.2 }, to: "glm-5.3" },
+  { type: "opencode", from: "glm-5.1", name: "GLM-5.1", pricing: { input: 1.4, output: 4.4 }, to: "glm-5.3" },
+  { type: "opencode", from: "glm-5.2", name: "GLM-5.2", pricing: { input: 1.4, output: 4.4 }, to: "glm-5.3" },
+  { type: "opencode-go", from: "glm-5.2", name: "GLM-5.2", pricing: { input: 1.4, output: 4.4 }, to: "glm-5.3" },
+  { type: "qwen-token-plan", from: "deepseek-v4-flash", name: "DeepSeek V4 Flash", pricing: { input: 0, output: 0 }, to: "deepseek-v4.1-flash" },
+  { type: "qwen-token-plan-cn", from: "deepseek-v4-flash", name: "DeepSeek V4 Flash", pricing: { input: 0, output: 0 }, to: "deepseek-v4.1-flash" },
+  { type: "vercel-ai-gateway", from: "inception/mercury-2", name: "Mercury 2", pricing: { input: 0.25, output: 0.75 }, to: "inception/mercury-3" },
+  { type: "vercel-ai-gateway", from: "inception/mercury-2.5", name: "Mercury 2.5", pricing: { input: 0.04, output: 0.15 }, to: "inception/mercury-3" },
+  { type: "vercel-ai-gateway", from: "minimax/minimax-m2", name: "MiniMax M2", pricing: { input: 0.3, output: 1.2 }, to: "minimax/minimax-m3" },
 ];
 
 export function modelAlias(type: LlmProviderType, id: string): ModelAlias | undefined {
