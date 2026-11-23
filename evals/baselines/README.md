@@ -30,8 +30,9 @@ Each per-task value is over the task's three runs, from the baseline's `results`
 - **Output tokens**: `metrics.tokens.output`, as the provider reports it. Some providers count
   thinking in it (Tencent Hy4 Flash does) and some do not, so figures are not comparable across model makers.
 
-Each section's **Cost** is the agent's average cost per run at the list prices it gives, worked
-out as in [evals/README.md › Reproducing the README table](../README.md#reproducing-the-readme-table).
+Each section's **Cost** is the agent's average cost per run at the maker's standard list price, not
+any time-limited promotional price, worked out as in [evals/README.md › Reproducing the README
+table](../README.md#reproducing-the-readme-table).
 
 **Known issues.** An audit of the three critical items that cap most often (2026-10-17) found the
 judge applying them as written, with two flaws in the items themselves, left in place so every row
@@ -211,8 +212,8 @@ move between partial, missed and contradicted on them.
   `life-savings-guardrail` 1)
 - **Diagnostics:** tool argument errors 30 · fallback reports 0 · unverified report figures 135 ·
   repaired 12
-- **Cost:** $0.14 per run · per million tokens: input $0.035, cached input $0.002, output $0.141 ·
-  Tencent's price on 2026-11-22, which includes a 50% launch discount with no published end date
+- **Cost:** $0.28 per run · per million tokens: input $0.07, cached input $0.003, output $0.281 ·
+  Tencent's standard price, 2026-11-22
 
 | Task | Evidence | Figures | Contracts | Intent | Financial | Grounding | Clarity | Total (σ) | Capped | Run time | Output tokens |
 | :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
