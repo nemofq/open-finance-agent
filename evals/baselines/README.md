@@ -49,8 +49,8 @@ move between partial, missed and contradicted on them.
 
 [`2026-11-23-custom-gemini-4-neon-openai-codex-gpt-6-2-sol.json`](2026-11-23-custom-gemini-4-neon-openai-codex-gpt-6-2-sol.json)
 
-- **Agent:** `custom-bsxs/gemini-4-neon`, thinking medium, through a custom OpenAI-compatible endpoint
-- **Judge:** `openai-codex/gpt-6.2-sol`, thinking medium, three grades per answer
+- **Agent:** `gemini-4-neon`, thinking medium
+- **Judge:** `gpt-6.2-sol`, thinking medium, three grades per answer
 - **Commit:** `092cf23`
 - **Scores:** total 75.1 · integrity 35.6 · judged 39.5 · completed 100.0% · mean per-task σ 4.28
 - **Critical caps:** 2 of 36 answers missed or contradicted a critical item, none lowered (missed
@@ -79,8 +79,8 @@ move between partial, missed and contradicted on them.
 
 [`2026-11-22-anthropic-claude-fable-5-2-openai-codex-gpt-6-2-sol.json`](2026-11-22-anthropic-claude-fable-5-2-openai-codex-gpt-6-2-sol.json)
 
-- **Agent:** `anthropic/claude-fable-5-2`, thinking medium, through Anthropic's API
-- **Judge:** `openai-codex/gpt-6.2-sol`, thinking medium, three grades per answer
+- **Agent:** `claude-fable-5-2`, thinking medium
+- **Judge:** `gpt-6.2-sol`, thinking medium, three grades per answer
 - **Commit:** `4efd734`
 - **Scores:** total 71.4 · integrity 33.3 · judged 39.3 · completed 100.0% · mean per-task σ 3.48
 - **Critical caps:** 4 of 36 answers missed or contradicted a critical item, 3 lowered by 40.2
@@ -109,8 +109,9 @@ move between partial, missed and contradicted on them.
 
 [`2026-11-23-deepseek-deepseek-flash-openai-codex-gpt-6-2-sol.json`](2026-11-23-deepseek-deepseek-flash-openai-codex-gpt-6-2-sol.json)
 
-- **Agent:** `deepseek/deepseek-flash`, thinking high, through DeepSeek's API (`deepseek-flash`, served by DeepSeek-V4.1-Flash-1017). The model takes low, high or max, not medium
-- **Judge:** `openai-codex/gpt-6.2-sol`, thinking medium, three grades per answer
+- **Agent:** `deepseek-flash` (DeepSeek-V4.1-Flash-1017), thinking high; the model takes low, high or
+  max, not medium
+- **Judge:** `gpt-6.2-sol`, thinking medium, three grades per answer
 - **Commit:** `2cd3fff`
 - **Scores:** total 71.1 · integrity 34.2 · judged 38.1 · completed 100.0% · mean per-task σ 3.68
 - **Critical caps:** 4 of 36 answers missed or contradicted a critical item, 4 lowered by 43.4
@@ -139,8 +140,8 @@ move between partial, missed and contradicted on them.
 
 [`2026-11-23-openrouter-google-gemini-4-hydrogen-openai-codex-gpt-6-2-sol.json`](2026-11-23-openrouter-google-gemini-4-hydrogen-openai-codex-gpt-6-2-sol.json)
 
-- **Agent:** `openrouter/google/gemini-4-hydrogen`, thinking medium, through OpenRouter, served by Google AI Studio on its Flex tier
-- **Judge:** `openai-codex/gpt-6.2-sol`, thinking medium, three grades per answer
+- **Agent:** `gemini-4-hydrogen`, thinking medium
+- **Judge:** `gpt-6.2-sol`, thinking medium, three grades per answer
 - **Commit:** `2a2affa`
 - **Scores:** total 69.2 · integrity 32.0 · judged 37.6 · completed 100.0% · mean per-task σ 5.52
 - **Critical caps:** 6 of 36 answers missed or contradicted a critical item, 2 lowered by 13.9
@@ -149,8 +150,7 @@ move between partial, missed and contradicted on them.
 - **Diagnostics:** tool argument errors 0 · fallback reports 0 · unverified report figures 208 ·
   repaired 6
 - **Cost:** $6.74 per run · per million tokens: input $1.50, cached input $0.075, output $7.50 ·
-  Gemini API paid tier, Google's standard list price, 2026-11-23. The run was served on Google's
-  Flex tier, billed at half ($0.75, $0.0375 and $3.75), $3.37 per run
+  Gemini API paid tier, Google's standard list price, 2026-11-23
 
 | Task | Evidence | Figures | Contracts | Intent | Financial | Grounding | Clarity | Total (σ) | Capped | Run time | Output tokens |
 | :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
@@ -171,8 +171,8 @@ move between partial, missed and contradicted on them.
 
 [`2026-11-22-anthropic-claude-opus-5-5-openai-codex-gpt-6-2-sol.json`](2026-11-22-anthropic-claude-opus-5-5-openai-codex-gpt-6-2-sol.json)
 
-- **Agent:** `anthropic/claude-opus-5-5`, thinking medium, through Anthropic's API
-- **Judge:** `openai-codex/gpt-6.2-sol`, thinking medium, three grades per answer
+- **Agent:** `claude-opus-5-5`, thinking medium
+- **Judge:** `gpt-6.2-sol`, thinking medium, three grades per answer
 - **Commit:** `eb049ce`
 - **Scores:** total 68.4 · integrity 31.7 · judged 37.1 · completed 100.0% · mean per-task σ 4.74
 - **Critical caps:** 3 of 36 answers missed or contradicted a critical item, 1 lowered by 11.4
@@ -201,9 +201,9 @@ move between partial, missed and contradicted on them.
 
 [`2026-11-22-openrouter-tencent-hy4-flash-openai-codex-gpt-6-2-sol.json`](2026-11-22-openrouter-tencent-hy4-flash-openai-codex-gpt-6-2-sol.json)
 
-- **Agent:** `openrouter/tencent/hy4-flash`, thinking on, through OpenRouter, served by Tencent. The model
-  has no effort levels, only thinking on or off; it ran with thinking on, its default
-- **Judge:** `openai-codex/gpt-6.2-sol`, thinking medium, three grades per answer
+- **Agent:** `hy4-flash`, thinking on; the model has no effort levels, only thinking on or off, and
+  ran with thinking on, its default
+- **Judge:** `gpt-6.2-sol`, thinking medium, three grades per answer
 - **Commit:** `9aace60`
 - **Scores:** total 67.6 · integrity 34.8 · judged 34.4 · completed 100.0% · mean per-task σ 6.86
 - **Critical caps:** 6 of 36 answers missed or contradicted a critical item, 5 lowered by 56.7
@@ -212,7 +212,7 @@ move between partial, missed and contradicted on them.
 - **Diagnostics:** tool argument errors 30 · fallback reports 0 · unverified report figures 135 ·
   repaired 12
 - **Cost:** $0.14 per run · per million tokens: input $0.035, cached input $0.002, output $0.141 ·
-  Tencent's price through OpenRouter on 2026-11-22, which includes a 50% launch discount with no published end date
+  Tencent's price on 2026-11-22, which includes a 50% launch discount with no published end date
 
 | Task | Evidence | Figures | Contracts | Intent | Financial | Grounding | Clarity | Total (σ) | Capped | Run time | Output tokens |
 | :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
@@ -233,8 +233,8 @@ move between partial, missed and contradicted on them.
 
 [`2026-11-21-openai-codex-gpt-6-2-astra-openai-codex-gpt-6-2-sol.json`](2026-11-21-openai-codex-gpt-6-2-astra-openai-codex-gpt-6-2-sol.json)
 
-- **Agent:** `openai-codex/gpt-6.2-astra`, thinking medium, through a ChatGPT sign-in
-- **Judge:** `openai-codex/gpt-6.2-sol`, thinking medium, three grades per answer
+- **Agent:** `gpt-6.2-astra`, thinking medium
+- **Judge:** `gpt-6.2-sol`, thinking medium, three grades per answer
 - **Commit:** `52ca646`
 - **Scores:** total 62.8 · integrity 29.1 · judged 34.2 · completed 100.0% · mean per-task σ 3.91
 - **Critical caps:** 3 of 36 answers missed or contradicted a critical item, 3 lowered by 18.0
@@ -263,8 +263,8 @@ move between partial, missed and contradicted on them.
 
 [`2026-11-21-openai-codex-gpt-6-1-terra-openai-codex-gpt-6-2-sol.json`](2026-11-21-openai-codex-gpt-6-1-terra-openai-codex-gpt-6-2-sol.json)
 
-- **Agent:** `openai-codex/gpt-6.1-terra`, thinking medium, through a ChatGPT sign-in
-- **Judge:** `openai-codex/gpt-6.2-sol`, thinking medium, three grades per answer
+- **Agent:** `gpt-6.1-terra`, thinking medium
+- **Judge:** `gpt-6.2-sol`, thinking medium, three grades per answer
 - **Commit:** `52ca646`
 - **Scores:** total 60.4 · integrity 29.6 · judged 31.0 · completed 100.0% · mean per-task σ 1.36
 - **Critical caps:** 2 of 36 answers missed or contradicted a critical item, 1 lowered by 8.5 points
@@ -293,8 +293,8 @@ move between partial, missed and contradicted on them.
 
 [`2026-11-22-anthropic-claude-sonnet-5-5-openai-codex-gpt-6-2-sol.json`](2026-11-22-anthropic-claude-sonnet-5-5-openai-codex-gpt-6-2-sol.json)
 
-- **Agent:** `anthropic/claude-sonnet-5-5`, thinking medium, through Anthropic's API
-- **Judge:** `openai-codex/gpt-6.2-sol`, thinking medium, three grades per answer
+- **Agent:** `claude-sonnet-5-5`, thinking medium
+- **Judge:** `gpt-6.2-sol`, thinking medium, three grades per answer
 - **Commit:** `364c949`
 - **Scores:** total 60.0 · integrity 25.7 · judged 34.6 · completed 100.0% · mean per-task σ 4.09
 - **Critical caps:** 4 of 36 answers missed or contradicted a critical item, 1 lowered by 11.4
@@ -323,8 +323,8 @@ move between partial, missed and contradicted on them.
 
 [`2026-11-23-openrouter-thinkingmachines-inkling-2-small-openai-codex-gpt-6-2-sol.json`](2026-11-23-openrouter-thinkingmachines-inkling-2-small-openai-codex-gpt-6-2-sol.json)
 
-- **Agent:** `openrouter/thinkingmachines/inkling-2-small`, thinking medium, through OpenRouter, served by PrimeIntellect
-- **Judge:** `openai-codex/gpt-6.2-sol`, thinking medium, three grades per answer
+- **Agent:** `inkling-2-small`, thinking medium
+- **Judge:** `gpt-6.2-sol`, thinking medium, three grades per answer
 - **Commit:** `bef6c83`
 - **Scores:** total 59.9 · integrity 25.4 · judged 36.3 · completed 97.2% · mean per-task σ 9.59
 - **Critical caps:** 5 of 36 answers missed or contradicted a critical item, none lowered
@@ -333,8 +333,7 @@ move between partial, missed and contradicted on them.
 - **Diagnostics:** tool argument errors 26 · fallback reports 0 · unverified report figures 156 ·
   repaired 11
 - **Cost:** $0.45 per run · per million tokens: input $0.30, cached input $0.03, output $1.00 ·
-  the price OpenRouter lists for the model on 2026-11-23. Thinking Machines has no endpoint of its own
-  there; PrimeIntellect, which served the run, bills half ($0.15, $0.03 and $0.50), $0.28 per run
+  list price, 2026-11-23
 
 | Task | Evidence | Figures | Contracts | Intent | Financial | Grounding | Clarity | Total (σ) | Capped | Run time | Output tokens |
 | :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
@@ -355,8 +354,8 @@ move between partial, missed and contradicted on them.
 
 [`2026-11-22-anthropic-claude-haiku-5-5-openai-codex-gpt-6-2-sol.json`](2026-11-22-anthropic-claude-haiku-5-5-openai-codex-gpt-6-2-sol.json)
 
-- **Agent:** `anthropic/claude-haiku-5-5`, thinking medium, through Anthropic's API
-- **Judge:** `openai-codex/gpt-6.2-sol`, thinking medium, three grades per answer
+- **Agent:** `claude-haiku-5-5`, thinking medium
+- **Judge:** `gpt-6.2-sol`, thinking medium, three grades per answer
 - **Commit:** `364c949`
 - **Scores:** total 57.9 · integrity 26.8 · judged 31.3 · completed 100.0% · mean per-task σ 4.97
 - **Critical caps:** 4 of 36 answers missed or contradicted a critical item, 1 lowered by 3.5 points
@@ -386,8 +385,8 @@ move between partial, missed and contradicted on them.
 
 [`2026-11-22-openai-codex-gpt-6-luna-openai-codex-gpt-6-2-sol.json`](2026-11-22-openai-codex-gpt-6-luna-openai-codex-gpt-6-2-sol.json)
 
-- **Agent:** `openai-codex/gpt-6-luna`, thinking medium, through a ChatGPT sign-in
-- **Judge:** `openai-codex/gpt-6.2-sol`, thinking medium, three grades per answer
+- **Agent:** `gpt-6-luna`, thinking medium
+- **Judge:** `gpt-6.2-sol`, thinking medium, three grades per answer
 - **Commit:** `52ca646`
 - **Scores:** total 49.6 · integrity 19.8 · judged 29.7 · completed 100.0% · mean per-task σ 6.77
 - **Critical caps:** 3 of 36 answers missed or contradicted a critical item, none lowered (missed

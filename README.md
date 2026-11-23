@@ -182,17 +182,13 @@ Pareto line joins the rows no other row beats on both cost and Total.
 Every row was run on the same release of the app and its model library, with no model-specific
 handling, and judged by the same model, so rows are directly comparable. Agents think at medium
 unless the model has no medium level: DeepSeek V4.1 Flash 1017 ran at High, and Tencent Hy4 Flash,
-which has no levels, with thinking on. The GPT rows ran through a ChatGPT sign-in, the Claude rows
-through Anthropic's API, DeepSeek through DeepSeek's API, Gemini 4 Neon through a custom
-OpenAI-compatible endpoint, and Gemini 4 Hydrogen, Tencent Hy4 Flash and Inkling 2 Small through
-OpenRouter, served by Google, Tencent and PrimeIntellect. Every run completed except one of Inkling
-2 Small's 36, which ended without an answer and counts as zero in its Total.
+which has no levels, with thinking on. Every run completed except one of Inkling 2 Small's 36,
+which ended without an answer and counts as zero in its Total.
 
 Run time counts the model's turns, not judging. Cost is the agent's, not the judge's, from the
 tokens reported, at each model maker's official API list price on the day the row was added;
-Tencent Hy4 Flash's uses the 50% launch discount Tencent offers through OpenRouter, with no
-published end date. Results published before 2026-11-21 used earlier code and another judge; they
-are not comparable and are kept only in git history. Each row is a committed baseline, with its
+Tencent Hy4 Flash's uses the 50% launch discount Tencent offers, with no published end date.
+Results published before 2026-11-21 used earlier code and another judge; they are not comparable and are kept only in git history. Each row is a committed baseline, with its
 per-task scores and the prices used in [evals/baselines/README.md](evals/baselines/README.md), and
 the tasks, the scoring, how cost is calculated and how to reproduce a run are in
 [evals/README.md](evals/README.md).
