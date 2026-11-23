@@ -45,6 +45,36 @@ stays graded by one rubric:
 Grades of these two items also vary from one grading to the next: the same answer, graded again, can
 move between partial, missed and contradicted on them.
 
+## Gemini 4 Neon avg@3
+
+[`2026-11-23-custom-gemini-4-neon-openai-codex-gpt-6-2-sol.json`](2026-11-23-custom-gemini-4-neon-openai-codex-gpt-6-2-sol.json)
+
+- **Agent:** `custom-bsxs/gemini-4-neon`, thinking medium, through a custom OpenAI-compatible endpoint
+- **Judge:** `openai-codex/gpt-6.2-sol`, thinking medium, three grades per answer
+- **Commit:** `092cf23`
+- **Scores:** total 75.1 · integrity 35.6 · judged 39.5 · completed 100.0% · mean per-task σ 4.28
+- **Critical caps:** 2 of 36 answers missed or contradicted a critical item, none lowered (missed
+  `roc-not-inferred` 2)
+- **Diagnostics:** tool argument errors 0 · fallback reports 0 · unverified report figures 252 ·
+  repaired 7
+- **Cost:** $11.37 per run · per million tokens: input $3.00, cached input $0.15, output $15.00 ·
+  Gemini API paid tier, Google's list price, 2026-11-23
+
+| Task | Evidence | Figures | Contracts | Intent | Financial | Grounding | Clarity | Total (σ) | Capped | Run time | Output tokens |
+| :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| `retail-01-nvda-beat-and-drop` | 12.0 | 11.3 | 0.0 | 15.0 | 13.3 | 7.5 | 8.3 | 67.4 (6.5) | 0 | 155 s | 12,178 |
+| `retail-02-nike-moat-erosion` | 12.0 | 11.3 | 10.7 | 15.0 | 20.0 | 7.5 | 5.0 | 81.5 (7.3) | 0 | 323 s | 20,601 |
+| `retail-03-nuclear-thematic-purity` | 12.0 | 11.8 | 13.3 | 15.0 | 10.0 | 12.5 | 6.7 | 81.3 (3.3) | 0 | 179 s | 13,641 |
+| `retail-04-dividend-yield-trap` | 12.0 | 10.8 | 5.3 | 12.5 | 10.0 | 7.5 | 5.0 | 63.2 (4.1) | 0 | 231 s | 14,850 |
+| `retail-05-intel-value-trap` | 12.0 | 11.7 | 16.0 | 15.0 | 10.0 | 7.5 | 10.0 | 82.2 (0.1) | 0 | 212 s | 13,788 |
+| `retail-06-mstr-proxy-leverage` | 12.0 | 11.4 | 16.0 | 15.0 | 10.0 | 7.5 | 6.7 | 78.6 (2.3) | 0 | 217 s | 16,991 |
+| `retail-09-narrative-factcheck-apple` | 6.4 | 11.5 | 10.7 | 7.5 | 13.3 | 7.5 | 10.0 | 66.9 (10.6) | 0 | 185 s | 10,788 |
+| `retail-10-smci-accounting-red-flag` | 12.0 | 11.8 | 16.0 | 15.0 | 13.3 | 5.0 | 8.3 | 81.5 (6.3) | 0 | 143 s | 8,760 |
+| `retail-11-nike-earnings-review-report` | 12.0 | 11.4 | 16.0 | 10.0 | 0.0 | 7.5 | 5.0 | 61.9 (3.5) | 0 | 187 s | 13,013 |
+| `retail-12-concentration-profile-fit` | 12.0 | 11.3 | 16.0 | 15.0 | 13.3 | 7.5 | 10.0 | 85.2 (4.6) | 0 | 144 s | 8,364 |
+| `retail-13-semis-figure-survival` | 12.0 | 11.6 | 16.0 | 7.5 | 20.0 | 7.5 | 10.0 | 84.6 (0.1) | 0 | 232 s | 19,120 |
+| `retail-14-apple-pre-open-timing` | 12.0 | 11.2 | 16.0 | 7.5 | 10.0 | 7.5 | 3.3 | 67.5 (2.7) | 0 | 191 s | 12,137 |
+
 ## Claude Fable 5.2 avg@3
 
 [`2026-11-22-anthropic-claude-fable-5-2-openai-codex-gpt-6-2-sol.json`](2026-11-22-anthropic-claude-fable-5-2-openai-codex-gpt-6-2-sol.json)
