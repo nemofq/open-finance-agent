@@ -135,6 +135,38 @@ move between partial, missed and contradicted on them.
 | `retail-13-semis-figure-survival` | 12.0 | 11.6 | 16.0 | 7.5 | 16.7 | 7.5 | 6.7 | 78.0 (2.5) | 0 | 205 s | 41,211 |
 | `retail-14-apple-pre-open-timing` | 12.0 | 11.8 | 16.0 | 7.5 | 10.0 | 5.0 | 8.3 | 70.6 (3.2) | 0 | 141 s | 24,976 |
 
+## Gemini 4 Hydrogen avg@3
+
+[`2026-11-23-openrouter-google-gemini-4-hydrogen-openai-codex-gpt-6-2-sol.json`](2026-11-23-openrouter-google-gemini-4-hydrogen-openai-codex-gpt-6-2-sol.json)
+
+- **Agent:** `openrouter/google/gemini-4-hydrogen`, thinking medium, through OpenRouter, served by Google AI Studio on its Flex tier
+- **Judge:** `openai-codex/gpt-6.2-sol`, thinking medium, three grades per answer
+- **Commit:** `2a2affa`
+- **Scores:** total 69.2 · integrity 32.0 · judged 37.6 · completed 100.0% · mean per-task σ 5.52
+- **Critical caps:** 6 of 36 answers missed or contradicted a critical item, 2 lowered by 13.9
+  points (contradicted `time-and-motive` 2, `pre-open-boundary` 1; missed `total-return` 3,
+  `roc-not-inferred` 2)
+- **Diagnostics:** tool argument errors 0 · fallback reports 0 · unverified report figures 208 ·
+  repaired 6
+- **Cost:** $6.74 per run · per million tokens: input $1.50, cached input $0.075, output $7.50 ·
+  Gemini API paid tier, Google's standard list price, 2026-11-23. The run was served on Google's
+  Flex tier, billed at half ($0.75, $0.0375 and $3.75), $3.37 per run
+
+| Task | Evidence | Figures | Contracts | Intent | Financial | Grounding | Clarity | Total (σ) | Capped | Run time | Output tokens |
+| :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| `retail-01-nvda-beat-and-drop` | 9.9 | 10.2 | 0.0 | 15.0 | 10.0 | 7.5 | 6.7 | 59.3 (1.5) | 0 | 58 s | 8,443 |
+| `retail-02-nike-moat-erosion` | 10.9 | 11.4 | 0.0 | 15.0 | 16.7 | 7.5 | 5.0 | 66.5 (6.2) | 0 | 172 s | 27,636 |
+| `retail-03-nuclear-thematic-purity` | 12.0 | 11.4 | 13.3 | 15.0 | 10.0 | 7.5 | 5.0 | 74.2 (3.7) | 0 | 127 s | 19,437 |
+| `retail-04-dividend-yield-trap` | 12.0 | 11.6 | 5.3 | 7.5 | 10.0 | 7.5 | 5.0 | 58.7 (7.3) | 1 (−0.2) | 96 s | 14,237 |
+| `retail-05-intel-value-trap` | 12.0 | 11.7 | 5.3 | 15.0 | 10.0 | 7.5 | 8.3 | 69.9 (9.0) | 0 | 119 s | 18,045 |
+| `retail-06-mstr-proxy-leverage` | 12.0 | 10.6 | 16.0 | 15.0 | 10.0 | 10.0 | 8.3 | 81.9 (4.9) | 0 | 117 s | 18,874 |
+| `retail-09-narrative-factcheck-apple` | 8.3 | 11.8 | 0.0 | 7.5 | 6.7 | 7.5 | 6.7 | 48.4 (10.7) | 0 | 118 s | 19,019 |
+| `retail-10-smci-accounting-red-flag` | 12.0 | 11.7 | 16.0 | 15.0 | 10.0 | 5.0 | 10.0 | 79.7 (7.2) | 0 | 80 s | 13,367 |
+| `retail-11-nike-earnings-review-report` | 12.0 | 10.9 | 16.0 | 10.0 | 10.0 | 7.5 | 5.0 | 71.4 (3.5) | 0 | 120 s | 19,957 |
+| `retail-12-concentration-profile-fit` | 12.0 | 11.0 | 8.0 | 15.0 | 13.3 | 7.5 | 10.0 | 76.8 (4.4) | 0 | 63 s | 8,921 |
+| `retail-13-semis-figure-survival` | 12.0 | 11.5 | 16.0 | 7.5 | 20.0 | 7.5 | 10.0 | 84.5 (0.4) | 0 | 90 s | 16,195 |
+| `retail-14-apple-pre-open-timing` | 12.0 | 11.8 | 16.0 | 7.5 | 10.0 | 5.0 | 1.7 | 59.5 (7.5) | 1 (−4.4) | 99 s | 17,558 |
+
 ## Claude Opus 5.5 avg@3
 
 [`2026-11-22-anthropic-claude-opus-5-5-openai-codex-gpt-6-2-sol.json`](2026-11-22-anthropic-claude-opus-5-5-openai-codex-gpt-6-2-sol.json)
