@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1000" height="680" viewBox="0 0 1000 680" role="img" aria-labelledby="t d">
 <title id="t">Benchmark quality against cost</title>
-<desc id="d">Total score out of 100 against the agent's average cost per run in US dollars on a log scale. Claude Fable 5.2 medium: 71.4 at $22.37; Claude Opus 5.5 medium: 68.4 at $7.39; Tencent Hy4 Flash on: 67.6 at $0.14; GPT-6.2 Astra medium: 62.8 at $5.88; GPT-6.1 Terra medium: 60.4 at $0.55; Claude Sonnet 5.5 medium: 60.0 at $2.39; Claude Haiku 5.5 medium: 57.9 at $0.19; GPT-6 Luna medium: 49.6 at $0.04. The Pareto line joins GPT-6 Luna, Tencent Hy4 Flash, Claude Opus 5.5, Claude Fable 5.2.</desc>
+<desc id="d">Total score out of 100 against the agent's average cost per run in US dollars on a log scale. Claude Fable 5.2 medium: 71.4 at $22.37; Claude Opus 5.5 medium: 68.4 at $7.39; Tencent Hy4 Flash on: 67.6 at $0.14; GPT-6.2 Astra medium: 62.8 at $5.88; GPT-6.1 Terra medium: 60.4 at $0.55; Claude Sonnet 5.5 medium: 60.0 at $2.39; Inkling 2 Small medium: 59.9 at $0.45; Claude Haiku 5.5 medium: 57.9 at $0.19; GPT-6 Luna medium: 49.6 at $0.04. The Pareto line joins GPT-6 Luna, Tencent Hy4 Flash, Claude Opus 5.5, Claude Fable 5.2.</desc>
 <rect width="1000" height="680" fill="#0d1117"/>
 <g font-family="system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
 <text x="64" y="30" font-size="17" font-weight="600" fill="#ffffff">Quality against cost</text>
@@ -47,6 +47,7 @@
 <circle cx="737.7" cy="307.06" r="6" fill="#3987e5" stroke="#0d1117" stroke-width="2"/>
 <circle cx="402.87" cy="339.58" r="6" fill="#3987e5" stroke="#0d1117" stroke-width="2"/>
 <circle cx="610.48" cy="345" r="6" fill="#3987e5" stroke="#0d1117" stroke-width="2"/>
+<circle cx="374.51" cy="346.36" r="6" fill="#3987e5" stroke="#0d1117" stroke-width="2"/>
 <circle cx="252.66" cy="373.46" r="6" fill="#3987e5" stroke="#0d1117" stroke-width="2"/>
 <circle cx="32.47" cy="485.92" r="6" fill="#3987e5" stroke="#0d1117" stroke-width="2"/>
 <text x="804.18" y="170.53" font-size="13" font-weight="600" fill="#ffffff" stroke="#0d1117" stroke-width="4" stroke-linejoin="round" paint-order="stroke">Claude Fable 5.2</text>
@@ -61,8 +62,10 @@
 <text x="413.87" y="351.58" font-size="12" fill="#c3c2b7" stroke="#0d1117" stroke-width="4" stroke-linejoin="round" paint-order="stroke" style="font-variant-numeric: tabular-nums">60.4 · $0.55</text>
 <text x="621.48" y="341" font-size="13" font-weight="600" fill="#ffffff" stroke="#0d1117" stroke-width="4" stroke-linejoin="round" paint-order="stroke">Claude Sonnet 5.5</text>
 <text x="621.48" y="357" font-size="12" fill="#c3c2b7" stroke="#0d1117" stroke-width="4" stroke-linejoin="round" paint-order="stroke" style="font-variant-numeric: tabular-nums">60.0 · $2.39</text>
-<text x="263.66" y="369.46" font-size="13" font-weight="600" fill="#ffffff" stroke="#0d1117" stroke-width="4" stroke-linejoin="round" paint-order="stroke">Claude Haiku 5.5</text>
-<text x="263.66" y="385.46" font-size="12" fill="#c3c2b7" stroke="#0d1117" stroke-width="4" stroke-linejoin="round" paint-order="stroke" style="font-variant-numeric: tabular-nums">57.9 · $0.19</text>
+<text x="264.57" y="334.36" font-size="13" font-weight="600" fill="#ffffff" stroke="#0d1117" stroke-width="4" stroke-linejoin="round" paint-order="stroke">Inkling 2 Small</text>
+<text x="264.57" y="350.36" font-size="12" fill="#c3c2b7" stroke="#0d1117" stroke-width="4" stroke-linejoin="round" paint-order="stroke" style="font-variant-numeric: tabular-nums">59.9 · $0.45</text>
+<text x="130.32" y="369.46" font-size="13" font-weight="600" fill="#ffffff" stroke="#0d1117" stroke-width="4" stroke-linejoin="round" paint-order="stroke">Claude Haiku 5.5</text>
+<text x="130.32" y="385.46" font-size="12" fill="#c3c2b7" stroke="#0d1117" stroke-width="4" stroke-linejoin="round" paint-order="stroke" style="font-variant-numeric: tabular-nums">57.9 · $0.19</text>
 <text x="79.47" y="481.92" font-size="13" font-weight="600" fill="#ffffff" stroke="#0d1117" stroke-width="4" stroke-linejoin="round" paint-order="stroke">GPT-6 Luna</text>
 <text x="79.47" y="497.92" font-size="12" fill="#c3c2b7" stroke="#0d1117" stroke-width="4" stroke-linejoin="round" paint-order="stroke" style="font-variant-numeric: tabular-nums">49.6 · $0.04</text>
 </g></svg>

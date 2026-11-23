@@ -227,6 +227,38 @@ move between partial, missed and contradicted on them.
 | `retail-13-semis-figure-survival` | 12.0 | 11.9 | 16.0 | 7.5 | 20.0 | 7.5 | 10.0 | 84.9 (0.0) | 0 | 39 s | 5,367 |
 | `retail-14-apple-pre-open-timing` | 12.0 | 11.9 | 16.0 | 7.5 | 10.0 | 7.5 | 5.0 | 69.9 (0.1) | 0 | 48 s | 5,932 |
 
+## Inkling 2 Small avg@3
+
+[`2026-11-23-openrouter-thinkingmachines-inkling-2-small-openai-codex-gpt-6-2-sol.json`](2026-11-23-openrouter-thinkingmachines-inkling-2-small-openai-codex-gpt-6-2-sol.json)
+
+- **Agent:** `openrouter/thinkingmachines/inkling-2-small`, thinking medium, through OpenRouter, served by PrimeIntellect
+- **Judge:** `openai-codex/gpt-6.2-sol`, thinking medium, three grades per answer
+- **Commit:** `bef6c83`
+- **Scores:** total 59.9 · integrity 25.4 · judged 36.3 · completed 97.2% · mean per-task σ 9.59
+- **Critical caps:** 5 of 36 answers missed or contradicted a critical item, none lowered
+  (contradicted `roc-not-inferred` 2, `commercial-stage` 1, `time-and-motive` 1; missed
+  `roc-not-inferred` 1, `total-return` 1)
+- **Diagnostics:** tool argument errors 26 · fallback reports 0 · unverified report figures 156 ·
+  repaired 11
+- **Cost:** $0.45 per run · per million tokens: input $0.30, cached input $0.03, output $1.00 ·
+  the price OpenRouter lists for the model on 2026-11-23. Thinking Machines has no endpoint of its own
+  there; PrimeIntellect, which served the run, bills half ($0.15, $0.03 and $0.50), $0.28 per run
+
+| Task | Evidence | Figures | Contracts | Intent | Financial | Grounding | Clarity | Total (σ) | Capped | Run time | Output tokens |
+| :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| `retail-01-nvda-beat-and-drop` | 8.0 | 11.9 | 0.0 | 12.5 | 10.0 | 7.5 | 8.3 | 58.2 (5.9) | 0 | 29 s | 5,244 |
+| `retail-02-nike-moat-erosion` | 12.0 | 10.7 | 0.0 | 10.0 | 13.3 | 7.5 | 6.7 | 60.2 (11.3) | 0 | 24 s | 6,523 |
+| `retail-03-nuclear-thematic-purity` | 2.4 | 11.7 | 2.7 | 12.5 | 10.0 | 7.5 | 5.0 | 51.8 (9.6) | 0 | 20 s | 4,780 |
+| `retail-04-dividend-yield-trap` | 4.0 | 10.9 | 0.0 | 7.5 | 10.0 | 5.0 | 6.7 | 44.1 (6.6) | 0 | 22 s | 4,947 |
+| `retail-05-intel-value-trap` | 0.0 | 11.6 | 0.0 | 15.0 | 10.0 | 2.5 | 6.7 | 45.7 (3.6) | 0 | 24 s | 4,111 |
+| `retail-06-mstr-proxy-leverage` | 7.5 | 10.2 | 10.7 | 15.0 | 10.0 | 7.5 | 5.0 | 65.9 (9.5) | 0 | 34 s | 6,458 |
+| `retail-09-narrative-factcheck-apple` | 4.3 | 11.9 | 0.0 | 10.0 | 6.7 | 7.5 | 10.0 | 50.3 (7.4) | 0 | 36 s | 4,945 |
+| `retail-10-smci-accounting-red-flag` | 9.3 | 10.7 | 10.7 | 15.0 | 13.3 | 5.0 | 8.3 | 72.4 (11.1) | 0 | 47 s | 6,899 |
+| `retail-11-nike-earnings-review-report` | 12.0 | 11.4 | 16.0 | 11.3 | 10.0 | 7.5 | 5.0 | 48.8 (34.7) | 0 | 43 s | 6,857 |
+| `retail-12-concentration-profile-fit` | 10.9 | 10.6 | 8.0 | 15.0 | 16.7 | 7.5 | 6.7 | 75.3 (7.6) | 0 | 14 s | 5,089 |
+| `retail-13-semis-figure-survival` | 12.0 | 11.3 | 16.0 | 7.5 | 16.7 | 7.5 | 8.3 | 79.3 (4.2) | 0 | 25 s | 6,142 |
+| `retail-14-apple-pre-open-timing` | 12.0 | 11.7 | 16.0 | 7.5 | 10.0 | 5.0 | 5.0 | 67.2 (3.7) | 0 | 90 s | 6,774 |
+
 ## Claude Haiku 5.5 avg@3
 
 [`2026-11-22-anthropic-claude-haiku-5-5-openai-codex-gpt-6-2-sol.json`](2026-11-22-anthropic-claude-haiku-5-5-openai-codex-gpt-6-2-sol.json)
