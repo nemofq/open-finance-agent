@@ -154,12 +154,13 @@ total at 69 or 49.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/images/benchmark-quality-cost-dark.svg" />
-  <img src="docs/images/benchmark-quality-cost-light.svg" alt="Scatter of total benchmark score against the agent's average cost per run, log scale: Claude Fable 5.2 medium 71.4 at $22.37, Claude Opus 5.5 medium 68.4 at $7.39, Tencent Hy4 Flash on 67.6 at $0.14, GPT-6.2 Astra medium 62.8 at $5.88, GPT-6.1 Terra medium 60.4 at $0.55, Claude Sonnet 5.5 medium 60.0 at $2.39, Inkling 2 Small medium 59.9 at $0.45, Claude Haiku 5.5 medium 57.9 at $0.19, GPT-6 Luna medium 49.6 at $0.04; a dotted Pareto line joins GPT-6 Luna, Tencent Hy4 Flash, Claude Opus 5.5 and Claude Fable 5.2" width="100%" />
+  <img src="docs/images/benchmark-quality-cost-light.svg" alt="Scatter of total benchmark score against the agent's average cost per run, log scale: Claude Fable 5.2 medium 71.4 at $22.37, DeepSeek V4.1 Flash 1017 high 71.1 at $1.21, Claude Opus 5.5 medium 68.4 at $7.39, Tencent Hy4 Flash on 67.6 at $0.14, GPT-6.2 Astra medium 62.8 at $5.88, GPT-6.1 Terra medium 60.4 at $0.55, Claude Sonnet 5.5 medium 60.0 at $2.39, Inkling 2 Small medium 59.9 at $0.45, Claude Haiku 5.5 medium 57.9 at $0.19, GPT-6 Luna medium 49.6 at $0.04; a dotted Pareto line joins GPT-6 Luna, Tencent Hy4 Flash, DeepSeek V4.1 Flash 1017 and Claude Fable 5.2" width="100%" />
 </picture>
 
 | Model (avg@3) | Thinking effort | Judge model | Total (/100) ↑ | Integrity (/40) ↑ | Judged (/60) ↑ | Avg. cost per run ↓ | Avg. run time | Avg. output tokens per run | Avg. tool calls per run |
 | :--- | :--- | :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
 | Claude Fable 5.2 | Medium | GPT-6.2 Sol, medium | 71.4 <sub>−1.1 capped</sub> | 33.3 | 39.3 | $22.37 | 1,163 s | 121,474 | 230 |
+| DeepSeek V4.1 Flash 1017 | High | GPT-6.2 Sol, medium | 71.1 <sub>−1.2 capped</sub> | 34.2 | 38.1 | $1.21 | 1,870 s | 327,566 | 380 |
 | Claude Opus 5.5 | Medium | GPT-6.2 Sol, medium | 68.4 <sub>−0.3 capped</sub> | 31.7 | 37.1 | $7.39 | 821 s | 83,651 | 160 |
 | Tencent Hy4 Flash | On | GPT-6.2 Sol, medium | 67.6 <sub>−1.6 capped</sub> | 34.8 | 34.4 | $0.14 | 1,967 s | 256,758 | 478 |
 | GPT-6.2 Astra | Medium | GPT-6.2 Sol, medium | 62.8 <sub>−0.5 capped</sub> | 29.1 | 34.2 | $5.88 | 645 s | 17,775 | 153 |
@@ -177,7 +178,7 @@ task's critical rubric item is capped at 49, one that misses it at 69. In the ch
 Pareto line joins the rows no other row beats on both cost and Total. Every row was run on the same
 release of the app and its model library, with no model-specific handling, and judged by the same
 model, so rows are directly comparable; the GPT rows ran through a ChatGPT sign-in, the Claude rows through
-Anthropic's API and Tencent Hy4 Flash and Inkling 2 Small through OpenRouter, served by Tencent and PrimeIntellect. Tencent Hy4 Flash has no
+Anthropic's API, DeepSeek V4.1 Flash 1017 through DeepSeek's API at High (it has no medium) and Tencent Hy4 Flash and Inkling 2 Small through OpenRouter, served by Tencent and PrimeIntellect. Tencent Hy4 Flash has no
 thinking levels, only on or off, and ran with thinking on; its cost uses the 50% launch discount
 Tencent offers through OpenRouter, with no published end date. Every run completed except one of Inkling 2 Small's
 36, which ended without an answer and counts as zero in its Total. Results published

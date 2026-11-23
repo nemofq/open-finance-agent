@@ -75,6 +75,36 @@ move between partial, missed and contradicted on them.
 | `retail-13-semis-figure-survival` | 12.0 | 12.0 | 16.0 | 7.5 | 20.0 | 7.5 | 10.0 | 85.0 (0.0) | 0 | 126 s | 14,266 |
 | `retail-14-apple-pre-open-timing` | 12.0 | 11.8 | 16.0 | 7.5 | 10.0 | 7.5 | 5.0 | 69.8 (0.3) | 0 | 83 s | 8,150 |
 
+## DeepSeek V4.1 Flash 1017 avg@3, high
+
+[`2026-11-23-deepseek-deepseek-flash-openai-codex-gpt-6-2-sol.json`](2026-11-23-deepseek-deepseek-flash-openai-codex-gpt-6-2-sol.json)
+
+- **Agent:** `deepseek/deepseek-flash`, thinking high, through DeepSeek's API (`deepseek-flash`, served by DeepSeek-V4.1-Flash-1017). The model takes low, high or max, not medium
+- **Judge:** `openai-codex/gpt-6.2-sol`, thinking medium, three grades per answer
+- **Commit:** `2cd3fff`
+- **Scores:** total 71.1 · integrity 34.2 · judged 38.1 · completed 100.0% · mean per-task σ 3.68
+- **Critical caps:** 4 of 36 answers missed or contradicted a critical item, 4 lowered by 43.4
+  points (contradicted `roc-not-inferred` 3; missed `life-savings-guardrail` 1)
+- **Diagnostics:** tool argument errors 12 · fallback reports 0 · unverified report figures 310 ·
+  repaired 19
+- **Cost:** $1.21 per run · per million tokens: input $0.30, cached input $0.006, output $1.20 ·
+  DeepSeek API peak pricing, unchanged since 2026-10-17 per DeepSeek's change log; off-peak hours are half
+
+| Task | Evidence | Figures | Contracts | Intent | Financial | Grounding | Clarity | Total (σ) | Capped | Run time | Output tokens |
+| :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| `retail-01-nvda-beat-and-drop` | 12.0 | 11.5 | 0.0 | 15.0 | 13.3 | 7.5 | 5.0 | 64.4 (4.8) | 0 | 114 s | 21,121 |
+| `retail-02-nike-moat-erosion` | 10.9 | 11.5 | 16.0 | 15.0 | 16.7 | 7.5 | 8.3 | 86.0 (2.7) | 0 | 185 s | 34,768 |
+| `retail-03-nuclear-thematic-purity` | 12.0 | 11.1 | 16.0 | 15.0 | 10.0 | 7.5 | 5.0 | 76.6 (0.2) | 0 | 142 s | 24,215 |
+| `retail-04-dividend-yield-trap` | 12.0 | 10.9 | 5.3 | 15.0 | 10.0 | 5.0 | 5.0 | 49.0 (0.0) | 3 (−14.2) | 159 s | 27,650 |
+| `retail-05-intel-value-trap` | 12.0 | 11.3 | 5.3 | 12.5 | 10.0 | 7.5 | 8.3 | 66.7 (1.6) | 1 (−0.3) | 164 s | 27,523 |
+| `retail-06-mstr-proxy-leverage` | 10.9 | 10.7 | 10.7 | 12.5 | 10.0 | 7.5 | 6.7 | 68.9 (5.8) | 0 | 232 s | 37,955 |
+| `retail-09-narrative-factcheck-apple` | 10.9 | 11.2 | 10.7 | 10.0 | 13.3 | 7.5 | 5.0 | 68.7 (13.6) | 0 | 153 s | 25,695 |
+| `retail-10-smci-accounting-red-flag` | 12.0 | 10.1 | 16.0 | 15.0 | 13.3 | 15.0 | 6.7 | 88.1 (6.6) | 0 | 142 s | 23,357 |
+| `retail-11-nike-earnings-review-report` | 12.0 | 10.6 | 16.0 | 7.5 | 10.0 | 7.5 | 5.0 | 68.6 (1.0) | 0 | 151 s | 25,420 |
+| `retail-12-concentration-profile-fit` | 12.0 | 11.6 | 8.0 | 15.0 | 10.0 | 7.5 | 3.3 | 67.4 (2.1) | 0 | 83 s | 13,676 |
+| `retail-13-semis-figure-survival` | 12.0 | 11.6 | 16.0 | 7.5 | 16.7 | 7.5 | 6.7 | 78.0 (2.5) | 0 | 205 s | 41,211 |
+| `retail-14-apple-pre-open-timing` | 12.0 | 11.8 | 16.0 | 7.5 | 10.0 | 5.0 | 8.3 | 70.6 (3.2) | 0 | 141 s | 24,976 |
+
 ## Claude Opus 5.5 avg@3
 
 [`2026-11-22-anthropic-claude-opus-5-5-openai-codex-gpt-6-2-sol.json`](2026-11-22-anthropic-claude-opus-5-5-openai-codex-gpt-6-2-sol.json)
