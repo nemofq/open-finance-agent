@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1000" height="680" viewBox="0 0 1000 680" role="img" aria-labelledby="t d">
 <title id="t">Benchmark quality against cost</title>
-<desc id="d">Total score out of 100 against the agent's average cost per run in US dollars on a log scale. Claude Fable 5.2 medium: 71.4 at $22.37; Claude Opus 5.5 medium: 68.4 at $7.39; GPT-6.2 Astra medium: 62.8 at $5.88; GPT-6.1 Terra medium: 60.4 at $0.55; Claude Sonnet 5.5 medium: 60.0 at $2.39; Claude Haiku 5.5 medium: 57.9 at $0.19; GPT-6 Luna medium: 49.6 at $0.04. The Pareto line joins GPT-6 Luna, Claude Haiku 5.5, GPT-6.1 Terra, GPT-6.2 Astra, Claude Opus 5.5, Claude Fable 5.2.</desc>
+<desc id="d">Total score out of 100 against the agent's average cost per run in US dollars on a log scale. Claude Fable 5.2 medium: 71.4 at $22.37; Claude Opus 5.5 medium: 68.4 at $7.39; Tencent Hy4 Flash on: 67.6 at $0.14; GPT-6.2 Astra medium: 62.8 at $5.88; GPT-6.1 Terra medium: 60.4 at $0.55; Claude Sonnet 5.5 medium: 60.0 at $2.39; Claude Haiku 5.5 medium: 57.9 at $0.19; GPT-6 Luna medium: 49.6 at $0.04. The Pareto line joins GPT-6 Luna, Tencent Hy4 Flash, Claude Opus 5.5, Claude Fable 5.2.</desc>
 <rect width="1000" height="680" fill="#0d1117"/>
 <g font-family="system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
 <text x="64" y="30" font-size="17" font-weight="600" fill="#ffffff">Quality against cost</text>
@@ -36,12 +36,14 @@
 <text x="516" y="662" font-size="12.5" text-anchor="middle" fill="#c3c2b7">Avg. cost per run (USD, log scale) · lower is better</text>
 <text transform="translate(18 345) rotate(-90)" font-size="12.5" text-anchor="middle" fill="#c3c2b7">Total (/100) · higher is better</text>
 <text x="74" y="92" font-size="12" fill="#9a988f">↖ better</text>
-<polyline points="32.47,485.92 252.66,373.46 402.87,339.58 737.7,307.06 770,231.18 926.53,190.53" fill="none" stroke="#9a988f" stroke-width="2" stroke-dasharray="0.1 5" stroke-linecap="round"/>
+<polyline points="32.47,485.92 209.5,242.02 770,231.18 926.53,190.53" fill="none" stroke="#9a988f" stroke-width="2" stroke-dasharray="0.1 5" stroke-linecap="round"/>
 <line x1="818" x2="842" y1="88" y2="88" stroke="#9a988f" stroke-width="2" stroke-dasharray="0.1 5" stroke-linecap="round"/>
 <text x="850" y="92" font-size="12" fill="#9a988f">Pareto line</text>
+<line x1="209.5" y1="234.02" x2="209.5" y2="223.02" stroke="#9a988f" stroke-width="1"/>
 <line x1="40.47" y1="485.92" x2="77.47" y2="485.92" stroke="#9a988f" stroke-width="1"/>
 <circle cx="926.53" cy="190.53" r="6" fill="#3987e5" stroke="#0d1117" stroke-width="2"/>
 <circle cx="770" cy="231.18" r="6" fill="#3987e5" stroke="#0d1117" stroke-width="2"/>
+<circle cx="209.5" cy="242.02" r="6" fill="#3987e5" stroke="#0d1117" stroke-width="2"/>
 <circle cx="737.7" cy="307.06" r="6" fill="#3987e5" stroke="#0d1117" stroke-width="2"/>
 <circle cx="402.87" cy="339.58" r="6" fill="#3987e5" stroke="#0d1117" stroke-width="2"/>
 <circle cx="610.48" cy="345" r="6" fill="#3987e5" stroke="#0d1117" stroke-width="2"/>
@@ -49,16 +51,18 @@
 <circle cx="32.47" cy="485.92" r="6" fill="#3987e5" stroke="#0d1117" stroke-width="2"/>
 <text x="804.18" y="170.53" font-size="13" font-weight="600" fill="#ffffff" stroke="#0d1117" stroke-width="4" stroke-linejoin="round" paint-order="stroke">Claude Fable 5.2</text>
 <text x="804.18" y="186.53" font-size="12" fill="#c3c2b7" stroke="#0d1117" stroke-width="4" stroke-linejoin="round" paint-order="stroke" style="font-variant-numeric: tabular-nums">71.4 · $22.37</text>
-<text x="652.07" y="227.18" font-size="13" font-weight="600" fill="#ffffff" stroke="#0d1117" stroke-width="4" stroke-linejoin="round" paint-order="stroke">Claude Opus 5.5</text>
-<text x="652.07" y="243.18" font-size="12" fill="#c3c2b7" stroke="#0d1117" stroke-width="4" stroke-linejoin="round" paint-order="stroke" style="font-variant-numeric: tabular-nums">68.4 · $7.39</text>
+<text x="781" y="243.18" font-size="13" font-weight="600" fill="#ffffff" stroke="#0d1117" stroke-width="4" stroke-linejoin="round" paint-order="stroke">Claude Opus 5.5</text>
+<text x="781" y="259.18" font-size="12" fill="#c3c2b7" stroke="#0d1117" stroke-width="4" stroke-linejoin="round" paint-order="stroke" style="font-variant-numeric: tabular-nums">68.4 · $7.39</text>
+<text x="133.99" y="203.02" font-size="13" font-weight="600" fill="#ffffff" stroke="#0d1117" stroke-width="4" stroke-linejoin="round" paint-order="stroke">Tencent Hy4 Flash · on</text>
+<text x="133.99" y="219.02" font-size="12" fill="#c3c2b7" stroke="#0d1117" stroke-width="4" stroke-linejoin="round" paint-order="stroke" style="font-variant-numeric: tabular-nums">67.6 · $0.14</text>
 <text x="748.7" y="303.06" font-size="13" font-weight="600" fill="#ffffff" stroke="#0d1117" stroke-width="4" stroke-linejoin="round" paint-order="stroke">GPT-6.2 Astra</text>
 <text x="748.7" y="319.06" font-size="12" fill="#c3c2b7" stroke="#0d1117" stroke-width="4" stroke-linejoin="round" paint-order="stroke" style="font-variant-numeric: tabular-nums">62.8 · $5.88</text>
-<text x="298.16" y="319.58" font-size="13" font-weight="600" fill="#ffffff" stroke="#0d1117" stroke-width="4" stroke-linejoin="round" paint-order="stroke">GPT-6.1 Terra</text>
-<text x="298.16" y="335.58" font-size="12" fill="#c3c2b7" stroke="#0d1117" stroke-width="4" stroke-linejoin="round" paint-order="stroke" style="font-variant-numeric: tabular-nums">60.4 · $0.55</text>
+<text x="413.87" y="335.58" font-size="13" font-weight="600" fill="#ffffff" stroke="#0d1117" stroke-width="4" stroke-linejoin="round" paint-order="stroke">GPT-6.1 Terra</text>
+<text x="413.87" y="351.58" font-size="12" fill="#c3c2b7" stroke="#0d1117" stroke-width="4" stroke-linejoin="round" paint-order="stroke" style="font-variant-numeric: tabular-nums">60.4 · $0.55</text>
 <text x="621.48" y="341" font-size="13" font-weight="600" fill="#ffffff" stroke="#0d1117" stroke-width="4" stroke-linejoin="round" paint-order="stroke">Claude Sonnet 5.5</text>
 <text x="621.48" y="357" font-size="12" fill="#c3c2b7" stroke="#0d1117" stroke-width="4" stroke-linejoin="round" paint-order="stroke" style="font-variant-numeric: tabular-nums">60.0 · $2.39</text>
-<text x="263.66" y="385.46" font-size="13" font-weight="600" fill="#ffffff" stroke="#0d1117" stroke-width="4" stroke-linejoin="round" paint-order="stroke">Claude Haiku 5.5</text>
-<text x="263.66" y="401.46" font-size="12" fill="#c3c2b7" stroke="#0d1117" stroke-width="4" stroke-linejoin="round" paint-order="stroke" style="font-variant-numeric: tabular-nums">57.9 · $0.19</text>
+<text x="263.66" y="369.46" font-size="13" font-weight="600" fill="#ffffff" stroke="#0d1117" stroke-width="4" stroke-linejoin="round" paint-order="stroke">Claude Haiku 5.5</text>
+<text x="263.66" y="385.46" font-size="12" fill="#c3c2b7" stroke="#0d1117" stroke-width="4" stroke-linejoin="round" paint-order="stroke" style="font-variant-numeric: tabular-nums">57.9 · $0.19</text>
 <text x="79.47" y="481.92" font-size="13" font-weight="600" fill="#ffffff" stroke="#0d1117" stroke-width="4" stroke-linejoin="round" paint-order="stroke">GPT-6 Luna</text>
 <text x="79.47" y="497.92" font-size="12" fill="#c3c2b7" stroke="#0d1117" stroke-width="4" stroke-linejoin="round" paint-order="stroke" style="font-variant-numeric: tabular-nums">49.6 · $0.04</text>
 </g></svg>

@@ -28,7 +28,7 @@ Each per-task value is over the task's three runs, from the baseline's `results`
   `2 (−9.2)`. An answer already below its cap is not counted.
 - **Run time**: the task's turn, `metrics.latencyMs`, judging excluded.
 - **Output tokens**: `metrics.tokens.output`, as the provider reports it. Some providers count
-  thinking in it and some do not, so figures are not comparable across model makers.
+  thinking in it (Tencent Hy4 Flash does) and some do not, so figures are not comparable across model makers.
 
 Each section's **Cost** is the agent's average cost per run at the list prices it gives, worked
 out as in [evals/README.md › Reproducing the README table](../README.md#reproducing-the-readme-table).
@@ -104,6 +104,38 @@ move between partial, missed and contradicted on them.
 | `retail-12-concentration-profile-fit` | 12.0 | 11.4 | 13.3 | 15.0 | 13.3 | 7.5 | 10.0 | 82.6 (7.7) | 0 | 58 s | 5,776 |
 | `retail-13-semis-figure-survival` | 12.0 | 11.9 | 16.0 | 7.5 | 20.0 | 7.5 | 8.3 | 83.3 (2.5) | 0 | 89 s | 9,793 |
 | `retail-14-apple-pre-open-timing` | 12.0 | 11.8 | 16.0 | 7.5 | 10.0 | 7.5 | 6.7 | 71.4 (2.0) | 0 | 46 s | 4,706 |
+
+## Tencent Hy4 Flash avg@3, on
+
+[`2026-11-22-openrouter-tencent-hy4-flash-openai-codex-gpt-6-2-sol.json`](2026-11-22-openrouter-tencent-hy4-flash-openai-codex-gpt-6-2-sol.json)
+
+- **Agent:** `openrouter/tencent/hy4-flash`, thinking on, through OpenRouter, served by Tencent. The model
+  has no effort levels, only thinking on or off; it ran with thinking on, its default
+- **Judge:** `openai-codex/gpt-6.2-sol`, thinking medium, three grades per answer
+- **Commit:** `9aace60`
+- **Scores:** total 67.6 · integrity 34.8 · judged 34.4 · completed 100.0% · mean per-task σ 6.86
+- **Critical caps:** 6 of 36 answers missed or contradicted a critical item, 5 lowered by 56.7
+  points (contradicted `time-and-motive` 2, `commercial-stage` 1; missed `roc-not-inferred` 2,
+  `life-savings-guardrail` 1)
+- **Diagnostics:** tool argument errors 30 · fallback reports 0 · unverified report figures 135 ·
+  repaired 12
+- **Cost:** $0.14 per run · per million tokens: input $0.035, cached input $0.002, output $0.141 ·
+  Tencent's price through OpenRouter on 2026-11-22, which includes a 50% launch discount with no published end date
+
+| Task | Evidence | Figures | Contracts | Intent | Financial | Grounding | Clarity | Total (σ) | Capped | Run time | Output tokens |
+| :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| `retail-01-nvda-beat-and-drop` | 9.9 | 11.7 | 5.3 | 12.5 | 10.0 | 7.5 | 5.0 | 61.9 (12.2) | 0 | 127 s | 16,298 |
+| `retail-02-nike-moat-erosion` | 12.0 | 11.9 | 5.3 | 12.5 | 10.0 | 7.5 | 5.0 | 64.2 (9.8) | 0 | 231 s | 33,551 |
+| `retail-03-nuclear-thematic-purity` | 12.0 | 11.7 | 16.0 | 12.5 | 10.0 | 7.5 | 5.0 | 65.3 (12.0) | 1 (−9.4) | 147 s | 16,247 |
+| `retail-04-dividend-yield-trap` | 12.0 | 11.3 | 16.0 | 12.5 | 10.0 | 7.5 | 5.0 | 71.5 (3.5) | 2 (−2.8) | 170 s | 22,215 |
+| `retail-05-intel-value-trap` | 12.0 | 11.5 | 0.0 | 7.5 | 10.0 | 7.5 | 6.7 | 55.2 (2.7) | 0 | 181 s | 24,497 |
+| `retail-06-mstr-proxy-leverage` | 11.5 | 11.0 | 10.7 | 15.0 | 10.0 | 5.0 | 6.7 | 69.8 (12.8) | 0 | 229 s | 25,822 |
+| `retail-09-narrative-factcheck-apple` | 12.0 | 10.4 | 16.0 | 5.0 | 6.7 | 7.5 | 6.7 | 57.5 (12.1) | 2 (−6.7) | 181 s | 25,111 |
+| `retail-10-smci-accounting-red-flag` | 10.7 | 11.3 | 16.0 | 12.5 | 10.0 | 0.0 | 8.3 | 68.8 (5.0) | 0 | 183 s | 23,376 |
+| `retail-11-nike-earnings-review-report` | 12.0 | 11.0 | 16.0 | 12.5 | 10.0 | 7.5 | 5.0 | 74.0 (3.1) | 0 | 173 s | 24,479 |
+| `retail-12-concentration-profile-fit` | 10.9 | 12.0 | 8.0 | 12.5 | 10.0 | 7.5 | 8.3 | 69.3 (1.8) | 0 | 79 s | 9,901 |
+| `retail-13-semis-figure-survival` | 12.0 | 11.7 | 16.0 | 10.0 | 16.7 | 7.5 | 10.0 | 83.8 (7.4) | 0 | 147 s | 18,444 |
+| `retail-14-apple-pre-open-timing` | 12.0 | 12.0 | 16.0 | 7.5 | 10.0 | 7.5 | 5.0 | 70.0 (0.1) | 0 | 118 s | 16,817 |
 
 ## GPT-6.2 Astra avg@3
 
