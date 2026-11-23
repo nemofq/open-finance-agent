@@ -186,12 +186,12 @@ which has no levels, with thinking on. Every run completed except one of Inkling
 which ended without an answer and counts as zero in its Total.
 
 Run time counts the model's turns, not judging. Cost is the agent's, not the judge's, from the
-tokens reported, at each model maker's official API list price on the day the row was added;
-Tencent Hy4 Flash's uses the 50% launch discount Tencent offers, with no published end date.
-Results published before 2026-11-21 used earlier code and another judge; they are not comparable and are kept only in git history. Each row is a committed baseline, with its
-per-task scores and the prices used in [evals/baselines/README.md](evals/baselines/README.md), and
-the tasks, the scoring, how cost is calculated and how to reproduce a run are in
-[evals/README.md](evals/README.md).
+tokens reported, at each model maker's official API list price on the day the row was added; Tencent
+Hy4 Flash's uses the 50% launch discount Tencent offers, with no published end date. Results
+published before 2026-11-21 used earlier code and another judge; they are not comparable and are
+kept only in git history. Each row is a committed baseline, with its per-task scores and the prices
+used in [evals/baselines/README.md](evals/baselines/README.md), and the tasks, the scoring, how cost
+is calculated and how to reproduce a run are in [evals/README.md](evals/README.md).
 
 ## Features
 
