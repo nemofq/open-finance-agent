@@ -157,23 +157,24 @@ total at 69 or 49.
   <img src="docs/images/benchmark-quality-cost-light.svg" alt="Scatter of total benchmark score against the agent's average cost per run, log scale: Gemini 4 Neon medium 75.1 at $11.37, Claude Fable 5.2 medium 71.4 at $22.37, DeepSeek V4.1 Flash 1017 high 71.1 at $1.21, Gemini 4 Hydrogen medium 69.2 at $6.74, Claude Opus 5.5 medium 68.4 at $7.39, Tencent Hy4 Flash on 67.6 at $0.28, GPT-6.2 Astra medium 62.8 at $5.88, GPT-6.1 Terra medium 60.4 at $0.55, Claude Sonnet 5.5 medium 60.0 at $2.39, Inkling 2 Small medium 59.9 at $0.45, Claude Haiku 5.5 medium 57.9 at $0.19, GPT-6 Luna medium 49.6 at $0.04; a dotted Pareto line joins GPT-6 Luna, Claude Haiku 5.5, Tencent Hy4 Flash, DeepSeek V4.1 Flash 1017 and Gemini 4 Neon" width="100%" />
 </picture>
 
-| Model (avg@3) | Thinking effort | Judge model | Total (/100) ↑ | Integrity (/40) ↑ | Judged (/60) ↑ | Avg. cost per run ↓ | Avg. run time | Avg. output tokens per run | Avg. tool calls per run |
-| :--- | :--- | :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| Gemini 4 Neon | Medium | GPT-6.2 Sol, medium | 75.1 | 35.6 | 39.5 | $11.37 | 2,399 s | 164,231 | 435 |
-| Claude Fable 5.2 | Medium | GPT-6.2 Sol, medium | 71.4 <sub>−1.1 capped</sub> | 33.3 | 39.3 | $22.37 | 1,163 s | 121,474 | 230 |
-| DeepSeek V4.1 Flash 1017 | High | GPT-6.2 Sol, medium | 71.1 <sub>−1.2 capped</sub> | 34.2 | 38.1 | $1.21 | 1,870 s | 327,566 | 380 |
-| Gemini 4 Hydrogen | Medium | GPT-6.2 Sol, medium | 69.2 <sub>−0.4 capped</sub> | 32.0 | 37.6 | $6.74 | 1,261 s | 201,689 | 460 |
-| Claude Opus 5.5 | Medium | GPT-6.2 Sol, medium | 68.4 <sub>−0.3 capped</sub> | 31.7 | 37.1 | $7.39 | 821 s | 83,651 | 160 |
-| Tencent Hy4 Flash | On | GPT-6.2 Sol, medium | 67.6 <sub>−1.6 capped</sub> | 34.8 | 34.4 | $0.28 | 1,967 s | 256,758 | 478 |
-| GPT-6.2 Astra | Medium | GPT-6.2 Sol, medium | 62.8 <sub>−0.5 capped</sub> | 29.1 | 34.2 | $5.88 | 645 s | 17,775 | 153 |
-| GPT-6.1 Terra | Medium | GPT-6.2 Sol, medium | 60.4 <sub>−0.2 capped</sub> | 29.6 | 31.0 | $0.55 | 383 s | 15,776 | 124 |
-| Claude Sonnet 5.5 | Medium | GPT-6.2 Sol, medium | 60.0 <sub>−0.3 capped</sub> | 25.7 | 34.6 | $2.39 | 455 s | 58,862 | 109 |
-| Inkling 2 Small | Medium | GPT-6.2 Sol, medium | 59.9 | 25.4 | 36.3 | $0.45 | 408 s | 68,769 | 185 |
-| Claude Haiku 5.5 | Medium | GPT-6.2 Sol, medium | 57.9 <sub>−0.1 capped</sub> | 26.8 | 31.3 | $0.19 | 577 s | 118,401 | 148 |
-| GPT-6 Luna | Medium | GPT-6.2 Sol, medium | 49.6 | 19.8 | 29.7 | $0.04 | 265 s | 10,452 | 74 |
+| Model (avg@3) | Thinking effort | Total (/100) ↑ | Integrity (/40) ↑ | Judged (/60) ↑ | Avg. cost (run) ↓ | Avg. run time | Avg. output tokens (run) | Avg. tool calls (run) |
+| :--- | :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| Gemini 4 Neon | Medium | 75.1 | 35.6 | 39.5 | $11.37 | 2,399 s | 164,231 | 435 |
+| Claude Fable 5.2 | Medium | 71.4 <sub>−1.1 capped</sub> | 33.3 | 39.3 | $22.37 | 1,163 s | 121,474 | 230 |
+| DeepSeek V4.1 Flash 1017 | High | 71.1 <sub>−1.2 capped</sub> | 34.2 | 38.1 | $1.21 | 1,870 s | 327,566 | 380 |
+| Gemini 4 Hydrogen | Medium | 69.2 <sub>−0.4 capped</sub> | 32.0 | 37.6 | $6.74 | 1,261 s | 201,689 | 460 |
+| Claude Opus 5.5 | Medium | 68.4 <sub>−0.3 capped</sub> | 31.7 | 37.1 | $7.39 | 821 s | 83,651 | 160 |
+| Tencent Hy4 Flash | On | 67.6 <sub>−1.6 capped</sub> | 34.8 | 34.4 | $0.28 | 1,967 s | 256,758 | 478 |
+| GPT-6.2 Astra | Medium | 62.8 <sub>−0.5 capped</sub> | 29.1 | 34.2 | $5.88 | 645 s | 17,775 | 153 |
+| GPT-6.1 Terra | Medium | 60.4 <sub>−0.2 capped</sub> | 29.6 | 31.0 | $0.55 | 383 s | 15,776 | 124 |
+| Claude Sonnet 5.5 | Medium | 60.0 <sub>−0.3 capped</sub> | 25.7 | 34.6 | $2.39 | 455 s | 58,862 | 109 |
+| Inkling 2 Small | Medium | 59.9 | 25.4 | 36.3 | $0.45 | 408 s | 68,769 | 185 |
+| Claude Haiku 5.5 | Medium | 57.9 <sub>−0.1 capped</sub> | 26.8 | 31.3 | $0.19 | 577 s | 118,401 | 148 |
+| GPT-6 Luna | Medium | 49.6 | 19.8 | 29.7 | $0.04 | 265 s | 10,452 | 74 |
 
-↑ higher is better, ↓ lower is better. Benchmark version 2, judge prompt v10, three grades per
-answer, policy enforced. `avg@3` is three runs of the twelve tasks. Total is the expected score: the
+↑ higher is better, ↓ lower is better. (run) is one run of the twelve tasks. Benchmark version 2;
+every answer judged by GPT-6.2 Sol at medium thinking, judge prompt v10, three grades per answer;
+policy enforced. `avg@3` is three runs of the twelve tasks. Total is the expected score: the
 mean over tasks with a failed run counted as zero; Integrity and Judged average the completed
 answers only. "−x capped" is what critical caps took off a Total: an answer that contradicts a
 task's critical rubric item is capped at 49, one that misses it at 69. In the chart, the dotted
