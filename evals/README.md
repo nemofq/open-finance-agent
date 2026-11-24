@@ -321,9 +321,8 @@ The summary's header prints all of them (`Thinking`, `Judge thinking`, `Policy`,
 `Tasks: <n> × <repeats>`, `Benchmark version`), and the run JSON holds them as `thinking`,
 `judgeThinking`, `policyMode`, `repeat` and `benchmarkVersion`. The Model column names the agent,
 and its header, `Model (avg@<repeats>)`, the repeats every row shares; Thinking effort is the
-agent's thinking level, and Judge model names
-the judge followed by its thinking level when one was set; policy mode and benchmark version go in
-the note under the table. Each row is one run, promoted with `--baseline`, and also gets a section
+agent's thinking level. The judge, its thinking level, policy mode and benchmark version go in the
+note under the table, since every row shares them. Each row is one run, promoted with `--baseline`, and also gets a section
 in [evals/baselines/README.md](baselines/README.md) with its per-task scores, taken from the
 baseline's `results` (`node scripts/baseline-section.mjs <baseline.json>` prints its Scores, Critical
 caps and Diagnostics lines and per-task table; the Agent, Judge, Commit and Cost lines are written by
@@ -341,10 +340,10 @@ Each column comes from the agent's entry in `agentSummaries` of the run or basel
 | Total (/100) | `expectedUserScore`, with the points critical caps took off it as "−x capped": per answer, `integrityScore` + `qualityScore` − `totalScore`, averaged over all answers |
 | Integrity (/40) | `averageIntegrityScore` |
 | Judged (/60) | `averageSemanticScore` |
-| Avg. cost per run | each of `results[].metrics.tokens` at the provider's list prices, summed, ÷ repeats; see below |
+| Avg. cost (run) | each of `results[].metrics.tokens` at the provider's list prices, summed, ÷ repeats; see below |
 | Avg. run time | `metrics.latencyMs` × tasks; the summary's `Mean latency` row × tasks |
-| Avg. output tokens per run | `metrics.tokens.output` ÷ repeats |
-| Avg. tool calls per run | the length of each `results[].toolCalls`, summed, ÷ repeats (run JSON only) |
+| Avg. output tokens (run) | `metrics.tokens.output` ÷ repeats |
+| Avg. tool calls (run) | the length of each `results[].toolCalls`, summed, ÷ repeats (run JSON only) |
 
 Expected user score includes valid model failures as zero, while Integrity and Judged average the
 completed answers only (`qualityOnCompleted` is their combined total); invalid infrastructure,

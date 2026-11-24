@@ -47,7 +47,7 @@ function baselineScores(name, level) {
 }
 
 const rows = lines.slice(table.start, table.end).map((line) => {
-  const [name, level, , , , , cost] = line.split("|").slice(1, -1).map((cell) => cell.trim());
+  const [name, level, , , , cost] = line.split("|").slice(1, -1).map((cell) => cell.trim());
   const levelKey = level.toLowerCase();
   return { name, level: levelKey, cost: Number(cost.replace("$", "")), ...baselineScores(name, levelKey) };
 });
@@ -294,9 +294,9 @@ const scored = lines.slice(table.start, table.end).map((line) => {
   const cells = line.split("|");
   const name = cells[1].trim(), level = cells[2].trim().toLowerCase();
   const row = rows.find((r) => r.name === name && r.level === level);
-  cells[4] = ` ${row.total.toFixed(1)}${capMark(row.capped)} `;
-  cells[5] = ` ${row.integrity.toFixed(1)} `;
-  cells[6] = ` ${row.judged.toFixed(1)} `;
+  cells[3] = ` ${row.total.toFixed(1)}${capMark(row.capped)} `;
+  cells[4] = ` ${row.integrity.toFixed(1)} `;
+  cells[5] = ` ${row.judged.toFixed(1)} `;
   return { line: cells.join("|"), total: row.total };
 });
 // The table is ordered by Total, highest first; rows that tie keep their order.
