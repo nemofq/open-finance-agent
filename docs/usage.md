@@ -124,6 +124,11 @@ the one still missing.
   fundamentals, earnings history and calendar, transcripts, news sentiment, rates, CPI and ETF
   profiles, behind a tool allowlist you control, with identical calls cached for 15 minutes by
   default (the Cache TTL setting). It also adds its company names to the `$` autocomplete.
+- **StockFit** (optional key, free plan available) through its official MCP server: financial
+  statements whose facts each name the filing they came from, price history, EPS and dividend
+  history, filings, company details and news; paid plans add segments, footnotes, ownership and
+  fund holdings. Statements and price history honour a point-in-time cutoff by filing date. Same
+  tool allowlist and Cache TTL settings as Alpha Vantage.
 - **Any MCP server**, added here as a data connection or under General tools as a general tool;
   see [extending.md](extending.md#mcp-server) for the difference.
 

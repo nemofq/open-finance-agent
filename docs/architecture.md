@@ -37,7 +37,7 @@ Concerns          execution · time · capabilities · user · attachments · co
                                             │
 Engines           policy rules · context budgets and compaction · evidence ledger · report validator
                                             │
-Capabilities      data connections: EDGAR, Alpha Vantage, Market Quotes, MCP (data)
+Capabilities      data connections: EDGAR, Alpha Vantage, StockFit, Market Quotes, MCP (data)
                   financial tools:  financial_calculator, create_report
                   general tools:    web_search, web_fetch, memory_update, read_skill, evidence_get,
                                     portfolio_get, read_attachment,
@@ -54,7 +54,7 @@ State             one data folder of plain files: settings, sign-ins, chats, evi
 | Turn runtime | `src/lib/agent/turn.ts`, `factory.ts`, `execution.ts` |
 | Concerns | `src/lib/harness/`; `execution` is an inline object in `factory.ts` built from `src/lib/agent/execution.ts`, and so is the benchmark's `telemetry`, built from its tool seam |
 | Engines | `src/lib/policy/`, `src/lib/context/`, `src/lib/evidence/`, `src/lib/reports/` |
-| Capabilities | `src/lib/providers/<name>/module.ts` and `src/lib/<capability>/tool.ts`, listed in `src/lib/tools/registry.ts`; the MCP client and tool factory that the MCP servers module and Alpha Vantage share are in `src/lib/mcp/` |
+| Capabilities | `src/lib/providers/<name>/module.ts` and `src/lib/<capability>/tool.ts`, listed in `src/lib/tools/registry.ts`; the MCP client and tool factory that the MCP servers module, Alpha Vantage and StockFit share are in `src/lib/mcp/` |
 | Execution | `src/lib/sandbox/` with `sandbox/`, `src/lib/attachments/parse/`, `src/lib/llm/` |
 | State | `src/lib/paths.ts`, down to one chat's folder (`sessionDir`); the evidence folder inside it is laid out in `src/lib/evidence/store.ts`; the whole layout is in [usage › Data folder](usage.md#data-folder-and-privacy) |
 

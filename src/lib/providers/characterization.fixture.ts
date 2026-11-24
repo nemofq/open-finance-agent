@@ -1,11 +1,12 @@
 /**
- * Provider responses for `characterization.test.ts`: what SEC EDGAR, the Alpha Vantage MCP server,
- * Tavily, Yahoo Finance and the example Acme provider answer at the `sourceRequest` seam, small but shaped like the real thing. The company
+ * Provider responses for `characterization.test.ts`: what SEC EDGAR, the Alpha Vantage and StockFit MCP
+ * servers, Tavily, Yahoo Finance and the example Acme provider answer at the `sourceRequest` seam, small but shaped like the real thing. The company
  * facts are the synthetic filer from `src/lib/providers/edgar/facts.fixture.ts`.
  */
 import type { SourceRequest } from "@/lib/data/source-snapshot";
 import type { AssetProfile, LiveQuote } from "@/lib/quotes/types";
 import { fixtureFacts } from "@/lib/providers/edgar/facts.fixture";
+import { fixtureBody, fixtureTools } from "@/lib/providers/stockfit/responses.fixture";
 
 const CIK = "0001234567";
 const ARCHIVE = "https://www.sec.gov/Archives/edgar/data/1234567";
@@ -280,6 +281,7 @@ export function respond(request: SourceRequest): unknown {
     const body = alphaVantageBodies[operation];
     return body === undefined ? undefined : JSON.stringify(body, null, 2);
   }
+  if (source === "mcp:stockfit") return operation === "list-tools" ? fixtureTools : fixtureBody(operation);
   if (source === "tavily") return operation === "search" ? webSearch : webExtract;
   if (source === "yahoo-finance") return pick<LiveQuote | AssetProfile>(operation === "quotes" ? yahooQuotes : yahooProfiles, args.symbols);
   if (source === "acme") return [{ date: "2024-08-27", close: 128.3 }, { date: "2024-08-28", close: 125.61 }];

@@ -2333,6 +2333,456 @@
     }
   },
   {
+    "label": "stockfit income, quarterly",
+    "tool": "stockfit__financials_income_statement",
+    "entry": {
+      "asOf": "2025-10-30",
+      "availableAt": "2025-10-30",
+      "currency": "USD",
+      "entity": {
+        "ticker": "FIXT"
+      },
+      "facts": [
+        {
+          "end": "2025-09-30",
+          "metric": "revenue",
+          "period": "2025-09-30",
+          "periodType": "quarterly",
+          "ref": "0001234567-25-000050",
+          "unit": "USD",
+          "value": 1200
+        },
+        {
+          "end": "2025-09-30",
+          "metric": "netIncome",
+          "period": "2025-09-30",
+          "periodType": "quarterly",
+          "ref": "0001234567-25-000050",
+          "unit": "USD",
+          "value": 150
+        },
+        {
+          "end": "2025-09-30",
+          "metric": "basicEps",
+          "period": "2025-09-30",
+          "periodType": "quarterly",
+          "ref": "0001234567-25-000050",
+          "unit": "USD/share",
+          "value": 0.75
+        },
+        {
+          "end": "2025-09-30",
+          "metric": "dilutedEps",
+          "period": "2025-09-30",
+          "periodType": "quarterly",
+          "ref": "0001234567-25-000050",
+          "unit": "USD/share",
+          "value": 0.74
+        },
+        {
+          "end": "2025-09-30",
+          "metric": "dilutedShares",
+          "period": "2025-09-30",
+          "periodType": "quarterly",
+          "ref": "0001234567-25-000050",
+          "unit": "shares",
+          "value": 203
+        },
+        {
+          "end": "2025-09-30",
+          "metric": "ebitda",
+          "period": "2025-09-30",
+          "periodType": "quarterly",
+          "unit": "USD",
+          "value": 260
+        },
+        {
+          "end": "2025-06-30",
+          "metric": "revenue",
+          "period": "2025-06-30",
+          "periodType": "quarterly",
+          "ref": "0001234567-25-000050",
+          "unit": "USD",
+          "value": 1000
+        },
+        {
+          "end": "2025-06-30",
+          "metric": "netIncome",
+          "period": "2025-06-30",
+          "periodType": "quarterly",
+          "ref": "0001234567-25-000030",
+          "unit": "USD",
+          "value": 120
+        },
+        {
+          "end": "2025-06-30",
+          "metric": "basicEps",
+          "period": "2025-06-30",
+          "periodType": "quarterly",
+          "ref": "0001234567-25-000030",
+          "unit": "USD/share",
+          "value": 0.6
+        },
+        {
+          "end": "2025-06-30",
+          "metric": "dilutedEps",
+          "period": "2025-06-30",
+          "periodType": "quarterly",
+          "ref": "0001234567-25-000030",
+          "unit": "USD/share",
+          "value": 0.59
+        },
+        {
+          "end": "2025-06-30",
+          "metric": "dilutedShares",
+          "period": "2025-06-30",
+          "periodType": "quarterly",
+          "ref": "0001234567-25-000030",
+          "unit": "shares",
+          "value": 202
+        },
+        {
+          "end": "2025-06-30",
+          "metric": "ebitda",
+          "period": "2025-06-30",
+          "periodType": "quarterly",
+          "unit": "USD",
+          "value": 230
+        }
+      ],
+      "periods": [
+        "2025-09-30",
+        "2025-06-30"
+      ],
+      "source": {
+        "id": "stockfit",
+        "name": "StockFit",
+        "tier": 2
+      },
+      "summary": "StockFit income statement, quarterly, $FIXT, 2 periods (latest 2025-09-30)",
+      "table": {
+        "columns": [
+          "metric",
+          "2025-09-30",
+          "2025-06-30"
+        ],
+        "index": "metric",
+        "rows": [
+          [
+            "revenue",
+            1200,
+            1000
+          ],
+          [
+            "netIncome",
+            150,
+            120
+          ],
+          [
+            "depreciationAndAmortization",
+            40,
+            38
+          ],
+          [
+            "eps",
+            0.75,
+            0.6
+          ],
+          [
+            "epsDiluted",
+            0.74,
+            0.59
+          ],
+          [
+            "weightedAverageSharesOutstandingDiluted",
+            203,
+            202
+          ],
+          [
+            "ebitda",
+            260,
+            230
+          ]
+        ]
+      },
+      "unit": "USD"
+    }
+  },
+  {
+    "label": "stockfit income, trimmed as of",
+    "tool": "stockfit__financials_income_statement",
+    "entry": {
+      "asOf": "2025-07-30",
+      "availableAt": "2025-07-30",
+      "currency": "USD",
+      "entity": {
+        "ticker": "FIXT"
+      },
+      "facts": [
+        {
+          "end": "2025-06-30",
+          "metric": "netIncome",
+          "period": "2025-06-30",
+          "periodType": "quarterly",
+          "ref": "0001234567-25-000030",
+          "unit": "USD",
+          "value": 120
+        },
+        {
+          "end": "2025-06-30",
+          "metric": "basicEps",
+          "period": "2025-06-30",
+          "periodType": "quarterly",
+          "ref": "0001234567-25-000030",
+          "unit": "USD/share",
+          "value": 0.6
+        },
+        {
+          "end": "2025-06-30",
+          "metric": "dilutedEps",
+          "period": "2025-06-30",
+          "periodType": "quarterly",
+          "ref": "0001234567-25-000030",
+          "unit": "USD/share",
+          "value": 0.59
+        },
+        {
+          "end": "2025-06-30",
+          "metric": "dilutedShares",
+          "period": "2025-06-30",
+          "periodType": "quarterly",
+          "ref": "0001234567-25-000030",
+          "unit": "shares",
+          "value": 202
+        }
+      ],
+      "periods": [
+        "2025-06-30"
+      ],
+      "source": {
+        "id": "stockfit",
+        "name": "StockFit",
+        "tier": 2
+      },
+      "summary": "StockFit income statement, quarterly, $FIXT, 1 period (latest 2025-06-30)",
+      "table": {
+        "columns": [
+          "metric",
+          "2025-06-30"
+        ],
+        "index": "metric",
+        "rows": [
+          [
+            "netIncome",
+            120
+          ],
+          [
+            "depreciationAndAmortization",
+            38
+          ],
+          [
+            "eps",
+            0.6
+          ],
+          [
+            "epsDiluted",
+            0.59
+          ],
+          [
+            "weightedAverageSharesOutstandingDiluted",
+            202
+          ]
+        ]
+      },
+      "unit": "USD"
+    }
+  },
+  {
+    "label": "stockfit income, ttm withheld as of",
+    "tool": "stockfit__financials_income_statement",
+    "entry": {
+      "entity": {
+        "ticker": "FIXT"
+      },
+      "source": {
+        "id": "stockfit",
+        "name": "StockFit",
+        "tier": 2
+      },
+      "summary": "StockFit financials_income_statement, $FIXT"
+    }
+  },
+  {
+    "label": "stockfit balance sheet, unconverted cash",
+    "tool": "stockfit__financials_balance_sheet",
+    "entry": {
+      "asOf": "2025-02-15",
+      "availableAt": "2025-02-15",
+      "entity": {
+        "ticker": "FIXT"
+      },
+      "facts": [
+        {
+          "end": "2024-12-31",
+          "metric": "assets",
+          "period": "2024-12-31",
+          "periodType": "instant",
+          "ref": "0001234567-25-000010",
+          "unit": "USD",
+          "value": 9000
+        },
+        {
+          "end": "2024-12-31",
+          "metric": "liabilities",
+          "period": "2024-12-31",
+          "periodType": "instant",
+          "ref": "0001234567-25-000010",
+          "unit": "USD",
+          "value": 5000
+        },
+        {
+          "end": "2024-12-31",
+          "metric": "equity",
+          "period": "2024-12-31",
+          "periodType": "instant",
+          "ref": "0001234567-25-000010",
+          "unit": "USD",
+          "value": 4000
+        },
+        {
+          "end": "2024-12-31",
+          "metric": "cash",
+          "period": "2024-12-31",
+          "periodType": "instant",
+          "ref": "0001234567-25-000010",
+          "unit": "EUR",
+          "value": 700
+        },
+        {
+          "end": "2024-12-31",
+          "metric": "longTermDebt",
+          "period": "2024-12-31",
+          "periodType": "instant",
+          "ref": "0001234567-25-000010",
+          "unit": "USD",
+          "value": 2100
+        }
+      ],
+      "periods": [
+        "2024-12-31"
+      ],
+      "source": {
+        "id": "stockfit",
+        "name": "StockFit",
+        "tier": 2
+      },
+      "summary": "StockFit balance sheet, annual, $FIXT, 1 period (latest 2024-12-31)",
+      "table": {
+        "columns": [
+          "metric",
+          "2024-12-31"
+        ],
+        "index": "metric",
+        "rows": [
+          [
+            "assets",
+            9000
+          ],
+          [
+            "liabilities",
+            5000
+          ],
+          [
+            "stockholdersEquity",
+            4000
+          ],
+          [
+            "cash",
+            700
+          ],
+          [
+            "longTermDebt",
+            2100
+          ],
+          [
+            "sharesOutstanding",
+            200
+          ]
+        ]
+      }
+    }
+  },
+  {
+    "label": "stockfit price history",
+    "tool": "stockfit__price_history",
+    "entry": {
+      "asOf": "2025-07-01",
+      "currency": "USD",
+      "entity": {
+        "ticker": "FIXT"
+      },
+      "facts": [
+        {
+          "end": "2025-07-01",
+          "metric": "adjustedClose",
+          "period": "2025-07-01",
+          "periodType": "instant",
+          "unit": "USD",
+          "value": 101.5
+        }
+      ],
+      "source": {
+        "id": "stockfit",
+        "name": "StockFit",
+        "tier": 2
+      },
+      "summary": "StockFit 1d closes, $FIXT, 3 bars (latest 2025-07-01, adjustedClose 101.5)",
+      "table": {
+        "columns": [
+          "date",
+          "adjustedClose"
+        ],
+        "index": "date",
+        "rows": [
+          [
+            "2025-07-01",
+            101.5
+          ],
+          [
+            "2025-06-30",
+            100
+          ],
+          [
+            "2025-06-27",
+            99
+          ]
+        ]
+      },
+      "unit": "USD"
+    }
+  },
+  {
+    "label": "stockfit company details",
+    "tool": "stockfit__company_details",
+    "entry": {
+      "entity": {
+        "ticker": "FIXT"
+      },
+      "numbers": [
+        {
+          "context": "{\"symbol\":\"FIXT\",\"name\":\"Fixture Corp\",\"cik\":1234567,\"exchange\":\"NASDAQ\"}",
+          "value": 1234567
+        }
+      ],
+      "source": {
+        "id": "stockfit",
+        "name": "StockFit",
+        "tier": 2
+      },
+      "summary": "StockFit company_details, $FIXT"
+    }
+  },
+  {
     "label": "market quotes",
     "tool": "market_quotes",
     "entry": {

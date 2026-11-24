@@ -14,7 +14,7 @@ import { getSandboxStatus } from "@/lib/sandbox";
  */
 
 /** These reach their tools only through a live MCP connection, which offline tests cannot open. */
-const needsNetwork = new Set(["mcp", "alphavantage"]);
+const needsNetwork = new Set(["mcp", "alphavantage", "stockfit"]);
 
 let home: string;
 

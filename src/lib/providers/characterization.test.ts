@@ -14,6 +14,7 @@ import { acmeModule } from "@/lib/providers/example/module";
 import { alphaVantageModule, alphaVantageToolOptions } from "@/lib/providers/alphavantage/module";
 import { edgarModule } from "@/lib/providers/edgar/module";
 import { quotesModule } from "@/lib/quotes/tool";
+import { stockfitModule, stockfitToolOptions } from "@/lib/providers/stockfit/module";
 import { tavilyModule } from "@/lib/providers/tavily/module";
 import { stableStringify } from "@/lib/text/stable-json";
 import type { FinanceTool, Module, ToolMeta } from "@/lib/tools/contracts";
@@ -61,6 +62,9 @@ async function liveCases(): Promise<Case[]> {
   const av = { apiKey: "demo", allowTools: alphaVantageToolOptions, cacheTtlSeconds: 0 };
   const alpha = await build(alphaVantageModule, av);
   const alphaAsOf = await build(alphaVantageModule, av, "2024-08-27");
+  const sf = { apiKey: "test", allowTools: stockfitToolOptions, cacheTtlSeconds: 0 };
+  const stockfit = await build(stockfitModule, sf);
+  const stockfitAsOf = await build(stockfitModule, sf, "2025-08-15");
   const web = await build(tavilyModule, { apiKey: "tvly-test" });
   const webAsOf = await build(tavilyModule, { apiKey: "tvly-test" }, "2024-08-29");
   const quotes = await build(quotesModule, {});
@@ -100,6 +104,12 @@ async function liveCases(): Promise<Case[]> {
     run("av earnings calendar, csv", alpha, "alphavantage__EARNINGS_CALENDAR", { symbol: "NVDA" }),
     run("av earnings calendar, csv as of", alphaAsOf, "alphavantage__EARNINGS_CALENDAR", { symbol: "NVDA" }),
     run("av insider transactions, csv as of", alphaAsOf, "alphavantage__INSIDER_TRANSACTIONS", { symbol: "NVDA" }),
+    run("stockfit income, quarterly", stockfit, "stockfit__financials_income_statement", { symbol: "FIXT", period: "quarter" }),
+    run("stockfit income, trimmed as of", stockfitAsOf, "stockfit__financials_income_statement", { symbol: "FIXT", period: "quarter" }),
+    run("stockfit income, ttm withheld as of", stockfitAsOf, "stockfit__financials_income_statement", { symbol: "FIXT", period: "ttm" }),
+    run("stockfit balance sheet, unconverted cash", stockfit, "stockfit__financials_balance_sheet", { symbol: "FIXT", period: "annual" }),
+    run("stockfit price history", stockfit, "stockfit__price_history", { symbol: "FIXT" }),
+    run("stockfit company details", stockfit, "stockfit__company_details", { symbol: "FIXT" }),
     run("market quotes", quotes, "market_quotes", { symbols: ["nvda"] }),
     run("market quotes, batch with a missing symbol", quotes, "market_quotes", { symbols: ["NVDA", "AAPL", "ZZZZ"] }),
     run("web search", web, "web_search", { query: "Nvidia second quarter results" }),
