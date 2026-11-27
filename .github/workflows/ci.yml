@@ -30,7 +30,7 @@ jobs:
 
       # ~30 MB of calculator wheels postinstall downloads, keyed on the pinned Pyodide version.
       - name: Cache downloaded Python packages
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: .sandbox
           key: sandbox-${{ runner.os }}-${{ hashFiles('package.json') }}
@@ -59,7 +59,7 @@ jobs:
 
       # ~30 MB of calculator wheels postinstall downloads, keyed on the pinned Pyodide version.
       - name: Cache downloaded Python packages
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: .sandbox
           key: sandbox-${{ runner.os }}-${{ hashFiles('package.json') }}
