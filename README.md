@@ -182,10 +182,10 @@ Pareto line joins the rows no other row beats on both cost and Total.
 
 Every row was run with no model-specific handling and judged by the same model. The GPT rows ran on
 pi 1.6.1, the model library's release that changed how GPT models are called; the others ran on
-1.6.0, whose requests to them 1.6.1 leaves the same in substance, so rows are directly comparable. Agents think at medium
-unless the model has no medium level: DeepSeek V4.1 Flash 1017 ran at High, and Tencent Hy4 Flash,
-which has no levels, with thinking on. Every run completed except one of Inkling 2 Small's 36,
-which ended without an answer and counts as zero in its Total.
+1.6.0, whose requests to them 1.6.1 leaves the same in substance, so rows are directly comparable.
+Agents think at medium unless the model has no medium level: DeepSeek V4.1 Flash 1017 ran at High,
+and Tencent Hy4 Flash, which has no levels, with thinking on. Every run completed except one of
+Inkling 2 Small's 36, which ended without an answer and counts as zero in its Total.
 
 Cost is the agent's average per run (judging excluded) at each maker's standard list price on the
 day the row was added, not any time-limited promotional price; run time counts the model's turns

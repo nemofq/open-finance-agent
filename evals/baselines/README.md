@@ -9,10 +9,9 @@ is added, in the same order as the README's table.
 All rows are benchmark v2 with judge prompt v10: judged by GPT-6.2 Sol at medium thinking with three
 grades per answer, policy enforced, offline dataset, twelve tasks × 3 repeats. Every row was run
 with no model-specific handling. The GPT rows ran on pi 1.6.1, which changed how GPT models are
-called on a ChatGPT sign-in; the others ran on pi 1.6.0. For them 1.6.1 differs only in a `$schema`
-keyword now kept in one tool's schema sent to Claude, and in retrying an empty OpenRouter reply that
-hides an upstream failure, so the rows are directly comparable. The commit in each section is the
-run's.
+called; the others ran on pi 1.6.0. For them 1.6.1 differs only in a `$schema` keyword now kept in
+one tool's schema sent to Claude, and in retrying an empty reply that hides an upstream failure, so
+the rows are directly comparable. The commit in each section is the run's.
 
 Rows published before 2026-11-21 were run on earlier code and judged by GPT-6 Astra. They are not
 comparable with these and are kept only in git history, as are benchmark v1 scores.
