@@ -332,4 +332,12 @@ Secrets are masked as `••••` when config is sent to the browser; saving 
 | `OFA_PYODIDE_CDN` | A mirror for the calculator's Python package download, which otherwise comes from jsDelivr |
 | `OFA_PARSE_WORKER` | The path of the attachment parse worker, for a deployment that moves the sources out of `src/` |
 
+A model provider's key and settings, region and profile included, come from `config.json`, not
+from the environment. Variables that the provider SDKs read on their own, such as `OPENAI_ORG_ID` and
+`ANTHROPIC_CUSTOM_HEADERS`, are removed when the server starts and again before each model request
+or sign-in, and the server log names any it removed. `AWS_PROFILE` is not removed, but the app does
+not read it either: pi's Bedrock client and the AWS SDK do. A Bedrock provider set up with an AWS
+profile sends the profile saved in Settings, which wins over an exported `AWS_PROFILE`.
+[LLM providers](architecture.md#llm-providers) lists what the environment can still change.
+
 The variables that only tests read are in [CONTRIBUTING.md](../CONTRIBUTING.md#checks).
