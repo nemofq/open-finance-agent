@@ -154,7 +154,7 @@ total at 69 or 49.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/images/benchmark-quality-cost-dark.svg" />
-  <img src="docs/images/benchmark-quality-cost-light.svg" alt="Scatter of total benchmark score against the agent's average cost per run, log scale: Gemini 4 Neon medium 75.1 at $11.37, Claude Fable 5.2 medium 71.4 at $22.37, DeepSeek V4.1 Flash 1017 high 71.1 at $1.21, Gemini 4 Hydrogen medium 69.2 at $6.74, Claude Opus 5.5 medium 68.4 at $7.39, Tencent Hy4 Flash on 67.6 at $0.28, GPT-6.2 Astra medium 62.8 at $5.88, GPT-6.1 Terra medium 60.4 at $0.55, Claude Sonnet 5.5 medium 60.0 at $2.39, Inkling 2 Small medium 59.9 at $0.45, Claude Haiku 5.5 medium 57.9 at $0.19, GPT-6 Luna medium 49.6 at $0.04; a dotted Pareto line joins GPT-6 Luna, Claude Haiku 5.5, Tencent Hy4 Flash, DeepSeek V4.1 Flash 1017 and Gemini 4 Neon" width="100%" />
+  <img src="docs/images/benchmark-quality-cost-light.svg" alt="Scatter of total benchmark score against the agent's average cost per run, log scale: Gemini 4 Neon medium 75.1 at $11.37, Claude Fable 5.2 medium 71.4 at $22.37, DeepSeek V4.1 Flash 1017 high 71.1 at $1.21, Gemini 4 Hydrogen medium 69.2 at $6.74, Claude Opus 5.5 medium 68.4 at $7.39, Tencent Hy4 Flash on 67.6 at $0.28, GPT-6.1 Terra medium 67.2 at $0.98, GPT-6.2 Astra medium 63.7 at $6.86, Claude Sonnet 5.5 medium 60.0 at $2.39, Inkling 2 Small medium 59.9 at $0.45, GPT-6 Luna medium 59.3 at $0.07, Claude Haiku 5.5 medium 57.9 at $0.19; a dotted Pareto line joins GPT-6 Luna, Tencent Hy4 Flash, DeepSeek V4.1 Flash 1017 and Gemini 4 Neon" width="100%" />
 </picture>
 
 | Model (avg@3) | Thinking effort | Total (/100) ↑ | Integrity (/40) ↑ | Judged (/60) ↑ | Avg. cost (run) ↓ | Avg. run time | Avg. output tokens (run) | Avg. tool calls (run) |
@@ -165,12 +165,12 @@ total at 69 or 49.
 | Gemini 4 Hydrogen | Medium | 69.2 <sub>−0.4 capped</sub> | 32.0 | 37.6 | $6.74 | 1,261 s | 201,689 | 460 |
 | Claude Opus 5.5 | Medium | 68.4 <sub>−0.3 capped</sub> | 31.7 | 37.1 | $7.39 | 821 s | 83,651 | 160 |
 | Tencent Hy4 Flash | On | 67.6 <sub>−1.6 capped</sub> | 34.8 | 34.4 | $0.28 | 1,967 s | 256,758 | 478 |
-| GPT-6.2 Astra | Medium | 62.8 <sub>−0.5 capped</sub> | 29.1 | 34.2 | $5.88 | 645 s | 17,775 | 153 |
-| GPT-6.1 Terra | Medium | 60.4 <sub>−0.2 capped</sub> | 29.6 | 31.0 | $0.55 | 383 s | 15,776 | 124 |
+| GPT-6.1 Terra | Medium | 67.2 <sub>−0.7 capped</sub> | 32.6 | 35.3 | $0.98 | 590 s | 24,641 | 196 |
+| GPT-6.2 Astra | Medium | 63.7 <sub>−0.7 capped</sub> | 29.6 | 34.9 | $6.86 | 659 s | 22,861 | 193 |
 | Claude Sonnet 5.5 | Medium | 60.0 <sub>−0.3 capped</sub> | 25.7 | 34.6 | $2.39 | 455 s | 58,862 | 109 |
 | Inkling 2 Small | Medium | 59.9 | 25.4 | 36.3 | $0.45 | 408 s | 68,769 | 185 |
+| GPT-6 Luna | Medium | 59.3 | 26.6 | 32.8 | $0.07 | 511 s | 21,553 | 154 |
 | Claude Haiku 5.5 | Medium | 57.9 <sub>−0.1 capped</sub> | 26.8 | 31.3 | $0.19 | 577 s | 118,401 | 148 |
-| GPT-6 Luna | Medium | 49.6 | 19.8 | 29.7 | $0.04 | 265 s | 10,452 | 74 |
 
 ↑ higher is better, ↓ lower is better. (run) is one run of the twelve tasks. Benchmark version 2;
 every answer judged by GPT-6.2 Sol at medium thinking, judge prompt v10, three grades per answer;
@@ -180,11 +180,12 @@ answers only. "−x capped" is what critical caps took off a Total: an answer th
 task's critical rubric item is capped at 49, one that misses it at 69. In the chart, the dotted
 Pareto line joins the rows no other row beats on both cost and Total.
 
-Every row was run on the same release of the app and its model library, with no model-specific
-handling, and judged by the same model, so rows are directly comparable. Agents think at medium
-unless the model has no medium level: DeepSeek V4.1 Flash 1017 ran at High, and Tencent Hy4 Flash,
-which has no levels, with thinking on. Every run completed except one of Inkling 2 Small's 36,
-which ended without an answer and counts as zero in its Total.
+Every row was run with no model-specific handling and judged by the same model. The GPT rows ran on
+pi 1.6.1, the model library's release that changed how GPT models are called; the others ran on
+1.6.0, whose requests to them 1.6.1 leaves the same in substance, so rows are directly comparable.
+Agents think at medium unless the model has no medium level: DeepSeek V4.1 Flash 1017 ran at High,
+and Tencent Hy4 Flash, which has no levels, with thinking on. Every run completed except one of
+Inkling 2 Small's 36, which ended without an answer and counts as zero in its Total.
 
 Cost is the agent's average per run (judging excluded) at each maker's standard list price on the
 day the row was added, not any time-limited promotional price; run time counts the model's turns

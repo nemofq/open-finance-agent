@@ -75,7 +75,6 @@ export const modelAliases: readonly ModelAlias[] = [
   { type: "github-copilot", from: "mai-code-1-flash-picker", name: "MAI-Code-1-Flash", pricing: { input: 0.75, output: 4.5 }, to: "mai-code-1.1-flash" },
   { type: "opencode", from: "deepseek-v4-flash-vision-exp", name: "DeepSeek V4 Flash Vision Exp", pricing: { input: 0.14, output: 0.28 }, to: "deepseek-v4.1-flash" },
   { type: "together", from: "deepseek-ai/DeepSeek-V4-Flash-0731", name: "DeepSeek V4 Flash 0731", pricing: { input: 0.14, output: 0.28 }, to: "deepseek-ai/DeepSeek-V4.1-Flash" },
-  { type: "together", from: "MiniMaxAI/MiniMax-M2.7", name: "MiniMax-M2.7", pricing: { input: 0.3, output: 1.2 }, to: "MiniMaxAI/MiniMax-M3" },
   { type: "xiaomi", from: "mimo-v2.5", name: "MiMo-V2.5", pricing: { input: 0.14, output: 0.28 }, to: "mimo-v2.6-flash" },
   { type: "xiaomi", from: "mimo-v2.5-pro", name: "MiMo-V2.5-Pro", pricing: { input: 0.435, output: 0.87 }, to: "mimo-v2.6-pro" },
   { type: "xiaomi", from: "mimo-v2.5-pro-ultraspeed", name: "MiMo-V2.5-Pro-UltraSpeed", pricing: { input: 1.305, output: 2.61 }, to: "mimo-v2.6-pro-ultraspeed" },
@@ -94,11 +93,7 @@ export const modelAliases: readonly ModelAlias[] = [
   // arcee-ai/trinity-large-thinking, openai/gpt-3.5-turbo, gpt-4-turbo, gpt-4.1-nano-batch,
   // gpt-4.1-nano-fast and o4-mini-fast, poolside/laguna-s-2.1-free, and
   // spacexai/grok-4.1-fast-non-reasoning and grok-4.1-fast-reasoning.
-  { type: "mistral", from: "devstral-medium-2507", name: "Devstral Medium", pricing: { input: 0.4, output: 2 }, to: "devstral-2512" },
-  { type: "mistral", from: "devstral-small-2505", name: "Devstral Small 2505", pricing: { input: 0.1, output: 0.3 }, to: "labs-devstral-small-2512" },
-  { type: "mistral", from: "devstral-small-2507", name: "Devstral Small", pricing: { input: 0.1, output: 0.3 }, to: "labs-devstral-small-2512" },
   { type: "mistral", from: "mistral-large-2411", name: "Mistral Large 2.1", pricing: { input: 2, output: 6 }, to: "mistral-large-2512" },
-  { type: "mistral", from: "mistral-nemo", name: "Mistral Nemo", pricing: { input: 0.15, output: 0.15 }, to: "open-mistral-nemo" },
   { type: "opencode", from: "deepseek-v4-flash", name: "DeepSeek V4 Flash", pricing: { input: 0.14, output: 0.28 }, to: "deepseek-v4.1-flash" },
   { type: "opencode-go", from: "gemini-4-argon-contributor", name: "Gemini 4 Argon Contributor", pricing: { input: 4, output: 20 }, to: "gemini-4-argon" },
   // pi-ai 1.5.0 → 1.5.2 (all in 1.5.1). Retired without a successor: fireworks gpt-oss-120b, inkling,
@@ -129,6 +124,32 @@ export const modelAliases: readonly ModelAlias[] = [
   { type: "vercel-ai-gateway", from: "inception/mercury-2", name: "Mercury 2", pricing: { input: 0.25, output: 0.75 }, to: "inception/mercury-3" },
   { type: "vercel-ai-gateway", from: "inception/mercury-2.5", name: "Mercury 2.5", pricing: { input: 0.04, output: 0.15 }, to: "inception/mercury-3" },
   { type: "vercel-ai-gateway", from: "minimax/minimax-m2", name: "MiniMax M2", pricing: { input: 0.3, output: 1.2 }, to: "minimax/minimax-m3" },
+  // pi-ai 1.6.0 → 1.6.1. Their successors were removed too, so these earlier aliases are gone and their
+  // ids retired: mistral devstral-medium-2507, devstral-small-2505, devstral-small-2507 and mistral-nemo,
+  // and together MiniMaxAI/MiniMax-M2.7. Retired without a successor: azure and openai gpt-4,
+  // gpt-4-turbo, gpt-4.1-nano, gpt-5-chat-latest, gpt-5.3-codex-spark, o1, o1-pro, o3-mini and o4-mini;
+  // fireworks kimi-k3-spot; github-copilot gpt-5.6-terra (6.1 Terra is a new generation); google
+  // gemini-2.5-computer-use-preview-10-2025; groq llama-3.1-8b-instant and llama-3.3-70b-versatile;
+  // huggingface MiniMaxAI/MiniMax-M1-80k and Qwen/Qwen3-VL-235B-A22B-Thinking; mistral devstral-2512,
+  // devstral-latest, devstral-medium-latest, labs-devstral-small-2512, labs-leanstral-1-5-1,
+  // mistral-small-2506 (Small 4 is a new generation), open-mistral-nemo and pixtral-12b; nvidia
+  // meta/muse-glimmer-30b; opencode kimi-k2.5 and kimi-k2.6 (K3 is a new generation) and
+  // longcat-2.5-free; opencode-go longcat-2.5-free; together MiniMaxAI/MiniMax-M3 (M3.1 Flash is a
+  // different tier) and thinkingmachines/Inkling; and vercel-ai-gateway alibaba/qwen3-max-thinking and
+  // anthropic/claude-sonnet-4.5-batch.
+  { type: "azure", from: "gpt-4o-2024-05-13", name: "GPT-4o (2024-05-13)", pricing: { input: 5, output: 15 }, to: "gpt-4o" },
+  { type: "github-copilot", from: "claude-opus-5", name: "Claude Opus 5", pricing: { input: 5, output: 25 }, to: "claude-opus-5.5" },
+  { type: "google", from: "gemini-3.1-flash-lite-preview", name: "Gemini 3.1 Flash Lite Preview", pricing: { input: 0.25, output: 1.5 }, to: "gemini-3.1-flash-lite" },
+  { type: "groq", from: "qwen/qwen3.6-27b", name: "Qwen3.6 27B", pricing: { input: 0.6, output: 3 }, to: "qwen/qwen3.8-27b" },
+  { type: "huggingface", from: "Qwen/Qwen3-235B-A22B", name: "Qwen3 235B-A22B", pricing: { input: 0.2, output: 0.8 }, to: "Qwen/Qwen3-235B-A22B-Instruct-2507" },
+  { type: "mistral", from: "mistral-large-4-0-8", name: "Mistral Large 4.0.8", pricing: { input: 0.7, output: 2.1 }, to: "mistral-large-4" },
+  { type: "mistral", from: "mistral-medium-2505", name: "Mistral Medium 3", pricing: { input: 0.4, output: 2 }, to: "mistral-medium-2604" },
+  { type: "mistral", from: "mistral-medium-2508", name: "Mistral Medium 3.1", pricing: { input: 0.4, output: 2 }, to: "mistral-medium-2604" },
+  { type: "mistral", from: "mistral-medium-3.5", name: "Mistral Medium 3.5", pricing: { input: 1.5, output: 7.5 }, to: "mistral-medium-2604" },
+  { type: "openai", from: "gpt-4o-2024-05-13", name: "GPT-4o (2024-05-13)", pricing: { input: 5, output: 15 }, to: "gpt-4o" },
+  { type: "opencode-go", from: "longcat-2.0", name: "LongCat-2.0", pricing: { input: 0.3, output: 1.2 }, to: "longcat-2.5" },
+  { type: "opencode-go", from: "mimo-v2.5", name: "MiMo V2.5", pricing: { input: 0.14, output: 0.28 }, to: "mimo-v2.6-flash" },
+  { type: "opencode-go", from: "mimo-v2.5-pro", name: "MiMo V2.5 Pro", pricing: { input: 0.435, output: 0.87 }, to: "mimo-v2.6-pro" },
 ];
 
 export function modelAlias(type: LlmProviderType, id: string): ModelAlias | undefined {
